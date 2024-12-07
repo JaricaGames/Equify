@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.ui.theme
+package com.jarica.compartirgastos.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "906425133662",
-    "project_id": "runningapp-9f336",
-    "storage_bucket": "runningapp-9f336.firebasestorage.app"
+    "project_number": "153356059898",
+    "project_id": "compartirgastos-dd611",
+    "storage_bucket": "compartirgastos-dd611.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:906425133662:android:a90294e60fff9e184e62cf",
+        "mobilesdk_app_id": "1:153356059898:android:d6c1ff0cb42bc739483543",
         "android_client_info": {
-          "package_name": "com.jarica.CompartirGastos"
+          "package_name": "com.jarica.compartirgastos"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAwJjaSRmSZdz5BHszaMjYRgGZt6add2-g"
+          "current_key": "AIzaSyBOoYQw7IBDk5OxH4rxgO9jVQbEeI7A4Q8"
         }
       ],
       "services": {
