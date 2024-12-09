@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.daggert)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
 }
 
 android {
@@ -49,7 +50,11 @@ dependencies {
     implementation(libs.daggert)
     kapt(libs.kapt)
 
+    //NAVIGATION
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlin.serialization.json)
 
+    //FIREBASE
     implementation(platform(libs.firebase))
     implementation(libs.crashlytics)
     implementation(libs.daggert)
