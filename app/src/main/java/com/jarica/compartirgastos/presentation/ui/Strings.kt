@@ -6,5 +6,8 @@ val secondaryText = "¿Quieres crear un grupo nuevo, o unirte a uno existente?"
 val newGroupText = "Nuevo grupo"
 val joinGroupText = "Unirse a grupo"
 
-//NewGruopScreen
+//NewGrouppScreen
 val next = "Siguiente"
+val labelTextField = "Nombre del grupo"
+val shareText = "Compartir en linea"
+val currencyText = "Moneda"

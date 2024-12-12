@@ -6,9 +6,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jarica.compartirgastos.presentation.initial.InitialScreen
 import com.jarica.compartirgastos.presentation.newGroup.NewGroupScreen
+import com.jarica.compartirgastos.presentation.newGroup.NewGroupViewModel
 
 @Composable
-fun NavigationWrapper(){
+fun NavigationWrapper(newGroupViewModel: NewGroupViewModel) {
 
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Initial){
@@ -16,7 +17,7 @@ fun NavigationWrapper(){
             InitialScreen ({ navController.navigate(NewGroup) })
         }
         composable<NewGroup> {
-            NewGroupScreen( navigateToInitial = { navController.navigate(Initial) })
+            NewGroupScreen(newGroupViewModel,  navigateToInitial = { navController.navigate(Initial) })
         }
 
     }

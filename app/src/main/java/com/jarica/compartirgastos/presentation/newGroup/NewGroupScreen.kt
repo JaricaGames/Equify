@@ -1,29 +1,44 @@
 package com.jarica.compartirgastos.presentation.newGroup
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.presentation.ui.next
+import com.jarica.compartirgastos.presentation.ui.shareText
+import com.jarica.compartirgastos.presentation.ui.currencyText
+import com.jarica.compartirgastos.presentation.ui.labelTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewGroupScreen(navigateToInitial: () -> Unit) {
+fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -> Unit) {
+
+    val groupName: String by newGroupViewModel.groupName.observeAsState("")
 
     Scaffold(
         topBar = {
@@ -32,7 +47,7 @@ fun NewGroupScreen(navigateToInitial: () -> Unit) {
                     containerColor = Color.Cyan,
                 ),
                 navigationIcon = {
-                    IconButton(onClick = {navigateToInitial()}) {
+                    IconButton(onClick = { navigateToInitial() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = ""
@@ -47,17 +62,59 @@ fun NewGroupScreen(navigateToInitial: () -> Unit) {
             )
         }
     ) { paddingValues ->
-        MainView(paddingValues)
+        MainView(paddingValues, newGroupViewModel, groupName)
     }
 }
 
 @Composable
-fun MainView(paddingValues: PaddingValues) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Cyan)) {
-           // TextField()
+fun MainView(
+    paddingValues: PaddingValues,
+    newGroupViewModel: NewGroupViewModel,
+    groupName: String
+) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+            .background(Color.Cyan)
+            .padding(horizontal = 45.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(0.5f))
 
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = groupName,
+            maxLines = 1,
+            singleLine = true,
+            placeholder = {Text(labelTextField)},
+            onValueChange = { newGroupViewModel.onValueTextFieldChange(it) })
+        Spacer(modifier = Modifier.weight(0.05f))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(shareText)
+            Switch(checked = false, onCheckedChange = {}, enabled = false)
+        }
+
+        Spacer(modifier = Modifier.weight(0.05f))
+
+        HorizontalDivider(Modifier.height(3.dp))
+
+        Spacer(modifier = Modifier.weight(0.05f))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(currencyText)
+            Text("Euro")
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

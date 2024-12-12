@@ -48,6 +48,7 @@ dependencies {
 
     //HILT
     implementation(libs.daggert)
+    implementation(libs.androidx.runtime.livedata)
     kapt(libs.kapt)
 
     //NAVIGATION

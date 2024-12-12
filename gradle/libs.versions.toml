@@ -14,6 +14,7 @@ crashlytics = "3.0.2"
 dagger-hilt = "2.51.1"
 navigationCompose = "2.8.4"
 kotlinSerialization = "1.7.3"
+runtimeLivedata = "1.7.6"
 
 
 [libraries]
@@ -40,6 +41,7 @@ kapt = {module = "com.google.dagger:hilt-android-compiler", version.ref= "dagger
 
 navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose"}
 kotlin-serialization-json = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization"}
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 
 [plugins]
