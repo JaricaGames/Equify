@@ -29,7 +29,7 @@ fun InitialScreen(navigateToNewGroup: () -> Unit) {
             .padding(horizontal = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.8f))
 
         Text(text = mainText, fontSize = 25.sp, fontWeight = FontWeight.Bold )
 
