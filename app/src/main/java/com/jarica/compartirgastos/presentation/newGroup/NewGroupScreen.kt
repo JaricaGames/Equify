@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.presentation.ui.next
@@ -39,6 +40,7 @@ import com.jarica.compartirgastos.presentation.ui.labelTextField
 fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -> Unit) {
 
     val groupName: String by newGroupViewModel.groupName.observeAsState("")
+    val alphaTextNext: Float by newGroupViewModel.alphaTextNext.observeAsState(0f)
 
     Scaffold(
         topBar = {
@@ -55,7 +57,7 @@ fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -
                     }
                 },
                 actions = {
-                    Text(next, modifier = Modifier.padding(horizontal = 16.dp))
+                    Text(next, modifier = Modifier.padding(horizontal = 16.dp).alpha(alphaTextNext))
                 },
                 title = {
                 }
@@ -66,11 +68,13 @@ fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -
     }
 }
 
+
+
 @Composable
 fun MainView(
     paddingValues: PaddingValues,
     newGroupViewModel: NewGroupViewModel,
-    groupName: String
+    groupName: String,
 ) {
     Column(
         modifier = Modifier
@@ -80,7 +84,7 @@ fun MainView(
             .padding(horizontal = 45.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(modifier = Modifier.weight(0.2f))
 
         TextField(
             modifier = Modifier.fillMaxWidth(),
