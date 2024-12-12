@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
@@ -54,6 +55,9 @@ fun NewGroupScreen(navigateToInitial: () -> Unit) {
 fun MainView(paddingValues: PaddingValues) {
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Cyan)) { }
+        .background(Color.Cyan)) {
+           // TextField()
+
+    }
 }
 
