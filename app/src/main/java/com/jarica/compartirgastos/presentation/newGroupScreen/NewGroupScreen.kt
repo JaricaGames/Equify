@@ -66,7 +66,6 @@ fun NewGroupScreen(
                     }
                 },
                 actions = {
-
                     Text(
                         next,
                         modifier = Modifier

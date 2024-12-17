@@ -14,3 +14,6 @@ val currencyText = "Moneda"
 
 //AddPeopleScreen
 val labelTextFieldAddPeopleScreen = "Nueva persona"
+val createText = "Crear Grupo"
+val addPeopleText = "Añadir persona"
+val addEverybodyText = "Añade a todos los participantes"
