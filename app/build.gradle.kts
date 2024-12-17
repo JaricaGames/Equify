@@ -4,9 +4,10 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.googleService)
     alias(libs.plugins.crashlytics)
-    alias(libs.plugins.daggert)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -19,7 +20,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,14 +42,23 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
 
-    //HILT
-    implementation(libs.daggert)
+    // Hilt
+    implementation(libs.dagger.hilt)
+    ksp(libs.dagger.hilt.android.compiler)
+    ksp(libs.dagger.hilt.compiler)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
     implementation(libs.androidx.runtime.livedata)
-    kapt(libs.kapt)
+
 
     //NAVIGATION
     implementation(libs.navigation.compose)
@@ -58,7 +67,6 @@ dependencies {
     //FIREBASE
     implementation(platform(libs.firebase))
     implementation(libs.crashlytics)
-    implementation(libs.daggert)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -68,6 +76,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+
 
 
     testImplementation(libs.junit)

@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.initial
+package com.jarica.compartirgastos.presentation.initialScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.newGroup
+package com.jarica.compartirgastos.presentation.addPeopleScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,20 +27,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.jarica.compartirgastos.presentation.ui.next
-import com.jarica.compartirgastos.presentation.ui.shareText
 import com.jarica.compartirgastos.presentation.ui.currencyText
 import com.jarica.compartirgastos.presentation.ui.labelTextField
+import com.jarica.compartirgastos.presentation.ui.shareText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -> Unit) {
+fun AddPeopleScreen(addPeopleViewModel: AddPeopleScreenViewModel) {
 
-    val groupName: String by newGroupViewModel.groupName.observeAsState("")
-    val alphaTextNext: Float by newGroupViewModel.alphaTextNext.observeAsState(0f)
+
+    val addNameToGroup: String by addPeopleViewModel.addNameToGroup.observeAsState("")
 
     Scaffold(
         topBar = {
@@ -49,7 +47,7 @@ fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -
                     containerColor = Color.Cyan,
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { navigateToInitial() }) {
+                    IconButton(onClick = {  }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = ""
@@ -57,42 +55,44 @@ fun NewGroupScreen(newGroupViewModel: NewGroupViewModel, navigateToInitial: () -
                     }
                 },
                 actions = {
-                    Text(next, modifier = Modifier.padding(horizontal = 16.dp).alpha(alphaTextNext))
+
+
                 },
                 title = {
                 }
             )
         }
     ) { paddingValues ->
-        MainView(paddingValues, newGroupViewModel, groupName)
+        MainViewAddPeopleScreen(paddingValues, addNameToGroup, addPeopleViewModel)
+
     }
+
 }
 
 
-
 @Composable
-fun MainView(
+fun MainViewAddPeopleScreen(
     paddingValues: PaddingValues,
-    newGroupViewModel: NewGroupViewModel,
-    groupName: String,
+    addNameToGroup: String,
+    addPeopleViewModel: AddPeopleScreenViewModel,
 ) {
     Column(
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
             .background(Color.Cyan)
-            .padding(horizontal = 45.dp),
+            .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.2f))
 
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            value = groupName,
+            value = addNameToGroup,
             maxLines = 1,
             singleLine = true,
-            placeholder = {Text(labelTextField)},
-            onValueChange = { newGroupViewModel.onValueTextFieldChange(it) })
+            placeholder = { Text(labelTextField) },
+            onValueChange = { addPeopleViewModel.onValueTextFieldChange(it) })
         Spacer(modifier = Modifier.weight(0.05f))
 
         Row(
@@ -113,7 +113,8 @@ fun MainView(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(currencyText)
             Text("Euro")
         }
@@ -121,4 +122,3 @@ fun MainView(
         Spacer(modifier = Modifier.weight(1f))
     }
 }
-

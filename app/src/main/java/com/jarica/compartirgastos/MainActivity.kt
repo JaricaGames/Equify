@@ -6,19 +6,25 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
-import com.jarica.compartirgastos.presentation.newGroup.NewGroupViewModel
+import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
+import com.jarica.compartirgastos.presentation.groupScreen.GroupScreenViewModel
+import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val newGroupViewModel:NewGroupViewModel by viewModels()
+    private val groupViewModel:GroupScreenViewModel by viewModels()
+    private val addPeopleViewModel:AddPeopleScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CompartirGastosTheme {
-                NavigationWrapper(newGroupViewModel)
+                NavigationWrapper(newGroupViewModel, groupViewModel, addPeopleViewModel)
             }
         }
     }

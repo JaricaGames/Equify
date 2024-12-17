@@ -3,7 +3,13 @@ package com.jarica.compartirgastos.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Initial
+object InitialScreen
 
 @Serializable
-object NewGroup
+object NewGroupScreen
+
+@Serializable
+object GroupScreen
+
+@Serializable
+object AddPeopleScreen

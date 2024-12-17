@@ -1,0 +1,3 @@
+package com.jarica.compartirgastos.presentation.initialScreen
+
+class InitialScreenViewModel

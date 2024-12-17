@@ -1,21 +1,23 @@
 [versions]
 agp = "8.7.3"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.11.00"
+composeBom = "2024.12.01"
 firebase-bom = "33.7.0"
 services-google = "4.4.2"
 crashlytics = "3.0.2"
-dagger-hilt = "2.51.1"
-navigationCompose = "2.8.4"
+navigationCompose = "2.8.5"
 kotlinSerialization = "1.7.3"
 runtimeLivedata = "1.7.6"
-
+ksp = "2.1.0-1.0.29"
+hilt = "2.53"
+hilt-compiler = "1.2.0"
+room = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,8 +38,13 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 firebase = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
 crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
 
-daggert = {module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt"}
-kapt = {module = "com.google.dagger:hilt-android-compiler", version.ref= "dagger-hilt"}
+dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+dagger-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-compiler" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 
 navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose"}
 kotlin-serialization-json = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization"}
@@ -50,7 +57,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 googleService = {id = "com.google.gms.google-services", version.ref = "services-google"}
 crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "crashlytics"}
-daggert = {id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt"}
-kapt= {id= "kotlin-kapt"}
 jetbrainsKotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
