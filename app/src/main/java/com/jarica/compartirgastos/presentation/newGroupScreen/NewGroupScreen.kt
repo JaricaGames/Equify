@@ -34,7 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.domain.model.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.currencyText
-import com.jarica.compartirgastos.presentation.ui.labelTextField
+import com.jarica.compartirgastos.presentation.ui.labelTextFieldNewGroupScreen
 import com.jarica.compartirgastos.presentation.ui.next
 import com.jarica.compartirgastos.presentation.ui.shareText
 
@@ -116,7 +116,7 @@ fun MainViewNewGroupScreen(
             value = groupName,
             maxLines = 1,
             singleLine = true,
-            placeholder = { Text(labelTextField) },
+            placeholder = { Text(labelTextFieldNewGroupScreen) },
             onValueChange = { newGroupViewModel.onValueTextFieldChange(it) })
         Spacer(modifier = Modifier.weight(0.05f))
 

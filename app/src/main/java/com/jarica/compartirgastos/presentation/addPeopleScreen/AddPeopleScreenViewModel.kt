@@ -13,9 +13,12 @@ class AddPeopleScreenViewModel @Inject constructor() : ViewModel() {
     private val _addNameToGroup = MutableLiveData<String>()
     val addNameToGroup: LiveData<String> = _addNameToGroup
 
-    fun onValueTextFieldChange(personName: String) {
+    private val _createText = MutableLiveData<Boolean>()
+    val createText: LiveData<Boolean> = _createText
 
+    fun onValueTextFieldChange(personName: String) {
         _addNameToGroup.value = personName
+        _createText.value = personName != ""
     }
 
 }

@@ -20,7 +20,7 @@ fun NavigationWrapper(
 ) {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = InitialScreen){
+    NavHost(navController = navController, startDestination = AddPeopleScreen){
         composable<InitialScreen> {
             InitialScreen { navController.navigate(NewGroupScreen) }
         }
