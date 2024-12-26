@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.domain.model
+package com.jarica.compartirgastos.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

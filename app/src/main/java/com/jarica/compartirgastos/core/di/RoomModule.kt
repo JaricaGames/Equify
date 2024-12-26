@@ -25,5 +25,8 @@ object RoomModule {
     @Provides
     fun provideGroupNameDao(db:AppDataBase) = db.groupNameDao()
 
+    @Provides
+    fun providePersonNameDao(db:AppDataBase) = db.personNameDao()
+
 
 }

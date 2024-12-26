@@ -1,6 +1,8 @@
 package com.jarica.compartirgastos.presentation.addPeopleScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.addEverybodyText
 import com.jarica.compartirgastos.presentation.ui.addPeopleText
 import com.jarica.compartirgastos.presentation.ui.createText
@@ -31,9 +34,14 @@ import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPeopleScreen(addPeopleViewModel: AddPeopleScreenViewModel) {
+fun AddPeopleScreen(
+    idGroupName: Int,
+    groupName: String,
+    addPeopleViewModel: AddPeopleScreenViewModel,
+    navigateToNewGroupScreen: () -> Unit,
+) {
 
-
+    val peopleList = addPeopleViewModel.personList
     val addNameToGroup: String by addPeopleViewModel.addNameToGroup.observeAsState("")
     val isTextNext: Boolean by addPeopleViewModel.createText.observeAsState(false)
 
@@ -42,7 +50,7 @@ fun AddPeopleScreen(addPeopleViewModel: AddPeopleScreenViewModel) {
             TopAppBar(
                 colors = topAppBarColors(containerColor = Color.Cyan),
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navigateToNewGroupScreen() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = ""
@@ -51,9 +59,21 @@ fun AddPeopleScreen(addPeopleViewModel: AddPeopleScreenViewModel) {
                 },
                 actions = {
                     if (isTextNext) {
-                        Text(addPeopleText, modifier = Modifier.padding(horizontal = 16.dp))
+                        Text(
+                            addPeopleText,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .clickable {
+                                    addPeopleViewModel.insertNameOnList(addNameToGroup)
+                                })
                     } else {
-                        Text(createText, modifier = Modifier.padding(horizontal = 16.dp))
+                        Text(createText, modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .clickable {
+                                val newGroup = GroupNameModel(idGroupName = idGroupName, groupName = groupName)
+                                addPeopleViewModel.insertGroupName(newGroup)
+                                addPeopleViewModel.insertPeople(peopleList, idGroupName)
+                            })
                     }
 
                 },
@@ -62,7 +82,7 @@ fun AddPeopleScreen(addPeopleViewModel: AddPeopleScreenViewModel) {
             )
         }
     ) { paddingValues ->
-        MainViewAddPeopleScreen(paddingValues, addNameToGroup, addPeopleViewModel)
+        MainViewAddPeopleScreen(paddingValues, addNameToGroup, addPeopleViewModel, peopleList)
 
     }
 
@@ -74,6 +94,7 @@ fun MainViewAddPeopleScreen(
     paddingValues: PaddingValues,
     addNameToGroup: String,
     addPeopleViewModel: AddPeopleScreenViewModel,
+    peopleList: List<String>,
 ) {
     Column(
         modifier = Modifier
@@ -92,8 +113,23 @@ fun MainViewAddPeopleScreen(
             singleLine = true,
             placeholder = { Text(labelTextFieldAddPeopleScreen) },
             onValueChange = { addPeopleViewModel.onValueTextFieldChange(it) })
-        Spacer(modifier = Modifier.weight(0.05f))
-        Text(addEverybodyText)
+
+
+        if (peopleList.isEmpty()) {
+            Text(addEverybodyText, modifier = Modifier.padding(top = 8.dp))
+        } else {
+            peopleList.forEach { name ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text(name)
+                }
+            }
+        }
         Spacer(modifier = Modifier.weight(1f))
     }
 }
+

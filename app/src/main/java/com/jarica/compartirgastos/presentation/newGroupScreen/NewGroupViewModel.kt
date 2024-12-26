@@ -4,55 +4,44 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.GetGroupNamesUseCase
-import com.jarica.compartirgastos.domain.InsertGroupNameUseCase
-import com.jarica.compartirgastos.domain.model.GroupNameModel
-import com.jarica.compartirgastos.presentation.groupScreen.GroupUiState
-import com.jarica.compartirgastos.presentation.groupScreen.GroupUiState.Success
+import com.jarica.compartirgastos.core.ID_GROUP_SAVED
+import com.jarica.compartirgastos.data.dataStore.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NewGroupViewModel @Inject constructor(
-    private val insertGroupNameUseCase: InsertGroupNameUseCase,
-    getGroupNamesUseCase: GetGroupNamesUseCase
+    private val preferences: Preferences
 ) : ViewModel() {
 
-    val uiState: StateFlow<GroupUiState> = getGroupNamesUseCase().map(::Success)
-        .catch { GroupUiState.Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GroupUiState.Loading)
 
+    //------------ Trozo que abre la aplicacion por el grupo que este activo -------------------
+    companion object {
+        var iDGroupName: Int? = null
+    }
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            iDGroupName = preferences.getIdGroup(ID_GROUP_SAVED)
+        }
+    }
+    //----------------------------------------------------------------------------------
+
+
+    //VARIABLES DE ESTADO
     private val _groupName = MutableLiveData<String>()
     val groupName: LiveData<String> = _groupName
 
     private val _TextNext = MutableLiveData<Boolean>()
     val textNext: LiveData<Boolean> = _TextNext
 
-    //metodo del textfield
+    //METODO DEL TEXTFIELD
     fun onValueTextFieldChange(text: String) {
         _groupName.value = text
-        _TextNext.value = !text.equals("")
+        _TextNext.value = text != ""
     }
 
-    fun insertGroupName(groupName: GroupNameModel, navigateToGroup: Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-
-            insertGroupNameUseCase(
-                GroupNameModel(
-                    idGroupName = groupName.idGroupName,
-                    groupName = groupName.groupName
-                )
-            )
-        }
-        return navigateToGroup
-
-    }
 
 }

@@ -77,8 +77,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    //DATASTOREPREFERENCE
+    implementation(libs.dataStorePreference)
 
-
+    //corrutinas
+    implementation(libs.corrutinas)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

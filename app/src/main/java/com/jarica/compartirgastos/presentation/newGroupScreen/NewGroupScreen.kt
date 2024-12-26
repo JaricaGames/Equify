@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.jarica.compartirgastos.domain.model.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.currencyText
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldNewGroupScreen
 import com.jarica.compartirgastos.presentation.ui.next
@@ -43,7 +43,7 @@ import com.jarica.compartirgastos.presentation.ui.shareText
 fun NewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
     navigateToInitial: () -> Unit,
-    navigateToAddPeople: () -> Unit
+    navigateToAddPeople: (Int, String) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -72,14 +72,22 @@ fun NewGroupScreen(
                             .padding(horizontal = 16.dp)
                             .clickable {
                                 if (textNext) {
-                                    newGroupViewModel.insertGroupName(
-                                        groupName = GroupNameModel(
-                                            groupName = groupName
-                                        ),
-                                        navigateToGroup = navigateToAddPeople()
+                                    val groupNameModel = GroupNameModel(
+                                        groupName = groupName
                                     )
+                                    navigateToAddPeople(
+                                        groupNameModel.idGroupName,
+                                        groupNameModel.groupName
+                                    )
+
                                 } else {
-                                    Toast.makeText(context, "Rellene el nombre del grupo", Toast.LENGTH_LONG).show()
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Rellene el nombre del grupo",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
                                 }
                             })
 
@@ -108,7 +116,7 @@ fun MainViewNewGroupScreen(
             .padding(horizontal = 45.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.2f))
+        Spacer(modifier = Modifier.weight(0.025f))
 
         TextField(
             modifier = Modifier.fillMaxWidth(),

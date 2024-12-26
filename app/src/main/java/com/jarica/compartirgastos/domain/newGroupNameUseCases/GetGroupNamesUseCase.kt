@@ -1,7 +1,7 @@
-package com.jarica.compartirgastos.domain
+package com.jarica.compartirgastos.domain.newGroupNameUseCases
 
 import com.jarica.compartirgastos.data.AppRepository
-import com.jarica.compartirgastos.domain.model.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupNameModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

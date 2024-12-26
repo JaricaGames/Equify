@@ -2,7 +2,8 @@ package com.jarica.compartirgastos.presentation.groupScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.GetGroupNamesUseCase
+import com.jarica.compartirgastos.domain.groupUsesCases.GetPeopleNamesUseCase
+import com.jarica.compartirgastos.domain.newGroupNameUseCases.GetGroupNamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,10 +14,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupScreenViewModel @Inject constructor(
-    getGroupNamesUseCase: GetGroupNamesUseCase
+    getPeopleNamesUseCase: GetPeopleNamesUseCase
 ): ViewModel(){
 
-    val uiStateGroupName: StateFlow<GroupUiState> = getGroupNamesUseCase().map(GroupUiState::Success)
+    val uiStateGroupName: StateFlow<GroupUiState> = getPeopleNamesUseCase().map(GroupUiState::Success)
         .catch { GroupUiState.Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GroupUiState.Loading)
 
