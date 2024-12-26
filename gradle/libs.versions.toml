@@ -18,6 +18,8 @@ ksp = "2.1.0-1.0.29"
 hilt = "2.53"
 hilt-compiler = "1.2.0"
 room = "2.6.1"
+dataStorePreference = "1.1.1"
+corrutinas = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,11 +47,13 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
+corrutinas = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "corrutinas"}
 
 navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose"}
 kotlin-serialization-json = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization"}
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
+dataStorePreference = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStorePreference"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

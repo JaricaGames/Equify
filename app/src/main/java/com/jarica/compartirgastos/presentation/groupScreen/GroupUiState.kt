@@ -1,11 +1,11 @@
 package com.jarica.compartirgastos.presentation.groupScreen
 
-import com.jarica.compartirgastos.domain.model.GroupNameModel
+import com.jarica.compartirgastos.domain.models.PersonModel
 
 sealed interface GroupUiState {
 
-    object Loading: GroupUiState
+    data object Loading: GroupUiState
     data class Error(val throwable: Throwable): GroupUiState
-    data class Success(val groupName:List<GroupNameModel>): GroupUiState
+    data class Success(val peopleList:List<PersonModel>): GroupUiState
 
 }

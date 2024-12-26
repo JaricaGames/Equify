@@ -20,7 +20,9 @@ import com.jarica.compartirgastos.presentation.ui.newGroupText
 import com.jarica.compartirgastos.presentation.ui.secondaryText
 
 @Composable
-fun InitialScreen(navigateToNewGroup: () -> Unit) {
+fun InitialScreen(
+    navigateToNewGroup: () -> Unit,
+) {
 
     Column(
         modifier = Modifier

@@ -21,10 +21,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.jarica.compartirgastos.domain.model.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.PersonModel
 
 @Composable
-fun GroupScreen(groupViewModel: GroupScreenViewModel) {
+fun GroupScreen(idGroup: Int, groupViewModel: GroupScreenViewModel) {
 
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -38,6 +39,7 @@ fun GroupScreen(groupViewModel: GroupScreenViewModel) {
         }
     }
 
+
     when(uiStateGroupScreen){
         is GroupUiState.Error ->  {}
         GroupUiState.Loading -> {
@@ -47,7 +49,7 @@ fun GroupScreen(groupViewModel: GroupScreenViewModel) {
                 .fillMaxSize()
                 .background(Color.Cyan), contentAlignment = Alignment.Center){
 
-                  GroupList((uiStateGroupScreen as GroupUiState.Success).groupName)
+                  GroupList((uiStateGroupScreen as GroupUiState.Success).peopleList)
 
                 }
             }
@@ -55,18 +57,18 @@ fun GroupScreen(groupViewModel: GroupScreenViewModel) {
     }
 
 @Composable
-fun GroupList(groupNameList: List<GroupNameModel>) {
+fun GroupList(groupNameList: List<PersonModel>) {
     LazyColumn {
-        items(groupNameList, key = {it}){ item: GroupNameModel ->  
-            ItemGroupName(item )
+        items(groupNameList){ person->
+            ItemGroupName(person)
         }
     }
 }
 
 @Composable
-fun ItemGroupName(item: GroupNameModel) {
+fun ItemGroupName(item: PersonModel) {
     Card(modifier = Modifier.fillMaxWidth().padding(8.dp).background(Color.Cyan)) {
-        Text(item.groupName, fontSize = 36.sp, color = Color.Red )
+        Text(item.name, fontSize = 36.sp, color = Color.Red )
     }
 }
 

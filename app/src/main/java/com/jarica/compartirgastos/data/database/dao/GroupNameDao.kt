@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface GroupNameDao {
 
     //Metodo que lista los grupos
-    @Query("SELECT * FROM group_name ORDER BY idGroupName ASC")
+    @Query("SELECT * FROM groupNameTable ORDER BY idGroupName ASC")
     fun getAllGroupName():Flow<List<GroupNameEntity>>
 
     //Metodo que inserta un nuevo grupo

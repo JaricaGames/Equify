@@ -3,16 +3,16 @@ package com.jarica.compartirgastos.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jarica.compartirgastos.domain.model.GroupNameModel
+import com.jarica.compartirgastos.core.GROUP_NAME_TABLE
 
-@Entity(tableName = "group_name")
+@Entity(tableName = GROUP_NAME_TABLE)
 data class GroupNameEntity(
     @PrimaryKey (autoGenerate = false)
     @ColumnInfo(name = "idGroupName") val idGroupName: Int,
-    @ColumnInfo(name = "groupName") val groupName: String
+    @ColumnInfo(name = "peopleList") val groupName: String
 )
 
-fun GroupNameModel.toDatabase() = GroupNameEntity(
+/*fun GroupNameModel.toDatabase() = GroupNameEntity(
     idGroupName = idGroupName,
-    groupName = groupName
-)
+    peopleList = peopleList
+)*/

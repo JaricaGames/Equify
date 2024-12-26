@@ -9,7 +9,7 @@ object InitialScreen
 object NewGroupScreen
 
 @Serializable
-object GroupScreen
+data class GroupScreen(val iDGroupName:Int)
 
 @Serializable
-object AddPeopleScreen
+data class AddPeopleScreen(val iDGroupName:Int, val groupName:String)
