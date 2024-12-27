@@ -45,6 +45,7 @@ fun NavigationWrapper(
 
         composable<GroupScreen> { backStackEntry ->
             val groupScreen: GroupScreen = backStackEntry.toRoute()
+
             GroupScreen(
                 groupScreen.iDGroupName,
                 groupViewModel
@@ -58,6 +59,7 @@ fun NavigationWrapper(
                 addPeopleScreen.groupName,
                 addPeopleViewModel = addPeopleViewModel,
                 navigateToNewGroupScreen = { navController.navigate(NewGroupScreen) },
+                navigateToGroupScreen = { navController.navigate(GroupScreen(addPeopleScreen.iDGroupName))},
 
             )
         }

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 
 @Composable
@@ -45,6 +44,7 @@ fun GroupScreen(idGroup: Int, groupViewModel: GroupScreenViewModel) {
         GroupUiState.Loading -> {
             CircularProgressIndicator()}
         is GroupUiState.Success -> {
+
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Cyan), contentAlignment = Alignment.Center){

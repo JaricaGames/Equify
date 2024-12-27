@@ -39,6 +39,7 @@ fun AddPeopleScreen(
     groupName: String,
     addPeopleViewModel: AddPeopleScreenViewModel,
     navigateToNewGroupScreen: () -> Unit,
+    navigateToGroupScreen: (Int) -> Unit,
 ) {
 
     val peopleList = addPeopleViewModel.personList
@@ -73,6 +74,8 @@ fun AddPeopleScreen(
                                 val newGroup = GroupNameModel(idGroupName = idGroupName, groupName = groupName)
                                 addPeopleViewModel.insertGroupName(newGroup)
                                 addPeopleViewModel.insertPeople(peopleList, idGroupName)
+                                navigateToGroupScreen(idGroupName)
+
                             })
                     }
 
