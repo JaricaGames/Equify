@@ -5,11 +5,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreen
+import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.groupScreen.GroupScreen
 import com.jarica.compartirgastos.presentation.groupScreen.GroupScreenViewModel
 import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
+import com.jarica.compartirgastos.presentation.listPeopleScreen.ListPeopleScreen
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupScreen
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel.Companion.iDGroupName
@@ -18,7 +21,8 @@ import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel.
 fun NavigationWrapper(
     newGroupViewModel: NewGroupViewModel,
     groupViewModel: GroupScreenViewModel,
-    addPeopleViewModel: AddPeopleScreenViewModel
+    addPeopleViewModel: AddPeopleScreenViewModel,
+    addCostViewModel: AddCostScreenViewModel
 ) {
 
     val navController = rememberNavController()
@@ -48,7 +52,8 @@ fun NavigationWrapper(
 
             GroupScreen(
                 groupScreen.iDGroupName,
-                groupViewModel
+                groupViewModel,
+                navigateToAddCostScreen = {navController.navigate(AddCostScreen)}
             )
         }
 
@@ -59,11 +64,18 @@ fun NavigationWrapper(
                 addPeopleScreen.groupName,
                 addPeopleViewModel = addPeopleViewModel,
                 navigateToNewGroupScreen = { navController.navigate(NewGroupScreen) },
-                navigateToGroupScreen = { navController.navigate(GroupScreen(addPeopleScreen.iDGroupName))},
+                navigateToGroupScreen = { navController.navigate(GroupScreen(addPeopleScreen.iDGroupName)) }
 
-            )
+                )
         }
 
+        composable<AddCostScreen> {
+            AddCostScreen(addCostViewModel, navigateToFromPerson = {navController.navigate(ListPeople)})
+        }
+
+        composable<ListPeople> {
+            ListPeopleScreen(navigateBack = {navController.previousBackStackEntry})
+        }
     }
 }
 

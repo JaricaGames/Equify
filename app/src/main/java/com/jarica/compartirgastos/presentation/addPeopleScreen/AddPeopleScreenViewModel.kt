@@ -71,7 +71,7 @@ class AddPeopleScreenViewModel @Inject constructor(
             val personModel = PersonModel(
                 idPerson = null,
                 name = personName,
-                equity = 0,
+                equity = "0.0",
                 idGroupName = idGroupName
             )
             viewModelScope.launch(Dispatchers.IO) {

@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +24,8 @@ interface PersonNameDao {
     //Metodo que borra una persona
     @Delete
     suspend fun deletePersonName(personName: PersonEntity)
+
+    //Metodo que actualiza la equity del usuario
+    @Update
+    suspend fun updateEquity(personEntity: PersonEntity)
 }

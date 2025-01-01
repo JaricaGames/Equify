@@ -1,9 +1,12 @@
 package com.jarica.compartirgastos.data
 
+import com.jarica.compartirgastos.data.database.dao.CostsDao
 import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
+import com.jarica.compartirgastos.data.database.entities.CostEntity
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
+import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class AppRepository @Inject constructor(
     private val groupNameDao: GroupNameDao,
-    private val personNameDao: PersonNameDao
+    private val personNameDao: PersonNameDao,
+    private val costsDao: CostsDao
 ) {
 
     //GROUP_NAME_DAO
@@ -44,7 +48,7 @@ class AppRepository @Inject constructor(
 
 
     suspend fun insertPersonName(personModel: PersonModel) {
-        personNameDao.insertPersonName (
+        personNameDao.insertPersonName(
             PersonEntity(
                 idPerson = null,
                 name = personModel.name,
@@ -52,6 +56,36 @@ class AppRepository @Inject constructor(
                 idGroupName = personModel.idGroupName
             )
         )
+
+    }
+
+    suspend fun updateEquity(personModel: PersonModel){
+        personNameDao.updateEquity(
+            PersonEntity(
+                idPerson = personModel.idPerson,
+                name = personModel.name,
+                equity = personModel.equity,
+                idGroupName = personModel.idGroupName
+            )
+        )
+    }
+
+
+    //COST_DAO
+    //Mapear de GroupEntuty a GroupNameModel
+    val costModel: Flow<List<CostModel>> = costsDao.getAllCosts()
+        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount) } }
+
+
+    suspend fun insertCost(costModel: CostModel) {
+        costsDao.insertCost(
+            CostEntity(
+                idCost = null,
+                idPerson = costModel.idPerson,
+                amount = costModel.amount
+            )
+        )
+
 
     }
 

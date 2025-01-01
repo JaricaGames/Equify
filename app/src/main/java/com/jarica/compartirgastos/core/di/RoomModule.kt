@@ -28,5 +28,8 @@ object RoomModule {
     @Provides
     fun providePersonNameDao(db:AppDataBase) = db.personNameDao()
 
+    @Provides
+    fun provideCostsDao(db:AppDataBase) = db.costsDao()
+
 
 }

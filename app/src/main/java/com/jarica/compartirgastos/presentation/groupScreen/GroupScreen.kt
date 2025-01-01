@@ -1,12 +1,17 @@
 package com.jarica.compartirgastos.presentation.groupScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -22,9 +27,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.ui.addCost
 
 @Composable
-fun GroupScreen(idGroup: Int, groupViewModel: GroupScreenViewModel) {
+fun GroupScreen(
+    idGroup: Int,
+    groupViewModel: GroupScreenViewModel,
+    navigateToAddCostScreen: () -> Unit
+) {
 
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -32,34 +42,41 @@ fun GroupScreen(idGroup: Int, groupViewModel: GroupScreenViewModel) {
         initialValue = GroupUiState.Loading,
         key1 = lifecycle,
         key2 = groupViewModel,
-    ){
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
-            groupViewModel.uiStateGroupName.collect { value = it}
+    ) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            groupViewModel.uiStateGroupName.collect { value = it }
         }
     }
 
 
-    when(uiStateGroupScreen){
-        is GroupUiState.Error ->  {}
+    when (uiStateGroupScreen) {
+        is GroupUiState.Error -> {}
         GroupUiState.Loading -> {
-            CircularProgressIndicator()}
+            CircularProgressIndicator()
+        }
+
         is GroupUiState.Success -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Cyan), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+            ) {
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Cyan), contentAlignment = Alignment.Center){
-
-                  GroupList((uiStateGroupScreen as GroupUiState.Success).peopleList)
-
+                GroupList((uiStateGroupScreen as GroupUiState.Success).peopleList)
+                Spacer(modifier = Modifier.size(25.dp))
+                Button(modifier = Modifier.fillMaxWidth().padding(horizontal = 35.dp), onClick = {navigateToAddCostScreen()}) {
+                    Text(addCost)
                 }
+
             }
         }
     }
+}
 
 @Composable
 fun GroupList(groupNameList: List<PersonModel>) {
     LazyColumn {
-        items(groupNameList){ person->
+        items(groupNameList) { person ->
             ItemGroupName(person)
         }
     }
@@ -67,8 +84,15 @@ fun GroupList(groupNameList: List<PersonModel>) {
 
 @Composable
 fun ItemGroupName(item: PersonModel) {
-    Card(modifier = Modifier.fillMaxWidth().padding(8.dp).background(Color.Cyan)) {
-        Text(item.name, fontSize = 36.sp, color = Color.Red )
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)
+        .background(Color.Cyan)) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(item.name, fontSize = 36.sp, color = Color.Red)
+            Text(item.equity.toString(), fontSize = 36.sp, color = Color.Red)
+        }
+
     }
 }
 

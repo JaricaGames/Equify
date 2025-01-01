@@ -6,4 +6,6 @@ const val PREFERENCES_NAME = "preferences_name"
 
 //Table Names
 const val PEOPLE_TABLE = "peopleTable"
-const val GROUP_NAME_TABLE = "groupNameTable"
+const val GROUPS_NAME_TABLE = "groupNameTable"
+const val COSTS_TABLE = "costsTable"
+

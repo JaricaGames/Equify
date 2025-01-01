@@ -3,9 +3,9 @@ package com.jarica.compartirgastos.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jarica.compartirgastos.core.GROUP_NAME_TABLE
+import com.jarica.compartirgastos.core.GROUPS_NAME_TABLE
 
-@Entity(tableName = GROUP_NAME_TABLE)
+@Entity(tableName = GROUPS_NAME_TABLE)
 data class GroupNameEntity(
     @PrimaryKey (autoGenerate = false)
     @ColumnInfo(name = "idGroupName") val idGroupName: Int,
