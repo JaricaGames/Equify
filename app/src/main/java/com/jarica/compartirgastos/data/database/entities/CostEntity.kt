@@ -21,6 +21,7 @@ data class CostEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "iDCost") val idCost: Int?,
     @ColumnInfo(name = "idPerson") val idPerson: Int,
-    @ColumnInfo(name = "amount") val amount: Int,
+    @ColumnInfo(name = "amount") val amount: Float,
+    @ColumnInfo(name = "description") val description: String,
 
     )

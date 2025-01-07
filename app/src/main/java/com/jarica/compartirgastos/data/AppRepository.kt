@@ -74,7 +74,7 @@ class AppRepository @Inject constructor(
     //COST_DAO
     //Mapear de GroupEntuty a GroupNameModel
     val costModel: Flow<List<CostModel>> = costsDao.getAllCosts()
-        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount) } }
+        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount, it.description) } }
 
 
     suspend fun insertCost(costModel: CostModel) {
@@ -82,7 +82,8 @@ class AppRepository @Inject constructor(
             CostEntity(
                 idCost = null,
                 idPerson = costModel.idPerson,
-                amount = costModel.amount
+                amount = costModel.amount,
+                description = costModel.description
             )
         )
 

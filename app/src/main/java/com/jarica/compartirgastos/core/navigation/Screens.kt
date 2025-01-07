@@ -1,22 +1,19 @@
 package com.jarica.compartirgastos.core.navigation
 
-import com.jarica.compartirgastos.domain.models.PersonModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-object InitialScreen
+object InitialScreenObject
 
 @Serializable
-object NewGroupScreen
+object NewGroupScreenObject
 
 @Serializable
-data class GroupScreen(val iDGroupName:Int)
+data class GroupScreenObject(val iDGroupName:Int?)
 
 @Serializable
-data class AddPeopleScreen(val iDGroupName:Int, val groupName:String)
+data class AddPeopleScreenObject(val iDGroupName:Int, val groupName:String)
 
 @Serializable
-object AddCostScreen
+object AddCostScreenObject
 
-@Serializable
-object ListPeople

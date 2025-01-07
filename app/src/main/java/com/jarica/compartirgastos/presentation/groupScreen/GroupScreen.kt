@@ -31,7 +31,7 @@ import com.jarica.compartirgastos.presentation.ui.addCost
 
 @Composable
 fun GroupScreen(
-    idGroup: Int,
+    idGroup: Int?,
     groupViewModel: GroupScreenViewModel,
     navigateToAddCostScreen: () -> Unit
 ) {
@@ -56,6 +56,9 @@ fun GroupScreen(
         }
 
         is GroupUiState.Success -> {
+
+
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -90,7 +93,7 @@ fun ItemGroupName(item: PersonModel) {
         .background(Color.Cyan)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(item.name, fontSize = 36.sp, color = Color.Red)
-            Text(item.equity.toString(), fontSize = 36.sp, color = Color.Red)
+            Text(item.equity, fontSize = 36.sp, color = Color.Red)
         }
 
     }

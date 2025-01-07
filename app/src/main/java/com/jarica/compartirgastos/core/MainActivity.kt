@@ -19,7 +19,6 @@ class MainActivity  : ComponentActivity() {
     private val newGroupViewModel:NewGroupViewModel by viewModels()
     private val groupViewModel:GroupScreenViewModel by viewModels()
     private val addPeopleViewModel:AddPeopleScreenViewModel by viewModels()
-    //private val initialViewModel:InitialScreenViewModel by viewModels()
     private val addCostViewModel:AddCostScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

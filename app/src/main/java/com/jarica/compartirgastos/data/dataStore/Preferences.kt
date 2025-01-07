@@ -1,13 +1,10 @@
 package com.jarica.compartirgastos.data.dataStore
 
-import android.content.ContentValues
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.jarica.compartirgastos.core.PREFERENCES_NAME
-import com.jarica.compartirgastos.core.navigation.GroupScreen
-import com.jarica.compartirgastos.core.navigation.InitialScreen
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
