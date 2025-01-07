@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.ID_GROUP_SAVED
 import com.jarica.compartirgastos.data.dataStore.Preferences
-import com.jarica.compartirgastos.domain.addPersonUseCases.InsertPersonNameUseCase
-import com.jarica.compartirgastos.domain.newGroupNameUseCases.InsertGroupNameUseCase
+import com.jarica.compartirgastos.domain.InsertPersonNameUseCase
+import com.jarica.compartirgastos.domain.InsertGroupNameUseCase
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import dagger.hilt.android.lifecycle.HiltViewModel

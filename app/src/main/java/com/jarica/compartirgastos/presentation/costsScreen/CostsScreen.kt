@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.groupScreen
+package com.jarica.compartirgastos.presentation.costsScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,42 +27,33 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.presentation.groupScreen.GroupList
+import com.jarica.compartirgastos.presentation.groupScreen.GroupUiState
+import com.jarica.compartirgastos.presentation.groupScreen.ItemGroupName
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.costs
 import com.jarica.compartirgastos.presentation.ui.resume
+import kotlinx.coroutines.flow.collect
 
 @Composable
-fun GroupScreen(
-    idGroup: Int?,
-    groupViewModel: GroupScreenViewModel,
-    navigateToAddCostScreen: () -> Unit,
-    navigateToCosts: () -> Unit
-) {
+fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToResume: ()-> Unit) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiStatePeopleGroupScreen by produceState<GroupUiState>(
-        initialValue = GroupUiState.Loading,
+    val uiStateCosts by produceState<CostsScreenUiState>(
+        initialValue = CostsScreenUiState.Loading,
         key1 = lifecycle,
-        key2 = groupViewModel,
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            groupViewModel.uiStateResumeGroup.collect { value = it }
+        key2 = costViewModel
+    ){
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
+            costViewModel.uiStateCosts.collect {value = it}
         }
     }
 
-    when (uiStatePeopleGroupScreen) {
-
-        is GroupUiState.Error -> {}
-
-        is GroupUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is GroupUiState.Success -> {
-
+    when(uiStateCosts){
+        is CostsScreenUiState.Error -> {}
+        CostsScreenUiState.Loading -> {}
+        is CostsScreenUiState.Success -> {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -72,41 +62,45 @@ fun GroupScreen(
                 verticalArrangement = Arrangement.Top
             ) {
                 Row(modifier = Modifier.fillMaxWidth().padding()) {
-                    Box(modifier = Modifier.weight(1f).background(Color.White).padding(vertical = 10.dp), contentAlignment = Alignment.Center){
-                        Text(resume)
+                    Box(modifier = Modifier.weight(0.8f).background(Color.White.copy(alpha = 0.5f)).padding(vertical = 10.dp).clickable {
+                        navigateToResume()
+                    }, contentAlignment = Alignment.Center){
+                        Text(resume, fontSize = 12.sp)
                     }
                     //Spacer(Modifier.fillMaxWidth())
-                    Box(modifier = Modifier.weight(0.8f).background(Color.White.copy(alpha = 0.5f)).padding(vertical = 10.dp).clickable { navigateToCosts() }, contentAlignment = Alignment.Center){
-                        Text(costs, fontSize = 12.sp)
+                    Box(modifier = Modifier.weight(1f).background(Color.White).padding(vertical = 10.dp), contentAlignment = Alignment.Center){
+                        Text(costs)
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
-                GroupList((uiStatePeopleGroupScreen as GroupUiState.Success).peopleList)
+                CostsList((uiStateCosts as CostsScreenUiState.Success).costsList)
                 Spacer(modifier = Modifier.size(25.dp))
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 35.dp),
-                    onClick = { navigateToAddCostScreen() }) {
+                    onClick = { }) {
                     Text(addCost)
                 }
 
             }
+
         }
     }
+
 }
 
 @Composable
-fun GroupList(groupNameList: List<PersonModel>) {
+fun CostsList(costsList: List<CostModel>) {
     LazyColumn {
-        items(groupNameList) { person ->
-            ItemGroupName(person)
+        items(costsList) { cost ->
+            ItemCost(cost)
         }
     }
 }
 
 @Composable
-fun ItemGroupName(item: PersonModel) {
+fun ItemCost(cost: CostModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -114,12 +108,9 @@ fun ItemGroupName(item: PersonModel) {
             .background(Color.Cyan)
     ) {
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(item.name, fontSize = 36.sp, color = Color.Red)
-            Text(item.equity, fontSize = 36.sp, color = Color.Red)
+            Text(cost.description, fontSize = 36.sp, color = Color.Red)
+            Text(cost.amount.toString(), fontSize = 36.sp, color = Color.Red)
         }
 
     }
 }
-
-
-

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.addCostUseCase.AddCostUseCase
-import com.jarica.compartirgastos.domain.groupUsesCases.GetPeopleNamesUseCase
-import com.jarica.compartirgastos.domain.groupUsesCases.UpdatePersonUseCase
+import com.jarica.compartirgastos.domain.AddCostUseCase
+import com.jarica.compartirgastos.domain.GetPeopleNamesUseCase
+import com.jarica.compartirgastos.domain.UpdatePersonUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import dagger.hilt.android.lifecycle.HiltViewModel

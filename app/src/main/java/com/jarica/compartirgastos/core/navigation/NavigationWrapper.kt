@@ -9,6 +9,8 @@ import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreen
 import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
+import com.jarica.compartirgastos.presentation.costsScreen.CostsScreen
+import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
 import com.jarica.compartirgastos.presentation.groupScreen.GroupScreen
 import com.jarica.compartirgastos.presentation.groupScreen.GroupScreenViewModel
 import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
@@ -22,6 +24,7 @@ fun NavigationWrapper(
     groupViewModel: GroupScreenViewModel,
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
+    costViewModel: CostsScreenViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -56,7 +59,8 @@ fun NavigationWrapper(
                     navController.navigate(
                         AddCostScreenObject
                     )
-                }
+                },
+                navigateToCosts = {navController.navigate(CostScreenObject)}
             )
         }
 
@@ -80,6 +84,12 @@ fun NavigationWrapper(
                 addCostViewModel,
                 navigateToGroupScreen = { navController.navigate(GroupScreenObject(null)) }
             )
+        }
+
+        composable<CostScreenObject> {
+            CostsScreen(
+                costViewModel,
+                navigateToResume = {navController.navigate(GroupScreenObject(null))})
         }
 
     }

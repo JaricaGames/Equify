@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.domain.addCostUseCase
+package com.jarica.compartirgastos.domain
 
 import com.jarica.compartirgastos.data.AppRepository
 import com.jarica.compartirgastos.domain.models.CostModel

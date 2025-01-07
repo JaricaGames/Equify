@@ -20,6 +20,8 @@ const val addEverybodyText = "Añade a todos los participantes"
 
 //GroupScreenObject
 const val addCost = "Añadir Gasto"
+const val costs = "Gastos"
+const val resume = "Resumen"
 
 //AddCostScreenObject
 const val descriptionPlaceHolder = "Descripción"
