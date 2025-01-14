@@ -9,7 +9,7 @@ object InitialScreenObject
 object NewGroupScreenObject
 
 @Serializable
-data class GroupScreenObject(val iDGroupName:Int?)
+data class MainScreenObject(val iDGroupName:Int?)
 
 @Serializable
 data class AddPeopleScreenObject(val iDGroupName:Int, val groupName:String)

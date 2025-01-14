@@ -99,7 +99,7 @@ fun AddCostScreen(
                                             Log.d("Nono", "fallaste")
                                         } else {
                                             addCostViewModel.addCostToGroup(personToAddCosts!!)
-                                            addCostViewModel.updatePerson(personToAddCosts!!)
+                                            addCostViewModel.updatePerson(personToAddCosts!!, listOfPeople)
                                             navigateToGroupScreen()
                                         }
                                     },

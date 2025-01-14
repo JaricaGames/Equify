@@ -18,10 +18,11 @@ const val createText = "Crear Grupo"
 const val addPeopleText = "Añadir persona"
 const val addEverybodyText = "Añade a todos los participantes"
 
-//GroupScreenObject
+//MainScreenObject
 const val addCost = "Añadir Gasto"
 const val costs = "Gastos"
 const val resume = "Resumen"
+const val doTheCount = "Echar cuentas"
 
 //AddCostScreenObject
 const val descriptionPlaceHolder = "Descripción"

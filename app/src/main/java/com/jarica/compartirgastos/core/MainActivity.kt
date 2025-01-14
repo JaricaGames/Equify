@@ -9,7 +9,7 @@ import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
-import com.jarica.compartirgastos.presentation.groupScreen.GroupScreenViewModel
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity  : ComponentActivity() {
 
     private val newGroupViewModel:NewGroupViewModel by viewModels()
-    private val groupViewModel:GroupScreenViewModel by viewModels()
+    private val groupViewModel:MainScreenViewModel by viewModels()
     private val addPeopleViewModel:AddPeopleScreenViewModel by viewModels()
     private val addCostViewModel:AddCostScreenViewModel by viewModels()
     private val costViewModel: CostsScreenViewModel by viewModels()

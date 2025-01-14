@@ -11,8 +11,8 @@ import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreen
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
-import com.jarica.compartirgastos.presentation.groupScreen.GroupScreen
-import com.jarica.compartirgastos.presentation.groupScreen.GroupScreenViewModel
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreen
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupScreen
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
@@ -21,7 +21,7 @@ import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel.
 @Composable
 fun NavigationWrapper(
     newGroupViewModel: NewGroupViewModel,
-    groupViewModel: GroupScreenViewModel,
+    groupViewModel: MainScreenViewModel,
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
     costViewModel: CostsScreenViewModel,
@@ -49,10 +49,10 @@ fun NavigationWrapper(
             )
         }
 
-        composable<GroupScreenObject> { backStackEntry ->
-            val groupScreen: GroupScreenObject = backStackEntry.toRoute()
+        composable<MainScreenObject> { backStackEntry ->
+            val groupScreen: MainScreenObject = backStackEntry.toRoute()
 
-            GroupScreen(
+            MainScreen(
                 groupScreen.iDGroupName,
                 groupViewModel,
                 navigateToAddCostScreen = {
@@ -70,26 +70,25 @@ fun NavigationWrapper(
                 addPeopleViewModel = addPeopleViewModel,
                 navigateToNewGroupScreen = { navController.navigate(NewGroupScreenObject) },
                 navigateToGroupScreen = {
-                    navController.navigate(GroupScreenObject(iDGroupName = iDGroupName))
+                    navController.navigate(MainScreenObject(iDGroupName = iDGroupName))
                 },
                 idGroupName = addPeopleScreen.iDGroupName,
                 groupName = addPeopleScreen.groupName
             )
         }
 
-        composable<AddCostScreenObject> { backStackEntry ->
-            val addCostScreen: AddCostScreenObject = backStackEntry.toRoute()
+        composable<AddCostScreenObject> {
 
             AddCostScreen(
                 addCostViewModel,
-                navigateToGroupScreen = { navController.navigate(GroupScreenObject(null)) }
+                navigateToGroupScreen = { navController.navigate(MainScreenObject(null)) }
             )
         }
 
         composable<CostScreenObject> {
             CostsScreen(
                 costViewModel,
-                navigateToResume = {navController.navigate(GroupScreenObject(null))})
+                navigateToResume = {navController.navigate(MainScreenObject(null))})
         }
 
     }
@@ -100,7 +99,7 @@ fun chooseFirstScreen(): Any {
     return if (iDGroupName == null) {
         InitialScreenObject
     } else {
-        GroupScreenObject(iDGroupName!!)
+        MainScreenObject(iDGroupName!!)
     }
 }
 

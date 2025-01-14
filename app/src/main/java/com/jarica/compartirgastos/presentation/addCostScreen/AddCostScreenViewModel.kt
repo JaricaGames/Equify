@@ -91,13 +91,34 @@ class AddCostScreenViewModel @Inject constructor(
 
     }
 
-    fun updatePerson(personToAddCosts: PersonModel) {
-        val personToUpdate = personToAddCosts.copy(equity = (personToAddCosts.equity.toFloat()- _amountText.value!!.toFloat()).toString())
-        viewModelScope.launch(Dispatchers.IO) {
-            updatePersonUseCase(
-                personModel = personToUpdate
-            )
+    fun updatePerson(personToAddCosts: PersonModel, listOfPeople: List<PersonModel>) {
+
+        val numberOfPeople = listOfPeople.size
+        val amountByPeople = _amountText.value!!.toFloat() / numberOfPeople
+
+        listOfPeople.forEach { person->
+
+            //Si es el que paga se le suma al equity tod menos lo que le toca a cada uno
+            if(personToAddCosts.idPerson == person.idPerson){
+                val personToUpdate = person.copy(equity =  ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
+                viewModelScope.launch(Dispatchers.IO) {
+                    updatePersonUseCase(
+                        personModel = personToUpdate
+                    )
+                }
+            }
+            //Si no es el que paga se le resta al equity lo que le toca a cada uno por pagar
+            else{
+                val personToUpdate =
+                    person.copy(equity = (person.equity.toFloat() - amountByPeople).toString())
+                viewModelScope.launch(Dispatchers.IO) {
+                    updatePersonUseCase(
+                        personModel = personToUpdate
+                    )
+                }
+            }
         }
+
         _personToAddCost.value = null
         _descriptionText.value = ""
         _amountText.value = ""

@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class PersonModel(
     val idPerson: Int?,
     val name: String,
-    val equity: String = "0.0",
+    var equity: String = "0.0",
     val idGroupName: Int,
 )
