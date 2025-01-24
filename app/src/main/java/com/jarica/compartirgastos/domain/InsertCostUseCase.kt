@@ -4,7 +4,7 @@ import com.jarica.compartirgastos.data.AppRepository
 import com.jarica.compartirgastos.domain.models.CostModel
 import javax.inject.Inject
 
-class AddCostUseCase @Inject constructor(
+class InsertCostUseCase @Inject constructor(
     private val repository: AppRepository
 ) {
 

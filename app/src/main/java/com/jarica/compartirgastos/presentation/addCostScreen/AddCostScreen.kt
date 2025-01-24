@@ -200,15 +200,6 @@ fun MainViewAddCostScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier = Modifier.size(6.dp))
-            /* } else {
-                 name.forEach { name ->
-                     Row(modifier = Modifier.fillMaxWidth()) {
-                         Text("$fromText:", modifier = Modifier.padding(horizontal = 16.dp))
-                         Spacer(modifier = Modifier.size(2.dp))
-                         Text(name, modifier = Modifier.padding(horizontal = 16.dp))
-                     }
-                 }
-             }*/
 
             if (isFromSelected) {
                 LazyColumn(
@@ -234,30 +225,4 @@ fun MainViewAddCostScreen(
     }
 }
 
-
-@Composable
-fun PeopleList(peopleNameList: List<PersonModel>) {
-    LazyColumn {
-        items(peopleNameList) { person ->
-            PeopleNameList(person)
-        }
-    }
-}
-
-@Composable
-fun PeopleNameList(item: PersonModel) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .background(Color.Cyan)
-        .clickable {
-
-
-        }) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-            Text(item.name, fontSize = 36.sp, color = Color.Red)
-        }
-
-    }
-}
 

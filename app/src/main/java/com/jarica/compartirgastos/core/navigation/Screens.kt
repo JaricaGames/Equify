@@ -3,21 +3,27 @@ package com.jarica.compartirgastos.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object InitialScreenObject
+data object InitialScreenObject
 
 @Serializable
-object NewGroupScreenObject
+data object NewGroupScreenObject
 
 @Serializable
 data class MainScreenObject(val iDGroupName:Int?)
 
 @Serializable
-data class AddPeopleScreenObject(val iDGroupName:Int, val groupName:String)
+data object GroupsScreenObject
 
 @Serializable
-object AddCostScreenObject
+data class AddPeopleScreenObject(val iDGroupName:Int, val groupName:String?)
 
 @Serializable
-object CostScreenObject
+data object AddCostScreenObject
+
+@Serializable
+data object CostScreenObject
+
+@Serializable
+data class AddPeopleScreenFromMainObject(val iDGroupName: Int)
 
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.AddCostUseCase
+import com.jarica.compartirgastos.domain.InsertCostUseCase
 import com.jarica.compartirgastos.domain.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.UpdatePersonUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddCostScreenViewModel @Inject constructor(
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
-    private val addCostUseCase: AddCostUseCase,
+    private val addCostUseCase: InsertCostUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase
 ) : ViewModel() {
 
@@ -83,7 +83,8 @@ class AddCostScreenViewModel @Inject constructor(
                     idCost = null,
                     idPerson = personToAddCosts.idPerson!!,
                     amount = (amountText.value)!!.toFloat(),
-                    description = descriptionText.value!!
+                    description = descriptionText.value!!,
+                    idGroup = personToAddCosts.idGroupName
                 )
             )
         }

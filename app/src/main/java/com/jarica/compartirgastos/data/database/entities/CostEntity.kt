@@ -23,5 +23,6 @@ data class CostEntity(
     @ColumnInfo(name = "idPerson") val idPerson: Int,
     @ColumnInfo(name = "amount") val amount: Float,
     @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "idGroup") val idGroup: Int,
 
     )

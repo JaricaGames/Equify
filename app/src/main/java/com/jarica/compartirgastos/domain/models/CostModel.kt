@@ -6,4 +6,5 @@ data class CostModel(
     val idPerson: Int,
     val amount: Float,
     val description: String,
+    val idGroup: Int
 )

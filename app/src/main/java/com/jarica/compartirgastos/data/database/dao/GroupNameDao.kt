@@ -22,4 +22,8 @@ interface GroupNameDao {
     //Metodo que borra un grupo
     @Delete
     suspend fun deleteGroupName(groupName: GroupNameEntity)
+
+    //Metodo que devuelve un grupo por su ID
+    @Query("SELECT * FROM groupNameTable WHERE idGroupName LIKE :idGroup ")
+    suspend fun getGroupNameById(idGroup: Int):GroupNameEntity
 }

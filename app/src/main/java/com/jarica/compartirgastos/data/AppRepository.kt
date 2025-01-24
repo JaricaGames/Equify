@@ -40,6 +40,10 @@ class AppRepository @Inject constructor(
 
     }
 
+    suspend fun getGroupNameById(id:Int):GroupNameModel{
+        return groupNameDao.getGroupNameById(idGroup = id).toDomain()
+    }
+
     //PERSON_NAME_DAO
 
     //Mapear de GroupEntuty a GroupNameModel
@@ -72,9 +76,9 @@ class AppRepository @Inject constructor(
 
 
     //COST_DAO
-    //Mapear de GroupEntuty a GroupNameModel
+    //Mapear de CostEntity a CostModel
     val costModel: Flow<List<CostModel>> = costsDao.getAllCosts()
-        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount, it.description) } }
+        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount, it.description, it.idGroup) } }
 
 
     suspend fun insertCost(costModel: CostModel) {
@@ -83,13 +87,17 @@ class AppRepository @Inject constructor(
                 idCost = null,
                 idPerson = costModel.idPerson,
                 amount = costModel.amount,
-                description = costModel.description
+                description = costModel.description,
+                idGroup = costModel.idGroup,
             )
         )
 
 
     }
 
-
-
 }
+
+fun GroupNameEntity.toDomain(): GroupNameModel{
+    return GroupNameModel(this.idGroupName, this.groupName)
+}
+

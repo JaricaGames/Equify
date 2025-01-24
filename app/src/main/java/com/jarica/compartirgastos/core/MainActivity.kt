@@ -9,6 +9,7 @@ import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupScreenViewModel
 import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
@@ -22,6 +23,7 @@ class MainActivity  : ComponentActivity() {
     private val addPeopleViewModel:AddPeopleScreenViewModel by viewModels()
     private val addCostViewModel:AddCostScreenViewModel by viewModels()
     private val costViewModel: CostsScreenViewModel by viewModels()
+    private val groupScreenViewModel: GroupScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,7 +32,7 @@ class MainActivity  : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CompartirGastosTheme {
-                NavigationWrapper(newGroupViewModel, groupViewModel, addPeopleViewModel, addCostViewModel, costViewModel)
+                NavigationWrapper(newGroupViewModel, groupViewModel, addPeopleViewModel, addCostViewModel, costViewModel, groupScreenViewModel)
             }
         }
     }

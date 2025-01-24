@@ -28,13 +28,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.costs
 import com.jarica.compartirgastos.presentation.ui.resume
-import kotlinx.coroutines.flow.collect
 
 @Composable
-fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToResume: ()-> Unit) {
+fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToMainScreen: ()-> Unit) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
@@ -60,7 +60,7 @@ fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToResume: ()-> Unit
             ) {
                 Row(modifier = Modifier.fillMaxWidth().padding()) {
                     Box(modifier = Modifier.weight(0.8f).background(Color.White.copy(alpha = 0.5f)).padding(vertical = 10.dp).clickable {
-                        navigateToResume()
+                        navigateToMainScreen()
                     }, contentAlignment = Alignment.Center){
                         Text(resume, fontSize = 12.sp)
                     }
@@ -91,23 +91,27 @@ fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToResume: ()-> Unit
 fun CostsList(costsList: List<CostModel>) {
     LazyColumn {
         items(costsList) { cost ->
-            ItemCost(cost)
+            if(cost.idGroup == iDGroupName){
+                ItemCost(cost)
+            }
         }
     }
 }
 
 @Composable
 fun ItemCost(cost: CostModel) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(Color.Cyan)
-    ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(cost.description, fontSize = 36.sp, color = Color.Red)
-            Text(cost.amount.toString(), fontSize = 36.sp, color = Color.Red)
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .background(Color.Cyan)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(cost.description, fontSize = 36.sp, color = Color.Red)
+                Text(cost.amount.toString(), fontSize = 36.sp, color = Color.Red)
+            }
+
         }
 
-    }
 }

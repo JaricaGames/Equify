@@ -20,9 +20,11 @@ const val addEverybodyText = "Añade a todos los participantes"
 
 //MainScreenObject
 const val addCost = "Añadir Gasto"
+const val addPay = "Añadir Pago"
 const val costs = "Gastos"
 const val resume = "Resumen"
 const val doTheCount = "Echar cuentas"
+const val addPeople = "Añadir Persona"
 
 //AddCostScreenObject
 const val descriptionPlaceHolder = "Descripción"

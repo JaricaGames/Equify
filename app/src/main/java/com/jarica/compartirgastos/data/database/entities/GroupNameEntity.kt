@@ -9,7 +9,7 @@ import com.jarica.compartirgastos.core.GROUPS_NAME_TABLE
 data class GroupNameEntity(
     @PrimaryKey (autoGenerate = false)
     @ColumnInfo(name = "idGroupName") val idGroupName: Int,
-    @ColumnInfo(name = "peopleList") val groupName: String
+    @ColumnInfo(name = "groupName") val groupName: String
 )
 
 /*fun GroupNameModel.toDatabase() = GroupNameEntity(

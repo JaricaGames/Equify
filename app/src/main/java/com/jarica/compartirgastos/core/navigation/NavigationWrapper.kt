@@ -11,12 +11,15 @@ import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreen
 import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupScreenViewModel
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreen
+import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
 import com.jarica.compartirgastos.presentation.mainScreen.MainScreen
 import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel
-import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
+//import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupScreen
 import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
-import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel.Companion.iDGroupName
 
 @Composable
 fun NavigationWrapper(
@@ -25,14 +28,28 @@ fun NavigationWrapper(
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
     costViewModel: CostsScreenViewModel,
+    groupScreenViewModel: GroupScreenViewModel,
 ) {
 
     val navController = rememberNavController()
 
     NavHost(
-        navController = navController, startDestination = chooseFirstScreen()
+        navController = navController, startDestination = GroupsScreenObject
 
     ) {
+
+        composable<GroupsScreenObject> {
+            GroupsScreen(groupScreenViewModel,
+                navigateToInitialScreen = { navController.navigate(InitialScreenObject) },
+                navigateToMainScreen = { iDGroupName ->
+                    navController.navigate(
+                        MainScreenObject(
+                            iDGroupName = iDGroupName,
+                        )
+                    )
+                })
+        }
+
         composable<InitialScreenObject> {
             InitialScreen(navigateToNewGroup = { navController.navigate(NewGroupScreenObject) })
         }
@@ -50,6 +67,7 @@ fun NavigationWrapper(
         }
 
         composable<MainScreenObject> { backStackEntry ->
+
             val groupScreen: MainScreenObject = backStackEntry.toRoute()
 
             MainScreen(
@@ -60,20 +78,27 @@ fun NavigationWrapper(
                         AddCostScreenObject
                     )
                 },
-                navigateToCosts = {navController.navigate(CostScreenObject)}
+                navigateToCosts = { navController.navigate(CostScreenObject) },
+                navigateToAddPeopleFromGroup = { idGroupName ->
+                    navController.navigate(
+                        AddPeopleScreenFromMainObject(idGroupName)
+                    )
+                },
             )
         }
 
         composable<AddPeopleScreenObject> { backStackEntry ->
+
             val addPeopleScreen: AddPeopleScreenObject = backStackEntry.toRoute()
+
             AddPeopleScreen(
                 addPeopleViewModel = addPeopleViewModel,
                 navigateToNewGroupScreen = { navController.navigate(NewGroupScreenObject) },
-                navigateToGroupScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName = iDGroupName))
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName = addPeopleScreen.iDGroupName))
                 },
                 idGroupName = addPeopleScreen.iDGroupName,
-                groupName = addPeopleScreen.groupName
+                groupName = addPeopleScreen.groupName!!
             )
         }
 
@@ -86,20 +111,19 @@ fun NavigationWrapper(
         }
 
         composable<CostScreenObject> {
+
             CostsScreen(
                 costViewModel,
-                navigateToResume = {navController.navigate(MainScreenObject(null))})
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) })
+        }
+
+        composable<AddPeopleScreenFromMainObject> {
+
+            //AddPeopleScreenFromMain()
         }
 
     }
 }
 
-
-fun chooseFirstScreen(): Any {
-    return if (iDGroupName == null) {
-        InitialScreenObject
-    } else {
-        MainScreenObject(iDGroupName!!)
-    }
-}
 
