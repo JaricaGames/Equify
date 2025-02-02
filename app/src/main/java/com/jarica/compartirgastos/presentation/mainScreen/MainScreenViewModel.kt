@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.ID_GROUP_SAVED
 import com.jarica.compartirgastos.data.dataStore.Preferences
-import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
+import com.jarica.compartirgastos.domain.GetCostsUseCase
 import com.jarica.compartirgastos.domain.GetGroupByIdUseCase
 import com.jarica.compartirgastos.domain.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.UpdatePersonUseCase
-import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,6 +30,7 @@ class MainScreenViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase,
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
+    private val getCostsUseCase: GetCostsUseCase,
     private val preferences: Preferences
 
     ) : ViewModel() {
@@ -37,7 +38,12 @@ class MainScreenViewModel @Inject constructor(
     private val _nameOfGroup = MutableLiveData<String>()
     val nameOfGroup: LiveData<String> = _nameOfGroup
 
+    private val _isResumeSelected = MutableLiveData<Boolean>()
+    val isResumeSelected: LiveData<Boolean> = _isResumeSelected
+
+
     //------------ Trozo que abre la aplicacion por el grupo que este activo -------------------
+
     companion object {
         var iDGroupName: Int? = null
     }
@@ -53,6 +59,10 @@ class MainScreenViewModel @Inject constructor(
         getPeopleNamesUseCase().map(MainUiState::Success)
             .catch { MainUiState.Error(it) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)
+
+    val uiStateCosts: StateFlow<CostsScreenUiState> = getCostsUseCase().map(CostsScreenUiState::Success)
+        .catch { CostsScreenUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CostsScreenUiState.Loading)
 
 
     //Array de pagos
@@ -137,6 +147,14 @@ class MainScreenViewModel @Inject constructor(
 
     }
 
+    fun onResumeSelected() {
+            _isResumeSelected.value = true
+    }
+
+    fun onCostSelected() {
+            _isResumeSelected.value = false
+
+    }
 
 
 }

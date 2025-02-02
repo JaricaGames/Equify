@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 
 class InsertPersonNameUseCase @Inject constructor(
+
     private val appRepository: AppRepository
 ) {
 

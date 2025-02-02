@@ -31,5 +31,10 @@ class NewGroupViewModel @Inject constructor(
         _TextNext.value = text != ""
     }
 
+    fun onNextSelected() {
+
+        _groupName.value = ""
+    }
+
 
 }

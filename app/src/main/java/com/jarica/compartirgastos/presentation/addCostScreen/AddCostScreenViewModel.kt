@@ -22,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCostScreenViewModel @Inject constructor(
+
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val addCostUseCase: InsertCostUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase

@@ -16,9 +16,16 @@ val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
 val Grey = Color(0x4A5F5D5D)
 val DarkGrey = Color(0x4AACA8A8)
+val Green = Color(0x835AFF2C)
+val Red = Color(0xFFF44336)
 val Transparent = Color(0x00FFFFFF)
 
 val BackgroundColorGradient = arrayOf(
-    0.0f to Yellow,
-    0.25f to Black
+    0.0f to DarkYellow,
+    0.20f to Black
+)
+
+val BackgroundBlackGradient = arrayOf(
+    0.0f to Black,
+    0.20f to Black
 )
