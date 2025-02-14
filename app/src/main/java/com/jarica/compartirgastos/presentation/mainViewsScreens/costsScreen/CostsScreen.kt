@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.costsScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.costs
 import com.jarica.compartirgastos.presentation.ui.resume

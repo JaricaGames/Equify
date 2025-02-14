@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.fragmets
+package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,8 +26,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainUiState
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
 import com.jarica.compartirgastos.presentation.ui.theme.White
@@ -76,12 +77,13 @@ fun ResumeFragment(
 fun PeopleList(groupNameList: List<PersonModel>, idGroup: Int?) {
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+       // verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         items(groupNameList) { person ->
             if (person.idGroupName == idGroup) {
                 ItemPeopleName(person)
+                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }

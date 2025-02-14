@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
-import com.jarica.compartirgastos.domain.InsertPersonNameUseCase
 import com.jarica.compartirgastos.domain.InsertGroupNameUseCase
+import com.jarica.compartirgastos.domain.InsertPersonNameUseCase
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

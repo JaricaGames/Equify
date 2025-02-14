@@ -1,9 +1,8 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.addPeopleScreenFromMain
+package com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -33,9 +32,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.presentation.ui.addEverybodyText
+import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addPeopleText
-import com.jarica.compartirgastos.presentation.ui.createText
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
@@ -52,9 +51,7 @@ fun AddPeopleScreenFromMain(
     navigateToMainScreen: () -> Unit,
 ) {
 
-    val peopleList = addPeopleFromMainViewModel.personList
     val addNameToGroup: String by addPeopleFromMainViewModel.addNameToGroup.observeAsState("")
-    val isTextNext: Boolean by addPeopleFromMainViewModel.createText.observeAsState(false)
 
     Scaffold(
         topBar = {
@@ -88,38 +85,29 @@ fun AddPeopleScreenFromMain(
 
                 actions = {
 
-                    if (isTextNext) {
+                    if (addNameToGroup.isNotEmpty()) {
                         Text(
-                            addPeopleText,
-                            fontFamily = rubik,
+                            addPeopleText, fontFamily = rubik,
                             color = White,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                    addPeopleFromMainViewModel.insertNameOnList(addNameToGroup)
-                                })
-                    } else {
-                        if (peopleList.isNotEmpty()) {
-                            Text(createText, fontFamily = rubik,
-                                color = White,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .clickable {
-                                      /*  val newGroup = GroupNameModel(
-                                            idGroupName = idGroupName,
-                                            groupName = groupName
-                                        )
-                                        addPeopleFromMainViewModel.insertGroupName(newGroup)
-                                        addPeopleFromMainViewModel.insertPeople(peopleList, idGroupName)
-                                        addPeopleFromMainViewModel(newGroup.idGroupName)*/
+                                      val newPerson = PersonModel(
+                                          idPerson = null,
+                                          name = addNameToGroup,
+                                          equity = "0",
+                                          idGroupName = iDGroupName!!
+                                      )
+                                    addPeopleFromMainViewModel.insertPeople(newPerson)
+                                    navigateToMainScreen()
 
-                                    })
-                        }
+
+                                })
                     }
+
 
                 },
                 title = {
-                    Text("Hola")
                 }
             )
         }
@@ -127,8 +115,7 @@ fun AddPeopleScreenFromMain(
         MainViewAddPeopleScreen(
             paddingValues,
             addNameToGroup,
-            addPeopleFromMainViewModel,
-            peopleList
+            addPeopleFromMainViewModel
         )
 
     }
@@ -140,8 +127,7 @@ fun AddPeopleScreenFromMain(
 fun MainViewAddPeopleScreen(
     paddingValues: PaddingValues,
     addNameToGroup: String,
-    addPeopleViewModel: AddPeopleScreenFromMainViewModel,
-    peopleList: List<String>,
+    addPeopleViewModel: AddPeopleScreenFromMainViewModel
 ) {
     Column(
         modifier = Modifier
@@ -179,34 +165,6 @@ fun MainViewAddPeopleScreen(
         )
 
 
-        if (peopleList.isEmpty()) {
-
-            Text(
-                addEverybodyText,
-                modifier = Modifier.padding(top = 8.dp),
-                fontFamily = rubik,
-                color = White
-            )
-
-        } else {
-
-            peopleList.forEach { name ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-
-                        .background(DarkGrey),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        name,
-                        fontFamily = rubik,
-                        color = White,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                }
-            }
-        }
     }
 }
 

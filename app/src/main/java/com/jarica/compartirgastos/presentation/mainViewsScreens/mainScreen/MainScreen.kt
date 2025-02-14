@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,13 +40,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.fragmets.CostFragment
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.fragmets.ResumeFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.CostFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.ResumeFragment
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.addPay
 import com.jarica.compartirgastos.presentation.ui.addPeople
 import com.jarica.compartirgastos.presentation.ui.costs
 import com.jarica.compartirgastos.presentation.ui.doTheCount
+import com.jarica.compartirgastos.presentation.ui.payments
 import com.jarica.compartirgastos.presentation.ui.resume
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
@@ -70,6 +71,7 @@ fun MainScreen(
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
     val isResumeSelected: Boolean by mainScreenViewModel.isResumeSelected.observeAsState(true)
+    val isCostSelected: Boolean by mainScreenViewModel.isCostsSelected.observeAsState(false)
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStatePeopleGroupFragment by produceState<MainUiState>(
@@ -140,7 +142,8 @@ fun MainScreen(
             paddingValues,
             nameOfGroup,
             uiStatePeopleGroupFragment,
-            isResumeSelected
+            isResumeSelected,
+            isCostSelected
         )
     }
 
@@ -158,7 +161,8 @@ fun MainView(
     paddingValues: PaddingValues,
     nameOfGroup: String,
     uiStatePeopleGroupFragment: MainUiState,
-    isResumeSelected: Boolean
+    isResumeSelected: Boolean,
+    isCostSelected: Boolean
 ) {
 
     Column(
@@ -178,7 +182,7 @@ fun MainView(
         Spacer(Modifier.height(16.dp))
 
         //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
-        ChooseScreen(mainScreenViewModel, isResumeSelected)
+        ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
         Spacer(modifier = Modifier.size(16.dp))
 
         // LISTADOS (RESUMEN O GASTOS)
@@ -191,7 +195,11 @@ fun MainView(
 }
 
 @Composable
-fun ChooseScreen(mainScreenViewModel: MainScreenViewModel, isResumeSelected: Boolean) {
+fun ChooseScreen(
+    mainScreenViewModel: MainScreenViewModel,
+    isResumeSelected: Boolean,
+    isCostSelected: Boolean
+) {
 
     Row(
         modifier = Modifier
@@ -215,7 +223,7 @@ fun ChooseScreen(mainScreenViewModel: MainScreenViewModel, isResumeSelected: Boo
 
             Box(
                 modifier = Modifier
-                    .weight(0.75f)
+                    .weight(0.5f)
                     .padding(vertical = 10.dp)
                     .clickable { mainScreenViewModel.onCostSelected() },
 
@@ -229,41 +237,79 @@ fun ChooseScreen(mainScreenViewModel: MainScreenViewModel, isResumeSelected: Boo
                     fontSize = 12.sp
                 )
             }
-        } else {
-
-            //COST FRAGMENT
             Box(
                 modifier = Modifier
-                    .weight(0.75f)
+                    .weight(0.5f)
                     .padding(vertical = 10.dp)
-                    .clickable { mainScreenViewModel.onResumeSelected() },
+                    .clickable { mainScreenViewModel.onCostSelected() },
+
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    resume,
+                    payments,
                     fontFamily = rubik,
                     color = White,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp
                 )
             }
+        } else {
 
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 32.dp))
-                    .background(DarkYellow)
-                    .padding(vertical = 10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    costs,
-                    fontFamily = rubik,
-                    color = Black,
-                    fontWeight = FontWeight.SemiBold,
+            if(isCostSelected){
 
+                //COST FRAGMENT
+                Box(
+                    modifier = Modifier
+                        .weight(0.6f)
+                        .padding(vertical = 10.dp)
+                        .clickable { mainScreenViewModel.onResumeSelected() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        resume,
+                        fontFamily = rubik,
+                        color = White,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp
                     )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(topEnd = 16.dp, bottomStart = 32.dp, bottomEnd = 32.dp, topStart = 16.dp))
+                        .background(DarkYellow)
+                        .padding(vertical = 10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        costs,
+                        fontFamily = rubik,
+                        color = Black,
+                        fontWeight = FontWeight.SemiBold,
+
+                        )
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.6f)
+                        .padding(vertical = 10.dp)
+                        .clickable { mainScreenViewModel.onResumeSelected() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        payments,
+                        fontFamily = rubik,
+                        color = White,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp
+                    )
+                }
+            }else{
+
             }
+
+
         }
     }
 }

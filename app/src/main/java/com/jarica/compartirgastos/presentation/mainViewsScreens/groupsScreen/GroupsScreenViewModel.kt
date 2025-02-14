@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

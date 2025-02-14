@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.costsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

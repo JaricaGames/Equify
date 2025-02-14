@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen
 
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 

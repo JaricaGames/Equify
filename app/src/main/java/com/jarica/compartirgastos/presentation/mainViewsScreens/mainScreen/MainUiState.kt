@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import com.jarica.compartirgastos.domain.models.PersonModel
 

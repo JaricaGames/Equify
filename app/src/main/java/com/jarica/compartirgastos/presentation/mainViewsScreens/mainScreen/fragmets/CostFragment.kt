@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.fragmets
+package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,8 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreenUiState
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.costsScreen.CostsScreenUiState
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
 import com.jarica.compartirgastos.presentation.ui.theme.White
@@ -63,10 +64,11 @@ fun CostFragment(
 @Composable
 fun CostsList(costsList: List<CostModel>, idGroup: Int?) {
 
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    LazyColumn() {
         items(costsList) { cost ->
             if (cost.idGroup == idGroup) {
                 ItemCost(cost)
+                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }

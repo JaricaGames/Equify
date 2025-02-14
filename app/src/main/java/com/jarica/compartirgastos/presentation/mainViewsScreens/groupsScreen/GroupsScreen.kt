@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -41,7 +41,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.GroupNameModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.groupsText
 import com.jarica.compartirgastos.presentation.ui.newGroupText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient

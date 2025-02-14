@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.addCostScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen
 
 import com.jarica.compartirgastos.domain.models.PersonModel
 

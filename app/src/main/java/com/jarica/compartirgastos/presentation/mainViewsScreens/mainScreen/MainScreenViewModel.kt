@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import com.jarica.compartirgastos.domain.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.UpdatePersonUseCase
 import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreenUiState
+import com.jarica.compartirgastos.presentation.mainViewsScreens.costsScreen.CostsScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,7 +32,7 @@ class MainScreenViewModel @Inject constructor(
     private val getCostsUseCase: GetCostsUseCase,
     private val preferences: Preferences
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _nameOfGroup = MutableLiveData<String>()
     val nameOfGroup: LiveData<String> = _nameOfGroup
@@ -40,18 +40,21 @@ class MainScreenViewModel @Inject constructor(
     private val _isResumeSelected = MutableLiveData<Boolean>()
     val isResumeSelected: LiveData<Boolean> = _isResumeSelected
 
+    private val _isCostsSelected = MutableLiveData<Boolean>()
+    val isCostsSelected: LiveData<Boolean> = _isCostsSelected
+
 
     //------------ Trozo que abre la aplicacion por el grupo que este activo -------------------
 
     companion object {
         var iDGroupName: Int? = null
     }
-/*
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            iDGroupName = preferences.getIdGroup(ID_GROUP_SAVED)
-        }
-    }*/
+    /*
+        init {
+            viewModelScope.launch(Dispatchers.IO) {
+                iDGroupName = preferences.getIdGroup(ID_GROUP_SAVED)
+            }
+        }*/
     //----------------------------------------------------------------------------------
 
     val uiStateResumeGroup: StateFlow<MainUiState> =
@@ -59,9 +62,14 @@ class MainScreenViewModel @Inject constructor(
             .catch { MainUiState.Error(it) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)
 
-    val uiStateCosts: StateFlow<CostsScreenUiState> = getCostsUseCase().map(CostsScreenUiState::Success)
-        .catch { CostsScreenUiState.Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CostsScreenUiState.Loading)
+    val uiStateCosts: StateFlow<CostsScreenUiState> =
+        getCostsUseCase().map(CostsScreenUiState::Success)
+            .catch { CostsScreenUiState.Error(it) }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                CostsScreenUiState.Loading
+            )
 
 
     //Array de pagos
@@ -83,7 +91,7 @@ class MainScreenViewModel @Inject constructor(
                         for (personWhoReceive in peopleList) {
 
                             //Si lo que tiene que pagar es menor que lo que tiene recibe la otra persona
-                            if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName)  {
+                            if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
                                 arrayPaymentsModel.add(
                                     PaymentsModel(
@@ -125,7 +133,7 @@ class MainScreenViewModel @Inject constructor(
 
         for (persons in peopleList) {
 
-            if(persons.idGroupName == iDGroupName){
+            if (persons.idGroupName == iDGroupName) {
                 viewModelScope.launch(Dispatchers.IO) {
                     updatePersonUseCase(personModel = persons.copy(equity = "0"))
                 }
@@ -135,7 +143,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun text() {
-        for (item in arrayPaymentsModel){
+        for (item in arrayPaymentsModel) {
             Log.d(
                 "Nono",
                 item.namePersonWhoPay + " paga a " + item.namePersonWhoReceive + " la cantidad de = " + item.amount + " €"
@@ -143,7 +151,7 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun getGroupNameById(idGroup: Int){
+    fun getGroupNameById(idGroup: Int) {
 
         viewModelScope.launch {
             _nameOfGroup.value = getGroupByIdUseCase(idGroup).groupName
@@ -152,11 +160,13 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun onResumeSelected() {
-            _isResumeSelected.value = true
+        _isResumeSelected.value = true
+        _isCostsSelected.value = false
     }
 
     fun onCostSelected() {
-            _isResumeSelected.value = false
+        _isResumeSelected.value = false
+        _isCostsSelected.value = true
 
     }
 
