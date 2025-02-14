@@ -47,12 +47,12 @@ class MainScreenViewModel @Inject constructor(
     companion object {
         var iDGroupName: Int? = null
     }
-
+/*
     init {
         viewModelScope.launch(Dispatchers.IO) {
             iDGroupName = preferences.getIdGroup(ID_GROUP_SAVED)
         }
-    }
+    }*/
     //----------------------------------------------------------------------------------
 
     val uiStateResumeGroup: StateFlow<MainUiState> =
@@ -76,13 +76,15 @@ class MainScreenViewModel @Inject constructor(
             for (personWhoPay in peopleList) {
 
                 //Compruebo si el equity es menor que 0, en ese caso tiene que pagar
-                if (personWhoPay.equity.toFloat() < 0) {
+
+                if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
                     //Calculo a quien le tiene que pagar
                     run personWhoReceive@{
+
                         for (personWhoReceive in peopleList) {
 
                             //Si lo que tiene que pagar es menor que lo que tiene recibe la otra persona
-                            if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0) {
+                            if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName)  {
 
                                 arrayPaymentsModel.add(
                                     PaymentsModel(
@@ -100,7 +102,7 @@ class MainScreenViewModel @Inject constructor(
                             }
 
                             //Si lo que tiene que pagar es mayor que lo que tiene recibe la otra persona
-                            if (personWhoPay.equity.toFloat().absoluteValue >= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0) {
+                            if (personWhoPay.equity.toFloat().absoluteValue >= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
                                 arrayPaymentsModel.add(
                                     PaymentsModel(
@@ -123,8 +125,11 @@ class MainScreenViewModel @Inject constructor(
         }
 
         for (persons in peopleList) {
-            viewModelScope.launch(Dispatchers.IO) {
-                updatePersonUseCase(personModel = persons.copy(equity = "0"))
+
+            if(persons.idGroupName == iDGroupName){
+                viewModelScope.launch(Dispatchers.IO) {
+                    updatePersonUseCase(personModel = persons.copy(equity = "0"))
+                }
             }
         }
 

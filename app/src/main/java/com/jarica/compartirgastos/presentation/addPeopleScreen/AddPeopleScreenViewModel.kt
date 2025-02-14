@@ -11,6 +11,7 @@ import com.jarica.compartirgastos.domain.InsertPersonNameUseCase
 import com.jarica.compartirgastos.domain.InsertGroupNameUseCase
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,12 +50,8 @@ class AddPeopleScreenViewModel @Inject constructor(
                     groupName = groupName.groupName
                 )
             )
-            //Parte del metodo que guarda el ID del grupo creado
-            preferences.saveIdGroup(
-                key = ID_GROUP_SAVED,
-                value = groupName.idGroupName
-            )
-        }
+            iDGroupName = groupName.idGroupName
+                    }
     }
 
     // Metodo que inserta el nombre en la variable lista de nombres

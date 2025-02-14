@@ -179,7 +179,7 @@ fun MainView(
 
         //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
         ChooseScreen(mainScreenViewModel, isResumeSelected)
-        Spacer(modifier = Modifier.size(32.dp))
+        //Spacer(modifier = Modifier.size(16.dp))
 
         // LISTADOS (RESUMEN O GASTOS)
         if (isResumeSelected) {
@@ -187,10 +187,7 @@ fun MainView(
         } else {
             CostFragment(idGroup, mainScreenViewModel)
         }
-
-
     }
-
 }
 
 @Composable

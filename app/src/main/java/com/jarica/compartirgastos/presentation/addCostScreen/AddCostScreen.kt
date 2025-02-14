@@ -194,7 +194,7 @@ fun MainViewAddCostScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp),
+            .padding(vertical = paddingValues.calculateTopPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -257,10 +257,8 @@ fun MainViewAddCostScreen(
                 cursorColor = DarkYellow,
                 unfocusedSuffixColor = White,
                 focusedSuffixColor = White
-
             ),
-
-            )
+        )
 
         Spacer(Modifier.height(16.dp))
 

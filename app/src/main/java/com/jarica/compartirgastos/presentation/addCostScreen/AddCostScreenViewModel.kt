@@ -9,6 +9,7 @@ import com.jarica.compartirgastos.domain.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.UpdatePersonUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -95,7 +96,7 @@ class AddCostScreenViewModel @Inject constructor(
 
     fun updatePerson(personToAddCosts: PersonModel, listOfPeople: List<PersonModel>) {
 
-        val numberOfPeople = listOfPeople.size
+        val numberOfPeople = calculateNumberOfPeople(listOfPeople)
         val amountByPeople = _amountText.value!!.toFloat() / numberOfPeople
 
         listOfPeople.forEach { person->
@@ -125,6 +126,15 @@ class AddCostScreenViewModel @Inject constructor(
         _descriptionText.value = ""
         _amountText.value = ""
 
+    }
+
+    private fun calculateNumberOfPeople(listOfPeople: List<PersonModel>): Int {
+
+        var numberOfPeople = 0
+        listOfPeople.forEach { person->
+            if (person.idGroupName == iDGroupName) numberOfPeople++
+        }
+        return numberOfPeople
     }
 
 }

@@ -75,7 +75,9 @@ fun ResumeFragment(
 @Composable
 fun PeopleList(groupNameList: List<PersonModel>, idGroup: Int?) {
 
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
 
         items(groupNameList) { person ->
             if (person.idGroupName == idGroup) {
@@ -93,7 +95,7 @@ fun ItemPeopleName(item: PersonModel) {
             .clip(shape = RoundedCornerShape(12.dp))
             .fillMaxWidth()
             .background(DarkGrey)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
     ) {

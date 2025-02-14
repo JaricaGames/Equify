@@ -96,7 +96,7 @@ fun ItemCost(cost: CostModel) {
             .clip(shape = RoundedCornerShape(12.dp))
             .fillMaxWidth()
             .background(DarkGrey)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
     ) {
