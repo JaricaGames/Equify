@@ -5,21 +5,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreen
-import com.jarica.compartirgastos.presentation.addCostScreen.AddCostScreenViewModel
-import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreen
-import com.jarica.compartirgastos.presentation.addPeopleScreen.AddPeopleScreenViewModel
-import com.jarica.compartirgastos.presentation.costsScreen.CostsScreen
-import com.jarica.compartirgastos.presentation.costsScreen.CostsScreenViewModel
-import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewModel
-import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreen
+import com.jarica.compartirgastos.presentation.mainViewScreens.addCostScreen.AddCostScreen
+import com.jarica.compartirgastos.presentation.mainViewScreens.addCostScreen.AddCostScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.addPeopleScreenFromMain.AddPeopleScreenFromMain
+import com.jarica.compartirgastos.presentation.mainViewScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
+import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreen
+import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreen
+import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen.GroupsScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen.GroupsScreen
 import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
-import com.jarica.compartirgastos.presentation.mainScreen.MainScreen
-import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel
-import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
-//import com.jarica.compartirgastos.presentation.mainScreen.MainScreenViewModel.Companion.iDGroupName
-import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupScreen
-import com.jarica.compartirgastos.presentation.newGroupScreen.NewGroupViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreen
+import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupScreen
+import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupViewModel
 
 @Composable
 fun NavigationWrapper(
@@ -29,6 +30,7 @@ fun NavigationWrapper(
     addCostViewModel: AddCostScreenViewModel,
     costViewModel: CostsScreenViewModel,
     groupScreenViewModel: GroupsScreenViewModel,
+    addPeopleScreenFromMainViewModel: AddPeopleScreenFromMainViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -85,10 +87,8 @@ fun NavigationWrapper(
                     )
                 },
                 navigateToCosts = { navController.navigate(CostScreenObject) },
-                navigateToAddPeopleFromGroup = { idGroupName ->
-                    navController.navigate(
-                        AddPeopleScreenFromMainObject(idGroupName)
-                    )
+                navigateToAddPeopleFromGroup = {
+                    navController.navigate(AddPeopleScreenFromMainObject)
                 },
             )
         }
@@ -126,7 +126,10 @@ fun NavigationWrapper(
 
         composable<AddPeopleScreenFromMainObject> {
 
-            //AddPeopleScreenFromMain()
+            AddPeopleScreenFromMain(
+                addPeopleScreenFromMainViewModel,
+                navigateToMainScreen = { navController.navigate(MainScreenObject(iDGroupName))}
+            )
         }
 
     }

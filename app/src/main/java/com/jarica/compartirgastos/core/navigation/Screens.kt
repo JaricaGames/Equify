@@ -24,6 +24,6 @@ data object AddCostScreenObject
 data object CostScreenObject
 
 @Serializable
-data class AddPeopleScreenFromMainObject(val iDGroupName: Int)
+data object AddPeopleScreenFromMainObject
 
 
