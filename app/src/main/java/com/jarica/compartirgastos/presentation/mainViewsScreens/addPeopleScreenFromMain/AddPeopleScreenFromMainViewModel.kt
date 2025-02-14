@@ -1,6 +1,5 @@
-package com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,26 +16,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPeopleScreenViewModel @Inject constructor(
+class AddPeopleScreenFromMainViewModel @Inject constructor(
     private val insertGroupNameUseCase: InsertGroupNameUseCase,
     private val insertPersonNameUseCase: InsertPersonNameUseCase,
     private val preferences: Preferences
 ) : ViewModel() {
 
-    private val _personList = mutableStateListOf<String>()
-    val personList: List<String> = _personList
 
     private val _addNameToGroup = MutableLiveData<String>()
     val addNameToGroup: LiveData<String> = _addNameToGroup
-
-    private val _createText = MutableLiveData<Boolean>()
-    val createText: LiveData<Boolean> = _createText
 
 
     //Metodo del TextField
     fun onValueTextFieldChange(personName: String) {
         _addNameToGroup.value = personName
-        _createText.value = personName != ""
     }
 
 
@@ -50,44 +43,25 @@ class AddPeopleScreenViewModel @Inject constructor(
                 )
             )
             iDGroupName = groupName.idGroupName
-                    }
+        }
     }
-
-    // Metodo que inserta el nombre en la variable lista de nombres
-    fun insertNameOnList(name: String) {
-        _personList.add(name)
-        _addNameToGroup.value = ""
-        _createText.value = false
-    }
-
 
 
     //METODO QUE INSERTA LA LISTA DE NOMBRES EN LA BBDD, USA EL IDGRIOP QUE SE LE PASA POR PARAMETROS DE LA VISTA ANTERIOR.
+    fun insertPeople(person: PersonModel) {
 
-    fun  insertPeople(peopleList: List<String>, idGroupName: Int) {
-
-        peopleList.forEach { personName->
-
-            val personModel = PersonModel(
-                idPerson = null,
-                name = personName,
-                equity = "0.0",
-                idGroupName = idGroupName
+        viewModelScope.launch(Dispatchers.IO) {
+            insertPersonNameUseCase(
+                personModel = person
             )
-            viewModelScope.launch(Dispatchers.IO) {
-                insertPersonNameUseCase(
-                    personModel = personModel
-                )
-            }
         }
     }
 
     fun onBackPressed() {
         _addNameToGroup.value = ""
-        _personList.clear()
     }
-
-
 }
+
+
 
 

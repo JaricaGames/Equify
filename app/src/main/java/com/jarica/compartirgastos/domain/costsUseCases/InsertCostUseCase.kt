@@ -1,0 +1,15 @@
+package com.jarica.compartirgastos.domain.costsUseCases
+
+import com.jarica.compartirgastos.data.AppRepository
+import com.jarica.compartirgastos.domain.models.CostModel
+import javax.inject.Inject
+
+class InsertCostUseCase @Inject constructor(
+    private val repository: AppRepository
+) {
+
+    suspend operator fun invoke(costModel: CostModel){
+        repository.insertCost(costModel = costModel)
+
+    }
+}

@@ -31,5 +31,8 @@ object RoomModule {
     @Provides
     fun provideCostsDao(db:AppDataBase) = db.costsDao()
 
+    @Provides
+    fun providePaymentsDao(db:AppDataBase) = db.paymentsDao()
+
 
 }

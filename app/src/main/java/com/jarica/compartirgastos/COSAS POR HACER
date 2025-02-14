@@ -1,0 +1,42 @@
+
+------------------------------
+POR HACER
+
+añadir la pantalla de modificar gasto // modificar gastos y añadir ids ed la gente que participa para poder borrar despueses el gasto y recalcular equitys
+
+HACER EL BOTON DE CONFIGURACION EN LA PANTALLA PRINCIPAL.
+
+HACER VENTANA DE ECHAR CUENTAS
+
+CREAR PDF CON LAS CUENTAS PARA PODER COMPARTIR
+
+COMPROBAR LAS PILAS DE NAVEGACION
+
+CREAR SPLASH SCREEN
+
+MEJORAR LAS VISUAL
+
+ANUNCIOS
+
+/////   lanzamiento a produccion   ///////
+
+PAGOS COMPARTIDOS
+
+COMPARTIR EN LINEA
+
+AÑADIR MONEDAS
+
+
+------------------------------
+HECHO
+
+CREAR LA ENTIDAD, DAO Y METODOS DE PAGOS  ---- HECHO
+
+CREAR LA PANTALLA DE AÑADIR PAGO ----- DONE
+
+AÑADIR LOS PAGOS A LA BBDD
+
+HACER LA CHOOSE BOX PARA QUE SE VEAN LAS PANTALLAS DE PAGOS -------- DONE
+
+QUITAR LOS DECIMALES EN LA PESTAÑA RESUMEN -------- DONE
+------------------------------

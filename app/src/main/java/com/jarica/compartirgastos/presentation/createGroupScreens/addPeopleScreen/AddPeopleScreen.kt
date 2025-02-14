@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -31,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.GroupNameModel
@@ -39,9 +39,7 @@ import com.jarica.compartirgastos.presentation.ui.addPeopleText
 import com.jarica.compartirgastos.presentation.ui.createText
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
-import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
-import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
-import com.jarica.compartirgastos.presentation.ui.theme.Grey
+import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.Transparent
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
@@ -66,8 +64,8 @@ fun AddPeopleScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
-                    actionIconContentColor = White,
-                    navigationIconContentColor = White
+                    actionIconContentColor = Black,
+                    navigationIconContentColor = Black
                 ),
 
                 navigationIcon = {
@@ -75,8 +73,8 @@ fun AddPeopleScreen(
                         .clip(
                             shape = CircleShape
                         )
-                        .background(Grey)
                         .size(40.dp), onClick = {
+                            addPeopleViewModel.onBackPressed()
                         navigateToNewGroupScreen()
                     }) {
                         Icon(
@@ -96,7 +94,8 @@ fun AddPeopleScreen(
                         Text(
                             addPeopleText,
                             fontFamily = rubik,
-                            color = White,
+                            fontWeight = FontWeight.Medium,
+                            color = Black,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .clickable {
@@ -104,8 +103,10 @@ fun AddPeopleScreen(
                                 })
                     } else {
                         if (peopleList.isNotEmpty()) {
-                            Text(createText, fontFamily = rubik,
-                                color = White,
+                            Text(createText,
+                                fontFamily = rubik,
+                                fontWeight = FontWeight.Medium,
+                                color = Black,
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp)
                                     .clickable {
@@ -150,11 +151,11 @@ fun MainViewAddPeopleScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.size(125.dp))
 
         TextField(
             modifier = Modifier.fillMaxWidth(),
@@ -162,33 +163,32 @@ fun MainViewAddPeopleScreen(
             onValueChange = {
                 addPeopleViewModel.onValueTextFieldChange(it)
             },
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(8.dp),
             placeholder = { Text(labelTextFieldAddPeopleScreen) },
             singleLine = true,
             maxLines = 1,
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = DarkGrey,
-                unfocusedLabelColor = White,
-                unfocusedTextColor = White,
-                focusedContainerColor = DarkGrey,
-                focusedTextColor = White,
-                focusedLabelColor = White,
-                unfocusedPlaceholderColor = White,
-                focusedIndicatorColor = DarkYellow,
+                unfocusedContainerColor = White,
+                unfocusedLabelColor = Black,
+                unfocusedTextColor = Black,
+                focusedContainerColor = White,
+                focusedTextColor = Black,
+                focusedLabelColor = Black,
+                unfocusedPlaceholderColor = Black,
+                focusedIndicatorColor = Transparent,
                 unfocusedIndicatorColor = Transparent,
-                cursorColor = DarkYellow
+                cursorColor = Black
 
             ),
         )
 
 
         if (peopleList.isEmpty()) {
-
             Text(
                 addEverybodyText,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 10.dp),
                 fontFamily = rubik,
-                color = White
+                color = Black
             )
 
         } else {
@@ -197,8 +197,7 @@ fun MainViewAddPeopleScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-
-                        .background(DarkGrey),
+                        .background(Black),
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
@@ -210,6 +209,7 @@ fun MainViewAddPeopleScreen(
                 }
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

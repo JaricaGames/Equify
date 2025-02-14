@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen
+package com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -32,9 +33,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.domain.models.GroupNameModel
-import com.jarica.compartirgastos.presentation.ui.labelTextFieldNewGroupScreen
-import com.jarica.compartirgastos.presentation.ui.next
+import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.ui.addPeopleText
+import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.Transparent
@@ -43,19 +45,15 @@ import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
-fun NewGroupScreen(
-    newGroupViewModel: NewGroupViewModel,
-    navigateToGroupsScreen: () -> Unit,
-    navigateToAddPeople: (Int, String) -> Unit
+fun AddPeopleScreenFromMain(
+    addPeopleFromMainViewModel: AddPeopleScreenFromMainViewModel,
+    navigateToMainScreen: () -> Unit,
 ) {
 
-
-    val groupName: String by newGroupViewModel.groupName.observeAsState("")
+    val addNameToGroup: String by addPeopleFromMainViewModel.addNameToGroup.observeAsState("")
 
     Scaffold(
         topBar = {
-
             TopAppBar(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 colors = topAppBarColors(
@@ -70,37 +68,42 @@ fun NewGroupScreen(
                             shape = CircleShape
                         )
                         .size(40.dp), onClick = {
-                        navigateToGroupsScreen()
+                            addPeopleFromMainViewModel.onBackPressed()
+                        navigateToMainScreen()
                     }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             painter = painterResource(R.drawable.arrow_back),
                             contentDescription = "",
+
                             )
+
                     }
                 },
+
+
                 actions = {
 
-                    if (groupName.isNotEmpty()) {
+                    if (addNameToGroup.isNotEmpty()) {
                         Text(
-                            next,
+                            addPeopleText,
                             fontFamily = rubik,
                             fontWeight = FontWeight.Medium,
+                            color = Black,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                    val groupNameModel = GroupNameModel(
-                                        groupName = groupName
-                                    )
-                                    navigateToAddPeople(
-                                        groupNameModel.idGroupName,
-                                        groupNameModel.groupName
-                                    )
-                                    newGroupViewModel.onNextSelected()
+                                      val newPerson = PersonModel(
+                                          idPerson = null,
+                                          name = addNameToGroup,
+                                          equity = "0",
+                                          idGroupName = iDGroupName!!
+                                      )
+                                    addPeopleFromMainViewModel.insertPeople(newPerson)
+                                    navigateToMainScreen()
 
 
                                 })
-
                     }
 
 
@@ -110,17 +113,23 @@ fun NewGroupScreen(
             )
         }
     ) { paddingValues ->
-        MainViewNewGroupScreen(paddingValues, newGroupViewModel, groupName)
+        MainViewAddPeopleScreen(
+            paddingValues,
+            addNameToGroup,
+            addPeopleFromMainViewModel
+        )
+
     }
+
 }
 
-@Composable
-fun MainViewNewGroupScreen(
-    paddingValues: PaddingValues,
-    newGroupViewModel: NewGroupViewModel,
-    groupName: String,
-) {
 
+@Composable
+fun MainViewAddPeopleScreen(
+    paddingValues: PaddingValues,
+    addNameToGroup: String,
+    addPeopleViewModel: AddPeopleScreenFromMainViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,17 +138,16 @@ fun MainViewNewGroupScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.size(125.dp))
+        Spacer(modifier = Modifier.height(125.dp))
 
         TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = groupName,
-            onValueChange = { descriptionText ->
-                newGroupViewModel.onValueTextFieldChange(descriptionText)
+            modifier = Modifier.fillMaxWidth().height(50.dp),
+            value = addNameToGroup,
+            onValueChange = {
+                addPeopleViewModel.onValueTextFieldChange(it)
             },
-
             shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(labelTextFieldNewGroupScreen) },
+            placeholder = { Text(labelTextFieldAddPeopleScreen) },
             singleLine = true,
             maxLines = 1,
             colors = TextFieldDefaults.colors(
@@ -152,35 +160,13 @@ fun MainViewNewGroupScreen(
                 unfocusedPlaceholderColor = Black,
                 focusedIndicatorColor = Transparent,
                 unfocusedIndicatorColor = Transparent,
-                cursorColor = Black,
+                cursorColor = Black
 
             ),
         )
-        /*
-                Spacer(modifier = Modifier.weight(0.05f))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(shareText, fontFamily = rubik, color = Black)
 
-                    Switch(checked = false, onCheckedChange = {}, enabled = false)
-                }
-                Spacer(modifier = Modifier.weight(0.01f))
-                HorizontalDivider(Modifier.height(3.dp))
-                Spacer(modifier = Modifier.weight(0.01f))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(currencyText, fontFamily = rubik, color = White)
-                    Text("Euro", fontFamily = rubik, color = White)
-                }
-        */
-        Spacer(modifier = Modifier.weight(1f))
     }
 }
+
 

@@ -22,6 +22,7 @@ const val addEverybodyText = "Añade a todos los participantes"
 const val addCost = "Añadir Gasto"
 const val addPay = "Añadir Pago"
 const val costs = "Gastos"
+const val payments = "Pagos"
 const val resume = "Resumen"
 const val doTheCount = "Echar cuentas"
 const val addPeople = "Añadir Persona"
@@ -34,4 +35,13 @@ const val saveCost = "Guardar"
 
 //GroupsScreen
 const val groupsText = "Grupos"
+
+//AddPaymentScreen
+const val addPayment = "Añadir Pago"
+const val payForPlaceHolder = "Pagado por"
+const val payToPlaceHolder = "Pagado a"
+const val payForText = "De: "
+const val payToText = "Para: "
+const val amountText = "Cantidad: "
+
 

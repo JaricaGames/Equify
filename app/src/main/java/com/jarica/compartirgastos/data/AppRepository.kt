@@ -2,12 +2,15 @@ package com.jarica.compartirgastos.data
 
 import com.jarica.compartirgastos.data.database.dao.CostsDao
 import com.jarica.compartirgastos.data.database.dao.GroupNameDao
+import com.jarica.compartirgastos.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
 import com.jarica.compartirgastos.data.database.entities.CostEntity
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
+import com.jarica.compartirgastos.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
 import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,7 +22,8 @@ import javax.inject.Singleton
 class AppRepository @Inject constructor(
     private val groupNameDao: GroupNameDao,
     private val personNameDao: PersonNameDao,
-    private val costsDao: CostsDao
+    private val costsDao: CostsDao,
+    private val paymentsDao: PaymentsDao
 ) {
 
     //GROUP_NAME_DAO
@@ -40,7 +44,7 @@ class AppRepository @Inject constructor(
 
     }
 
-    suspend fun getGroupNameById(id:Int):GroupNameModel{
+    suspend fun getGroupNameById(id: Int): GroupNameModel {
         return groupNameDao.getGroupNameById(idGroup = id).toDomain()
     }
 
@@ -63,7 +67,7 @@ class AppRepository @Inject constructor(
 
     }
 
-    suspend fun updateEquity(personModel: PersonModel){
+    suspend fun updateEquity(personModel: PersonModel) {
         personNameDao.updateEquity(
             PersonEntity(
                 idPerson = personModel.idPerson,
@@ -78,7 +82,17 @@ class AppRepository @Inject constructor(
     //COST_DAO
     //Mapear de CostEntity a CostModel
     val costModel: Flow<List<CostModel>> = costsDao.getAllCosts()
-        .map { items -> items.map { CostModel(it.idCost, it.idPerson, it.amount, it.description, it.idGroup) } }
+        .map { items ->
+            items.map {
+                CostModel(
+                    it.idCost,
+                    it.idPerson,
+                    it.amount,
+                    it.description,
+                    it.idGroup
+                )
+            }
+        }
 
 
     suspend fun insertCost(costModel: CostModel) {
@@ -95,9 +109,39 @@ class AppRepository @Inject constructor(
 
     }
 
+
+//PAYMENTS:DAO
+//Mapear de PaymentEntity a PaymentModel
+
+    val paymentsModel: Flow<List<PaymentsModel>> = paymentsDao.getAllPayments()
+        .map { items ->
+            items.map {
+                PaymentsModel(
+                    it.idPayment,
+                    it.amount,
+                    it.namePersonWhoPay,
+                    it.namePersonWhoReceive,
+                    it.idGroup
+                )
+            }
+        }
+
+    suspend fun insertPayment(paymentsModel: PaymentsModel){
+        paymentsDao.insertPayment(
+            PaymentEntity(
+                idPayment = null,
+                amount = paymentsModel.amount,
+                namePersonWhoPay = paymentsModel.namePersonWhoPay,
+                namePersonWhoReceive = paymentsModel.namePersonWhoReceive,
+                idGroup = paymentsModel.idGroup
+            )
+        )
+    }
+
 }
 
-fun GroupNameEntity.toDomain(): GroupNameModel{
+
+fun GroupNameEntity.toDomain(): GroupNameModel {
     return GroupNameModel(this.idGroupName, this.groupName)
 }
 

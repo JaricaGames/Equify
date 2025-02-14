@@ -8,4 +8,5 @@ const val PREFERENCES_NAME = "preferences_name"
 const val PEOPLE_TABLE = "peopleTable"
 const val GROUPS_NAME_TABLE = "groupNameTable"
 const val COSTS_TABLE = "costsTable"
+const val PAYMENTS_TABLE = "paymentsTable"
 

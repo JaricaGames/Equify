@@ -1,6 +1,5 @@
 package com.jarica.compartirgastos.data.database.dao
 
-import android.app.Person
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface PersonNameDao {
 
     //Metodo que lista las personas
-    @Query("SELECT * FROM peopleTable ORDER BY idPerson ASC")
+    @Query(value = "SELECT * FROM peopleTable ORDER BY idPerson ASC")
     fun getAllPeopleName(): Flow<List<PersonEntity>>
 
     //Metodo que inserta una nueva persoina

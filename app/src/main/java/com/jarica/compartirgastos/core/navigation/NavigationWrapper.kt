@@ -5,22 +5,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.jarica.compartirgastos.presentation.mainViewScreens.addCostScreen.AddCostScreen
-import com.jarica.compartirgastos.presentation.mainViewScreens.addCostScreen.AddCostScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.addPeopleScreenFromMain.AddPeopleScreenFromMain
-import com.jarica.compartirgastos.presentation.mainViewScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreen
-import com.jarica.compartirgastos.presentation.mainViewScreens.costsScreen.CostsScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen.GroupsScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.groupsScreen.GroupsScreen
-import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreen
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel
-import com.jarica.compartirgastos.presentation.mainViewScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupScreen
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupViewModel
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreen
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewModel
+import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.AddPaymentScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.AddPaymentScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMain
+import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 
 @Composable
 fun NavigationWrapper(
@@ -28,9 +28,9 @@ fun NavigationWrapper(
     groupViewModel: MainScreenViewModel,
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
-    costViewModel: CostsScreenViewModel,
     groupScreenViewModel: GroupsScreenViewModel,
     addPeopleScreenFromMainViewModel: AddPeopleScreenFromMainViewModel,
+    addPaymentScreenViewModel: AddPaymentScreenViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -86,10 +86,10 @@ fun NavigationWrapper(
                         AddCostScreenObject
                     )
                 },
-                navigateToCosts = { navController.navigate(CostScreenObject) },
                 navigateToAddPeopleFromGroup = {
                     navController.navigate(AddPeopleScreenFromMainObject)
                 },
+                navigateToAddPayScreen = { navController.navigate(AddPayScreenObject) }
             )
         }
 
@@ -116,13 +116,13 @@ fun NavigationWrapper(
             )
         }
 
-        composable<CostScreenObject> {
 
-            CostsScreen(
-                costViewModel,
-                navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) })
+        composable<AddPayScreenObject> {
+
+            AddPaymentScreen(addPaymentScreenViewModel)
+
         }
+
 
         composable<AddPeopleScreenFromMainObject> {
 

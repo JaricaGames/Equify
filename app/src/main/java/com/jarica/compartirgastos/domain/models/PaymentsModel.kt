@@ -1,8 +1,10 @@
 package com.jarica.compartirgastos.domain.models
 
 data class PaymentsModel(
-    val amount: Float,
+    val idPayment: Int?,
+    val amount: String,
     val namePersonWhoPay: String,
-    val namePersonWhoReceive: String
-)
+    val namePersonWhoReceive: String,
+    val idGroup: Int
 
+)
