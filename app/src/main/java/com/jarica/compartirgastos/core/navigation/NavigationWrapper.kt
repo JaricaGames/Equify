@@ -9,6 +9,8 @@ import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScree
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupScreen
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupViewModel
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreen
+import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.presentation.initialScreen.InitialScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreenViewModel
@@ -16,8 +18,6 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.Add
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.AddPaymentScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMain
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
-import com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen.GroupsScreen
-import com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName

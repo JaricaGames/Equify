@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen
+package com.jarica.compartirgastos.presentation.groupsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen
+package com.jarica.compartirgastos.presentation.groupsScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
