@@ -67,6 +67,7 @@ fun MainScreen(
     navigateToCosts: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
+    navigateToAddPayScreen: () -> Unit,
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")

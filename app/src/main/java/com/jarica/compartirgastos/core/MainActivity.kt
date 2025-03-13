@@ -8,10 +8,10 @@ import androidx.activity.viewModels
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupViewModel
-import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.AddPaymentScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
 import dagger.hilt.android.AndroidEntryPoint

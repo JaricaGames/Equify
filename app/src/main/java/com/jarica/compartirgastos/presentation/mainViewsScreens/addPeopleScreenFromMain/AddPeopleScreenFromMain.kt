@@ -68,7 +68,7 @@ fun AddPeopleScreenFromMain(
                             shape = CircleShape
                         )
                         .size(40.dp), onClick = {
-                            addPeopleFromMainViewModel.onBackPressed()
+                           // addPeopleFromMainViewModel.onBackPressed()
                         navigateToMainScreen()
                     }) {
                         Icon(

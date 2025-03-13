@@ -70,11 +70,6 @@ fun MainViewInitialScreen(paddingValues: PaddingValues, navigateToNewGroup: () -
             Text(text = newGroupText, fontFamily = rubik)
         }
 
-        /*       Spacer(Modifier.weight(0.02f))
-
-               Button(onClick = {}) {
-                   Text(text = joinGroupText, fontFamily = rubik)
-               }*/
         Spacer(modifier = Modifier.weight(1f))
 
 
