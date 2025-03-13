@@ -104,7 +104,7 @@ class AddCostScreenViewModel @Inject constructor(
             //Si es el que paga se le suma al equity tod menos lo que le toca a cada uno
             if(personToAddCosts.idPerson == person.idPerson){
 
-                val personToUpdate = person.copy(equity = ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
+                val personToUpdate = person.copy(equity =  ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
 
 
                 viewModelScope.launch(Dispatchers.IO) {

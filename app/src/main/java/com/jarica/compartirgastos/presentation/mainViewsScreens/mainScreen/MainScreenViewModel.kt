@@ -8,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostsUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
-import com.jarica.compartirgastos.domain.models.PaymentsToDoCountsModel
+import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.domain.paymentUseCases.GetPaymentsUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostsScreenUiState
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,8 +29,7 @@ class MainScreenViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase,
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
-    getCostsUseCase: GetCostsUseCase,
-    private val getPaymentsUseCase: GetPaymentsUseCase,
+    private val getCostsUseCase: GetCostsUseCase,
     private val preferences: Preferences
 
 ) : ViewModel() {
@@ -68,16 +65,15 @@ class MainScreenViewModel @Inject constructor(
     val uiStateCosts: StateFlow<CostsScreenUiState> =
         getCostsUseCase().map(CostsScreenUiState::Success)
             .catch { CostsScreenUiState.Error(it) }
-            .stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),CostsScreenUiState.Loading)
-
-    val uiStatePayments : StateFlow<PaymentsScreenUiState> =
-        getPaymentsUseCase().map( PaymentsScreenUiState::Success)
-        .catch { PaymentsScreenUiState.Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PaymentsScreenUiState.Loading)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                CostsScreenUiState.Loading
+            )
 
 
     //Array de pagos
-    private val arrayPaymentsModel = ArrayList<PaymentsToDoCountsModel>(emptyList())
+    private val arrayPaymentsModel = ArrayList<PaymentsModel>(emptyList())
 
 
     fun doTheCounts(peopleList: List<PersonModel>) {
@@ -98,10 +94,12 @@ class MainScreenViewModel @Inject constructor(
                             if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
                                 arrayPaymentsModel.add(
-                                    PaymentsToDoCountsModel(
-                                        amount = personWhoPay.equity.toFloat().absoluteValue,
+                                    PaymentsModel(
+                                        amount = personWhoPay.equity.toFloat().absoluteValue.toString(),
                                         namePersonWhoPay = personWhoPay.name,
-                                        namePersonWhoReceive = personWhoReceive.name
+                                        namePersonWhoReceive = personWhoReceive.name,
+                                        idPayment = TODO(),
+                                        idGroup = TODO()
                                     )
                                 )
 
@@ -116,10 +114,12 @@ class MainScreenViewModel @Inject constructor(
                             if (personWhoPay.equity.toFloat().absoluteValue >= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
                                 arrayPaymentsModel.add(
-                                    PaymentsToDoCountsModel(
-                                        amount = personWhoReceive.equity.toFloat(),
+                                    PaymentsModel(
+                                        amount = personWhoReceive.equity,
                                         namePersonWhoPay = personWhoPay.name,
-                                        namePersonWhoReceive = personWhoReceive.name
+                                        namePersonWhoReceive = personWhoReceive.name,
+                                        idPayment = null,
+                                        idGroup = iDGroupName!!
                                     )
                                 )
 
@@ -172,11 +172,6 @@ class MainScreenViewModel @Inject constructor(
         _isResumeSelected.value = false
         _isCostsSelected.value = true
 
-    }
-
-    fun onPaymentsSelected() {
-        _isResumeSelected.value = false
-        _isCostsSelected.value = false
     }
 
 

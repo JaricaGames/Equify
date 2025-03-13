@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,9 +40,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostFragment
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsFragment
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.CostFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.ResumeFragment
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.addPay
 import com.jarica.compartirgastos.presentation.ui.addPeople
@@ -51,9 +51,11 @@ import com.jarica.compartirgastos.presentation.ui.payments
 import com.jarica.compartirgastos.presentation.ui.resume
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
+import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
+import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.Transparent
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.Yellow
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,9 +64,9 @@ fun MainScreen(
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
+    navigateToCosts: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
-    navigateToAddPayScreen: () -> Unit,
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
@@ -88,8 +90,8 @@ fun MainScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
-                    actionIconContentColor = Black,
-                    navigationIconContentColor = Black
+                    actionIconContentColor = White,
+                    navigationIconContentColor = White
                 ),
 
                 navigationIcon = {
@@ -97,11 +99,10 @@ fun MainScreen(
                         .clip(
                             shape = CircleShape
                         )
-                        //.background(White.copy(alpha = 0.75f))
-                        .size(40.dp),
-                        onClick = {
-                            navigateToGroupsScreen()
-                        }) {
+                        .background(Grey)
+                        .size(40.dp), onClick = {
+                        navigateToGroupsScreen()
+                    }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             painter = painterResource(R.drawable.arrow_back),
@@ -115,9 +116,9 @@ fun MainScreen(
                         .clip(
                             shape = CircleShape
                         )
-                        // .background(White.copy(alpha = 0.75f))
+                        .background(Grey)
                         .size(40.dp), onClick = {
-                        //
+                        // Navegar a la pantalla de lista de grupos
                     }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
@@ -134,17 +135,16 @@ fun MainScreen(
     ) { paddingValues ->
         MainView(
             navigateToAddCostScreen,
+            navigateToCosts,
             navigateToAddPeopleFromGroup,
-            navigateToAddPayScreen,
             idGroup,
             mainScreenViewModel,
             paddingValues,
             nameOfGroup,
             uiStatePeopleGroupFragment,
             isResumeSelected,
-            isCostSelected,
-
-            )
+            isCostSelected
+        )
     }
 
 
@@ -154,8 +154,8 @@ fun MainScreen(
 @Composable
 fun MainView(
     navigateToAddCostScreen: () -> Unit,
+    navigateToCosts: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
-    navigateToAddPayScreen: () -> Unit,
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
     paddingValues: PaddingValues,
@@ -178,34 +178,21 @@ fun MainView(
         Header(nameOfGroup)
 
         //BOXS DE SELECCIONAR ACCION
-        ActionsBoxes(
-            mainScreenViewModel,
-            navigateToAddCostScreen,
-            uiStatePeopleGroupFragment,
-            navigateToAddPeopleFromGroup,
-            navigateToAddPayScreen
-        )
-        Spacer(Modifier.height(32.dp))
+        ActionsBoxes(mainScreenViewModel, navigateToAddCostScreen, uiStatePeopleGroupFragment, navigateToAddPeopleFromGroup )
+        Spacer(Modifier.height(16.dp))
 
-        //BOXS SELECCIONAR FRAGMENTS (RESUME O GASTOS)
+        //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
         ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
-        Spacer(modifier = Modifier.size(32.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         // LISTADOS (RESUMEN O GASTOS)
         if (isResumeSelected) {
             ResumeFragment(idGroup, mainScreenViewModel)
         } else {
-            if (isCostSelected){
-                CostFragment(idGroup, mainScreenViewModel)
-            }else{
-                PaymentsFragment(idGroup, mainScreenViewModel)
-
-            }
+            CostFragment(idGroup, mainScreenViewModel)
         }
     }
 }
-
-
 
 @Composable
 fun ChooseScreen(
@@ -217,20 +204,21 @@ fun ChooseScreen(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White)
+            .background(DarkGrey)
+        //.border(width = 1.dp, color = DarkYellow.copy(alpha = 0.5f))
     ) {
         if (isResumeSelected) {
 
             //RESUME FRAGMENT
             Box(
                 modifier = Modifier
-                    .weight(0.8f)
+                    .weight(1f)
                     .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 32.dp))
-                    .background(Black)
+                    .background(DarkYellow)
                     .padding(vertical = 10.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(resume, fontFamily = rubik, color = Yellow, fontWeight = FontWeight.SemiBold)
+                Text(resume, fontFamily = rubik, color = Black, fontWeight = FontWeight.SemiBold)
             }
 
             Box(
@@ -244,7 +232,7 @@ fun ChooseScreen(
                 Text(
                     costs,
                     fontFamily = rubik,
-                    color = Black,
+                    color = White,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp
                 )
@@ -253,21 +241,21 @@ fun ChooseScreen(
                 modifier = Modifier
                     .weight(0.5f)
                     .padding(vertical = 10.dp)
-                    .clickable { mainScreenViewModel.onPaymentsSelected() },
+                    .clickable { mainScreenViewModel.onCostSelected() },
 
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     payments,
                     fontFamily = rubik,
-                    color = Black,
+                    color = White,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp
                 )
             }
         } else {
 
-            if (isCostSelected) {
+            if(isCostSelected){
 
                 //COST FRAGMENT
                 Box(
@@ -280,7 +268,7 @@ fun ChooseScreen(
                     Text(
                         resume,
                         fontFamily = rubik,
-                        color = Black,
+                        color = White,
                         fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
                     )
@@ -288,23 +276,16 @@ fun ChooseScreen(
 
                 Box(
                     modifier = Modifier
-                        .weight(0.8f)
-                        .clip(
-                            RoundedCornerShape(
-                                topEnd = 16.dp,
-                                bottomStart = 32.dp,
-                                bottomEnd = 32.dp,
-                                topStart = 16.dp
-                            )
-                        )
-                        .background(Black)
+                        .weight(1f)
+                        .clip(RoundedCornerShape(topEnd = 16.dp, bottomStart = 32.dp, bottomEnd = 32.dp, topStart = 16.dp))
+                        .background(DarkYellow)
                         .padding(vertical = 10.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         costs,
                         fontFamily = rubik,
-                        color = Yellow,
+                        color = Black,
                         fontWeight = FontWeight.SemiBold,
 
                         )
@@ -313,68 +294,18 @@ fun ChooseScreen(
                     modifier = Modifier
                         .weight(0.6f)
                         .padding(vertical = 10.dp)
-                        .clickable { mainScreenViewModel.onPaymentsSelected() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        payments,
-                        fontFamily = rubik,
-                        color = Black,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp
-                    )
-                }
-            } else {
-
-                //PAYMENTS FRAGMENT
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .background(White)
-                        .padding(vertical = 10.dp)
                         .clickable { mainScreenViewModel.onResumeSelected() },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        resume,
+                        payments,
                         fontFamily = rubik,
-                        color = Black,
-                        fontSize = 12.sp
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .padding(vertical = 10.dp)
-                        .clickable { mainScreenViewModel.onCostSelected() },
-
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        costs,
-                        fontFamily = rubik,
-                        color = Black,
+                        color = White,
                         fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .weight(0.8f)
-                        .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 32.dp))
-                        .background(Black)
-                        .padding(vertical = 10.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        payments,
-                        fontFamily = rubik,
-                        color = Yellow,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-
+            }else{
 
             }
 
@@ -389,7 +320,6 @@ fun ActionsBoxes(
     navigateToAddCostScreen: () -> Unit,
     peopleList: MainUiState,
     navigateToAddPeopleFromGroup: () -> Unit,
-    navigateToAddPayScreen: () -> Unit,
 ) {
 
     Row(
@@ -407,11 +337,15 @@ fun ActionsBoxes(
             Box(
                 modifier = Modifier
                     .clip(
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(16.dp)
                     )
-                    .background(White)
+                    .background(DarkGrey)
                     .size(60.dp)
-
+                    .border(
+                        width = 1.dp,
+                        color = DarkYellow,
+                        shape = RoundedCornerShape(16.dp)
+                    )
                     .clickable {
                         navigateToAddCostScreen()
                     },
@@ -421,16 +355,16 @@ fun ActionsBoxes(
                     painterResource(R.drawable.moneycash),
                     "",
                     modifier = Modifier.size(40.dp),
-                    tint = Black
+                    tint = White
                 )
             }
             Spacer(Modifier.size(3.dp))
             Text(
                 addCost,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 fontFamily = rubik,
                 fontWeight = FontWeight.Normal,
-                color = Black,
+                color = White,
                 textAlign = TextAlign.Center
             )
         }
@@ -444,10 +378,16 @@ fun ActionsBoxes(
         ) {
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(White)
+                    .clip(
+                        RoundedCornerShape(16.dp)
+                    )
+                    .background(DarkGrey)
                     .size(60.dp)
-                    .clickable {
+                    .border(
+                        width = 1.dp,
+                        color = DarkYellow,
+                        shape = RoundedCornerShape(16.dp)
+                    ).clickable {
                         navigateToAddPeopleFromGroup()
                     },
                 contentAlignment = Alignment.Center
@@ -455,17 +395,17 @@ fun ActionsBoxes(
                 Icon(
                     painterResource(R.drawable.people_add),
                     "",
-                    tint = Black,
+                    tint = White,
                     modifier = Modifier.size(40.dp)
                 )
             }
             Spacer(Modifier.size(3.dp))
             Text(
                 addPeople,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 fontFamily = rubik,
                 fontWeight = FontWeight.Normal,
-                color = Black,
+                color = White,
                 textAlign = TextAlign.Center
             )
         }
@@ -481,19 +421,21 @@ fun ActionsBoxes(
             Box(
                 modifier = Modifier
                     .clip(
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(16.dp)
                     )
-                    .background(White)
+                    .background(DarkGrey)
                     .size(60.dp)
-                    .clickable {
-                        navigateToAddPayScreen()
-                    },
+                    .border(
+                        width = 1.dp,
+                        color = DarkYellow,
+                        shape = RoundedCornerShape(16.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painterResource(R.drawable.addpay),
                     "",
-                    tint = Black,
+                    tint = White,
                     modifier = Modifier.size(40.dp)
                 )
 
@@ -501,10 +443,10 @@ fun ActionsBoxes(
             Spacer(Modifier.size(3.dp))
             Text(
                 addPay,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 fontFamily = rubik,
                 fontWeight = FontWeight.Normal,
-                color = Black,
+                color = White,
                 textAlign = TextAlign.Center
             )
         }
@@ -520,9 +462,9 @@ fun ActionsBoxes(
             Box(
                 modifier = Modifier
                     .clip(
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(16.dp)
                     )
-                    .background(Black)
+                    .background(DarkYellow)
                     .size(60.dp)
                     .clickable {
                         when (peopleList) {
@@ -545,17 +487,17 @@ fun ActionsBoxes(
                 Icon(
                     painterResource(R.drawable.arrowsclock),
                     "",
-                    tint = Yellow,
+                    tint = Black,
                     modifier = Modifier.size(40.dp)
                 )
             }
             Spacer(Modifier.size(3.dp))
             Text(
                 doTheCount,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 fontFamily = rubik,
                 fontWeight = FontWeight.Normal,
-                color = Black,
+                color = White,
                 textAlign = TextAlign.Center,
             )
         }
@@ -569,13 +511,13 @@ fun Header(nameOfGroup: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 30.dp, horizontal = 35.dp),
+            .padding(vertical = 30.dp, horizontal = 20.dp),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
             nameOfGroup,
-            fontSize = 36.sp,
-            color = Black,
+            fontSize = 30.sp,
+            color = White,
             fontFamily = rubik,
             fontWeight = FontWeight.W600
         )

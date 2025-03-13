@@ -50,7 +50,7 @@ class AddPeopleScreenViewModel @Inject constructor(
                 )
             )
             iDGroupName = groupName.idGroupName
-                    }
+        }
     }
 
     // Metodo que inserta el nombre en la variable lista de nombres
@@ -60,13 +60,11 @@ class AddPeopleScreenViewModel @Inject constructor(
         _createText.value = false
     }
 
-
-
     //METODO QUE INSERTA LA LISTA DE NOMBRES EN LA BBDD, USA EL IDGRIOP QUE SE LE PASA POR PARAMETROS DE LA VISTA ANTERIOR.
 
-    fun  insertPeople(peopleList: List<String>, idGroupName: Int) {
+    fun insertPeople(peopleList: List<String>, idGroupName: Int) {
 
-        peopleList.forEach { personName->
+        peopleList.forEach { personName ->
 
             val personModel = PersonModel(
                 idPerson = null,
@@ -87,7 +85,4 @@ class AddPeopleScreenViewModel @Inject constructor(
         _personList.clear()
     }
 
-
 }
-
-

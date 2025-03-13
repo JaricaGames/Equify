@@ -56,10 +56,6 @@ class AddPeopleScreenFromMainViewModel @Inject constructor(
             )
         }
     }
-
-    fun onBackPressed() {
-        _addNameToGroup.value = ""
-    }
 }
 
 
