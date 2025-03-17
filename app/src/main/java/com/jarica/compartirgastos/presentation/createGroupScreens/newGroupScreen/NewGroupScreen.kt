@@ -156,30 +156,6 @@ fun MainViewNewGroupScreen(
 
             ),
         )
-        /*
-                Spacer(modifier = Modifier.weight(0.05f))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(shareText, fontFamily = rubik, color = Black)
-
-                    Switch(checked = false, onCheckedChange = {}, enabled = false)
-                }
-                Spacer(modifier = Modifier.weight(0.01f))
-                HorizontalDivider(Modifier.height(3.dp))
-                Spacer(modifier = Modifier.weight(0.01f))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(currencyText, fontFamily = rubik, color = White)
-                    Text("Euro", fontFamily = rubik, color = White)
-                }
-        */
         Spacer(modifier = Modifier.weight(1f))
     }
 }

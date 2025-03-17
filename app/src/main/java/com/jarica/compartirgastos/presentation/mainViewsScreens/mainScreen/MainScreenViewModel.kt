@@ -45,16 +45,9 @@ class MainScreenViewModel @Inject constructor(
 
 
     //------------ Trozo que abre la aplicacion por el grupo que este activo -------------------
-
     companion object {
         var iDGroupName: Int? = null
     }
-    /*
-        init {
-            viewModelScope.launch(Dispatchers.IO) {
-                iDGroupName = preferences.getIdGroup(ID_GROUP_SAVED)
-            }
-        }*/
     //----------------------------------------------------------------------------------
 
     val uiStateResumeGroup: StateFlow<MainUiState> =

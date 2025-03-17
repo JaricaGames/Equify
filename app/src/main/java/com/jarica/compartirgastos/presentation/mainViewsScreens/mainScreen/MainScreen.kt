@@ -40,8 +40,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.CostFragment
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.ResumeFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeFragment
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.addPay
 import com.jarica.compartirgastos.presentation.ui.addPeople
@@ -51,7 +51,6 @@ import com.jarica.compartirgastos.presentation.ui.payments
 import com.jarica.compartirgastos.presentation.ui.resume
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.DarkGrey
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
 import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.Transparent
@@ -205,7 +204,7 @@ fun ChooseScreen(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DarkGrey)
+            .background(Grey)
         //.border(width = 1.dp, color = DarkYellow.copy(alpha = 0.5f))
     ) {
         if (isResumeSelected) {
@@ -306,11 +305,7 @@ fun ChooseScreen(
                         fontSize = 12.sp
                     )
                 }
-            }else{
-
             }
-
-
         }
     }
 }
@@ -340,7 +335,7 @@ fun ActionsBoxes(
                     .clip(
                         RoundedCornerShape(16.dp)
                     )
-                    .background(DarkGrey)
+                    .background(Grey)
                     .size(60.dp)
                     .border(
                         width = 1.dp,
@@ -382,7 +377,7 @@ fun ActionsBoxes(
                     .clip(
                         RoundedCornerShape(16.dp)
                     )
-                    .background(DarkGrey)
+                    .background(Grey)
                     .size(60.dp)
                     .border(
                         width = 1.dp,
@@ -424,7 +419,7 @@ fun ActionsBoxes(
                     .clip(
                         RoundedCornerShape(16.dp)
                     )
-                    .background(DarkGrey)
+                    .background(Grey)
                     .size(60.dp)
                     .border(
                         width = 1.dp,

@@ -28,22 +28,23 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.costs
 import com.jarica.compartirgastos.presentation.ui.resume
 
 @Composable
-fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToMainScreen: ()-> Unit) {
+fun CostFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
         initialValue = CostsScreenUiState.Loading,
         key1 = lifecycle,
-        key2 = costViewModel
+        key2 = mainScreenViewModel
     ){
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
-            costViewModel.uiStateCosts.collect {value = it}
+            mainScreenViewModel.uiStateCosts.collect {value = it}
         }
     }
 
@@ -60,7 +61,7 @@ fun CostsScreen(costViewModel: CostsScreenViewModel, navigateToMainScreen: ()-> 
             ) {
                 Row(modifier = Modifier.fillMaxWidth().padding()) {
                     Box(modifier = Modifier.weight(0.8f).background(Color.White.copy(alpha = 0.5f)).padding(vertical = 10.dp).clickable {
-                        navigateToMainScreen()
+                        //navigateToMainScreen()
                     }, contentAlignment = Alignment.Center){
                         Text(resume, fontSize = 12.sp)
                     }
