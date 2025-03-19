@@ -49,6 +49,7 @@ class AddPeopleScreenViewModel @Inject constructor(
                     groupName = groupName.groupName
                 )
             )
+            // Guardo en la variable companion de grupo el grupo activo
             iDGroupName = groupName.idGroupName
         }
     }

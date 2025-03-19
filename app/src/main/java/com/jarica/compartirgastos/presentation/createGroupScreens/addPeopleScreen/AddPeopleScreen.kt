@@ -113,6 +113,7 @@ fun AddPeopleScreen(
                                         val newGroup = GroupNameModel(
                                             idGroupName = idGroupName,
                                             groupName = groupName
+
                                         )
                                         addPeopleViewModel.insertGroupName(newGroup)
                                         addPeopleViewModel.insertPeople(peopleList, idGroupName)

@@ -15,7 +15,7 @@ class Preferences @Inject constructor(
     private val context: Context
 ) {
 
-   /* suspend fun saveIdGroup(key:String, value:Int){
+    suspend fun saveIdGroup(key:String, value:Int){
         val preferenceKey = intPreferencesKey(key)
         context.dataStore.edit { preferences ->
             preferences[preferenceKey] = value
@@ -33,6 +33,6 @@ class Preferences @Inject constructor(
             e.printStackTrace()
             null
         }
-    }*/
+    }
 
 }

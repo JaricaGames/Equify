@@ -31,6 +31,7 @@ fun InitialScreen(
     navigateToNewGroup: () -> Unit,
 ) {
 
+
     Scaffold(
     ) { paddingValues ->
         MainViewInitialScreen(

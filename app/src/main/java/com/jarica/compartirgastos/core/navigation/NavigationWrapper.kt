@@ -36,7 +36,7 @@ fun NavigationWrapper(
     val navController = rememberNavController()
 
     NavHost(
-        navController = navController, startDestination = chooseFirstScreen()
+        navController = navController, startDestination = GroupsScreenObject
 
     ) {
 
@@ -44,14 +44,8 @@ fun NavigationWrapper(
 
             GroupsScreen(
                 groupScreenViewModel,
-                navigateToNewGroupScreen = { navController.navigate(NewGroupScreenObject) },
-                navigateToMainScreen = { /*iDGroupName ->
-                    navController.navigate(
-                        MainScreenObject(
-                            iDGroupName = iDGroupName,
-                        )
-                    )*/
-                }
+                navigateToMainScreen = { navController.navigate(MainScreenObject(iDGroupName)) },
+                navigateToInitialScreen = {navController.navigate(InitialScreenObject)}
             )
         }
 
@@ -136,17 +130,5 @@ fun NavigationWrapper(
     }
 }
 
-
-//Metodo que devuelve si va a la pagina de grupos o a la inicial
-fun chooseFirstScreen(): Any {
-
-    return if (iDGroupName == null) {
-        InitialScreenObject
-    }else{
-        GroupsScreenObject
-    }
-
-
-}
 
 

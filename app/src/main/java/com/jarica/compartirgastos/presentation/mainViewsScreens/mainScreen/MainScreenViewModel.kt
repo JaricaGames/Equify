@@ -29,8 +29,8 @@ class MainScreenViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase,
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
-    private val getCostsUseCase: GetCostsUseCase,
-    private val preferences: Preferences
+    getCostsUseCase: GetCostsUseCase,
+    val preferences: Preferences
 
 ) : ViewModel() {
 
@@ -44,7 +44,7 @@ class MainScreenViewModel @Inject constructor(
     val isCostsSelected: LiveData<Boolean> = _isCostsSelected
 
 
-    //------------ Trozo que abre la aplicacion por el grupo que este activo -------------------
+    //------------ Variable que se usa para asber el grupo activo -------------------
     companion object {
         var iDGroupName: Int? = null
     }
@@ -149,7 +149,6 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun getGroupNameById(idGroup: Int) {
-
         viewModelScope.launch {
             _nameOfGroup.value = getGroupByIdUseCase(idGroup).groupName
         }
@@ -165,6 +164,11 @@ class MainScreenViewModel @Inject constructor(
         _isResumeSelected.value = false
         _isCostsSelected.value = true
 
+    }
+
+    fun onPaymentsSelected() {
+        _isResumeSelected.value = false
+        _isCostsSelected.value = false
     }
 
 
