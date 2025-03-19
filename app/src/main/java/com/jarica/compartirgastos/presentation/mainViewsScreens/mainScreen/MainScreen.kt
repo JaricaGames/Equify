@@ -187,7 +187,6 @@ fun MainView(
             ResumeFragment(idGroup, mainScreenViewModel)
         } else {
             if(isCostSelected){
-
                 CostFragment(idGroup, mainScreenViewModel)
             }else{
                 PaymentsFragment(idGroup, mainScreenViewModel)
@@ -266,7 +265,7 @@ fun ChooseScreen(
                 //COSt FRAGMENT
                 Box(
                     modifier = Modifier
-                        .weight(0.6f)
+                        .weight(0.5f)
                         .padding(vertical = 10.dp)
                         .clickable { mainScreenViewModel.onResumeSelected() },
                     contentAlignment = Alignment.Center
@@ -305,7 +304,7 @@ fun ChooseScreen(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(0.6f)
+                        .weight(0.5f)
                         .padding(vertical = 10.dp)
                         .clickable { mainScreenViewModel.onPaymentsSelected() },
                     contentAlignment = Alignment.Center

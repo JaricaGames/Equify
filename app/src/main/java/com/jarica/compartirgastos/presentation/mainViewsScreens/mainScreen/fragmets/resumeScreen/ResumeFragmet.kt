@@ -52,7 +52,6 @@ fun ResumeFragment(
     when (uiStatePeopleGroupFragment) {
 
         is MainUiState.Error -> {}
-
         is MainUiState.Loading -> {
 
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
