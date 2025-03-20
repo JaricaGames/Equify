@@ -84,7 +84,6 @@ fun NavigationWrapper(
                     navController.navigate(AddPeopleScreenFromMainObject)
                 },
                 navigateToAddPayScreen = { navController.navigate(AddPayScreenObject) },
-                navigateToCosts = {}
             )
         }
 

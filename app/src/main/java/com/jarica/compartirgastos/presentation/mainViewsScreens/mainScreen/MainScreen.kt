@@ -61,7 +61,6 @@ fun MainScreen(
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
-    navigateToCosts: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
     navigateToAddPayScreen: () -> Unit,
@@ -85,7 +84,7 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,
@@ -127,7 +126,6 @@ fun MainScreen(
     ) { paddingValues ->
         MainView(
             navigateToAddCostScreen,
-            navigateToCosts,
             navigateToAddPeopleFromGroup,
             idGroup,
             mainScreenViewModel,
@@ -135,7 +133,8 @@ fun MainScreen(
             nameOfGroup,
             uiStatePeopleGroupFragment,
             isResumeSelected,
-            isCostSelected
+            isCostSelected,
+            navigateToAddPayScreen
         )
     }
 
@@ -146,7 +145,6 @@ fun MainScreen(
 @Composable
 fun MainView(
     navigateToAddCostScreen: () -> Unit,
-    navigateToCosts: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
@@ -154,18 +152,19 @@ fun MainView(
     nameOfGroup: String,
     uiStatePeopleGroupFragment: MainUiState,
     isResumeSelected: Boolean,
-    isCostSelected: Boolean
+    isCostSelected: Boolean,
+    navigateToAddPayScreen: () -> Unit
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(vertical = paddingValues.calculateTopPadding()),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-
+        Spacer(Modifier.height(100.dp))
         //HEADER
         Header(nameOfGroup)
 
@@ -174,13 +173,14 @@ fun MainView(
             mainScreenViewModel,
             navigateToAddCostScreen,
             uiStatePeopleGroupFragment,
-            navigateToAddPeopleFromGroup
+            navigateToAddPeopleFromGroup,
+            navigateToAddPayScreen
         )
         Spacer(Modifier.height(16.dp))
 
         //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
         ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(32.dp))
 
         // LISTADOS (RESUMEN O GASTOS)
         if (isResumeSelected) {
@@ -380,6 +380,7 @@ fun ActionsBoxes(
     navigateToAddCostScreen: () -> Unit,
     peopleList: MainUiState,
     navigateToAddPeopleFromGroup: () -> Unit,
+    navigateToAddPayScreen: () -> Unit,
 ) {
 
     Row(
@@ -473,7 +474,9 @@ fun ActionsBoxes(
                 modifier = Modifier
                     .clip(
                         RoundedCornerShape(8.dp)
-                    )
+                    ).clickable {
+                        navigateToAddPayScreen()
+                    }
                     .background(White)
                     .size(70.dp),
                 contentAlignment = Alignment.Center
@@ -520,7 +523,7 @@ fun ActionsBoxes(
                             is MainUiState.Loading -> {}
 
                             is MainUiState.Success -> {
-                                mainScreenViewModel.doTheCounts((peopleList as MainUiState.Success).peopleList)
+                                mainScreenViewModel.doTheCounts((peopleList).peopleList)
 
                             }
                         }

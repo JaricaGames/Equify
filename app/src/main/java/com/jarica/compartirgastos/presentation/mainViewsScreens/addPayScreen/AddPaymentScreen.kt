@@ -91,7 +91,7 @@ fun AddPaymentScreen(addPaymentScreenViewModel: AddPaymentScreenViewModel) {
 
     when (uiAddPaymentState) {
         is AddPaymentUiState.ErrorAddPayment -> {}
-        AddPaymentUiState.LoadingAddPayment -> {}
+        is AddPaymentUiState.LoadingAddPayment -> {}
         is AddPaymentUiState.SuccessAddPayment -> {
 
             val listOfPeople =
@@ -100,7 +100,7 @@ fun AddPaymentScreen(addPaymentScreenViewModel: AddPaymentScreenViewModel) {
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(top = 16.dp),
                         colors = topAppBarColors(
                             containerColor = Transparent,
                             actionIconContentColor = Black,

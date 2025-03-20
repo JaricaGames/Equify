@@ -83,7 +83,7 @@ fun AddCostScreen(
 
     when (uiAddCostState) {
         is AddCostsUiState.Error -> {}
-        AddCostsUiState.Loading -> {}
+        is AddCostsUiState.Loading -> {}
         is AddCostsUiState.Success -> {
 
             val listOfPeople = (uiAddCostState as AddCostsUiState.Success).listOfPeople

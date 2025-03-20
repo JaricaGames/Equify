@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostsUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
-import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
@@ -66,7 +65,7 @@ class MainScreenViewModel @Inject constructor(
 
 
     //Array de pagos
-    private val arrayPaymentsModel = ArrayList<PaymentsModel>(emptyList())
+    private val arrayPaymentsToDoTheCounts = ArrayList<PaymentsToCountsModel>(emptyList())
 
 
     fun doTheCounts(peopleList: List<PersonModel>) {
@@ -78,6 +77,7 @@ class MainScreenViewModel @Inject constructor(
                 //Compruebo si el equity es menor que 0, en ese caso tiene que pagar
 
                 if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
+
                     //Calculo a quien le tiene que pagar
                     run personWhoReceive@{
 
@@ -86,13 +86,11 @@ class MainScreenViewModel @Inject constructor(
                             //Si lo que tiene que pagar es menor que lo que tiene recibe la otra persona
                             if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
-                                arrayPaymentsModel.add(
-                                    PaymentsModel(
+                                arrayPaymentsToDoTheCounts.add(
+                                    PaymentsToCountsModel(
                                         amount = personWhoPay.equity.toFloat().absoluteValue.toString(),
                                         namePersonWhoPay = personWhoPay.name,
                                         namePersonWhoReceive = personWhoReceive.name,
-                                        idPayment = TODO(),
-                                        idGroup = TODO()
                                     )
                                 )
 
@@ -106,13 +104,11 @@ class MainScreenViewModel @Inject constructor(
                             //Si lo que tiene que pagar es mayor que lo que tiene recibe la otra persona
                             if (personWhoPay.equity.toFloat().absoluteValue >= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
 
-                                arrayPaymentsModel.add(
-                                    PaymentsModel(
+                                arrayPaymentsToDoTheCounts.add(
+                                    PaymentsToCountsModel(
                                         amount = personWhoReceive.equity,
                                         namePersonWhoPay = personWhoPay.name,
                                         namePersonWhoReceive = personWhoReceive.name,
-                                        idPayment = null,
-                                        idGroup = iDGroupName!!
                                     )
                                 )
 
@@ -139,14 +135,18 @@ class MainScreenViewModel @Inject constructor(
 
     }
 
+
+    //Para comprbar si se han hecho als cuentas bien.
     fun text() {
-        for (item in arrayPaymentsModel) {
+        for (item in arrayPaymentsToDoTheCounts) {
             Log.d(
                 "Nono",
                 item.namePersonWhoPay + " paga a " + item.namePersonWhoReceive + " la cantidad de = " + item.amount + " €"
             )
         }
+        arrayPaymentsToDoTheCounts.clear()
     }
+
 
     fun getGroupNameById(idGroup: Int) {
         viewModelScope.launch {
@@ -173,3 +173,10 @@ class MainScreenViewModel @Inject constructor(
 
 
 }
+
+data class PaymentsToCountsModel(
+    val amount: String,
+    val namePersonWhoPay: String,
+    val namePersonWhoReceive: String,
+
+)
