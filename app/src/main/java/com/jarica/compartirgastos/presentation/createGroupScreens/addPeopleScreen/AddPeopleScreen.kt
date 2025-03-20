@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,11 +27,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.addEverybodyText
@@ -61,7 +62,7 @@ fun AddPeopleScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,
@@ -70,9 +71,6 @@ fun AddPeopleScreen(
 
                 navigationIcon = {
                     IconButton(modifier = Modifier
-                        .clip(
-                            shape = CircleShape
-                        )
                         .size(40.dp), onClick = {
                             addPeopleViewModel.onBackPressed()
                         navigateToNewGroupScreen()
@@ -156,8 +154,16 @@ fun MainViewAddPeopleScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.size(125.dp))
-
+        Spacer(Modifier.height(125.dp))
+        Text(
+            addPeopleText,
+            fontFamily = rubik,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(16.dp))
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = addNameToGroup,

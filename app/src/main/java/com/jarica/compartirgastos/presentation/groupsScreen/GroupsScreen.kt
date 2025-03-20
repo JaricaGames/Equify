@@ -85,16 +85,12 @@ fun GroupsScreen(
                     topBar = {
 
                         TopAppBar(
-                            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+                            modifier = Modifier.padding(top = 16.dp),
                             colors = topAppBarColors(
                                 containerColor = Transparent,
                                 actionIconContentColor = Black,
                                 navigationIconContentColor = Black
                             ),
-
-                            actions = {
-
-                            },
                             title = {
                                 Text(
                                     groupsText,

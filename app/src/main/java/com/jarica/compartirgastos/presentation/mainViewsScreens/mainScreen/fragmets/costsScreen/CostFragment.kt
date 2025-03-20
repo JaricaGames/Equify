@@ -77,7 +77,8 @@ fun ItemCost(item: CostModel) {
 
         Text(item.description, color = Black, fontFamily = rubik)
         Spacer(modifier = Modifier.weight(1f))
-        Text("%.2f".format(item.amount.toString()), color = Black, fontFamily = rubik)
+        Text("%.2f".format(item.amount), color = Black, fontFamily = rubik)
+        Text(" €", color = Black, fontFamily = rubik)
 
 
     }

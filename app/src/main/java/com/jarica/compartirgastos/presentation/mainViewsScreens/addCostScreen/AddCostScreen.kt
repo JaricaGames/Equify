@@ -16,9 +16,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,17 +32,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.amountPlaceHolder
 import com.jarica.compartirgastos.presentation.ui.descriptionPlaceHolder
 import com.jarica.compartirgastos.presentation.ui.fromText
+import com.jarica.compartirgastos.presentation.ui.next
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.Transparent
@@ -60,7 +72,7 @@ fun AddCostScreen(
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiAddCostState by produceState<AddCostsUiState>(
-        initialValue = AddCostsUiState.LoadingAddCosts,
+        initialValue = AddCostsUiState.Loading,
         key1 = lifecycle,
         key2 = addCostViewModel,
     ) {
@@ -70,17 +82,71 @@ fun AddCostScreen(
     }
 
     when (uiAddCostState) {
-        is AddCostsUiState.ErrorAddCosts -> {}
-        AddCostsUiState.LoadingAddCosts -> {}
-        is AddCostsUiState.SuccessAddCosts -> {
+        is AddCostsUiState.Error -> {}
+        AddCostsUiState.Loading -> {}
+        is AddCostsUiState.Success -> {
 
-            val listOfPeople = (uiAddCostState as AddCostsUiState.SuccessAddCosts).listOfPeople
+            val listOfPeople = (uiAddCostState as AddCostsUiState.Success).listOfPeople
+            Scaffold(
+                topBar = {
+                     TopAppBar(
+                        modifier = Modifier.padding(top = 16.dp),
+                        colors = topAppBarColors(
+                            containerColor = Transparent,
+                            actionIconContentColor = Black,
+                            navigationIconContentColor = Black
+                        ),
 
+                        navigationIcon = {
+                            IconButton(modifier = Modifier
+                                .size(40.dp), onClick = {
+                                    addCostViewModel.onBackPressed()
+                                    navigateToMainScreen()
+                            }) {
+                                Icon(
+                                    modifier = Modifier.size(25.dp),
+                                    painter = painterResource(R.drawable.arrow_back),
+                                    contentDescription = "",
+                                )
+                            }
+                        },
+                        actions = {
+                            if (descriptionText != "" && amountText != "" && fromTextAddCosts != "") {
+
+                                Text(
+                                    next,
+                                    fontFamily = rubik,
+                                    fontWeight = FontWeight.Medium,
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp)
+                                        .clickable {
+                                            addCostViewModel.addCostToGroup(personToAddCosts = personToAddCosts!!)
+                                            addCostViewModel.updatePerson(
+                                                personToAddCosts = personToAddCosts!!,
+                                                listOfPeople = listOfPeople
+                                            )
+                                            navigateToMainScreen()
+                                        })
+
+                            }
+
+
+
+                        },
+                        title = {
+
+                        }
+                    )
+                }
+            ) { paddingValues ->
+                MainViewAddCostScreen(paddingValues, addCostViewModel, descriptionText, amountText,isFromSelected,  fromTextAddCosts, listOfPeople)
+            }
 
         }
     }
 
 }
+
 
 @Composable
 fun MainViewAddCostScreen(
@@ -89,9 +155,10 @@ fun MainViewAddCostScreen(
     descriptionText: String,
     amountText: String,
     isFromSelected: Boolean,
-    listOfPeople: List<PersonModel>,
     fromTextAddCosts: String,
-) {
+    listOfPeople: List<PersonModel>,
+
+    ) {
 
 
     Column(
@@ -104,7 +171,15 @@ fun MainViewAddCostScreen(
     ) {
 
         Spacer(Modifier.height(125.dp))
-
+        Text(
+            addCost,
+            fontFamily = rubik,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(16.dp))
         //TEXTFIELD DESCRIPCION
         TextField(
             modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -199,9 +274,8 @@ fun MainViewAddCostScreen(
                 ) {
                     items(listOfPeople) { person ->
                         Column(modifier = Modifier.fillMaxWidth().clickable {
-                            addCostViewModel.onPersonSelected(
-                                person
-                            )
+                            addCostViewModel.onPersonSelected(person)
+
                         }) {
                             if (person.idGroupName == iDGroupName) {
                                 Text(person.name, fontFamily = rubik, color = Black)

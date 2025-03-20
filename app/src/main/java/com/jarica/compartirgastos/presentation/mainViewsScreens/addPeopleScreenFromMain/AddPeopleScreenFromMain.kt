@@ -31,7 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
@@ -55,7 +57,7 @@ fun AddPeopleScreenFromMain(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,
@@ -68,7 +70,7 @@ fun AddPeopleScreenFromMain(
                             shape = CircleShape
                         )
                         .size(40.dp), onClick = {
-                           // addPeopleFromMainViewModel.onBackPressed()
+                            addPeopleFromMainViewModel.onBackPressed()
                         navigateToMainScreen()
                     }) {
                         Icon(
@@ -139,7 +141,15 @@ fun MainViewAddPeopleScreen(
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.height(125.dp))
-
+        Text(
+            addPeopleText,
+            fontFamily = rubik,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(16.dp))
         TextField(
             modifier = Modifier.fillMaxWidth().height(50.dp),
             value = addNameToGroup,

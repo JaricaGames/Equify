@@ -29,12 +29,12 @@ class AddCostScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiAddCostsUiState: StateFlow<AddCostsUiState> =
-        getPeopleNamesUseCase().map(AddCostsUiState::SuccessAddCosts)
-            .catch { AddCostsUiState.ErrorAddCosts(it) }
+        getPeopleNamesUseCase().map(AddCostsUiState::Success)
+            .catch { AddCostsUiState.Error(it) }
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(5000),
-                AddCostsUiState.LoadingAddCosts
+                AddCostsUiState.Loading
             )
 
     //Variable texto descripcion
@@ -76,9 +76,11 @@ class AddCostScreenViewModel @Inject constructor(
         _fromTextAddCost.value = person.name
         _personToAddCost.value = person
         _isFromSelected.value = false
+        _personToAddCost.value = person
     }
 
     fun addCostToGroup(personToAddCosts: PersonModel) {
+
         viewModelScope.launch(Dispatchers.IO) {
             insertCostUseCase(
                 CostModel(
@@ -139,6 +141,12 @@ class AddCostScreenViewModel @Inject constructor(
             if (person.idGroupName == iDGroupName) numberOfPeople++
         }
         return numberOfPeople
+    }
+
+    fun onBackPressed() {
+        _descriptionText.value = ""
+        _amountText.value = ""
+        _personToAddCost.value = null
     }
 
 }
