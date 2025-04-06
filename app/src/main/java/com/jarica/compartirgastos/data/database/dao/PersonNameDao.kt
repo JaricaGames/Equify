@@ -24,7 +24,15 @@ interface PersonNameDao {
     @Delete
     suspend fun deletePersonName(personName: PersonEntity)
 
-    //Metodo que actualiza la equity del usuario
+    //Metodo que actualiza un usuario
     @Update
-    suspend fun updateEquity(personEntity: PersonEntity)
+    suspend fun updatePerson(personEntity: PersonEntity)
+
+    //Metodo que actualiza un usuario por id
+    @Query("UPDATE peopleTable SET equity=:equity WHERE idPerson like :idPerson")
+    suspend fun updatePersonById(idPerson:Int, equity: String)
+
+    //Metodo que devuelve un usuario por id
+    @Query("SELECT * FROM peopleTable WHERE  idPerson LIKE :idPerson")
+    suspend fun getPersonById(idPerson:Int):PersonEntity
 }

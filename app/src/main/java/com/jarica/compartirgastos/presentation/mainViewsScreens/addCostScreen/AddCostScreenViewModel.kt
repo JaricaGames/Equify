@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jarica.compartirgastos.domain.costsUseCases.InsertCostOfPersonsUseCase
 import com.jarica.compartirgastos.domain.costsUseCases.InsertCostUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,7 +28,8 @@ import javax.inject.Inject
 class AddCostScreenViewModel @Inject constructor(
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val insertCostUseCase: InsertCostUseCase,
-    private val updatePersonUseCase: UpdatePersonUseCase
+    private val updatePersonUseCase: UpdatePersonUseCase,
+    private val insertCostOfPersonsUseCase: InsertCostOfPersonsUseCase
 ) : ViewModel() {
 
     val uiAddCostsUiState: StateFlow<AddCostsUiState> =
@@ -79,18 +83,56 @@ class AddCostScreenViewModel @Inject constructor(
         _personToAddCost.value = person
     }
 
-    fun addCostToGroup(personToAddCosts: PersonModel) {
+    fun addCostToGroup(
+        personToAddCosts: PersonModel,
+        listOfPeople: List<PersonModel>,
+        iDGroupName: Int?
+    ) {
+
+        val idCost = System.currentTimeMillis().hashCode()
+        val numberOfPeople = calculateNumberOfPeople(listOfPeople)
 
         viewModelScope.launch(Dispatchers.IO) {
+
             insertCostUseCase(
                 CostModel(
-                    idCost = null,
+                    idCost = idCost,
                     idPerson = personToAddCosts.idPerson!!,
                     amount = amountText.value!!.toFloat(),
                     description = descriptionText.value!!,
-                    idGroup = personToAddCosts.idGroupName
+                    idGroup = personToAddCosts.idGroupName,
+                    personString = personToAddCosts.name
                 )
             )
+
+            listOfPeople.forEach { person ->
+                if(person.idGroupName == iDGroupName){
+
+                    //Calcular la cantidad del que paga
+                    if(personToAddCosts.idPerson == person.idPerson){
+                        insertCostOfPersonsUseCase(
+                            CostOfPersonModel(
+                                iDCostOfPerson = null,
+                                iDCost = idCost,
+                                iDPerson = person.idPerson,
+                                amount = amountText.value!!.toFloat() - amountText.value!!.toFloat()/numberOfPeople
+                            )
+                        )
+                    }else{ // calculas la cantidad del que no paga
+                        insertCostOfPersonsUseCase(
+                            CostOfPersonModel(
+                                iDCostOfPerson = null,
+                                iDCost = idCost,
+                                iDPerson = person.idPerson,
+                                amount = amountText.value!!.toFloat()/numberOfPeople
+                            )
+                        )
+                    }
+
+                }
+
+            }
+
         }
 
 
@@ -126,12 +168,6 @@ class AddCostScreenViewModel @Inject constructor(
                 }
             }
         }
-
-        _personToAddCost.value = null
-        _descriptionText.value = ""
-        _amountText.value = ""
-        _fromTextAddCost.value = ""
-
     }
 
     private fun calculateNumberOfPeople(listOfPeople: List<PersonModel>): Int {
@@ -143,10 +179,15 @@ class AddCostScreenViewModel @Inject constructor(
         return numberOfPeople
     }
 
-    fun onBackPressed() {
-        _descriptionText.value = ""
-        _amountText.value = ""
-        _personToAddCost.value = null
+    fun cleanTexts() {
+        viewModelScope.launch {
+            delay(1000)
+            _descriptionText.value = ""
+            _amountText.value = ""
+            _personToAddCost.value = null
+            _fromTextAddCost.value = ""
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +26,11 @@ import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @Composable
-fun CostFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
+fun CostFragment(
+    idGroup: Int?,
+    mainScreenViewModel: MainScreenViewModel,
+    navigateToEditCost: (CostModel) -> Unit
+) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
@@ -43,7 +48,12 @@ fun CostFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
         CostsScreenUiState.Loading -> {}
         is CostsScreenUiState.Success -> {
 
-            CostsList((uiStateCosts as CostsScreenUiState.Success).costsList, idGroup)
+            CostsList(
+                (uiStateCosts as CostsScreenUiState.Success).costsList,
+                idGroup,
+                mainScreenViewModel,
+                navigateToEditCost
+            )
 
         }
 
@@ -52,12 +62,17 @@ fun CostFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
 }
 
 @Composable
-fun CostsList(costList: List<CostModel>, idGroup: Int?) {
+fun CostsList(
+    costList: List<CostModel>,
+    idGroup: Int?,
+    mainScreenViewModel: MainScreenViewModel,
+    navigateToEditCost: (CostModel) -> Unit,
+) {
 
     LazyColumn {
         items(costList) { cost ->
             if (cost.idGroup == idGroup) {
-                ItemCost(cost)
+                ItemCost(cost, mainScreenViewModel, navigateToEditCost)
                 Spacer(modifier = Modifier.size(8.dp))
             }
         }
@@ -65,13 +80,21 @@ fun CostsList(costList: List<CostModel>, idGroup: Int?) {
 }
 
 @Composable
-fun ItemCost(item: CostModel) {
+fun ItemCost(
+    item: CostModel,
+    mainScreenViewModel: MainScreenViewModel,
+    navigateToEditCost: (CostModel) -> Unit
+) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
-            .padding(horizontal = 32.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp)
+            .clickable {
+                mainScreenViewModel.onCostListSelected(item)
+                navigateToEditCost(item)
+            },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
@@ -83,3 +106,4 @@ fun ItemCost(item: CostModel) {
 
     }
 }
+

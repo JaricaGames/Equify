@@ -38,6 +38,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeFragment
@@ -64,6 +65,8 @@ fun MainScreen(
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
     navigateToAddPayScreen: () -> Unit,
+    navigateToEditCost: (CostModel) -> Unit,
+    navigateToConfiguration: () -> Unit,
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
@@ -92,8 +95,9 @@ fun MainScreen(
                 ),
 
                 navigationIcon = {
-                    IconButton(modifier = Modifier
-                        .size(40.dp),
+                    IconButton(
+                        modifier = Modifier
+                            .size(40.dp),
                         onClick = {
                             navigateToGroupsScreen()
                         }) {
@@ -107,10 +111,11 @@ fun MainScreen(
                     }
                 },
                 actions = {
-                    IconButton(modifier = Modifier
-                        .size(40.dp), onClick = {
-                        // Navegar a la pantalla de lista de grupos
-                    }) {
+                    IconButton(
+                        modifier = Modifier
+                            .size(40.dp), onClick = {
+                            navigateToConfiguration()
+                        }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             painter = painterResource(R.drawable.settings),
@@ -134,7 +139,8 @@ fun MainScreen(
             uiStatePeopleGroupFragment,
             isResumeSelected,
             isCostSelected,
-            navigateToAddPayScreen
+            navigateToAddPayScreen,
+            navigateToEditCost
         )
     }
 
@@ -153,7 +159,8 @@ fun MainView(
     uiStatePeopleGroupFragment: MainUiState,
     isResumeSelected: Boolean,
     isCostSelected: Boolean,
-    navigateToAddPayScreen: () -> Unit
+    navigateToAddPayScreen: () -> Unit,
+    navigateToEditCost: (CostModel) -> Unit
 ) {
 
     Column(
@@ -186,9 +193,9 @@ fun MainView(
         if (isResumeSelected) {
             ResumeFragment(idGroup, mainScreenViewModel)
         } else {
-            if(isCostSelected){
-                CostFragment(idGroup, mainScreenViewModel)
-            }else{
+            if (isCostSelected) {
+                CostFragment(idGroup, mainScreenViewModel, navigateToEditCost)
+            } else {
                 PaymentsFragment(idGroup, mainScreenViewModel)
             }
         }
@@ -300,7 +307,7 @@ fun ChooseScreen(
                         fontFamily = rubik,
                         color = DarkYellow,
                         fontWeight = FontWeight.SemiBold,
-                        )
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -317,13 +324,14 @@ fun ChooseScreen(
                         fontSize = 12.sp
                     )
                 }
-            }else{
+            } else {
                 //PAYMENTS FRAGMENT
                 Box(
                     modifier = Modifier
                         .weight(0.5f)
                         .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 32.dp))
-                        .padding(vertical = 10.dp).clickable {
+                        .padding(vertical = 10.dp)
+                        .clickable {
                             mainScreenViewModel.onResumeSelected()
                         },
                     contentAlignment = Alignment.Center
@@ -474,7 +482,8 @@ fun ActionsBoxes(
                 modifier = Modifier
                     .clip(
                         RoundedCornerShape(8.dp)
-                    ).clickable {
+                    )
+                    .clickable {
                         navigateToAddPayScreen()
                     }
                     .background(White)

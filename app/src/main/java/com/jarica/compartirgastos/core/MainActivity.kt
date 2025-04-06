@@ -12,6 +12,8 @@ import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewMode
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.AddPaymentScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.ConfigurationScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +28,8 @@ class MainActivity : ComponentActivity() {
     private val addCostViewModel: AddCostScreenViewModel by viewModels()
     private val groupScreenViewModel: GroupsScreenViewModel by viewModels()
     private val addPaymentScreenViewModel: AddPaymentScreenViewModel by viewModels()
+    private val editCostScreenViewModel: EditCostScreenViewModel by viewModels()
+    private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,7 +45,9 @@ class MainActivity : ComponentActivity() {
                     addCostViewModel,
                     groupScreenViewModel,
                     addPeopleScreenFromMainViewModel,
-                    addPaymentScreenViewModel
+                    addPaymentScreenViewModel,
+                    editCostScreenViewModel,
+                    configurationScreenViewModel
                 )
             }
         }

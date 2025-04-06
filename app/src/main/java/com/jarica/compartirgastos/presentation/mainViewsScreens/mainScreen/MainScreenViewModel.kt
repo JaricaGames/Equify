@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostsUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
+import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
@@ -169,6 +170,10 @@ class MainScreenViewModel @Inject constructor(
     fun onPaymentsSelected() {
         _isResumeSelected.value = false
         _isCostsSelected.value = false
+    }
+
+    fun onCostListSelected(item: CostModel) {
+
     }
 
 

@@ -26,4 +26,8 @@ interface GroupNameDao {
     //Metodo que devuelve un grupo por su ID
     @Query("SELECT * FROM groupNameTable WHERE idGroupName LIKE :idGroup ")
     suspend fun getGroupNameById(idGroup: Int):GroupNameEntity
+
+    //Metodo que devuelve los miembros de de un grupo
+    @Query("SELECT name FROM peopleTable WHERE idGroupName LIKE :idGroup ")
+    suspend fun getGroupsMembersById(idGroup: Int):List<String>
 }

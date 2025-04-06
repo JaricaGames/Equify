@@ -9,11 +9,11 @@ import com.jarica.compartirgastos.core.COSTS_TABLE
     tableName = COSTS_TABLE
 )
 data class CostEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "iDCost") val idCost: Int?,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "iDCost") val idCost: Int,
     @ColumnInfo(name = "idPerson") val idPerson: Int,
     @ColumnInfo(name = "amount") val amount: Float,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "idGroup") val idGroup: Int,
-
+    @ColumnInfo(name = "personString") val personString: String,
     )

@@ -100,7 +100,7 @@ fun AddCostScreen(
                         navigationIcon = {
                             IconButton(modifier = Modifier
                                 .size(40.dp), onClick = {
-                                    addCostViewModel.onBackPressed()
+                                    addCostViewModel.cleanTexts()
                                     navigateToMainScreen()
                             }) {
                                 Icon(
@@ -120,11 +120,12 @@ fun AddCostScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp)
                                         .clickable {
-                                            addCostViewModel.addCostToGroup(personToAddCosts = personToAddCosts!!)
+                                            addCostViewModel.addCostToGroup(personToAddCosts = personToAddCosts!!, listOfPeople, iDGroupName)
                                             addCostViewModel.updatePerson(
                                                 personToAddCosts = personToAddCosts!!,
                                                 listOfPeople = listOfPeople
                                             )
+                                            addCostViewModel.cleanTexts()
                                             navigateToMainScreen()
                                         })
 

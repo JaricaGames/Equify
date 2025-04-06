@@ -9,13 +9,16 @@ data object InitialScreenObject
 data object NewGroupScreenObject
 
 @Serializable
-data class MainScreenObject(val iDGroupName:Int?)
+data class MainScreenObject(
+    val iDGroupName: Int?)
 
 @Serializable
 data object GroupsScreenObject
 
 @Serializable
-data class AddPeopleScreenObject(val iDGroupName:Int, val groupName:String?)
+data class AddPeopleScreenObject(
+    val iDGroupName: Int,
+    val groupName: String?)
 
 @Serializable
 data object AddCostScreenObject
@@ -25,5 +28,16 @@ data object AddPayScreenObject
 
 @Serializable
 data object AddPeopleScreenFromMainObject
+
+@Serializable
+data class EditCostScreenObject(
+    val idCost: Int,
+    val amount: Float,
+    val description: String,
+    val personString: String
+)
+
+@Serializable
+data object ConfigurationScreenObject
 
 

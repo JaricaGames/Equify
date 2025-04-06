@@ -2,9 +2,9 @@
 ------------------------------
 POR HACER
 
-añadir la pantalla de modificar gasto // modificar gastos y añadir ids ed la gente que participa para poder borrar despueses el gasto y recalcular equitys
-
 HACER EL BOTON DE CONFIGURACION EN LA PANTALLA PRINCIPAL.
+
+modificar y eliminar personas
 
 HACER VENTANA DE ECHAR CUENTAS
 
@@ -20,6 +20,8 @@ ANUNCIOS
 
 /////   lanzamiento a produccion   ///////
 
+modificar gastos y actualizar equitys
+
 PAGOS COMPARTIDOS
 
 COMPARTIR EN LINEA
@@ -29,6 +31,11 @@ AÑADIR MONEDAS
 
 ------------------------------
 HECHO
+
+
+eliminar gastos y actualizar equitys
+
+añadir la pantalla de modificar gasto
 
 CREAR LA ENTIDAD, DAO Y METODOS DE PAGOS  ---- HECHO
 

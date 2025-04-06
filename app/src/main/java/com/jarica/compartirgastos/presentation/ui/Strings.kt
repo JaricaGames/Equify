@@ -44,4 +44,15 @@ const val payForText = "De: "
 const val payToText = "Para: "
 const val amountText = "Cantidad: "
 
+//EditCostScreen
+const val editCost = "Editar Gasto"
+const val PayFor = "Pagado por:   "
+
+//ConfigurationScreen
+const val configurationTextScreen = "Configuración del grupo"
+const val personalizationGroupText = "Personalizar grupo"
+const val addPeopleConfigurationText = "Añadir personas al grupo"
+const val administratepeopleConfigurationText = "Administrar miembros"
+
+
 
