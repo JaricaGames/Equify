@@ -137,7 +137,7 @@ fun NavigationWrapper(
         }
 
         composable<ConfigurationScreenObject> {
-            ConfigurationScreen(configurationScreenViewModel)
+            ConfigurationScreen(configurationScreenViewModel, groupViewModel )
         }
     }
 }

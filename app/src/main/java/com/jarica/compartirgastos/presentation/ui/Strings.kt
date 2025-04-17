@@ -52,7 +52,10 @@ const val PayFor = "Pagado por:   "
 const val configurationTextScreen = "Configuración del grupo"
 const val personalizationGroupText = "Personalizar grupo"
 const val addPeopleConfigurationText = "Añadir personas al grupo"
-const val administratepeopleConfigurationText = "Administrar miembros"
+const val administratePeopleConfigurationText = "Administrar miembros"
+const val groupMembersText = "Miembros del grupo"
+const val otherText = "Otro"
+const val deleteGroupText = "Borrar Grupo"
 
 
 
