@@ -40,4 +40,8 @@ data class EditCostScreenObject(
 @Serializable
 data object ConfigurationScreenObject
 
+@Serializable
+data object CustomizeGroupScreenObject
+
+
 

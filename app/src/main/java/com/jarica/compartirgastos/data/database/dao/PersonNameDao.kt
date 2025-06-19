@@ -1,7 +1,6 @@
 package com.jarica.compartirgastos.data.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,9 +19,13 @@ interface PersonNameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPersonName(personName: PersonEntity)
 
-    //Metodo que borra una persona
-    @Delete
-    suspend fun deletePersonName(personName: PersonEntity)
+    //Metodo que borra una persona por idde grupo
+    @Query(value = "DELETE FROM peopleTable WHERE idGroupName like :idGroupName ")
+    suspend fun deletePersonNameByIdGroup(idGroupName:Int)
+
+    //Metodo que borra una persona por idde grupo
+    @Query(value = "DELETE FROM peopleTable WHERE idPerson like :idPerson ")
+    suspend fun deletePersonNameByIdPerson(idPerson: Int)
 
     //Metodo que actualiza un usuario
     @Update

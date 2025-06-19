@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -98,10 +100,27 @@ fun ItemCost(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Text(item.description, color = Black, fontFamily = rubik)
+        Text(
+            item.description,
+            color = Black,
+            fontFamily = rubik,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300
+        )
         Spacer(modifier = Modifier.weight(1f))
-        Text("%.2f".format(item.amount), color = Black, fontFamily = rubik)
-        Text(" €", color = Black, fontFamily = rubik)
+        Text(
+            "%.2f".format(item.amount),
+            color = Black,
+            fontFamily = rubik,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300
+        )
+        Text(
+            " €", color = Black,
+            fontFamily = rubik,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300
+        )
 
 
     }

@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,12 +41,13 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.AlertDialogs.AlertDialogConfirm
+import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.AlertDialogs.AlertDialogErrorClear
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import com.jarica.compartirgastos.presentation.ui.addPeopleConfigurationText
 import com.jarica.compartirgastos.presentation.ui.administratePeopleConfigurationText
-import com.jarica.compartirgastos.presentation.ui.configurationTextScreen
+import com.jarica.compartirgastos.presentation.ui.customizeGroupScreenText
 import com.jarica.compartirgastos.presentation.ui.deleteGroupText
 import com.jarica.compartirgastos.presentation.ui.groupMembersText
 import com.jarica.compartirgastos.presentation.ui.otherText
@@ -61,7 +63,8 @@ import com.jarica.compartirgastos.presentation.ui.theme.rubik
 @Composable
 fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
-    groupViewModel: MainScreenViewModel,
+    navigateToCustomizeGroup: () -> Unit,
+    navigateToGroupScreen: () -> Unit,
 ) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -76,7 +79,9 @@ fun ConfigurationScreen(
     }
 
     val nameOfGroup: String by configurationScreenViewModel.nameOfGroup.observeAsState("")
-
+    val showDialogError: Boolean by configurationScreenViewModel.showDialogError.observeAsState(false)
+    val showDialogConfirm: Boolean by configurationScreenViewModel.showDialogConfirm.observeAsState(false)
+    val personSelected: String by configurationScreenViewModel.personSelected.observeAsState("")
 
     when (uiStatePeopleGroupFragment) {
 
@@ -102,6 +107,7 @@ fun ConfigurationScreen(
                                         shape = CircleShape
                                     )
                                     .size(40.dp), onClick = {
+                                    navigateToGroupScreen()
 
                                 }) {
                                 Icon(
@@ -126,8 +132,24 @@ fun ConfigurationScreen(
                     paddingValues,
                     configurationScreenViewModel,
                     nameOfGroup,
-                    (uiStatePeopleGroupFragment as MainUiState.Success).peopleList
+                    (uiStatePeopleGroupFragment as MainUiState.Success).peopleList,
+                    navigateToCustomizeGroup,
+                    navigateToGroupScreen,
                 )
+
+                if (showDialogError) {
+                    AlertDialogErrorClear(
+                        personSelected,
+                        onDismiss = { configurationScreenViewModel.onDismiss() }
+                    )
+                }
+
+                if (showDialogConfirm) {
+                    AlertDialogConfirm(
+                        onDismiss = { configurationScreenViewModel.onDismiss() },
+                        onConfirm = { configurationScreenViewModel.onConfirmDeletePerson() }
+                    )
+                }
 
             }
 
@@ -136,13 +158,17 @@ fun ConfigurationScreen(
 
 }
 
+
 @Composable
 fun MainConfigurationScreen(
     paddingValues: PaddingValues,
     configurationScreenViewModel: ConfigurationScreenViewModel,
     nameOfGroup: String,
     peopleList: List<PersonModel>,
+    navigateToCustomizeGroup: () -> Unit,
+    navigateToMainScreen: () -> Unit,
 ) {
+
     configurationScreenViewModel.getGroupNameById(iDGroupName!!)
 
     Column(
@@ -156,20 +182,23 @@ fun MainConfigurationScreen(
         Spacer(Modifier.height(125.dp))
         HeaderConfigurationScreen()
         Spacer(Modifier.height(20.dp))
-        PersonalizationGroup(nameOfGroup)
+        PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup)
         Spacer(Modifier.height(20.dp))
         AdministrateGroupMembers()
         Spacer(Modifier.height(20.dp))
-        GroupMembers(peopleList)
+        GroupMembers(peopleList, configurationScreenViewModel )
         Spacer(Modifier.height(20.dp))
-        Other()
+        Other(configurationScreenViewModel, navigateToMainScreen)
 
     }
 
 }
 
 @Composable
-fun Other() {
+fun Other(
+    configurationScreenViewModel: ConfigurationScreenViewModel,
+    navigateToMainScreen: () -> Unit,
+) {
     Text(
         otherText,
         fontFamily = rubik,
@@ -183,7 +212,12 @@ fun Other() {
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
-            .padding(horizontal = 32.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp)
+            .clickable {
+                configurationScreenViewModel.deleteGroup(iDGroupName!!)
+                navigateToMainScreen()
+
+            },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -208,7 +242,10 @@ fun Other() {
 }
 
 @Composable
-fun GroupMembers(peopleList: List<PersonModel>) {
+fun GroupMembers(
+    peopleList: List<PersonModel>,
+    configurationScreenViewModel: ConfigurationScreenViewModel,
+) {
     Text(
         groupMembersText,
         fontFamily = rubik,
@@ -217,12 +254,13 @@ fun GroupMembers(peopleList: List<PersonModel>) {
         fontSize = 12.sp,
         fontWeight = FontWeight.Medium
     )
+
     Spacer(Modifier.height(6.dp))
 
     LazyColumn(modifier = Modifier.background(White)) {
         items(peopleList) { person ->
             if (person.idGroupName == iDGroupName) {
-                ItemPeopleNameConfigurationScreen(person)
+                ItemPeopleNameConfigurationScreen(person, configurationScreenViewModel)
             }
         }
     }
@@ -230,11 +268,15 @@ fun GroupMembers(peopleList: List<PersonModel>) {
 }
 
 @Composable
-fun ItemPeopleNameConfigurationScreen(person: PersonModel) {
+fun ItemPeopleNameConfigurationScreen(
+    person: PersonModel,
+    configurationScreenViewModel: ConfigurationScreenViewModel,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp, vertical = 10.dp)
+
     ) {
 
         Text(
@@ -249,7 +291,9 @@ fun ItemPeopleNameConfigurationScreen(person: PersonModel) {
             painterResource(R.drawable.cancel_close),
             "",
             tint = Black,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier
+                .size(18.dp)
+                .clickable { configurationScreenViewModel.onGroupMemberClicked(person)},
         )
 
     }
@@ -306,7 +350,7 @@ fun AdministrateGroupMembers() {
 }
 
 @Composable
-fun PersonalizationGroup(nameOfGroup: String) {
+fun PersonalizationGroup(nameOfGroup: String, navigateToCustomizeGroup: () -> Unit) {
     Text(
         personalizationGroupText,
         fontFamily = rubik,
@@ -320,7 +364,8 @@ fun PersonalizationGroup(nameOfGroup: String) {
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
-            .padding(horizontal = 32.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp)
+            .clickable { navigateToCustomizeGroup() },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -351,7 +396,7 @@ fun PersonalizationGroup(nameOfGroup: String) {
 @Composable
 fun HeaderConfigurationScreen() {
     Text(
-        configurationTextScreen,
+        customizeGroupScreenText,
         fontFamily = rubik,
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,

@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -93,22 +94,42 @@ fun ItemPeopleName(item: PersonModel) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Text(item.name, color = Black, fontFamily = rubik)
+        Text(item.name, color = Black, fontFamily = rubik,
+                fontSize = 12.sp,
+            fontWeight = FontWeight.W300)
         Spacer(modifier = Modifier.weight(1f))
-            if (item.equity.toFloat() >= 0f) {
-                Row{
-                    Text("%.2f".format(item.equity.toFloat()), color = Black, fontFamily = rubik)
-                    Text(" €", color = Black, fontFamily = rubik)
-                }
-
-            } else {
-                Row{
-                    Text("- ", color = Black, fontFamily = rubik, fontSize = 12.sp)
-                    Text("%.2f".format(item.equity.toFloat().absoluteValue), color = Black, fontFamily = rubik)
-                    Text(" €", color = Black, fontFamily = rubik)
-                }
+        if (item.equity.toFloat() >= 0f) {
+            Row {
+                Text(
+                    "%.2f".format(item.equity.toFloat()),
+                    color = Black,
+                    fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
+                Text(
+                    " €", color = Black, fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
             }
 
+        } else {
+            Row {
+                Text(
+                    "- ", color = Black, fontFamily = rubik, fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
+                Text(
+                    "%.2f".format(item.equity.toFloat().absoluteValue),
+                    color = Black,
+                    fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
+                Text(" €", color = Black, fontFamily = rubik)
+            }
+        }
 
 
     }

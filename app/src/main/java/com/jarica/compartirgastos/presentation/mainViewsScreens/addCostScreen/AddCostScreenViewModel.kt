@@ -115,7 +115,8 @@ class AddCostScreenViewModel @Inject constructor(
                                 iDCostOfPerson = null,
                                 iDCost = idCost,
                                 iDPerson = person.idPerson,
-                                amount = amountText.value!!.toFloat() - amountText.value!!.toFloat()/numberOfPeople
+                                amount = amountText.value!!.toFloat() - amountText.value!!.toFloat()/numberOfPeople,
+                                iDGroup = iDGroupName
                             )
                         )
                     }else{ // calculas la cantidad del que no paga
@@ -124,7 +125,8 @@ class AddCostScreenViewModel @Inject constructor(
                                 iDCostOfPerson = null,
                                 iDCost = idCost,
                                 iDPerson = person.idPerson,
-                                amount = amountText.value!!.toFloat()/numberOfPeople
+                                amount = amountText.value!!.toFloat()/numberOfPeople,
+                                iDGroup = iDGroupName
                             )
                         )
                     }

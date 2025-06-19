@@ -7,4 +7,5 @@ data class CostOfPersonModel(
     val iDCost: Int,
     val iDPerson: Int?,
     val amount: Float,
+    val iDGroup: Int,
     )

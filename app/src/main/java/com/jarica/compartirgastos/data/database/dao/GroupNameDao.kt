@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -22,6 +23,10 @@ interface GroupNameDao {
     //Metodo que borra un grupo
     @Delete
     suspend fun deleteGroupName(groupName: GroupNameEntity)
+
+    //Metodo que actualiza un grupo
+    @Update
+    suspend fun updateGroupName(groupName: GroupNameEntity)
 
     //Metodo que devuelve un grupo por su ID
     @Query("SELECT * FROM groupNameTable WHERE idGroupName LIKE :idGroup ")

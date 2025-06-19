@@ -21,6 +21,10 @@ interface CostsDao {
     @Query("SELECT * FROM CostsOfPersonTable ORDER BY iDCost ASC")
     fun getAllCostsOfPerson(): Flow<List<CostsOfPersonsEntity>>
 
+   // Metodo que devuelve todos los gastos de una persona
+    @Query("SELECT * FROM CostsOfPersonTable WHERE iDPerson LIKE :idPerson ")
+    suspend fun getCostsById(idPerson: Int): List<CostsOfPersonsEntity>
+
     //Metodo que inserta un nuevo gasto
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCost(cost: CostEntity)
@@ -33,9 +37,17 @@ interface CostsDao {
     @Query("DELETE FROM costsTable WHERE idCost LIKE :idCost ")
     suspend fun deleteCost(idCost:Int)
 
+    //Metodo que borra los gastos de un grupo
+    @Query("DELETE FROM costsTable WHERE idGroup LIKE :idGroup ")
+    suspend fun deleteAllCostOfAGroup(idGroup:Int)
+
     //Metodo que borra todos los gasto por persona con un IdCost
     @Query("DELETE FROM CostsOfPersonTable WHERE idCost LIKE :idCost ")
     suspend fun deleteCostOfPerson(idCost: Int)
+
+    //Metodo que borra todos los gasto por persona de un grupo
+    @Query("DELETE FROM CostsOfPersonTable WHERE idGroup LIKE :idGroup ")
+    suspend fun deleteCostOfPersonOfAGroup(idGroup: Int)
 
     //Metodo que actualiza un gasto
     @Update

@@ -20,6 +20,8 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenF
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.ConfigurationScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.ConfigurationScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments.CustomizeGroupScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments.CustomizeGroupScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreen
@@ -37,6 +39,7 @@ fun NavigationWrapper(
     addPaymentScreenViewModel: AddPaymentScreenViewModel,
     editCostScreenViewModel: EditCostScreenViewModel,
     configurationScreenViewModel: ConfigurationScreenViewModel,
+    customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -137,7 +140,18 @@ fun NavigationWrapper(
         }
 
         composable<ConfigurationScreenObject> {
-            ConfigurationScreen(configurationScreenViewModel, groupViewModel )
+            ConfigurationScreen(
+                configurationScreenViewModel,
+                navigateToCustomizeGroup = {navController.navigate(CustomizeGroupScreenObject)},
+                navigateToGroupScreen = {navController.navigate(MainScreenObject(
+                    iDGroupName = iDGroupName
+                ))}
+            )
+        }
+
+        composable<CustomizeGroupScreenObject> {
+            CustomizeGroupScreen(customizeGroupScreenViewModel)
+
         }
     }
 }

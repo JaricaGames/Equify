@@ -57,5 +57,12 @@ const val groupMembersText = "Miembros del grupo"
 const val otherText = "Otro"
 const val deleteGroupText = "Borrar Grupo"
 
+//CustomizeGroupScreen
+const val customizeGroupScreenText = "Editar Grupo"
+
+//AlertDialogConfigurationScreen
+const val mainAlertDialogText = "Ups"
+const val alertDialogText = "no puede ser eliminado del grupo porque ha participado en alguno de los gastos."
+
 
 

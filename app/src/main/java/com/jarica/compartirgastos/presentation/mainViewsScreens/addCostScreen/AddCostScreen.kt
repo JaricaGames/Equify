@@ -89,7 +89,7 @@ fun AddCostScreen(
             val listOfPeople = (uiAddCostState as AddCostsUiState.Success).listOfPeople
             Scaffold(
                 topBar = {
-                     TopAppBar(
+                    TopAppBar(
                         modifier = Modifier.padding(top = 16.dp),
                         colors = topAppBarColors(
                             containerColor = Transparent,
@@ -98,11 +98,13 @@ fun AddCostScreen(
                         ),
 
                         navigationIcon = {
-                            IconButton(modifier = Modifier
-                                .size(40.dp), onClick = {
+                            IconButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                onClick = {
                                     addCostViewModel.cleanTexts()
                                     navigateToMainScreen()
-                            }) {
+                                }) {
                                 Icon(
                                     modifier = Modifier.size(25.dp),
                                     painter = painterResource(R.drawable.arrow_back),
@@ -120,7 +122,11 @@ fun AddCostScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp)
                                         .clickable {
-                                            addCostViewModel.addCostToGroup(personToAddCosts = personToAddCosts!!, listOfPeople, iDGroupName)
+                                            addCostViewModel.addCostToGroup(
+                                                personToAddCosts = personToAddCosts!!,
+                                                listOfPeople,
+                                                iDGroupName
+                                            )
                                             addCostViewModel.updatePerson(
                                                 personToAddCosts = personToAddCosts!!,
                                                 listOfPeople = listOfPeople
@@ -132,7 +138,6 @@ fun AddCostScreen(
                             }
 
 
-
                         },
                         title = {
 
@@ -140,7 +145,15 @@ fun AddCostScreen(
                     )
                 }
             ) { paddingValues ->
-                MainViewAddCostScreen(paddingValues, addCostViewModel, descriptionText, amountText,isFromSelected,  fromTextAddCosts, listOfPeople)
+                MainViewAddCostScreen(
+                    paddingValues,
+                    addCostViewModel,
+                    descriptionText,
+                    amountText,
+                    isFromSelected,
+                    fromTextAddCosts,
+                    listOfPeople
+                )
             }
 
         }
@@ -181,18 +194,32 @@ fun MainViewAddCostScreen(
             fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.height(16.dp))
+
         //TEXTFIELD DESCRIPCION
         TextField(
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
             value = descriptionText,
             onValueChange = { descriptionText ->
                 addCostViewModel.onDescriptionChange(
                     descriptionText
                 )
             },
-
+            textStyle = TextStyle(
+                fontFamily = rubik,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300
+            ),
             shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(descriptionPlaceHolder) },
+            placeholder = {
+                Text(
+                    descriptionPlaceHolder, fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300,
+                    color = Black
+                )
+            },
             singleLine = true,
             maxLines = 1,
             colors = TextFieldDefaults.colors(
@@ -214,16 +241,29 @@ fun MainViewAddCostScreen(
 
         //TEXTFIELD CANTIDAD
         TextField(
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
             value = amountText,
             onValueChange = { addCostViewModel.onAmountChange(it) },
             shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(amountPlaceHolder) },
+            placeholder = {
+                Text(
+                    amountPlaceHolder, fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300,
+                    color = Black
+                )
+            },
             singleLine = true,
             maxLines = 1,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             suffix = { Text("€") },
-            textStyle = TextStyle(fontFamily = rubik),
+            textStyle = TextStyle(
+                fontFamily = rubik,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300
+            ),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = White,
                 unfocusedLabelColor = Black,
@@ -261,6 +301,8 @@ fun MainViewAddCostScreen(
                 "$fromText:      $fromTextAddCosts",
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 fontFamily = rubik,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300,
                 color = Black
             )
             Spacer(modifier = Modifier.size(6.dp))
@@ -274,12 +316,21 @@ fun MainViewAddCostScreen(
 
                 ) {
                     items(listOfPeople) { person ->
-                        Column(modifier = Modifier.fillMaxWidth().clickable {
-                            addCostViewModel.onPersonSelected(person)
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    addCostViewModel.onPersonSelected(person)
 
-                        }) {
+                                }) {
                             if (person.idGroupName == iDGroupName) {
-                                Text(person.name, fontFamily = rubik, color = Black)
+                                Text(
+                                    person.name,
+                                    fontFamily = rubik,
+                                    color = Black,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.W300
+                                )
                                 Spacer(modifier = Modifier.size(8.dp))
                             }
                         }

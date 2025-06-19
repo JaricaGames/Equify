@@ -35,6 +35,7 @@ class AppRepository @Inject constructor(
         .map { items -> items.map { GroupNameModel(it.idGroupName, it.groupName) } }
 
 
+    //Metodo que inserta un grupo
     suspend fun insertGroupName(groupNameModel: GroupNameModel) {
         groupNameDao.insertGroupName(
             GroupNameEntity(
@@ -55,9 +56,36 @@ class AppRepository @Inject constructor(
         return groupNameDao.getGroupsMembersById(id)
     }
 
+    suspend fun updateGroup(groupNameModel: GroupNameModel){
+        return groupNameDao.updateGroupName(
+            GroupNameEntity(
+                idGroupName = groupNameModel.idGroupName,
+                groupName = groupNameModel.groupName
+
+            )
+        )
+    }
+
+
+    //Metodo que borra un grupo y lo que lleva ese grupo (costos, personas, etc...)
+    suspend fun deleteGroup(groupNameModel: GroupNameModel, iDGroupName: Int){
+
+        groupNameDao.deleteGroupName(
+            GroupNameEntity(
+                idGroupName = groupNameModel.idGroupName,
+                groupName = groupNameModel.groupName
+
+            )
+        )
+        personNameDao.deletePersonNameByIdGroup(iDGroupName)
+        costsDao.deleteAllCostOfAGroup(iDGroupName)
+        costsDao.deleteCostOfPersonOfAGroup(iDGroupName)
+        paymentsDao.deletePaymentsOfAGroup(iDGroupName)
+    }
+
     //PERSON_NAME_DAO
 
-    //Mapear de GroupEntuty a GroupNameModel
+    //Mapear de GroupEntity a GroupNameModel
     val personModel: Flow<List<PersonModel>> = personNameDao.getAllPeopleName()
         .map { items -> items.map { PersonModel(it.idPerson, it.name, it.equity, it.idGroupName) } }
 
@@ -93,6 +121,10 @@ class AppRepository @Inject constructor(
         personNameDao.updatePersonById(idPerson, equity)
     }
 
+    suspend fun deletePersonNameByIdPerson(personModel: PersonModel) {
+        personNameDao.deletePersonNameByIdPerson(personModel.idPerson!!)
+    }
+
 
     //COST_DAO
     //Mapear de CostEntity a CostModel
@@ -118,7 +150,8 @@ class AppRepository @Inject constructor(
                     it.iDCostOfPerson,
                     it.iDCost,
                     it.iDPerson,
-                    it.amount
+                    it.amount,
+                    it.iDGroup
                 )
             }
         }
@@ -146,14 +179,20 @@ class AppRepository @Inject constructor(
     }
 
     suspend fun insertCostOfPerson(costModelOfPerson: CostOfPersonModel) {
+
         costsDao.insertCostOfPerson(
             CostsOfPersonsEntity(
                 iDCostOfPerson = null,
                 iDCost = costModelOfPerson.iDCost,
                 iDPerson = costModelOfPerson.iDPerson,
-                amount = costModelOfPerson.amount
+                amount = costModelOfPerson.amount,
+                iDGroup = costModelOfPerson.iDGroup
             )
         )
+    }
+
+    suspend fun getCostsById(id: Int): List<CostsOfPersonsEntity> {
+        return costsDao.getCostsById(id)
     }
 
 
@@ -184,6 +223,8 @@ class AppRepository @Inject constructor(
             )
         )
     }
+
+
 
 }
 
