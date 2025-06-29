@@ -63,6 +63,11 @@ const val customizeGroupScreenText = "Editar Grupo"
 //AlertDialogConfigurationScreen
 const val mainAlertDialogText = "Ups"
 const val alertDialogText = "no puede ser eliminado del grupo porque ha participado en alguno de los gastos."
+const val confirmAlertDialogText1 = "¿Estas seguro de querer eliminar a"
+const val confirmAlertDialogText2 = "?, Este cambio será permanente, y no podrá volverse atras. "
+const val titleConfirmAlertDialogText = "¿Estas seguro?"
+const val ok = "Ok"
+const val cancel = "Cancelar"
 
 
 

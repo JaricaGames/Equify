@@ -23,7 +23,7 @@ interface PersonNameDao {
     @Query(value = "DELETE FROM peopleTable WHERE idGroupName like :idGroupName ")
     suspend fun deletePersonNameByIdGroup(idGroupName:Int)
 
-    //Metodo que borra una persona por idde grupo
+    //Metodo que borra una persona por id
     @Query(value = "DELETE FROM peopleTable WHERE idPerson like :idPerson ")
     suspend fun deletePersonNameByIdPerson(idPerson: Int)
 

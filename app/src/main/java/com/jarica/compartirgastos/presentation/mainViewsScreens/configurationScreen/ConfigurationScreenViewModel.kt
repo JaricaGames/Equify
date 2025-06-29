@@ -43,7 +43,7 @@ class ConfigurationScreenViewModel @Inject constructor(
     private val _showDialogConfirm = MutableLiveData<Boolean>()
     val showDialogConfirm: LiveData<Boolean> = _showDialogConfirm
 
-    var personSelectedModel:PersonModel? = null
+    private var personSelectedModel:PersonModel? = null
 
     val uiStateConfigurationScreen: StateFlow<MainUiState> =
         getPeopleNamesUseCase().map(MainUiState::Success)
@@ -89,6 +89,10 @@ class ConfigurationScreenViewModel @Inject constructor(
     }
 
     fun onConfirmDeletePerson() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            deletePersonById(personSelectedModel!!)
+        }
        // deletePersonById(personSelected)
          _showDialogConfirm.postValue(false)
     }

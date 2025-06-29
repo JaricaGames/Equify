@@ -146,6 +146,7 @@ fun ConfigurationScreen(
 
                 if (showDialogConfirm) {
                     AlertDialogConfirm(
+                        personSelected,
                         onDismiss = { configurationScreenViewModel.onDismiss() },
                         onConfirm = { configurationScreenViewModel.onConfirmDeletePerson() }
                     )
