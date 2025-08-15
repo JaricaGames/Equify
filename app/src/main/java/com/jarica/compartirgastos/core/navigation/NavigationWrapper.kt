@@ -145,7 +145,8 @@ fun NavigationWrapper(
                 navigateToCustomizeGroup = {navController.navigate(CustomizeGroupScreenObject)},
                 navigateToGroupScreen = {navController.navigate(MainScreenObject(
                     iDGroupName = iDGroupName
-                ))}
+                ))},
+                navigateToAddPeopleScreen = {navController.navigate(AddPeopleScreenFromMainObject)}
             )
         }
 

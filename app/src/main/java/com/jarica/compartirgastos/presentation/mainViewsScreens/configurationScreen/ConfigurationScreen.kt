@@ -65,6 +65,7 @@ fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     navigateToCustomizeGroup: () -> Unit,
     navigateToGroupScreen: () -> Unit,
+    navigateToAddPeopleScreen: () -> Unit
 ) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -135,6 +136,7 @@ fun ConfigurationScreen(
                     (uiStatePeopleGroupFragment as MainUiState.Success).peopleList,
                     navigateToCustomizeGroup,
                     navigateToGroupScreen,
+                    navigateToAddPeopleScreen
                 )
 
                 if (showDialogError) {
@@ -168,6 +170,7 @@ fun MainConfigurationScreen(
     peopleList: List<PersonModel>,
     navigateToCustomizeGroup: () -> Unit,
     navigateToMainScreen: () -> Unit,
+    navigateToAddPeopleScreen: () -> Unit,
 ) {
 
     configurationScreenViewModel.getGroupNameById(iDGroupName!!)
@@ -185,7 +188,7 @@ fun MainConfigurationScreen(
         Spacer(Modifier.height(20.dp))
         PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup)
         Spacer(Modifier.height(20.dp))
-        AdministrateGroupMembers()
+        AdministrateGroupMembers(navigateToAddPeopleScreen)
         Spacer(Modifier.height(20.dp))
         GroupMembers(peopleList, configurationScreenViewModel )
         Spacer(Modifier.height(20.dp))
@@ -307,7 +310,7 @@ fun ItemPeopleNameConfigurationScreen(
 }
 
 @Composable
-fun AdministrateGroupMembers() {
+fun AdministrateGroupMembers(navigateToAddPeopleScreen: () -> Unit) {
     Text(
         administratePeopleConfigurationText,
         fontFamily = rubik,
@@ -321,7 +324,8 @@ fun AdministrateGroupMembers() {
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
-            .padding(horizontal = 32.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp)
+            .clickable { navigateToAddPeopleScreen() },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

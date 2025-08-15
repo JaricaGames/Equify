@@ -59,6 +59,8 @@ const val deleteGroupText = "Borrar Grupo"
 
 //CustomizeGroupScreen
 const val customizeGroupScreenText = "Editar Grupo"
+const val labelCustomizeGroupScreenText = "Nuevo nombre"
+const val changeGroupName = "Modificar nombre"
 
 //AlertDialogConfigurationScreen
 const val mainAlertDialogText = "Ups"
