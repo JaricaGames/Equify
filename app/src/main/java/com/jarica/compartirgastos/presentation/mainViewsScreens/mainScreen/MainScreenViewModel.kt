@@ -1,6 +1,5 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +8,12 @@ import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostsUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.domain.paymentUseCases.GetPaymentsUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostsScreenUiState
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
@@ -30,12 +28,16 @@ class MainScreenViewModel @Inject constructor(
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     getCostsUseCase: GetCostsUseCase,
-    val preferences: Preferences
+    val preferences: Preferences,
+    getPaymentsUseCase: GetPaymentsUseCase
 
 ) : ViewModel() {
 
     private val _nameOfGroup = MutableLiveData<String>()
     val nameOfGroup: LiveData<String> = _nameOfGroup
+
+    private val _totalCost = MutableLiveData(0f)
+    val totalCost: LiveData<Float> = _totalCost
 
     private val _isResumeSelected = MutableLiveData<Boolean>()
     val isResumeSelected: LiveData<Boolean> = _isResumeSelected
@@ -64,89 +66,10 @@ class MainScreenViewModel @Inject constructor(
                 CostsScreenUiState.Loading
             )
 
-
-    //Array de pagos
-    private val arrayPaymentsToDoTheCounts = ArrayList<PaymentsToCountsModel>(emptyList())
-
-
-    fun doTheCounts(peopleList: List<PersonModel>) {
-
-
-        run personWhoPay@{
-            for (personWhoPay in peopleList) {
-
-                //Compruebo si el equity es menor que 0, en ese caso tiene que pagar
-
-                if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
-
-                    //Calculo a quien le tiene que pagar
-                    run personWhoReceive@{
-
-                        for (personWhoReceive in peopleList) {
-
-                            //Si lo que tiene que pagar es menor que lo que tiene recibe la otra persona
-                            if (personWhoPay.equity.toFloat().absoluteValue <= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
-
-                                arrayPaymentsToDoTheCounts.add(
-                                    PaymentsToCountsModel(
-                                        amount = personWhoPay.equity.toFloat().absoluteValue.toString(),
-                                        namePersonWhoPay = personWhoPay.name,
-                                        namePersonWhoReceive = personWhoReceive.name,
-                                    )
-                                )
-
-                                personWhoPay.equity = "0"
-                                personWhoReceive.equity =
-                                    (personWhoReceive.equity.toFloat().absoluteValue - personWhoPay.equity.toFloat().absoluteValue).toString()
-
-                                return@personWhoReceive
-                            }
-
-                            //Si lo que tiene que pagar es mayor que lo que tiene recibe la otra persona
-                            if (personWhoPay.equity.toFloat().absoluteValue >= personWhoReceive.equity.toFloat() && personWhoReceive.idPerson != personWhoPay.idPerson && personWhoReceive.equity.toFloat() > 0 && personWhoReceive.idGroupName == iDGroupName) {
-
-                                arrayPaymentsToDoTheCounts.add(
-                                    PaymentsToCountsModel(
-                                        amount = personWhoReceive.equity,
-                                        namePersonWhoPay = personWhoPay.name,
-                                        namePersonWhoReceive = personWhoReceive.name,
-                                    )
-                                )
-
-                                personWhoPay.equity =
-                                    "-" + (personWhoPay.equity.toFloat().absoluteValue - personWhoReceive.equity.toFloat()).toString()
-                                personWhoReceive.equity = "0"
-
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        for (persons in peopleList) {
-
-            if (persons.idGroupName == iDGroupName) {
-                viewModelScope.launch(Dispatchers.IO) {
-                    updatePersonUseCase(personModel = persons.copy(equity = "0"))
-                }
-            }
-        }
-
-    }
-
-
-    //Para comprbar si se han hecho als cuentas bien.
-    fun text() {
-        for (item in arrayPaymentsToDoTheCounts) {
-            Log.d(
-                "Nono",
-                item.namePersonWhoPay + " paga a " + item.namePersonWhoReceive + " la cantidad de = " + item.amount + " €"
-            )
-        }
-        arrayPaymentsToDoTheCounts.clear()
-    }
+    val uiStatePayments : StateFlow<PaymentsScreenUiState> = getPaymentsUseCase().map(
+        PaymentsScreenUiState::Success)
+        .catch { PaymentsScreenUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PaymentsScreenUiState.Loading)
 
 
     fun getGroupNameById(idGroup: Int) {
@@ -176,12 +99,7 @@ class MainScreenViewModel @Inject constructor(
 
     }
 
-
+    fun addCostToTotal(cost: Float) {
+        _totalCost.value = _totalCost.value?.plus(cost)
+    }
 }
-
-data class PaymentsToCountsModel(
-    val amount: String,
-    val namePersonWhoPay: String,
-    val namePersonWhoReceive: String,
-
-)

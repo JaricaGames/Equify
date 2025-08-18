@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.costsUseCases.GetCostByIdPerson
+import com.jarica.compartirgastos.domain.costsUseCases.GetCostByIdPersonUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.DeleteGroupByIdUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
 import com.jarica.compartirgastos.domain.models.PersonModel
-import com.jarica.compartirgastos.domain.peopleUseCases.DeletePersonById
+import com.jarica.compartirgastos.domain.peopleUseCases.DeletePersonByIdUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +26,8 @@ class ConfigurationScreenViewModel @Inject constructor(
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val deleteGroupByIdUseCase: DeleteGroupByIdUseCase,
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
-    private val getCostByIdPerson: GetCostByIdPerson,
-    private val deletePersonById: DeletePersonById
+    private val getCostByIdPerson: GetCostByIdPersonUseCase,
+    private val deletePersonById: DeletePersonByIdUseCase
 
 ) : ViewModel() {
 

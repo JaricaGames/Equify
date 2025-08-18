@@ -26,6 +26,9 @@ const val payments = "Pagos"
 const val resume = "Resumen"
 const val doTheCount = "Echar cuentas"
 const val addPeople = "Añadir Persona"
+const val youOwe = "Debe: "
+const val theyOweyou = "Le deben: "
+const val totalCostText = "Total de Gasto: "
 
 //AddCostScreenObject
 const val descriptionPlaceHolder = "Descripción"
@@ -70,6 +73,10 @@ const val confirmAlertDialogText2 = "?, Este cambio será permanente, y no podr�
 const val titleConfirmAlertDialogText = "¿Estas seguro?"
 const val ok = "Ok"
 const val cancel = "Cancelar"
+
+//DoTheCountsScreen
+const val exportArrayListDoTheCountsText = "Exportar PDF"
+const val exportArrayListDoTheCountsLargeText = "Exporta el resumen en un PDF, donde se indica claramente cuanto debe cada miembro y a quien le tiene que pagar"
 
 
 

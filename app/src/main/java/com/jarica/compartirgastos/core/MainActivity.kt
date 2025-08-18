@@ -14,6 +14,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.addPayScreen.Add
 import com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments.CustomizeGroupScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
     private val editCostScreenViewModel: EditCostScreenViewModel by viewModels()
     private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
     private val customizeGroupScreenViewModel: CustomizeGroupScreenViewModel by viewModels()
+    private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,7 +52,8 @@ class MainActivity : ComponentActivity() {
                     addPaymentScreenViewModel,
                     editCostScreenViewModel,
                     configurationScreenViewModel,
-                    customizeGroupScreenViewModel
+                    customizeGroupScreenViewModel,
+                    doTheCountsScreenViewModel
                 )
             }
         }

@@ -107,7 +107,8 @@ fun ConfigurationScreen(
                                     .clip(
                                         shape = CircleShape
                                     )
-                                    .size(40.dp), onClick = {
+                                    .size(40.dp),
+                                onClick = {
                                     navigateToGroupScreen()
 
                                 }) {

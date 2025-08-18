@@ -44,5 +44,9 @@ data object ConfigurationScreenObject
 @Serializable
 data object CustomizeGroupScreenObject
 
+@Serializable
+data object DoTheCountsObject
+
+
 
 

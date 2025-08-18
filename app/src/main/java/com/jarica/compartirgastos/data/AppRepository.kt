@@ -56,6 +56,7 @@ class AppRepository @Inject constructor(
         return groupNameDao.getGroupsMembersById(id)
     }
 
+    //Metodo que actualiza algun valor del grupo (ej:nombre)
     suspend fun updateGroup(groupNameModel: GroupNameModel){
         return groupNameDao.updateGroupName(
             GroupNameEntity(
@@ -223,7 +224,6 @@ class AppRepository @Inject constructor(
             )
         )
     }
-
 
 
 }

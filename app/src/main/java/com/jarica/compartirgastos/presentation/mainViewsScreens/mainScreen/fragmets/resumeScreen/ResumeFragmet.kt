@@ -28,8 +28,12 @@ import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import com.jarica.compartirgastos.presentation.ui.theme.Black
+import com.jarica.compartirgastos.presentation.ui.theme.Green
+import com.jarica.compartirgastos.presentation.ui.theme.Red
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theyOweyou
+import com.jarica.compartirgastos.presentation.ui.youOwe
 import kotlin.math.absoluteValue
 
 @Composable
@@ -95,21 +99,17 @@ fun ItemPeopleName(item: PersonModel) {
     ) {
 
         Text(item.name, color = Black, fontFamily = rubik,
-                fontSize = 12.sp,
+                fontSize = 13.sp,
             fontWeight = FontWeight.W300)
         Spacer(modifier = Modifier.weight(1f))
+
         if (item.equity.toFloat() >= 0f) {
             Row {
                 Text(
-                    "%.2f".format(item.equity.toFloat()),
-                    color = Black,
+                    theyOweyou + "%.2f".format(item.equity.toFloat()) + " €" ,
+                    color = Green,
                     fontFamily = rubik,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W300
-                )
-                Text(
-                    " €", color = Black, fontFamily = rubik,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     fontWeight = FontWeight.W300
                 )
             }
@@ -117,17 +117,16 @@ fun ItemPeopleName(item: PersonModel) {
         } else {
             Row {
                 Text(
-                    "- ", color = Black, fontFamily = rubik, fontSize = 12.sp,
+                    youOwe+ "- ", color = Red, fontFamily = rubik, fontSize = 13.sp,
                     fontWeight = FontWeight.W300
                 )
                 Text(
-                    "%.2f".format(item.equity.toFloat().absoluteValue),
-                    color = Black,
+                    "%.2f".format(item.equity.toFloat().absoluteValue) + " €",
+                    color = Red,
                     fontFamily = rubik,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     fontWeight = FontWeight.W300
                 )
-                Text(" €", color = Black, fontFamily = rubik)
             }
         }
 

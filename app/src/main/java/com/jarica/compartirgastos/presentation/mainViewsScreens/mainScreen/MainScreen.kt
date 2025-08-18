@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeFragment
@@ -67,6 +68,8 @@ fun MainScreen(
     navigateToAddPayScreen: () -> Unit,
     navigateToEditCost: (CostModel) -> Unit,
     navigateToConfiguration: () -> Unit,
+    navigateToDoTheCounts: () -> Unit,
+    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
@@ -113,7 +116,8 @@ fun MainScreen(
                 actions = {
                     IconButton(
                         modifier = Modifier
-                            .size(40.dp), onClick = {
+                            .size(40.dp),
+                        onClick = {
                             navigateToConfiguration()
                         }) {
                         Icon(
@@ -136,11 +140,13 @@ fun MainScreen(
             mainScreenViewModel,
             paddingValues,
             nameOfGroup,
-            uiStatePeopleGroupFragment,
+            doTheCountsScreenViewModel,
             isResumeSelected,
             isCostSelected,
             navigateToAddPayScreen,
-            navigateToEditCost
+            navigateToEditCost,
+            navigateToDoTheCounts,
+            uiStatePeopleGroupFragment
         )
     }
 
@@ -156,11 +162,13 @@ fun MainView(
     mainScreenViewModel: MainScreenViewModel,
     paddingValues: PaddingValues,
     nameOfGroup: String,
-    uiStatePeopleGroupFragment: MainUiState,
+    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     isResumeSelected: Boolean,
     isCostSelected: Boolean,
     navigateToAddPayScreen: () -> Unit,
-    navigateToEditCost: (CostModel) -> Unit
+    navigateToEditCost: (CostModel) -> Unit,
+    navigateToDoTheCounts: () -> Unit,
+    uiStatePeopleGroupFragment: MainUiState
 ) {
 
     Column(
@@ -168,7 +176,7 @@ fun MainView(
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
             .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(Modifier.height(100.dp))
@@ -179,9 +187,11 @@ fun MainView(
         ActionsBoxes(
             mainScreenViewModel,
             navigateToAddCostScreen,
-            uiStatePeopleGroupFragment,
+            doTheCountsScreenViewModel,
             navigateToAddPeopleFromGroup,
-            navigateToAddPayScreen
+            navigateToAddPayScreen,
+            navigateToDoTheCounts,
+            uiStatePeopleGroupFragment
         )
         Spacer(Modifier.height(16.dp))
 
@@ -386,9 +396,11 @@ fun ChooseScreen(
 fun ActionsBoxes(
     mainScreenViewModel: MainScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
-    peopleList: MainUiState,
+    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToAddPayScreen: () -> Unit,
+    navigateToDoTheCounts: () -> Unit,
+    peopleList: MainUiState,
 ) {
 
     Row(
@@ -525,6 +537,7 @@ fun ActionsBoxes(
                     .background(Black)
                     .size(70.dp)
                     .clickable {
+                        navigateToDoTheCounts()
                         when (peopleList) {
 
                             is MainUiState.Error -> {}
@@ -532,13 +545,13 @@ fun ActionsBoxes(
                             is MainUiState.Loading -> {}
 
                             is MainUiState.Success -> {
-                                mainScreenViewModel.doTheCounts((peopleList).peopleList)
-
+                                doTheCountsScreenViewModel.doTheCounts((peopleList).peopleList)
+                                navigateToDoTheCounts()
                             }
                         }
 
 
-                        mainScreenViewModel.text()
+                        //mainScreenViewModel.text()
                     }, contentAlignment = Alignment.Center
             ) {
 

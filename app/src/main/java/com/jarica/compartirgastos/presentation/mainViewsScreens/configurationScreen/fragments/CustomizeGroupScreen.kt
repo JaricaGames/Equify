@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.changeGroupName
 import com.jarica.compartirgastos.presentation.ui.customizeGroupScreenText
 import com.jarica.compartirgastos.presentation.ui.labelCustomizeGroupScreenText
@@ -46,59 +47,68 @@ import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomizeGroupScreen(customizeGroupScreenViewModel: CustomizeGroupScreenViewModel) {
+fun CustomizeGroupScreen(
+    customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
+    navigateToGroupScreen: () -> Unit
+) {
 
-    val newGroupNameToGroup: String by customizeGroupScreenViewModel.newGroupNameToGroup.observeAsState("")
+    val newGroupNameToGroup: String by customizeGroupScreenViewModel.newGroupNameToGroup.observeAsState(
+        ""
+    )
 
     Scaffold(
-    topBar = {
-        TopAppBar(
-            modifier = Modifier.padding(top = 16.dp),
-            colors = topAppBarColors(
-                containerColor = Transparent,
-                actionIconContentColor = Black,
-                navigationIconContentColor = Black
-            ),
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.padding(top = 16.dp),
+                colors = topAppBarColors(
+                    containerColor = Transparent,
+                    actionIconContentColor = Black,
+                    navigationIconContentColor = Black
+                ),
 
-            navigationIcon = {
-                IconButton(
-                    modifier = Modifier
-                        .clip(
-                            shape = CircleShape
-                        )
-                        .size(40.dp), onClick = {
-
-                    }) {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        painter = painterResource(R.drawable.arrow_back),
-                        contentDescription = "",
-                    )
-
-                }
-            },
-
-
-            actions = {
-
-                if (newGroupNameToGroup.isNotEmpty()) {
-                    Text(
-                        changeGroupName,
-                        fontFamily = rubik,
-                        fontWeight = FontWeight.Medium,
-                        color = Black,
+                navigationIcon = {
+                    IconButton(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .clickable {
+                            .clip(
+                                shape = CircleShape
+                            )
+                            .size(40.dp), onClick = {
 
-                            })
+                        }) {
+                        Icon(
+                            modifier = Modifier.size(25.dp),
+                            painter = painterResource(R.drawable.arrow_back),
+                            contentDescription = "",
+                        )
+
+                    }
+                },
+
+
+                actions = {
+
+                    if (newGroupNameToGroup.isNotEmpty()) {
+                        Text(
+                            changeGroupName,
+                            fontFamily = rubik,
+                            fontWeight = FontWeight.Medium,
+                            color = Black,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .clickable {
+                                    customizeGroupScreenViewModel.onEditGroupNameById(
+                                        iDGroupName!!,
+                                        newGroupNameToGroup
+                                    )
+                                    navigateToGroupScreen()
+                                })
+                    }
+
+                },
+                title = {
                 }
-
-            },
-            title = {
-            }
-        )
-    }
+            )
+        }
     ) { paddingValues ->
         CustomizeGroupMainScreen(
             paddingValues,
@@ -147,7 +157,9 @@ fun HeaderCustomizeGroupScreen(
 
     Spacer(Modifier.height(16.dp))
     TextField(
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
         value = newGroupNameToGroup,
         onValueChange = {
             customizeGroupScreenViewModel.onValueTextFieldChange(it)

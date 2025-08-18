@@ -22,6 +22,8 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScr
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments.CustomizeGroupScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments.CustomizeGroupScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreen
+import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreen
@@ -31,7 +33,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainS
 @Composable
 fun NavigationWrapper(
     newGroupViewModel: NewGroupViewModel,
-    groupViewModel: MainScreenViewModel,
+    mainScreenViewModel: MainScreenViewModel,
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
     groupScreenViewModel: GroupsScreenViewModel,
@@ -40,6 +42,7 @@ fun NavigationWrapper(
     editCostScreenViewModel: EditCostScreenViewModel,
     configurationScreenViewModel: ConfigurationScreenViewModel,
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
+    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -53,21 +56,41 @@ fun NavigationWrapper(
 
             GroupsScreen(
                 groupScreenViewModel,
-                navigateToMainScreen = { navController.navigate(MainScreenObject(iDGroupName)) },
-                navigateToInitialScreen = {navController.navigate(InitialScreenObject)}
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToInitialScreen = {
+                    navController.navigate(InitialScreenObject) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable<InitialScreenObject> {
-            InitialScreen(navigateToNewGroup = { navController.navigate(NewGroupScreenObject) })
+            InitialScreen(navigateToNewGroup = {
+                navController.navigate(NewGroupScreenObject) {
+                    launchSingleTop = true
+                }
+            })
         }
 
         composable<NewGroupScreenObject> {
 
             NewGroupScreen(
                 newGroupViewModel,
-                navigateToGroupsScreen = { navController.navigate(GroupsScreenObject) },
-                navigateToAddPeople = { idGroupName, groupName -> navController.navigate(AddPeopleScreenObject(idGroupName, groupName))}
+                navigateToGroupsScreen = {
+                    navController.navigate(GroupsScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToAddPeople = { idGroupName, groupName ->
+                    navController.navigate(
+                        AddPeopleScreenObject(idGroupName, groupName)
+                    ) { launchSingleTop = true }
+                }
             )
         }
 
@@ -77,18 +100,48 @@ fun NavigationWrapper(
 
             MainScreen(
                 groupScreen.iDGroupName,
-                groupViewModel,
-                navigateToGroupsScreen = { navController.navigate(GroupsScreenObject) },
-                navigateToAddCostScreen = {navController.navigate(AddCostScreenObject)},
-                navigateToAddPeopleFromGroup = {navController.navigate(AddPeopleScreenFromMainObject)},
-                navigateToAddPayScreen = { navController.navigate(AddPayScreenObject) },
-                navigateToEditCost = { costToEdit -> navController.navigate(EditCostScreenObject(
-                    idCost = costToEdit.idCost,
-                    amount = costToEdit.amount,
-                    description = costToEdit.description,
-                    personString = costToEdit.personString,
-                ))},
-                navigateToConfiguration = { navController.navigate(ConfigurationScreenObject)}
+                mainScreenViewModel,
+                navigateToGroupsScreen = {
+                    navController.navigate(GroupsScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToAddCostScreen = {
+                    navController.navigate(AddCostScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToAddPeopleFromGroup = {
+                    navController.navigate(
+                        AddPeopleScreenFromMainObject
+                    ) { launchSingleTop = true }
+                },
+                navigateToAddPayScreen = {
+                    navController.navigate(AddPayScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToEditCost = { costToEdit ->
+                    navController.navigate(
+                        EditCostScreenObject(
+                            idCost = costToEdit.idCost,
+                            amount = costToEdit.amount,
+                            description = costToEdit.description,
+                            personString = costToEdit.personString,
+                        )
+                    ) { launchSingleTop = true }
+                },
+                navigateToConfiguration = {
+                    navController.navigate(ConfigurationScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToDoTheCounts = {
+                    navController.navigate(DoTheCountsObject) {
+                        launchSingleTop = true
+                    }
+                },
+                doTheCountsScreenViewModel = doTheCountsScreenViewModel
             )
         }
 
@@ -98,8 +151,16 @@ fun NavigationWrapper(
 
             AddPeopleScreen(
                 addPeopleViewModel = addPeopleViewModel,
-                navigateToNewGroupScreen = { navController.navigate(NewGroupScreenObject) },
-                navigateToMainScreen = {navController.navigate(MainScreenObject(iDGroupName = addPeopleScreen.iDGroupName))},
+                navigateToNewGroupScreen = {
+                    navController.navigate(NewGroupScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName = addPeopleScreen.iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                },
                 idGroupName = addPeopleScreen.iDGroupName,
                 groupName = addPeopleScreen.groupName!!
             )
@@ -108,26 +169,41 @@ fun NavigationWrapper(
         composable<AddCostScreenObject> {
             AddCostScreen(
                 addCostViewModel,
-                navigateToMainScreen = { navController.navigate(MainScreenObject(iDGroupName)) }
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
 
         composable<AddPayScreenObject> {
-            AddPaymentScreen(addPaymentScreenViewModel)
+            AddPaymentScreen(
+                addPaymentScreenViewModel,
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                })
+
         }
 
 
         composable<AddPeopleScreenFromMainObject> {
             AddPeopleScreenFromMain(
                 addPeopleScreenFromMainViewModel,
-                navigateToMainScreen = { navController.navigate(MainScreenObject(iDGroupName))}
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable<EditCostScreenObject> { backStackEntry ->
 
-            val editCostScreen : EditCostScreenObject = backStackEntry.toRoute()
+            val editCostScreen: EditCostScreenObject = backStackEntry.toRoute()
 
             EditCostScreen(
                 idCost = editCostScreen.idCost,
@@ -135,25 +211,66 @@ fun NavigationWrapper(
                 description = editCostScreen.description,
                 personString = editCostScreen.personString,
                 editCostScreenViewModel = editCostScreenViewModel,
-                navigateToMainScreen = {navController.navigate(MainScreenObject(iDGroupName))}
+                navigateToMainScreen = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable<ConfigurationScreenObject> {
             ConfigurationScreen(
                 configurationScreenViewModel,
-                navigateToCustomizeGroup = {navController.navigate(CustomizeGroupScreenObject)},
-                navigateToGroupScreen = {navController.navigate(MainScreenObject(
-                    iDGroupName = iDGroupName
-                ))},
-                navigateToAddPeopleScreen = {navController.navigate(AddPeopleScreenFromMainObject)}
+                navigateToCustomizeGroup = {
+                    navController.navigate(CustomizeGroupScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToGroupScreen = {
+                    navController.navigate(
+                        MainScreenObject(
+                            iDGroupName = iDGroupName
+                        )
+                    ) { launchSingleTop = true }
+                },
+                navigateToAddPeopleScreen = {
+                    navController.navigate(AddPeopleScreenFromMainObject) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable<CustomizeGroupScreenObject> {
-            CustomizeGroupScreen(customizeGroupScreenViewModel)
+            CustomizeGroupScreen(
+                customizeGroupScreenViewModel,
+                navigateToGroupScreen = {
+                    navController.navigate(
+                        MainScreenObject(
+                            iDGroupName = iDGroupName
+                        )
+                    ) { launchSingleTop = true }
+                },
+            )
 
         }
+
+        composable<DoTheCountsObject> {
+            DoTheCountsScreen(
+                doTheCountsScreenViewModel,
+                navigateToGroupScreen = {
+                    navController.navigate(
+                        MainScreenObject(
+                            iDGroupName = iDGroupName
+                        )
+                    )
+                    { launchSingleTop = true }
+                },
+                mainScreenViewModel = mainScreenViewModel
+            )
+        }
+
     }
 }
 

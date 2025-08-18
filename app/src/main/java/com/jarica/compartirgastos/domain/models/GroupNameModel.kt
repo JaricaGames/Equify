@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class GroupNameModel (
     val idGroupName: Int = System.currentTimeMillis().hashCode(),
-    val groupName: String
+    var groupName: String
 ) : Parcelable

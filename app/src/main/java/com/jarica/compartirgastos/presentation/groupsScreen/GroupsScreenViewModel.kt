@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupsScreenViewModel @Inject constructor(
+class  GroupsScreenViewModel @Inject constructor(
     getGroupNamesUseCase: GetGroupNamesUseCase
 ): ViewModel(){
 

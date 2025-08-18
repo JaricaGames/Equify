@@ -58,7 +58,10 @@ import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPaymentScreen(addPaymentScreenViewModel: AddPaymentScreenViewModel) {
+fun AddPaymentScreen(
+    addPaymentScreenViewModel: AddPaymentScreenViewModel,
+    navigateToMainScreen: () -> Unit
+) {
 
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -136,6 +139,8 @@ fun AddPaymentScreen(addPaymentScreenViewModel: AddPaymentScreenViewModel) {
                                         .clickable {
                                             addPaymentScreenViewModel.addPayment(personWhoPay, personWhoReceive, amountText)
                                             addPaymentScreenViewModel.updatePersons(personWhoPay, personWhoReceive, amountText)
+                                            addPaymentScreenViewModel.clearTexts()
+                                            navigateToMainScreen()
                                         },
                                     textAlign = TextAlign.End,
                                     fontSize = 16.sp,

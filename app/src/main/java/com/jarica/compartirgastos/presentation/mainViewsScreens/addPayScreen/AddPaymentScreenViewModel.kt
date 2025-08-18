@@ -95,7 +95,6 @@ class AddPaymentScreenViewModel @Inject constructor(
     fun addPayment(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-
             insertPaymentUseCase(paymentsModel = PaymentsModel(
                 idPayment = null,
                 amount = amountText,
@@ -104,10 +103,11 @@ class AddPaymentScreenViewModel @Inject constructor(
                 idGroup = personWhoPay.idGroupName
             )  )
         }
+
+
     }
 
     fun updatePersons(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
-
 
         personWhoPay.equity = (personWhoPay.equity.toFloat() + amountText.toFloat()).toString()
         personWhoReceive.equity = (personWhoReceive.equity.toFloat() - amountText.toFloat()).toString()
@@ -116,6 +116,13 @@ class AddPaymentScreenViewModel @Inject constructor(
             updatePersonUseCase(personWhoReceive)
             updatePersonUseCase(personWhoPay)
         }
+
+    }
+
+    fun clearTexts() {
+        _amountText.value = ""
+        _personWhoPayText.value = ""
+        _personWhoReceiveText.value = ""
 
     }
 

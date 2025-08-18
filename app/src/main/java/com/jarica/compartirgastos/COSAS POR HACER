@@ -2,15 +2,11 @@
 ------------------------------
 POR HACER
 
-terminar ventana configuracion -  modificar el nombre del grupo
-
-pestaña de pagos
-
-poner un gasto total
-
 HACER VENTANA DE ECHAR CUENTAS
 
 CREAR PDF CON LAS CUENTAS PARA PODER COMPARTIR
+
+BORRAR TODOS LOS COSTOS y PAYMENTS TO DO COUNTS CUANDO SE FINALIcen LAS CUENTAS
 
 COMPROBAR LAS PILAS DE NAVEGACION
 
@@ -49,4 +45,10 @@ AÑADIR LOS PAGOS A LA BBDD
 HACER LA CHOOSE BOX PARA QUE SE VEAN LAS PANTALLAS DE PAGOS -------- DONE
 
 QUITAR LOS DECIMALES EN LA PESTAÑA RESUMEN -------- DONE
+
+terminar ventana configuracion -  modificar el nombre del grupo  ------ DONE
+
+pestaña de pagos ----- DONE
+
+poner un gasto total ----- DONE
 ------------------------------

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainS
 import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.totalCostText
 
 @Composable
 fun CostFragment(
@@ -33,6 +35,8 @@ fun CostFragment(
     mainScreenViewModel: MainScreenViewModel,
     navigateToEditCost: (CostModel) -> Unit
 ) {
+
+    val totalCost: Float by mainScreenViewModel.totalCost.observeAsState(0f)
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
@@ -57,10 +61,47 @@ fun CostFragment(
                 navigateToEditCost
             )
 
+            TotalCostComponent(
+                totalCost,
+            )
+
+
         }
 
     }
 
+}
+
+@Composable
+fun TotalCostComponent(
+    totalCost: Float,
+) {
+
+    Row(
+        modifier = Modifier
+            .background(White)
+            .padding(horizontal = 32.dp, vertical = 8.dp)
+            .clickable {
+            }
+        ,
+        horizontalArrangement = Arrangement.End
+    ) {
+
+        Text(
+            totalCostText,
+            color = Black,
+            fontFamily = rubik,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.W500
+        )
+        Text(" $totalCost €",
+            color = Black,
+            fontFamily = rubik,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.W500
+        )
+
+    }
 }
 
 @Composable
@@ -74,6 +115,7 @@ fun CostsList(
     LazyColumn {
         items(costList) { cost ->
             if (cost.idGroup == idGroup) {
+                mainScreenViewModel.addCostToTotal(cost.amount)
                 ItemCost(cost, mainScreenViewModel, navigateToEditCost)
                 Spacer(modifier = Modifier.size(8.dp))
             }
@@ -104,21 +146,15 @@ fun ItemCost(
             item.description,
             color = Black,
             fontFamily = rubik,
-            fontSize = 12.sp,
+            fontSize = 13.sp,
             fontWeight = FontWeight.W300
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            "%.2f".format(item.amount),
+            "%.2f".format(item.amount) + " €",
             color = Black,
             fontFamily = rubik,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.W300
-        )
-        Text(
-            " €", color = Black,
-            fontFamily = rubik,
-            fontSize = 12.sp,
+            fontSize = 13.sp,
             fontWeight = FontWeight.W300
         )
 
