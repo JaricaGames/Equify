@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScre
 
 import android.content.ContentResolver
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase
 ) : ViewModel() {
 
+
     private val _listOfPayments = MutableLiveData<ArrayList<PaymentsToCountsModel>>()
     val listOfPayments: LiveData<ArrayList<PaymentsToCountsModel>> = _listOfPayments
 
@@ -45,7 +47,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
     fun doTheCounts(peopleList: List<PersonModel>) {
 
-        //Array de pagos
+//Array de pagos
         val arrayPaymentsToDoTheCounts = ArrayList<PaymentsToCountsModel>(emptyList())
 
         // Copia las personas para no modificar la lista original.
@@ -105,6 +107,21 @@ class DoTheCountsScreenViewModel @Inject constructor(
             }
         }
 
+        // PONE TODOS LOS EQUITY EN 0
+        /*        for (persons in peopleList) {
+
+            if (persons.idGroupName == iDGroupName) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    updatePersonUseCase(personModel = persons.copy(equity = "0"))
+                }
+            }
+        }*/
+        for (item in arrayPaymentsToDoTheCounts) {
+            Log.d(
+                "Nono",
+                item.namePersonWhoPay + " paga a " + item.namePersonWhoReceive + " la cantidad de = " + item.amount + " €"
+            )
+        }
         _listOfPayments.value = arrayPaymentsToDoTheCounts
 
 
@@ -150,7 +167,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
             val sdf = SimpleDateFormat(pattern, locale)
             val currentDate = sdf.format(Date())
             val font = Font(Font.FontFamily.HELVETICA, 24f, Font.BOLD, BaseColor.BLACK)
-            val paragraph = Paragraph(groupNameCompanionObject + "   -   Fecha: $currentDate" , font)
+            val paragraph = Paragraph("$groupNameCompanionObject   -   Fecha: $currentDate", font)
             document.add(paragraph)
 
             //RELLENAR TABLA DE GASTOS
@@ -184,7 +201,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
 
         // Rellenar filas desde la lista
-        _listOfPayments.value?.forEachIndexed() { index, pago ->
+        listOfPayments.forEachIndexed() { index, pago ->
             // PAra hacer el borde a la fila de abajo comparamos el ultima indice del array
             if (index != listOfPayments.lastIndex) {
                 val cell1 = PdfPCell(Phrase(pago.namePersonWhoPay))
@@ -217,8 +234,9 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
                 val boldFontAmount =
                     Font(Font.FontFamily.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK)
-                val cell4 = PdfPCell(Phrase("%.2f".format(pago.amount.toFloat())  + " €", boldFontAmount))
-               // val cell4 = PdfPCell(Phrase(pago.amount + " €", boldFontAmount))
+                val cell4 =
+                    PdfPCell(Phrase("%.2f".format(pago.amount.toFloat()) + " €", boldFontAmount))
+                // val cell4 = PdfPCell(Phrase(pago.amount + " €", boldFontAmount))
                 cell4.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 cell4.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 cell3.setPadding(8f)
@@ -257,7 +275,8 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
                 val boldFontAmount =
                     Font(Font.FontFamily.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK)
-                val cell4 = PdfPCell(Phrase("%.2f".format(pago.amount.toFloat())  + " €", boldFontAmount))
+                val cell4 =
+                    PdfPCell(Phrase("%.2f".format(pago.amount.toFloat()) + " €", boldFontAmount))
                 cell4.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 cell4.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 cell4.setPadding(8f)
@@ -337,7 +356,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 titleCells.borderColorBottom = BaseColor.BLACK
                 table.addCell(titleCells)
 
-                val amountCells = PdfPCell(Phrase(cost.amount.toString()+ " €"))
+                val amountCells = PdfPCell(Phrase(cost.amount.toString() + " €"))
                 amountCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 amountCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 amountCells.setPadding(8f)
@@ -366,7 +385,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 cell1.borderColorBottom = BaseColor.BLACK
                 table.addCell(cell1)
 
-                val cell2 = PdfPCell(Phrase(cost.amount.toString()+ " €"))
+                val cell2 = PdfPCell(Phrase(cost.amount.toString() + " €"))
                 cell2.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 cell2.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 cell2.setPadding(8f)
@@ -391,9 +410,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         return table
     }
 
-
 }
-
 
 data class PaymentsToCountsModel(
     val amount: String,

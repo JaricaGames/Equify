@@ -51,7 +51,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragm
 import com.jarica.compartirgastos.presentation.ui.exportArrayListDoTheCountsLargeText
 import com.jarica.compartirgastos.presentation.ui.exportArrayListDoTheCountsText
 import com.jarica.compartirgastos.presentation.ui.noAppToOpenPDF
-import com.jarica.compartirgastos.presentation.ui.oweTo
+import com.jarica.compartirgastos.presentation.ui.oweToText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow2
@@ -101,7 +101,6 @@ fun DoTheCountsScreen(
             }
         }
     )
-
 
     Scaffold(
         topBar = {
@@ -209,7 +208,7 @@ fun MainViewDoTheCountsScreen(
             ) {
 
                 Text(
-                    item.namePersonWhoPay + oweTo + item.namePersonWhoReceive,
+                    item.namePersonWhoPay + oweToText + item.namePersonWhoReceive,
                     color = Black,
                     fontFamily = rubik,
                     fontSize = 13.sp,
