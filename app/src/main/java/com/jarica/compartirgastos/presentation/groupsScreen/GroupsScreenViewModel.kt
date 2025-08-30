@@ -3,6 +3,7 @@ package com.jarica.compartirgastos.presentation.groupsScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupNamesUseCase
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.groupNameCompanionObject
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,8 +18,9 @@ class  GroupsScreenViewModel @Inject constructor(
     getGroupNamesUseCase: GetGroupNamesUseCase
 ): ViewModel(){
 
-    fun onGroupSelected(idGroupName: Int) {
+    fun onGroupSelected(idGroupName: Int, groupName: String) {
         iDGroupName = idGroupName
+        groupNameCompanionObject = groupName
     }
 
     val uiStateGroupName: StateFlow<GroupUiState> = getGroupNamesUseCase().map(GroupUiState::Success)

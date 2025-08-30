@@ -11,16 +11,17 @@ composeBom = "2025.06.01"
 firebase-bom = "33.7.0"
 services-google = "4.4.2"
 crashlytics = "3.0.2"
-navigationCompose = "2.8.5"
+navigationCompose = "2.9.3"
 kotlinSerialization = "1.7.3"
-runtimeLivedata = "1.8.3"
+runtimeLivedata = "1.9.0"
 ksp = "2.1.0-1.0.29"
 hilt = "2.53"
 hilt-compiler = "1.2.0"
 room = "2.7.2"
 dataStorePreference = "1.1.7"
-corrutinas = "1.7.3"
+corrutinas = "1.8.1"
 kotlinParcelize = "1.8.10"
+itextg = "5.5.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,8 @@ kotlin-serialization-json = {module = "org.jetbrains.kotlinx:kotlinx-serializati
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 dataStorePreference = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStorePreference"}
+
+itextg = { module = "com.itextpdf:itextg", version.ref = "itextg" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

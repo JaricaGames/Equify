@@ -49,6 +49,7 @@ class MainScreenViewModel @Inject constructor(
     //------------ Variable que se usa para asber el grupo activo -------------------
     companion object {
         var iDGroupName: Int? = null
+        var groupNameCompanionObject: String? = null
     }
     //----------------------------------------------------------------------------------
 
@@ -101,5 +102,9 @@ class MainScreenViewModel @Inject constructor(
 
     fun addCostToTotal(cost: Float) {
         _totalCost.value = _totalCost.value?.plus(cost)
+    }
+
+    fun clearCosts() {
+        _totalCost.value = 0f
     }
 }

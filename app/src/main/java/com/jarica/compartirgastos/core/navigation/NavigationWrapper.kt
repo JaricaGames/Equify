@@ -246,11 +246,9 @@ fun NavigationWrapper(
             CustomizeGroupScreen(
                 customizeGroupScreenViewModel,
                 navigateToGroupScreen = {
-                    navController.navigate(
-                        MainScreenObject(
-                            iDGroupName = iDGroupName
-                        )
-                    ) { launchSingleTop = true }
+                    navController.navigate(MainScreenObject(iDGroupName = iDGroupName)) {
+                        launchSingleTop = true
+                    }
                 },
             )
 
@@ -261,11 +259,8 @@ fun NavigationWrapper(
                 doTheCountsScreenViewModel,
                 navigateToGroupScreen = {
                     navController.navigate(
-                        MainScreenObject(
-                            iDGroupName = iDGroupName
-                        )
-                    )
-                    { launchSingleTop = true }
+                        MainScreenObject(iDGroupName = iDGroupName)
+                    ) { launchSingleTop = true }
                 },
                 mainScreenViewModel = mainScreenViewModel
             )

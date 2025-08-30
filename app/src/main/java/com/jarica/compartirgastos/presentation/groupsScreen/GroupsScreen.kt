@@ -163,7 +163,7 @@ fun ItemGroupName(
             .background(White)
             .padding(horizontal = 32.dp, vertical = 16.dp)
             .clickable {
-                groupViewModel.onGroupSelected(group.idGroupName) // Guardame el grupo elegido
+                groupViewModel.onGroupSelected(group.idGroupName, group.groupName) // Guardame el grupo elegido
                 navigateToMainScreen(group.idGroupName) // navegamos a la pantalla del grupo elegido
                        },
         horizontalArrangement = Arrangement.Start

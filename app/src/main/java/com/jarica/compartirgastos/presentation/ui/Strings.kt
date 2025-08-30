@@ -77,6 +77,9 @@ const val cancel = "Cancelar"
 //DoTheCountsScreen
 const val exportArrayListDoTheCountsText = "Exportar PDF"
 const val exportArrayListDoTheCountsLargeText = "Exporta el resumen en un PDF, donde se indica claramente cuanto debe cada miembro y a quien le tiene que pagar"
+const val noAppToOpenPDF = "No hay app para abrir PDF"
+const val oweTo = " le debe a "
+
 
 
 

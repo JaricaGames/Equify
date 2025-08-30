@@ -83,6 +83,8 @@ dependencies {
     //corrutinas
     implementation(libs.corrutinas)
 
+    implementation(libs.itextg)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

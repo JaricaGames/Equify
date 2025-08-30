@@ -64,8 +64,6 @@ fun CostFragment(
             TotalCostComponent(
                 totalCost,
             )
-
-
         }
 
     }
@@ -112,7 +110,9 @@ fun CostsList(
     navigateToEditCost: (CostModel) -> Unit,
 ) {
 
+    mainScreenViewModel.clearCosts()
     LazyColumn {
+
         items(costList) { cost ->
             if (cost.idGroup == idGroup) {
                 mainScreenViewModel.addCostToTotal(cost.amount)
@@ -120,6 +120,7 @@ fun CostsList(
                 Spacer(modifier = Modifier.size(8.dp))
             }
         }
+
     }
 }
 
