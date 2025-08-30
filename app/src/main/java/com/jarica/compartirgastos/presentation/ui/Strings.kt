@@ -84,7 +84,6 @@ const val payToDoTheCountsText = "PAGOS PARA AJUSTAR CUENTAS"
 const val costListText = "LISTA DE GASTOS"
 const val titleText = "Título"
 const val toText = "De"
-
 const val noAppToOpenPDF = "No hay app para abrir PDF"
 const val oweTo = " le debe a "
 

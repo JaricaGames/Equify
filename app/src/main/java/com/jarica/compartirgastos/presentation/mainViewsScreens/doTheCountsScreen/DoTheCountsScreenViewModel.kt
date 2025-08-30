@@ -2,7 +2,6 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScre
 
 import android.content.ContentResolver
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,8 +20,15 @@ import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.groupNameCompanionObject
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.ui.amountText
+import com.jarica.compartirgastos.presentation.ui.costListText
+import com.jarica.compartirgastos.presentation.ui.dateText
+import com.jarica.compartirgastos.presentation.ui.oweToText
+import com.jarica.compartirgastos.presentation.ui.payForText
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow2RGB
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellowRGB
+import com.jarica.compartirgastos.presentation.ui.titleText
+import com.jarica.compartirgastos.presentation.ui.toText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -107,28 +113,12 @@ class DoTheCountsScreenViewModel @Inject constructor(
             }
         }
 
-        // PONE TODOS LOS EQUITY EN 0
-        /*        for (persons in peopleList) {
-
-            if (persons.idGroupName == iDGroupName) {
-                viewModelScope.launch(Dispatchers.IO) {
-                    updatePersonUseCase(personModel = persons.copy(equity = "0"))
-                }
-            }
-        }*/
-        for (item in arrayPaymentsToDoTheCounts) {
-            Log.d(
-                "Nono",
-                item.namePersonWhoPay + " paga a " + item.namePersonWhoReceive + " la cantidad de = " + item.amount + " €"
-            )
-        }
         _listOfPayments.value = arrayPaymentsToDoTheCounts
 
 
     }
 
     fun putEverythingToZero() {
-
         _listOfPersons.value!!.forEach { person ->
             if (person.idGroupName == iDGroupName) {
                 viewModelScope.launch(Dispatchers.IO) {
@@ -167,7 +157,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
             val sdf = SimpleDateFormat(pattern, locale)
             val currentDate = sdf.format(Date())
             val font = Font(Font.FontFamily.HELVETICA, 24f, Font.BOLD, BaseColor.BLACK)
-            val paragraph = Paragraph("$groupNameCompanionObject   -   Fecha: $currentDate", font)
+            val paragraph = Paragraph("$groupNameCompanionObject   -   $dateText: $currentDate", font)
             document.add(paragraph)
 
             //RELLENAR TABLA DE GASTOS
@@ -189,7 +179,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         val table = PdfPTable(4)
         //ENCABEZADO
         val boldFont = Font(Font.FontFamily.HELVETICA, 16f, Font.BOLD, BaseColor.BLACK)
-        val header = PdfPCell(Phrase("PAGOS PARA AJUSTES", boldFont))
+        val header = PdfPCell(Phrase(payForText, boldFont))
 
         header.colspan = 4
         header.horizontalAlignment = Element.ALIGN_CENTER
@@ -213,7 +203,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 cell1.borderColorBottom = BaseColor.BLACK
                 table.addCell(cell1)
 
-                val cell2 = PdfPCell(Phrase("le paga a"))
+                val cell2 = PdfPCell(Phrase(oweToText))
                 cell2.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 cell2.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 cell2.setPadding(8f)
@@ -255,7 +245,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 cell1.borderColorBottom = BaseColor.BLACK
                 table.addCell(cell1)
 
-                val cell2 = PdfPCell(Phrase("le paga a"))
+                val cell2 = PdfPCell(Phrase(oweToText))
                 cell2.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 cell2.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 cell2.setPadding(8f)
@@ -300,7 +290,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         //ENCABEZADO LISTA DE GASTOS
 
         val boldFont = Font(Font.FontFamily.HELVETICA, 16f, Font.BOLD, BaseColor.BLACK)
-        val header = PdfPCell(Phrase("LISTA DE GASTOS", boldFont))
+        val header = PdfPCell(Phrase(costListText, boldFont))
 
         header.colspan = 3
         header.horizontalAlignment = Element.ALIGN_CENTER
@@ -312,35 +302,35 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
         // ENCABEZADOS TITULOS ED COLUMNAS
 
-        val cell1 = PdfPCell(Phrase("Título"))
-        cell1.horizontalAlignment = PdfPCell.ALIGN_CENTER
-        cell1.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-        cell1.setPadding(8f)
-        cell1.border = PdfPCell.NO_BORDER
-        cell1.backgroundColor = DarkYellow2RGB
-        cell1.borderWidthBottom = 1f
-        cell1.borderColorBottom = BaseColor.BLACK
-        table.addCell(cell1)
+        val titleCell = PdfPCell(Phrase(titleText))
+        titleCell.horizontalAlignment = PdfPCell.ALIGN_CENTER
+        titleCell.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+        titleCell.setPadding(8f)
+        titleCell.border = PdfPCell.NO_BORDER
+        titleCell.backgroundColor = DarkYellow2RGB
+        titleCell.borderWidthBottom = 1f
+        titleCell.borderColorBottom = BaseColor.BLACK
+        table.addCell(titleCell)
 
-        val cell2 = PdfPCell(Phrase("Cantidad"))
-        cell2.horizontalAlignment = PdfPCell.ALIGN_CENTER
-        cell2.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-        cell2.setPadding(8f)
-        cell2.border = PdfPCell.NO_BORDER
-        cell2.backgroundColor = DarkYellow2RGB
-        cell2.borderWidthBottom = 1f
-        cell2.borderColorBottom = BaseColor.BLACK
-        table.addCell(cell2)
+        val amountCell = PdfPCell(Phrase(amountText))
+        amountCell.horizontalAlignment = PdfPCell.ALIGN_CENTER
+        amountCell.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+        amountCell.setPadding(8f)
+        amountCell.border = PdfPCell.NO_BORDER
+        amountCell.backgroundColor = DarkYellow2RGB
+        amountCell.borderWidthBottom = 1f
+        amountCell.borderColorBottom = BaseColor.BLACK
+        table.addCell(amountCell)
 
-        val cell3 = PdfPCell(Phrase("De"))
-        cell3.horizontalAlignment = PdfPCell.ALIGN_CENTER
-        cell3.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-        cell3.setPadding(8f)
-        cell3.border = PdfPCell.NO_BORDER
-        cell3.backgroundColor = DarkYellow2RGB
-        cell3.borderWidthBottom = 1f
-        cell3.borderColorBottom = BaseColor.BLACK
-        table.addCell(cell3)
+        val toCell = PdfPCell(Phrase(toText))
+        toCell.horizontalAlignment = PdfPCell.ALIGN_CENTER
+        toCell.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+        toCell.setPadding(8f)
+        toCell.border = PdfPCell.NO_BORDER
+        toCell.backgroundColor = DarkYellow2RGB
+        toCell.borderWidthBottom = 1f
+        toCell.borderColorBottom = BaseColor.BLACK
+        table.addCell(toCell)
 
 
         // Rellenar filas desde la lista
@@ -376,32 +366,32 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
             } else {
 
-                val cell1 = PdfPCell(Phrase(cost.description))
-                cell1.horizontalAlignment = PdfPCell.ALIGN_CENTER
-                cell1.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-                cell1.setPadding(8f)
-                cell1.border = PdfPCell.NO_BORDER
-                cell1.borderWidthBottom = 3f
-                cell1.borderColorBottom = BaseColor.BLACK
-                table.addCell(cell1)
+                val titleCells = PdfPCell(Phrase(cost.description))
+                titleCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
+                titleCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+                titleCells.setPadding(8f)
+                titleCells.border = PdfPCell.NO_BORDER
+                titleCells.borderWidthBottom = 3f
+                titleCells.borderColorBottom = BaseColor.BLACK
+                table.addCell(titleCells)
 
-                val cell2 = PdfPCell(Phrase(cost.amount.toString() + " €"))
-                cell2.horizontalAlignment = PdfPCell.ALIGN_CENTER
-                cell2.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-                cell2.setPadding(8f)
-                cell2.border = PdfPCell.NO_BORDER
-                cell2.borderWidthBottom = 3f
-                cell2.borderColorBottom = BaseColor.BLACK
-                table.addCell(cell2)
+                val amountCells = PdfPCell(Phrase(cost.amount.toString() + " €"))
+                amountCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
+                amountCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+                amountCells.setPadding(8f)
+                amountCells.border = PdfPCell.NO_BORDER
+                amountCells.borderWidthBottom = 3f
+                amountCells.borderColorBottom = BaseColor.BLACK
+                table.addCell(amountCells)
 
-                val cell3 = PdfPCell(Phrase(cost.personString))
-                cell3.horizontalAlignment = PdfPCell.ALIGN_CENTER
-                cell3.verticalAlignment = PdfPCell.ALIGN_MIDDLE
-                cell3.setPadding(8f)
-                cell3.border = PdfPCell.NO_BORDER
-                cell3.borderWidthBottom = 3f
-                cell3.borderColorBottom = BaseColor.BLACK
-                table.addCell(cell3)
+                val personWhoPayCells = PdfPCell(Phrase(cost.personString))
+                personWhoPayCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
+                personWhoPayCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
+                personWhoPayCells.setPadding(8f)
+                personWhoPayCells.border = PdfPCell.NO_BORDER
+                personWhoPayCells.borderWidthBottom = 3f
+                personWhoPayCells.borderColorBottom = BaseColor.BLACK
+                table.addCell(personWhoPayCells)
 
 
             }
