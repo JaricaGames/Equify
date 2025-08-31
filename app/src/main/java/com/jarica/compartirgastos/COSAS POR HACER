@@ -2,17 +2,13 @@
 ------------------------------
 POR HACER
 
-CREAR PDF CON LAS CUENTAS PARA PODER COMPARTIR - pentdiente de hacer tabla de Gastos (meter todos los String en el archivo de Strings)
-
-BORRAR TODOS LOS COSTOS y PAYMENTS TO DO COUNTS CUANDO SE FINALIcen LAS CUENTAS
+ANUNCIOS
 
 COMPROBAR LAS PILAS DE NAVEGACION
 
 CREAR SPLASH SCREEN
 
 MEJORAR LAS VISUAL
-
-ANUNCIOS
 
 /////   lanzamiento a produccion   ///////
 
@@ -51,4 +47,10 @@ pestaña de pagos ----- DONE
 poner un gasto total ----- DONE
 
 HACER VENTANA DE ECHAR CUENTAS ----- DONE
+
+CREAR PDF CON LAS CUENTAS PARA PODER COMPARTIR - pentdiente de hacer tabla de Gastos (meter todos los String en el archivo de Strings)  ------- DONE
+
+CREAR NUEVO GRUPO EN LA VENTANA DE GRUPOS, Y PODER BORRAR GRUPOS --------- DONE
+
+
 ------------------------------

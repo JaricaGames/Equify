@@ -65,6 +65,11 @@ fun NavigationWrapper(
                     navController.navigate(InitialScreenObject) {
                         launchSingleTop = true
                     }
+                },
+                navigateToNewGroup = {
+                    navController.navigate(NewGroupScreenObject) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }

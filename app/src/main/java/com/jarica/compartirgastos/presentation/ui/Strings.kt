@@ -38,6 +38,7 @@ const val saveCost = "Guardar"
 
 //GroupsScreen
 const val groupsText = "Grupos"
+const val addNewGroupText = "Crear nuevo grupo"
 
 //AddPaymentScreen
 const val addPayment = "Añadir Pago"

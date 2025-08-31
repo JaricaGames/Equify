@@ -122,7 +122,7 @@ fun EditCostScreen(
                                 }) {
                                 Icon(
                                     modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.delete),
+                                    painter = painterResource(R.drawable.delete_svgrepo),
                                     tint = Black,
                                     contentDescription = "",
 
@@ -166,7 +166,7 @@ fun MainViewEditCostScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(125.dp))
+        Spacer(modifier = Modifier.height(100.dp))
         Text(
             editCost,
             fontFamily = rubik,

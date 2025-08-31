@@ -180,11 +180,10 @@ fun MainConfigurationScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp, vertical = paddingValues.calculateTopPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(Modifier.height(125.dp))
         HeaderConfigurationScreen()
         Spacer(Modifier.height(20.dp))
         PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup)

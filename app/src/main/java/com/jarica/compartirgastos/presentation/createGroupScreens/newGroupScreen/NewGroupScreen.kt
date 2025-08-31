@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -30,7 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldNewGroupScreen
@@ -50,14 +53,12 @@ fun NewGroupScreen(
     navigateToAddPeople: (Int, String) -> Unit
 ) {
 
-
     val groupName: String by newGroupViewModel.groupName.observeAsState("")
 
     Scaffold(
         topBar = {
-
             TopAppBar(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,
@@ -125,12 +126,21 @@ fun MainViewNewGroupScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp, vertical = paddingValues.calculateTopPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.size(125.dp))
 
+        //Spacer(modifier = Modifier.size(125.dp))
+        Text(
+            labelTextFieldNewGroupScreen,
+            fontFamily = rubik,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(16.dp))
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = groupName,
