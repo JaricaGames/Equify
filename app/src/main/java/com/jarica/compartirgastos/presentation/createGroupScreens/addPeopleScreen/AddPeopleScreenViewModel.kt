@@ -79,6 +79,7 @@ class AddPeopleScreenViewModel @Inject constructor(
                 )
             }
         }
+        _personList.clear()
     }
 
     fun onBackPressed() {

@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -155,6 +156,10 @@ fun MainScreen(
             uiStatePeopleGroupFragment,
             onDoTheCountsClicked
         )
+        BackHandler {
+            // Aquí decides qué hacer al pulsar atrás
+            navigateToGroupsScreen()
+        }
     }
 
 
@@ -623,6 +628,7 @@ fun BannerAdViewMainScreen() {
         }
     )
 }
+
 
 
 

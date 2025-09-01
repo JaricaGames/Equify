@@ -103,7 +103,7 @@ fun ItemPeopleName(item: PersonModel) {
             fontWeight = FontWeight.W300)
         Spacer(modifier = Modifier.weight(1f))
 
-        if (item.equity.toFloat() >= 0f) {
+        if (item.equity.toFloat() > 0f) {
             Row {
                 Text(
                     theyOweyou + "%.2f".format(item.equity.toFloat()) + " €" ,
@@ -114,7 +114,8 @@ fun ItemPeopleName(item: PersonModel) {
                 )
             }
 
-        } else {
+        }
+        if (item.equity.toFloat() < 0f) {
             Row {
                 Text(
                     youOwe+ "- ", color = Red, fontFamily = rubik, fontSize = 13.sp,
@@ -123,6 +124,18 @@ fun ItemPeopleName(item: PersonModel) {
                 Text(
                     "%.2f".format(item.equity.toFloat().absoluteValue) + " €",
                     color = Red,
+                    fontFamily = rubik,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.W300
+                )
+            }
+        }
+        if (item.equity.toFloat() == 0f) {
+            Row {
+
+                Text(
+                    "%.2f".format(item.equity.toFloat().absoluteValue) + " €",
+                    color = Black,
                     fontFamily = rubik,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.W300

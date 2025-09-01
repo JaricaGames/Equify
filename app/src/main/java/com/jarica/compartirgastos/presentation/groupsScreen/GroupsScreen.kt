@@ -1,5 +1,6 @@
 package com.jarica.compartirgastos.presentation.groupsScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,9 +42,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.presentation.ui.cancel
@@ -149,8 +154,8 @@ fun GroupsScreen(
                             navigateToInitialScreen,
                             isDeleteGroupDialog
                         )
-
-                        //// BANNER GRANDE //////
+                        Spacer(modifier = Modifier.size(16.dp))
+                        BannerAdViewGroupScreen()
 
                     }
                 }
@@ -176,7 +181,7 @@ fun GroupList(
     ) {
 
         items(groupsList) { group ->
-            ItemGroupName(group, groupViewModel, navigateToMainScreen, navigateToInitialScreen, isDeleteGroupDialog)
+            ItemGroupName(group, groupViewModel, navigateToMainScreen, navigateToInitialScreen, isDeleteGroupDialog, groupsList)
             Spacer(modifier = Modifier.size(8.dp))
 
         }
@@ -190,6 +195,7 @@ fun ItemGroupName(
     navigateToMainScreen: (Int) -> Unit,
     navigateToInitialScreen: () -> Unit,
     isDeleteGroupDialog: Boolean,
+    groupsList: List<GroupNameModel>,
 ) {
 
     Row(
@@ -218,7 +224,8 @@ fun ItemGroupName(
                 .size(25.dp)
                 .clickable {
                     groupViewModel.onDeletedSelected(group, group.idGroupName)
-                    navigateToInitialScreen()
+                    if(groupsList.isEmpty())navigateToInitialScreen()
+
                 }
         )
     }
@@ -292,4 +299,20 @@ fun AlertDialogDeleteGroupConfirm(group: GroupNameModel, onDismiss: () -> Unit, 
         }
     )
 
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun BannerAdViewGroupScreen() {
+    AndroidView(
+        modifier = Modifier
+            .fillMaxWidth(),
+        factory = { context ->
+            AdView(context).apply {
+                setAdSize(AdSize.MEDIUM_RECTANGLE)
+                adUnitId = "ca-app-pub-4979320410432560/4688560090"
+                loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
 }
