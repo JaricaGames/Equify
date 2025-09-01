@@ -83,7 +83,11 @@ dependencies {
     //corrutinas
     implementation(libs.corrutinas)
 
+    //Itext
     implementation(libs.itextg)
+
+    //AdMob
+    implementation(libs.play.services.ads)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

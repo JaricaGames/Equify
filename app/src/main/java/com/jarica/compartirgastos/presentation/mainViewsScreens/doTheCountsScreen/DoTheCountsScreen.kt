@@ -66,6 +66,10 @@ fun DoTheCountsScreen(
     navigateToGroupScreen: () -> Unit,
     mainScreenViewModel: MainScreenViewModel,
 ) {
+
+
+    val context = LocalContext.current
+
     val listOfPayments by doTheCountsScreenViewModel.listOfPayments.observeAsState(arrayListOf())
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -79,14 +83,21 @@ fun DoTheCountsScreen(
         }
     }
 
-    val context = LocalContext.current
+
+
     val createPdfLauncher = rememberLauncherForActivityResult(
+
         contract = ActivityResultContracts.CreateDocument("application/pdf"),
         onResult = { uri: Uri? ->
             uri?.let {
 
                 // Crear el PDF
-                doTheCountsScreenViewModel.createPdf(context.contentResolver, it, listOfPayments, (uiStateCosts as CostsScreenUiState.Success).costsList,)
+                doTheCountsScreenViewModel.createPdf(
+                    context.contentResolver,
+                    it,
+                    listOfPayments,
+                    (uiStateCosts as CostsScreenUiState.Success).costsList
+                )
 
                 // Intent para abrirlo inmediatamente
                 val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -138,7 +149,8 @@ fun DoTheCountsScreen(
         MainViewDoTheCountsScreen(
             paddingValues,
             listOfPayments,
-            createPdfLauncher
+            createPdfLauncher,
+            doTheCountsScreenViewModel,
         )
 
     }
@@ -149,7 +161,8 @@ fun DoTheCountsScreen(
 fun MainViewDoTheCountsScreen(
     paddingValues: PaddingValues,
     listOfPayments: ArrayList<PaymentsToCountsModel>,
-    createPdfLauncher: ManagedActivityResultLauncher<String, Uri?>
+    createPdfLauncher: ManagedActivityResultLauncher<String, Uri?>,
+    doTheCountsScreenViewModel: DoTheCountsScreenViewModel
 ) {
 
     Column(
@@ -180,8 +193,7 @@ fun MainViewDoTheCountsScreen(
         )
         Spacer(Modifier.size(16.dp))
 
-        Button(onClick = {
-            groupNameCompanionObject?.let { createPdfLauncher.launch(it) }
+        Button(onClick = { groupNameCompanionObject?.let { createPdfLauncher.launch(it) }
         }) {
             Text(
                 exportArrayListDoTheCountsText,

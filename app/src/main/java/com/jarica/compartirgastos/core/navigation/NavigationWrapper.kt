@@ -1,6 +1,8 @@
 package com.jarica.compartirgastos.core.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -45,6 +47,7 @@ fun NavigationWrapper(
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
 ) {
 
+    val activity = LocalContext.current as? Activity
     val navController = rememberNavController()
 
     NavHost(
@@ -146,7 +149,14 @@ fun NavigationWrapper(
                         launchSingleTop = true
                     }
                 },
-                doTheCountsScreenViewModel = doTheCountsScreenViewModel
+                doTheCountsScreenViewModel = doTheCountsScreenViewModel,
+                onDoTheCountsClicked = {
+                    activity?.let {
+                        mainScreenViewModel.showAdThenNavigate(it) {
+                            navController.navigate("detail")
+                        }
+                    }
+                }
             )
         }
 
@@ -267,7 +277,7 @@ fun NavigationWrapper(
                         MainScreenObject(iDGroupName = iDGroupName)
                     ) { launchSingleTop = true }
                 },
-                mainScreenViewModel = mainScreenViewModel
+                mainScreenViewModel = mainScreenViewModel,
             )
         }
 

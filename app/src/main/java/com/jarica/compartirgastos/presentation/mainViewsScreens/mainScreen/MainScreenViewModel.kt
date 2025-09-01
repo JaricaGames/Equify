@@ -1,9 +1,16 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostsUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
@@ -14,6 +21,8 @@ import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostsScreenUiState
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -29,9 +38,56 @@ class MainScreenViewModel @Inject constructor(
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     getCostsUseCase: GetCostsUseCase,
     val preferences: Preferences,
-    getPaymentsUseCase: GetPaymentsUseCase
-
+    getPaymentsUseCase: GetPaymentsUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+
+    // ------------------- ADMOB -------------------------
+
+    private var interstitialAd: InterstitialAd? = null
+    private val _isAdLoaded = MutableStateFlow(false)
+    val isAdLoaded: StateFlow<Boolean> = _isAdLoaded
+
+    fun loadAd() {
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            context,
+            "ca-app-pub-4979320410432560/2157781438", // <-- ID de prueba
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad
+                    _isAdLoaded.value = true
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    interstitialAd = null
+                    _isAdLoaded.value = false
+                }
+            }
+        )
+    }
+
+    fun showAdThenNavigate(activity: Activity, onNavigate: () -> Unit) {
+        interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                interstitialAd = null
+                _isAdLoaded.value = false
+                loadAd() // recargar para el próximo
+                onNavigate()
+            }
+        }
+        if (interstitialAd != null) {
+            interstitialAd?.show(activity)
+        } else {
+            onNavigate()
+        }
+    }
+
+
+    // ------------------- ADMOB -------------------------
 
     private val _nameOfGroup = MutableLiveData<String>()
     val nameOfGroup: LiveData<String> = _nameOfGroup

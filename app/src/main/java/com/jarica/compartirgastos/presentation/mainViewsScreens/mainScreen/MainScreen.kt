@@ -1,5 +1,6 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
@@ -70,6 +75,7 @@ fun MainScreen(
     navigateToConfiguration: () -> Unit,
     navigateToDoTheCounts: () -> Unit,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
+    onDoTheCountsClicked: () -> Unit
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
@@ -146,7 +152,8 @@ fun MainScreen(
             navigateToAddPayScreen,
             navigateToEditCost,
             navigateToDoTheCounts,
-            uiStatePeopleGroupFragment
+            uiStatePeopleGroupFragment,
+            onDoTheCountsClicked
         )
     }
 
@@ -168,7 +175,8 @@ fun MainView(
     navigateToAddPayScreen: () -> Unit,
     navigateToEditCost: (CostModel) -> Unit,
     navigateToDoTheCounts: () -> Unit,
-    uiStatePeopleGroupFragment: MainUiState
+    uiStatePeopleGroupFragment: MainUiState,
+    onDoTheCountsClicked: () -> Unit
 ) {
 
     Column(
@@ -191,7 +199,8 @@ fun MainView(
             navigateToAddPeopleFromGroup,
             navigateToAddPayScreen,
             navigateToDoTheCounts,
-            uiStatePeopleGroupFragment
+            uiStatePeopleGroupFragment,
+            onDoTheCountsClicked
         )
         Spacer(Modifier.height(16.dp))
 
@@ -209,6 +218,8 @@ fun MainView(
                 PaymentsFragment(idGroup, mainScreenViewModel)
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
+        BannerAdViewMainScreen()
     }
 }
 
@@ -401,6 +412,7 @@ fun ActionsBoxes(
     navigateToAddPayScreen: () -> Unit,
     navigateToDoTheCounts: () -> Unit,
     peopleList: MainUiState,
+    onDoTheCountsClicked: () -> Unit,
 ) {
 
     Row(
@@ -537,7 +549,8 @@ fun ActionsBoxes(
                     .background(Black)
                     .size(70.dp)
                     .clickable {
-                        navigateToDoTheCounts()
+                        onDoTheCountsClicked()
+                      //  navigateToDoTheCounts()
                         when (peopleList) {
 
                             is MainUiState.Error -> {}
@@ -593,6 +606,22 @@ fun Header(nameOfGroup: String) {
             fontWeight = FontWeight.W600
         )
     }
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun BannerAdViewMainScreen() {
+    AndroidView(
+        modifier = Modifier
+            .fillMaxWidth(),
+        factory = { context ->
+            AdView(context).apply {
+                setAdSize(AdSize.FULL_BANNER)
+                adUnitId = "ca-app-pub-4979320410432560/4688560090"
+                loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
 }
 
 

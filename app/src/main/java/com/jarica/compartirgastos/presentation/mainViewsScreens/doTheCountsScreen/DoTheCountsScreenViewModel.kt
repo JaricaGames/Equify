@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.DarkYellowRGB
 import com.jarica.compartirgastos.presentation.ui.titleText
 import com.jarica.compartirgastos.presentation.ui.toText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.OutputStream
@@ -41,7 +43,8 @@ import kotlin.math.absoluteValue
 
 @HiltViewModel
 class DoTheCountsScreenViewModel @Inject constructor(
-    private val updatePersonUseCase: UpdatePersonUseCase
+    private val updatePersonUseCase: UpdatePersonUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
 
@@ -400,7 +403,10 @@ class DoTheCountsScreenViewModel @Inject constructor(
         return table
     }
 
+
 }
+
+
 
 data class PaymentsToCountsModel(
     val amount: String,
