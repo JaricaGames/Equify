@@ -118,7 +118,7 @@ fun ItemPeopleName(item: PersonModel) {
         if (item.equity.toFloat() < 0f) {
             Row {
                 Text(
-                    youOwe+ "- ", color = Red, fontFamily = rubik, fontSize = 13.sp,
+                    "$youOwe ", color = Red, fontFamily = rubik, fontSize = 13.sp,
                     fontWeight = FontWeight.W300
                 )
                 Text(

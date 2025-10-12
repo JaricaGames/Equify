@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.jarica.compartirgastos.presentation.SplashScreen.SplashScreen
+import com.jarica.compartirgastos.presentation.SplashScreen.SplashScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupScreen
@@ -45,13 +47,14 @@ fun NavigationWrapper(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
+    splashScreenViewModel: SplashScreenViewModel,
 ) {
 
     val activity = LocalContext.current as? Activity
     val navController = rememberNavController()
 
     NavHost(
-        navController = navController, startDestination = GroupsScreenObject
+        navController = navController, startDestination = SplashScreenObject
 
     ) {
 
@@ -145,7 +148,7 @@ fun NavigationWrapper(
                     }
                 },
                 navigateToDoTheCounts = {
-                    navController.navigate(DoTheCountsObject) {
+                    navController.navigate(DoTheCountsScreenObject) {
                         launchSingleTop = true
                     }
                 },
@@ -269,7 +272,7 @@ fun NavigationWrapper(
 
         }
 
-        composable<DoTheCountsObject> {
+        composable<DoTheCountsScreenObject> {
             DoTheCountsScreen(
                 doTheCountsScreenViewModel,
                 navigateToGroupScreen = {
@@ -278,6 +281,20 @@ fun NavigationWrapper(
                     ) { launchSingleTop = true }
                 },
                 mainScreenViewModel = mainScreenViewModel,
+            )
+        }
+
+        composable<SplashScreenObject> {
+            SplashScreen(
+                splashScreenViewModel,
+                navigateToGroupsScreen = {
+                    navController.navigate(GroupsScreenObject) {
+                        popUpTo(SplashScreenObject) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
             )
         }
 

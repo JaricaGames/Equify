@@ -24,6 +24,15 @@ val rubik = FontFamily(
     Font(R.font.rubiksemibolditalic, FontWeight.SemiBold, FontStyle.Italic)
 )
 
+val parkinsans = FontFamily(
+    Font(R.font.parkinsansmedium, FontWeight.Medium),
+    Font(R.font.parkinsansextrabold, FontWeight.ExtraBold),
+    Font(R.font.parkinsansbold, FontWeight.Bold),
+    Font(R.font.parkinsanslight, FontWeight.Light),
+    Font(R.font.parkinsansregular, FontWeight.Normal),
+    Font(R.font.parkinsanssemibold, FontWeight.SemiBold),
+)
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(

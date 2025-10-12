@@ -3,6 +3,7 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,9 +60,11 @@ import com.jarica.compartirgastos.presentation.ui.payments
 import com.jarica.compartirgastos.presentation.ui.resume
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
+import com.jarica.compartirgastos.presentation.ui.theme.DarkBlue
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
 import com.jarica.compartirgastos.presentation.ui.theme.White
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,17 +101,16 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(top = 16.dp),
                 colors = topAppBarColors(
-                    containerColor = Transparent,
-                    actionIconContentColor = Black,
-                    navigationIconContentColor = Black
+                    containerColor = DarkBlue,
+                    actionIconContentColor = White,
+                    navigationIconContentColor = White
                 ),
 
                 navigationIcon = {
                     IconButton(
                         modifier = Modifier
-                            .size(40.dp),
+                            .size(50.dp),
                         onClick = {
                             navigateToGroupsScreen()
                         }) {
@@ -123,7 +126,7 @@ fun MainScreen(
                 actions = {
                     IconButton(
                         modifier = Modifier
-                            .size(40.dp),
+                            .size(50.dp),
                         onClick = {
                             navigateToConfiguration()
                         }) {
@@ -187,15 +190,15 @@ fun MainView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        // .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(Modifier.height(100.dp))
+        Spacer(Modifier.height(70.dp))
         //HEADER
         Header(nameOfGroup)
-
+        Spacer(Modifier.height(16.dp))
         //BOXS DE SELECCIONAR ACCION
         ActionsBoxes(
             mainScreenViewModel,
@@ -421,61 +424,80 @@ fun ActionsBoxes(
 ) {
 
     Row(
-        Modifier.fillMaxWidth(),
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+            Column(
+                modifier = Modifier.padding(vertical = 8.dp)
+                    .weight(1f)
+                    .clip(shape = RoundedCornerShape(16.dp))
+                    .border(
+                        width = 1.dp,
+                        color = DarkOrange.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(16.dp)
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
 
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+                ) {
 
-            Box(
-                modifier = Modifier
-                    .clip(
-                        RoundedCornerShape(8.dp)
+                Box(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .clip(
+                            RoundedCornerShape(8.dp)
+                        )
+                        .background(White)
+                        .clickable {
+                            navigateToAddCostScreen()
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painterResource(R.drawable.moneycash),
+                        "",
+                        modifier = Modifier.size(40.dp),
+                        tint = DarkOrange
                     )
-                    .background(White)
-                    .size(70.dp)
-                    .clickable {
-                        navigateToAddCostScreen()
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painterResource(R.drawable.moneycash),
-                    "",
-                    modifier = Modifier.size(40.dp),
-                    tint = Black
+                }
+                Text(
+                    addCost,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.SemiBold,
+                    color = DarkOrange,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        fontSize = 11.sp,
+                        lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
+                    )
                 )
+                Spacer(Modifier.size(3.dp))
             }
-            Spacer(Modifier.size(3.dp))
-            Text(
-                addCost,
-                fontSize = 12.sp,
-                fontFamily = rubik,
-                fontWeight = FontWeight.Normal,
-                color = Black,
-                textAlign = TextAlign.Center
-            )
-        }
 
         // Box Añadir persona
 
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(vertical = 8.dp)
+                .weight(1f)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .border(
+                    width = 1.dp,
+                    color = DarkOrange.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(16.dp)
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Box(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
                     .background(White)
-                    .size(70.dp)
                     .clickable {
                         navigateToAddPeopleFromGroup()
                     },
@@ -484,78 +506,94 @@ fun ActionsBoxes(
                 Icon(
                     painterResource(R.drawable.people_add),
                     "",
-                    tint = Black,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = DarkOrange
                 )
             }
-            Spacer(Modifier.size(3.dp))
             Text(
                 addPeople,
-                fontSize = 12.sp,
-                fontFamily = rubik,
-                fontWeight = FontWeight.Normal,
-                color = Black,
-                textAlign = TextAlign.Center
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.SemiBold,
+                color = DarkOrange,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
+                )
             )
+            Spacer(Modifier.size(3.dp))
         }
 
         // Box Añadir Pago
 
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(vertical = 8.dp)
+                .weight(1f)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .border(
+                    width = 1.dp,
+                    color = DarkOrange.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(16.dp)
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
 
             Box(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
+                    .background(White)
                     .clickable {
                         navigateToAddPayScreen()
-                    }
-                    .background(White)
-                    .size(70.dp),
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painterResource(R.drawable.addpay),
                     "",
-                    tint = Black,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = DarkOrange
                 )
 
             }
             Spacer(Modifier.size(3.dp))
             Text(
                 addPay,
-                fontSize = 12.sp,
-                fontFamily = rubik,
-                fontWeight = FontWeight.Normal,
-                color = Black,
-                textAlign = TextAlign.Center
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.SemiBold,
+                color = DarkOrange,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
+                )
             )
+            Spacer(Modifier.size(3.dp))
         }
 
         // Box Echar cuentas
 
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(vertical = 8.dp)
+                .weight(1f)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .background(DarkOrange),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
 
             Box(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .clip(
-                        RoundedCornerShape(16.dp)
+                        RoundedCornerShape(8.dp)
                     )
-                    .background(Black)
-                    .size(70.dp)
                     .clickable {
                         onDoTheCountsClicked()
-                      //  navigateToDoTheCounts()
+                        //  navigateToDoTheCounts()
                         when (peopleList) {
 
                             is MainUiState.Error -> {}
@@ -576,19 +614,23 @@ fun ActionsBoxes(
                 Icon(
                     painterResource(R.drawable.arrowsclock),
                     "",
-                    tint = DarkYellow,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = White
                 )
             }
             Spacer(Modifier.size(3.dp))
             Text(
                 doTheCount,
-                fontSize = 12.sp,
-                fontFamily = rubik,
-                fontWeight = FontWeight.Normal,
-                color = Black,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.SemiBold,
+                color = White,
                 textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
+                )
             )
+            Spacer(Modifier.size(3.dp))
         }
 
 
@@ -600,14 +642,16 @@ fun Header(nameOfGroup: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 30.dp, horizontal = 30.dp),
+            .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
+            .background(color = DarkBlue)
+            .padding(vertical = 30.dp, horizontal = 40.dp),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
             nameOfGroup,
             fontSize = 30.sp,
-            color = Black,
-            fontFamily = rubik,
+            color = White,
+            fontFamily = parkinsans,
             fontWeight = FontWeight.W600
         )
     }

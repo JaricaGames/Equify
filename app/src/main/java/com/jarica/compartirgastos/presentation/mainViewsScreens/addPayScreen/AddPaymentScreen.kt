@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -89,7 +88,8 @@ fun AddPaymentScreen(
         PersonModel(idPerson = null, name = "", equity = "", idGroupName = 0)
     )
     val personWhoPay: PersonModel by addPaymentScreenViewModel.personWhoPay.observeAsState(
-        PersonModel(idPerson = null, name = "", equity = "", idGroupName = 0))
+        PersonModel(idPerson = null, name = "", equity = "", idGroupName = 0)
+    )
 
 
     when (uiAddPaymentState) {
@@ -103,7 +103,7 @@ fun AddPaymentScreen(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        modifier = Modifier.padding(top = 16.dp),
+                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                         colors = topAppBarColors(
                             containerColor = Transparent,
                             actionIconContentColor = Black,
@@ -111,19 +111,20 @@ fun AddPaymentScreen(
                         ),
 
                         navigationIcon = {
-                            IconButton(modifier = Modifier
-                                .clip(
-                                    shape = CircleShape
-                                )
-                                .size(40.dp), onClick = {
+                            IconButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                onClick = {
+                                    navigateToMainScreen()
+                                    addPaymentScreenViewModel.clearTexts()
 
-                            }) {
+                                }) {
                                 Icon(
                                     //añadir cliclable para ir a a la pantalla principal
                                     modifier = Modifier.size(25.dp),
                                     painter = painterResource(R.drawable.arrow_back),
                                     contentDescription = "",
-                                    )
+                                )
 
                             }
                         },
@@ -137,8 +138,16 @@ fun AddPaymentScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp)
                                         .clickable {
-                                            addPaymentScreenViewModel.addPayment(personWhoPay, personWhoReceive, amountText)
-                                            addPaymentScreenViewModel.updatePersons(personWhoPay, personWhoReceive, amountText)
+                                            addPaymentScreenViewModel.addPayment(
+                                                personWhoPay,
+                                                personWhoReceive,
+                                                amountText
+                                            )
+                                            addPaymentScreenViewModel.updatePersons(
+                                                personWhoPay,
+                                                personWhoReceive,
+                                                amountText
+                                            )
                                             addPaymentScreenViewModel.clearTexts()
                                             navigateToMainScreen()
                                         },
@@ -198,7 +207,16 @@ fun MainScreenAddPayment(
     ) {
 
         Spacer(Modifier.height(125.dp))
+        Text(
+            addPayment,
+            fontFamily = rubik,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
 
+        Spacer(Modifier.height(16.dp))
         // TEXTFIELD PAGADO POR
         Column(
             modifier = Modifier
@@ -218,6 +236,7 @@ fun MainScreenAddPayment(
                 "$payForPlaceHolder:      $personWhoPayText",
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 fontFamily = rubik,
+                fontSize = 12.sp,
                 color = Black
             )
             Spacer(modifier = Modifier.size(6.dp))
@@ -231,13 +250,17 @@ fun MainScreenAddPayment(
 
                 ) {
                     items(listOfPeople) { person ->
-                        Column(modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                addPaymentScreenViewModel.onPersonWhoPaySelected(person)
-                            }) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    addPaymentScreenViewModel.onPersonWhoPaySelected(person)
+                                }) {
                             if (person.idGroupName == iDGroupName && personWhoReceiveText != person.name) {
-                                Text(person.name, fontFamily = rubik, color = Black)
+                                Text(
+                                    person.name, fontFamily = rubik,
+                                    fontSize = 12.sp, color = Black
+                                )
                                 Spacer(modifier = Modifier.size(8.dp))
                             }
                         }
@@ -268,6 +291,7 @@ fun MainScreenAddPayment(
                 "$payToPlaceHolder:      $personWhoReceiveText",
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 fontFamily = rubik,
+                fontSize = 12.sp,
                 color = Black
             )
 
@@ -282,13 +306,17 @@ fun MainScreenAddPayment(
 
                 ) {
                     items(listOfPeople) { person ->
-                        Column(modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                addPaymentScreenViewModel.onPersonWhoReceiveSelected(person)
-                            }) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    addPaymentScreenViewModel.onPersonWhoReceiveSelected(person)
+                                }) {
                             if (person.idGroupName == iDGroupName && personWhoPayText != person.name) {
-                                Text(person.name, fontFamily = rubik, color = Black)
+                                Text(
+                                    person.name, fontFamily = rubik,
+                                    fontSize = 12.sp, color = Black
+                                )
                                 Spacer(modifier = Modifier.size(8.dp))
                             }
                         }
@@ -304,15 +332,23 @@ fun MainScreenAddPayment(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
+
             value = amountText,
             onValueChange = { addPaymentScreenViewModel.onAmountChange(it) },
             shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(amountPlaceHolder) },
+            placeholder = { Text(amountPlaceHolder,
+                fontFamily = rubik,
+                fontSize = 12.sp) },
             singleLine = true,
             maxLines = 1,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            suffix = { Text("€") },
-            textStyle = TextStyle(fontFamily = rubik),
+            suffix = { Text("€",
+                fontFamily = rubik,
+                fontSize = 12.sp,) },
+            textStyle = TextStyle(
+                fontFamily = rubik,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = White,
                 unfocusedLabelColor = Black,

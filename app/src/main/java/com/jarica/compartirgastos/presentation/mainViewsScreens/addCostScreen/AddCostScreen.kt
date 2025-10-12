@@ -90,7 +90,7 @@ fun AddCostScreen(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        modifier = Modifier.padding(top = 16.dp),
+                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                         colors = topAppBarColors(
                             containerColor = Transparent,
                             actionIconContentColor = Black,
@@ -173,7 +173,6 @@ fun MainViewAddCostScreen(
     listOfPeople: List<PersonModel>,
 
     ) {
-
 
     Column(
         modifier = Modifier

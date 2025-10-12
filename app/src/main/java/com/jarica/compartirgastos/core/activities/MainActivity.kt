@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.core
+package com.jarica.compartirgastos.core.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
+import androidx.core.view.WindowCompat
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
+import com.jarica.compartirgastos.presentation.SplashScreen.SplashScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.presentation.groupsScreen.GroupsScreenViewModel
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
     private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
     private val customizeGroupScreenViewModel: CustomizeGroupScreenViewModel by viewModels()
     private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
+    private val splashScreenViewModel: SplashScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,6 +45,9 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Para el caso de 3 botones, desactiva la protección del contraste
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightNavigationBars = true // O false, según el color de fondo
         setContent {
 
             LaunchedEffect(Unit) {
@@ -60,7 +66,8 @@ class MainActivity : ComponentActivity() {
                     editCostScreenViewModel,
                     configurationScreenViewModel,
                     customizeGroupScreenViewModel,
-                    doTheCountsScreenViewModel
+                    doTheCountsScreenViewModel,
+                    splashScreenViewModel
                 )
             }
         }

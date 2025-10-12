@@ -88,6 +88,11 @@ class ConfigurationScreenViewModel @Inject constructor(
         _showDialogConfirm.value = false
     }
 
+    fun clearTexts() {
+        _personSelected.value = ""
+        _nameOfGroup.value = ""
+    }
+
     fun onConfirmDeletePerson() {
 
         viewModelScope.launch(Dispatchers.IO) {

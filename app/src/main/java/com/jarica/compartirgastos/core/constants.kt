@@ -17,5 +17,8 @@ const val TAG_ADMOB = "AdViewModel"
 const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 const val APPLICATION_ID = "ca-app-pub-4979320410432560~5685962901"
 
+//SplashScreen
+const val SPLASHSCREEN_DURATION = 2000L
+
 
 

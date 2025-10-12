@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Necesario para AdMob -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".core.CompartirGastosApp"
@@ -18,10 +18,10 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4979320410432560~5685962901"/>
+            android:value="ca-app-pub-4979320410432560~5685962901" />
 
         <activity
-            android:name=".core.MainActivity"
+            android:name=".core.activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.CompartirGastos"
             tools:ignore="LockedOrientationActivity">
@@ -32,8 +32,6 @@
             </intent-filter>
         </activity>
     </application>
-
-
 
 
 </manifest>

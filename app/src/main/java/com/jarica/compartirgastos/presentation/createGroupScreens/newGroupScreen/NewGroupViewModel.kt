@@ -15,6 +15,7 @@ class NewGroupViewModel @Inject constructor(
     private val _groupName = MutableLiveData<String>()
     val groupName: LiveData<String> = _groupName
 
+
     //METODO DEL TEXTFIELD
     fun onValueTextFieldChange(text: String) {
         _groupName.value = text

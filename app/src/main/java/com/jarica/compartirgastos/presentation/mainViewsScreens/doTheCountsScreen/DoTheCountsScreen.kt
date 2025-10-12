@@ -116,7 +116,7 @@ fun DoTheCountsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,

@@ -27,6 +27,7 @@ class  GroupsScreenViewModel @Inject constructor(
     private val _isDeleteGroupClicked = MutableLiveData<Boolean>()
     val isDeleteGroupClicked: LiveData<Boolean> = _isDeleteGroupClicked
 
+
     fun onGroupSelected(idGroupName: Int, groupName: String) {
         iDGroupName = idGroupName
         groupNameCompanionObject = groupName
@@ -38,9 +39,11 @@ class  GroupsScreenViewModel @Inject constructor(
         }
     }
 
+
     val uiStateGroupName: StateFlow<GroupUiState> = getGroupNamesUseCase().map(GroupUiState::Success)
         .catch { GroupUiState.Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GroupUiState.Loading)
 
 
 }
+

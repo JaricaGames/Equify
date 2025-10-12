@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,7 @@ fun AddPeopleScreenFromMain(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 colors = topAppBarColors(
                     containerColor = Transparent,
                     actionIconContentColor = Black,
@@ -65,14 +66,15 @@ fun AddPeopleScreenFromMain(
                 ),
 
                 navigationIcon = {
-                    IconButton(modifier = Modifier
-                        .clip(
-                            shape = CircleShape
-                        )
-                        .size(40.dp), onClick = {
+                    IconButton(
+                        modifier = Modifier
+                            .clip(
+                                shape = CircleShape
+                            )
+                            .size(40.dp), onClick = {
                             addPeopleFromMainViewModel.onBackPressed()
-                        navigateToMainScreen()
-                    }) {
+                            navigateToMainScreen()
+                        }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             painter = painterResource(R.drawable.arrow_back),
@@ -95,12 +97,12 @@ fun AddPeopleScreenFromMain(
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                      val newPerson = PersonModel(
-                                          idPerson = null,
-                                          name = addNameToGroup,
-                                          equity = "0",
-                                          idGroupName = iDGroupName!!
-                                      )
+                                    val newPerson = PersonModel(
+                                        idPerson = null,
+                                        name = addNameToGroup,
+                                        equity = "0",
+                                        idGroupName = iDGroupName!!
+                                    )
                                     addPeopleFromMainViewModel.insertPeople(newPerson)
                                     navigateToMainScreen()
 
@@ -151,13 +153,27 @@ fun MainViewAddPeopleScreen(
         )
         Spacer(Modifier.height(16.dp))
         TextField(
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
             value = addNameToGroup,
             onValueChange = {
                 addPeopleViewModel.onValueTextFieldChange(it)
             },
+            textStyle = TextStyle(
+                fontFamily = rubik,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300
+            ),
             shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(labelTextFieldAddPeopleScreen) },
+            placeholder = {
+                Text(
+                    labelTextFieldAddPeopleScreen, fontFamily = rubik,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300,
+                    color = Black
+                )
+            },
             singleLine = true,
             maxLines = 1,
             colors = TextFieldDefaults.colors(
