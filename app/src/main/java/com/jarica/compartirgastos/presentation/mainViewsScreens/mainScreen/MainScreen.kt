@@ -62,10 +62,9 @@ import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
-import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow
+import com.jarica.compartirgastos.presentation.ui.theme.VeryDarkBlue
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -241,7 +240,9 @@ fun ChooseScreen(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White)
+            .padding(horizontal = 16.dp)
+            .background(White),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (isResumeSelected) {
 
@@ -249,49 +250,54 @@ fun ChooseScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 32.dp))
-                    .background(Black)
-                    .padding(vertical = 10.dp),
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(VeryDarkBlue)
+                    .padding(vertical = 6.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     resume,
-                    fontFamily = rubik,
-                    color = DarkYellow,
-                    fontWeight = FontWeight.SemiBold
+                    fontSize = 12.sp,
+                    color = White,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
 
             Box(
                 modifier = Modifier
                     .weight(0.5f)
-                    .padding(vertical = 10.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                    .padding(vertical = 6.dp)
                     .clickable { mainScreenViewModel.onCostSelected() },
 
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     costs,
-                    fontFamily = rubik,
+                    fontSize = 11.sp,
                     color = Black,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
             Box(
                 modifier = Modifier
                     .weight(0.5f)
-                    .padding(vertical = 10.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                    .padding(vertical = 6.dp)
                     .clickable { mainScreenViewModel.onPaymentsSelected() },
 
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     payments,
-                    fontFamily = rubik,
+                    fontSize = 11.sp,
                     color = Black,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
         } else {
@@ -302,16 +308,18 @@ fun ChooseScreen(
                 Box(
                     modifier = Modifier
                         .weight(0.5f)
-                        .padding(vertical = 10.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                        .padding(vertical = 6.dp)
                         .clickable { mainScreenViewModel.onResumeSelected() },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         resume,
-                        fontFamily = rubik,
+                        fontSize = 11.sp,
                         color = Black,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
 
                     )
                 }
@@ -319,38 +327,34 @@ fun ChooseScreen(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .clip(
-                            RoundedCornerShape(
-                                topEnd = 16.dp,
-                                bottomStart = 32.dp,
-                                bottomEnd = 32.dp,
-                                topStart = 16.dp
-                            )
-                        )
-                        .background(Black)
-                        .padding(vertical = 10.dp),
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(VeryDarkBlue)
+                        .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         costs,
-                        fontFamily = rubik,
-                        color = DarkYellow,
-                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = White,
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
                     )
                 }
                 Box(
                     modifier = Modifier
                         .weight(0.5f)
-                        .padding(vertical = 10.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                        .padding(vertical = 6.dp)
                         .clickable { mainScreenViewModel.onPaymentsSelected() },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         payments,
-                        fontFamily = rubik,
+                        fontSize = 11.sp,
                         color = Black,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
                     )
                 }
             } else {
@@ -358,8 +362,9 @@ fun ChooseScreen(
                 Box(
                     modifier = Modifier
                         .weight(0.5f)
-                        .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 32.dp))
-                        .padding(vertical = 10.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                        .padding(vertical = 6.dp)
                         .clickable {
                             mainScreenViewModel.onResumeSelected()
                         },
@@ -367,42 +372,46 @@ fun ChooseScreen(
                 ) {
                     Text(
                         resume,
-                        fontFamily = rubik,
+                        fontSize = 11.sp,
                         color = Black,
-                        fontSize = 12.sp
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
                     )
                 }
 
                 Box(
                     modifier = Modifier
                         .weight(0.5f)
-                        .padding(vertical = 10.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
+                        .padding(vertical = 6.dp)
                         .clickable { mainScreenViewModel.onCostSelected() },
 
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         costs,
-                        fontFamily = rubik,
+                        fontSize = 11.sp,
                         color = Black,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
                     )
                 }
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 32.dp))
-                        .background(Black)
                         .weight(1f)
-                        .padding(vertical = 10.dp),
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(VeryDarkBlue)
+                        .padding(vertical = 6.dp),
 
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         payments,
-                        fontFamily = rubik,
-                        color = DarkYellow,
-                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = White,
+                        fontFamily = parkinsans,
+                        fontWeight = FontWeight.Normal
                     )
                 }
 
@@ -426,61 +435,63 @@ fun ActionsBoxes(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp ),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-            Column(
-                modifier = Modifier.padding(vertical = 8.dp)
-                    .weight(1f)
-                    .clip(shape = RoundedCornerShape(16.dp))
-                    .border(
-                        width = 1.dp,
-                        color = DarkOrange.copy(alpha = 0.4f),
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+        Column(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .weight(1f)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .border(
+                    width = 1.dp,
+                    color = DarkOrange.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
 
-                ) {
+            ) {
 
-                Box(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .clip(
-                            RoundedCornerShape(8.dp)
-                        )
-                        .background(White)
-                        .clickable {
-                            navigateToAddCostScreen()
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painterResource(R.drawable.moneycash),
-                        "",
-                        modifier = Modifier.size(40.dp),
-                        tint = DarkOrange
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .clip(
+                        RoundedCornerShape(8.dp)
                     )
-                }
-                Text(
-                    addCost,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.SemiBold,
-                    color = DarkOrange,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontSize = 11.sp,
-                        lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
-                    )
+                    .background(White)
+                    .clickable {
+                        navigateToAddCostScreen()
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painterResource(R.drawable.moneycash),
+                    "",
+                    modifier = Modifier.size(40.dp),
+                    tint = DarkOrange
                 )
-                Spacer(Modifier.size(3.dp))
             }
+            Text(
+                addCost,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.SemiBold,
+                color = DarkOrange,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp // 🔹 menos de 18 si quieres líneas más cercanas
+                )
+            )
+            Spacer(Modifier.size(3.dp))
+        }
 
         // Box Añadir persona
 
         Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
                 .weight(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .border(
@@ -527,7 +538,8 @@ fun ActionsBoxes(
         // Box Añadir Pago
 
         Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
                 .weight(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .border(
@@ -577,7 +589,8 @@ fun ActionsBoxes(
         // Box Echar cuentas
 
         Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
                 .weight(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(DarkOrange),
