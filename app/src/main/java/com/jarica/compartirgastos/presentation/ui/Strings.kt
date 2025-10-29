@@ -20,6 +20,7 @@ const val addEverybodyText = "Añade a todos los participantes"
 
 //MainScreenObject
 const val addCost = "Añadir\nGasto"
+const val addCostText = "Añadir Gasto"
 const val addPay = "Añadir\nPago"
 const val costs = "Gastos"
 const val payments = "Pagos"
@@ -54,7 +55,7 @@ const val PayFor = "Pagado por:   "
 
 //ConfigurationScreen
 const val configurationTextScreen = "Configuración del grupo"
-const val personalizationGroupText = "Editar grupo"
+const val personalizationGroupText = "Editar nombre del grupo"
 const val addPeopleConfigurationText = "Añadir personas al grupo"
 const val administratePeopleConfigurationText = "Administrar miembros"
 const val groupMembersText = "Miembros del grupo"

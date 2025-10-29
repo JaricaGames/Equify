@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -109,17 +108,16 @@ fun MainScreen(
                 navigationIcon = {
                     IconButton(
                         modifier = Modifier
-                            .size(50.dp),
+                            .size(75.dp),
                         onClick = {
                             navigateToGroupsScreen()
-                        }) {
+                        }
+                    ) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             painter = painterResource(R.drawable.arrow_back),
                             contentDescription = "",
-
-
-                            )
+                        )
                     }
                 },
                 actions = {
@@ -131,7 +129,7 @@ fun MainScreen(
                         }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.settings),
+                            painter = painterResource(R.drawable.ellipsis),
                             contentDescription = "",
 
                             )
@@ -158,6 +156,8 @@ fun MainScreen(
             uiStatePeopleGroupFragment,
             onDoTheCountsClicked
         )
+
+
         BackHandler {
             // Aquí decides qué hacer al pulsar atrás
             navigateToGroupsScreen()
@@ -189,15 +189,14 @@ fun MainView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
-        // .padding(horizontal = 16.dp),
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
+            .padding(paddingValues),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(Modifier.height(70.dp))
         //HEADER
-        Header(nameOfGroup)
-        Spacer(Modifier.height(16.dp))
+        Header(nameOfGroup, Modifier.weight(0.15f))
+        Spacer(Modifier.weight(0.02f))
         //BOXS DE SELECCIONAR ACCION
         ActionsBoxes(
             mainScreenViewModel,
@@ -207,14 +206,12 @@ fun MainView(
             navigateToAddPayScreen,
             navigateToDoTheCounts,
             uiStatePeopleGroupFragment,
-            onDoTheCountsClicked
+            onDoTheCountsClicked,
         )
-        Spacer(Modifier.height(16.dp))
-
+        Spacer(Modifier.weight(0.02f))
         //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
         ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
-        Spacer(modifier = Modifier.size(32.dp))
-
+        Spacer(Modifier.weight(0.02f))
         // LISTADOS (RESUMEN O GASTOS)
         if (isResumeSelected) {
             ResumeFragment(idGroup, mainScreenViewModel)
@@ -441,8 +438,10 @@ fun ActionsBoxes(
     ) {
         Column(
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .weight(1f)
+                .clickable {
+                    navigateToAddCostScreen()
+                }
                 .clip(shape = RoundedCornerShape(16.dp))
                 .border(
                     width = 1.dp,
@@ -451,19 +450,15 @@ fun ActionsBoxes(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-
             ) {
 
             Box(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
-                    .background(White)
-                    .clickable {
-                        navigateToAddCostScreen()
-                    },
+                    .background(White),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -491,8 +486,10 @@ fun ActionsBoxes(
 
         Column(
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .weight(1f)
+                .clickable {
+                    navigateToAddPeopleFromGroup()
+                }
                 .clip(shape = RoundedCornerShape(16.dp))
                 .border(
                     width = 1.dp,
@@ -504,14 +501,11 @@ fun ActionsBoxes(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
-                    .background(White)
-                    .clickable {
-                        navigateToAddPeopleFromGroup()
-                    },
+                    .background(White),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -539,8 +533,10 @@ fun ActionsBoxes(
 
         Column(
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .weight(1f)
+                .clickable {
+                    navigateToAddPayScreen()
+                }
                 .clip(shape = RoundedCornerShape(16.dp))
                 .border(
                     width = 1.dp,
@@ -553,14 +549,11 @@ fun ActionsBoxes(
 
             Box(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
-                    .background(White)
-                    .clickable {
-                        navigateToAddPayScreen()
-                    },
+                    .background(White),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -590,8 +583,19 @@ fun ActionsBoxes(
 
         Column(
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .weight(1f)
+                .clickable {
+                    onDoTheCountsClicked()
+                    when (peopleList) {
+
+                        is MainUiState.Error -> {}
+                        is MainUiState.Loading -> {}
+                        is MainUiState.Success -> {
+                            doTheCountsScreenViewModel.doTheCounts((peopleList).peopleList)
+                            navigateToDoTheCounts()
+                        }
+                    }
+                }
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(DarkOrange),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -600,28 +604,10 @@ fun ActionsBoxes(
 
             Box(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .clip(
                         RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        onDoTheCountsClicked()
-                        //  navigateToDoTheCounts()
-                        when (peopleList) {
-
-                            is MainUiState.Error -> {}
-
-                            is MainUiState.Loading -> {}
-
-                            is MainUiState.Success -> {
-                                doTheCountsScreenViewModel.doTheCounts((peopleList).peopleList)
-                                navigateToDoTheCounts()
-                            }
-                        }
-
-
-                        //mainScreenViewModel.text()
-                    }, contentAlignment = Alignment.Center
+                    ), contentAlignment = Alignment.Center
             ) {
 
                 Icon(
@@ -651,14 +637,14 @@ fun ActionsBoxes(
 }
 
 @Composable
-fun Header(nameOfGroup: String) {
-    Row(
-        modifier = Modifier
+fun Header(nameOfGroup: String, modifier: Modifier) {
+    Box(
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
             .background(color = DarkBlue)
-            .padding(vertical = 30.dp, horizontal = 40.dp),
-        horizontalArrangement = Arrangement.Start
+            .padding(start = 40.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         Text(
             nameOfGroup,

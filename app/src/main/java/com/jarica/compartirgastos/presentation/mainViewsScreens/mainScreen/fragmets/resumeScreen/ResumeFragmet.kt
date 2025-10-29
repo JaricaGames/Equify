@@ -11,13 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,10 +31,9 @@ import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Green
-import com.jarica.compartirgastos.presentation.ui.theme.Red
-import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.presentation.ui.theyOweyou
 import com.jarica.compartirgastos.presentation.ui.youOwe
 import kotlin.math.absoluteValue
@@ -77,7 +79,10 @@ fun ResumeFragment(
 @Composable
 fun PeopleList(groupNameList: List<PersonModel>, idGroup: Int?) {
 
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         items(groupNameList) { person ->
             if (person.idGroupName == idGroup) {
                 ItemPeopleName(person)
@@ -93,24 +98,36 @@ fun ItemPeopleName(item: PersonModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White)
+            .clip(RoundedCornerShape(8.dp))
+            .background(Grey)
             .padding(horizontal = 32.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Text(item.name, color = Black, fontFamily = rubik,
-                fontSize = 13.sp,
-            fontWeight = FontWeight.W300)
+        Text(
+            item.name,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
         Spacer(modifier = Modifier.weight(1f))
 
         if (item.equity.toFloat() > 0f) {
             Row {
                 Text(
-                    theyOweyou + "%.2f".format(item.equity.toFloat()) + " €" ,
-                    color = Green,
-                    fontFamily = rubik,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.W300
+                    theyOweyou + "%.2f".format(item.equity.toFloat()),
+                    fontSize = 12.sp,
+                    color = Black,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    " €",
+                    fontSize = 12.sp,
+                    color = DarkOrange,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
 
@@ -118,15 +135,25 @@ fun ItemPeopleName(item: PersonModel) {
         if (item.equity.toFloat() < 0f) {
             Row {
                 Text(
-                    "$youOwe ", color = Red, fontFamily = rubik, fontSize = 13.sp,
-                    fontWeight = FontWeight.W300
+                    "$youOwe",
+                    fontSize = 12.sp,
+                    color = Black,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
                 Text(
-                    "%.2f".format(item.equity.toFloat().absoluteValue) + " €",
-                    color = Red,
-                    fontFamily = rubik,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.W300
+                    "%.2f".format(item.equity.toFloat().absoluteValue),
+                    fontSize = 12.sp,
+                    color = Black,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    " €",
+                    fontSize = 12.sp,
+                    color = DarkOrange,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
         }
@@ -134,15 +161,27 @@ fun ItemPeopleName(item: PersonModel) {
             Row {
 
                 Text(
-                    "%.2f".format(item.equity.toFloat().absoluteValue) + " €",
+                    "%.2f".format(item.equity.toFloat().absoluteValue),
+                    fontSize = 12.sp,
                     color = Black,
-                    fontFamily = rubik,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.W300
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    " €",
+                    fontSize = 12.sp,
+                    color = DarkOrange,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal
                 )
             }
         }
 
 
     }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        thickness = 1.dp,
+        color = DarkOrange.copy(0.2f)
+    )
 }

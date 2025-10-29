@@ -20,5 +20,6 @@ const val APPLICATION_ID = "ca-app-pub-4979320410432560~5685962901"
 //SplashScreen
 const val SPLASHSCREEN_DURATION = 2000L
 
-
+// UI Constants
+const val HEADER_WEIGHT = 0.15f
 

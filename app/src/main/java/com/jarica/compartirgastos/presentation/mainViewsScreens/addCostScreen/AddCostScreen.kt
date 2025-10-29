@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,15 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,18 +37,21 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.HEADER_WEIGHT
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.composables.CustomHeader
+import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
-import com.jarica.compartirgastos.presentation.ui.addCost
+import com.jarica.compartirgastos.presentation.ui.addCostText
 import com.jarica.compartirgastos.presentation.ui.amountPlaceHolder
 import com.jarica.compartirgastos.presentation.ui.descriptionPlaceHolder
 import com.jarica.compartirgastos.presentation.ui.fromText
-import com.jarica.compartirgastos.presentation.ui.next
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,258 +84,189 @@ fun AddCostScreen(
         is AddCostsUiState.Success -> {
 
             val listOfPeople = (uiAddCostState as AddCostsUiState.Success).listOfPeople
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        colors = topAppBarColors(
-                            containerColor = Transparent,
-                            actionIconContentColor = Black,
-                            navigationIconContentColor = Black
-                        ),
 
-                        navigationIcon = {
-                            IconButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                onClick = {
-                                    addCostViewModel.cleanTexts()
-                                    navigateToMainScreen()
-                                }) {
-                                Icon(
-                                    modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.arrow_back),
-                                    contentDescription = "",
-                                )
-                            }
-                        },
-                        actions = {
-                            if (descriptionText != "" && amountText != "" && fromTextAddCosts != "") {
-
-                                Text(
-                                    next,
-                                    fontFamily = rubik,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp)
-                                        .clickable {
-                                            addCostViewModel.addCostToGroup(
-                                                personToAddCosts = personToAddCosts!!,
-                                                listOfPeople,
-                                                iDGroupName
-                                            )
-                                            addCostViewModel.updatePerson(
-                                                personToAddCosts = personToAddCosts!!,
-                                                listOfPeople = listOfPeople
-                                            )
-                                            addCostViewModel.cleanTexts()
-                                            navigateToMainScreen()
-                                        })
-
-                            }
-
-
-                        },
-                        title = {
-
-                        }
-                    )
-                }
-            ) { paddingValues ->
-                MainViewAddCostScreen(
-                    paddingValues,
-                    addCostViewModel,
-                    descriptionText,
-                    amountText,
-                    isFromSelected,
-                    fromTextAddCosts,
-                    listOfPeople
-                )
-            }
-
+            MainViewAddCostScreen(
+                addCostViewModel,
+                descriptionText,
+                amountText,
+                isFromSelected,
+                fromTextAddCosts,
+                listOfPeople,
+                navigateToMainScreen,
+                personToAddCosts
+            )
         }
+
+
     }
 
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewAddCostScreen(
-    paddingValues: PaddingValues,
     addCostViewModel: AddCostScreenViewModel,
     descriptionText: String,
     amountText: String,
     isFromSelected: Boolean,
     fromTextAddCosts: String,
     listOfPeople: List<PersonModel>,
+    navigateToMainScreen: () -> Unit,
+    personToAddCosts: PersonModel?,
 
     ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-
-        Spacer(Modifier.height(125.dp))
-        Text(
-            addCost,
-            fontFamily = rubik,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+        CustomHeader(
+            navigateToMainScreen,
+            modifier = Modifier.weight(HEADER_WEIGHT),
+            addCostText,
+            icon = R.drawable.arrow_back
         )
-        Spacer(Modifier.height(16.dp))
-
-        //TEXTFIELD DESCRIPCION
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = descriptionText,
-            onValueChange = { descriptionText ->
-                addCostViewModel.onDescriptionChange(
-                    descriptionText
-                )
-            },
-            textStyle = TextStyle(
-                fontFamily = rubik,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W300
-            ),
-            shape = RoundedCornerShape(8.dp),
-            placeholder = {
-                Text(
-                    descriptionPlaceHolder, fontFamily = rubik,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W300,
-                    color = Black
-                )
-            },
-            singleLine = true,
-            maxLines = 1,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black
-
-            ),
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        //TEXTFIELD CANTIDAD
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = amountText,
-            onValueChange = { addCostViewModel.onAmountChange(it) },
-            shape = RoundedCornerShape(8.dp),
-            placeholder = {
-                Text(
-                    amountPlaceHolder, fontFamily = rubik,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W300,
-                    color = Black
-                )
-            },
-            singleLine = true,
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            suffix = { Text("€") },
-            textStyle = TextStyle(
-                fontFamily = rubik,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W300
-            ),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = White,
-                unfocusedSuffixColor = Black,
-                focusedSuffixColor = Black
-            ),
-        )
-
-        Spacer(Modifier.height(16.dp))
-
 
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(White)
-                .clickable {
-                    addCostViewModel.onFromSelected(isFromSelected)
-                },
+            .padding(horizontal = 32.dp)
+            .weight(1f-HEADER_WEIGHT)) {
 
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
-        ) {
-
-            Spacer(modifier = Modifier.size(6.dp))
-            Text(
-                "$fromText:      $fromTextAddCosts",
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                fontFamily = rubik,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W300,
-                color = Black
+            Spacer(Modifier.height(20.dp))
+            //TEXTFIELD DESCRIPCION
+            CustomTextField(
+                value = descriptionText,
+                onValueChange = { addCostViewModel.onDescriptionChange(it) },
+                placeholderText = descriptionPlaceHolder,
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                )
             )
-            Spacer(modifier = Modifier.size(6.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                thickness = 1.dp,
+                color = DarkOrange.copy(0.2f)
+            )
+            Spacer(Modifier.height(20.dp))
 
-            if (isFromSelected) {
+            //TEXTFIELD CANTIDAD
+            CustomTextField(
+                value = amountText,
+                onValueChange = { addCostViewModel.onAmountChange(it) },
+                placeholderText = amountPlaceHolder,
+                suffixText = "€",
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                thickness = 1.dp,
+                color = DarkOrange.copy(0.2f)
+            )
+            Spacer(Modifier.height(20.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Grey)
+                    .clickable {
+                        addCostViewModel.onFromSelected(isFromSelected)
+                    },
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
+            ) {
 
-                ) {
-                    items(listOfPeople) { person ->
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    addCostViewModel.onPersonSelected(person)
+                Text(
+                    "$fromText:      $fromTextAddCosts",
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    thickness = 1.dp,
+                    color = DarkOrange.copy(0.2f)
+                )
 
-                                }) {
-                            if (person.idGroupName == iDGroupName) {
-                                Text(
-                                    person.name,
-                                    fontFamily = rubik,
-                                    color = Black,
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.W300
-                                )
-                                Spacer(modifier = Modifier.size(8.dp))
+                if (isFromSelected) {
+
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+
+                    ) {
+                        items(listOfPeople) { person ->
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        addCostViewModel.onPersonSelected(person)
+
+                                    }) {
+                                if (person.idGroupName == iDGroupName) {
+                                    Text(
+                                        person.name,
+                                        fontFamily = parkinsans,
+                                        fontWeight = FontWeight.Normal,
+                                        textAlign = TextAlign.Start,
+                                        fontSize = 12.sp,
+                                    )
+                                    Spacer(modifier = Modifier.size(8.dp))
+                                }
                             }
                         }
                     }
                 }
             }
+            Spacer(Modifier.size(20.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = descriptionText != "" && amountText != "" && fromTextAddCosts != "",
+                colors = ButtonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = Grey,
+                    disabledContentColor = Black
+                ),
+                onClick = {
+                    addCostViewModel.addCostToGroup(
+                        personToAddCosts = personToAddCosts!!,
+                        listOfPeople,
+                        iDGroupName
+                    )
+                    addCostViewModel.updatePerson(
+                        personToAddCosts = personToAddCosts,
+                        listOfPeople = listOfPeople
+                    )
+                    addCostViewModel.cleanTexts()
+                    navigateToMainScreen()
+                }) {
+                Text(
+                    addCostText,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(0.8f))
     }
 }
+
+
 
 

@@ -263,8 +263,8 @@ fun NavigationWrapper(
         composable<CustomizeGroupScreenObject> {
             CustomizeGroupScreen(
                 customizeGroupScreenViewModel,
-                navigateToGroupScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName = iDGroupName)) {
+                navigateToConfiguration = {
+                    navController.navigate(ConfigurationScreenObject) {
                         launchSingleTop = true
                     }
                 },

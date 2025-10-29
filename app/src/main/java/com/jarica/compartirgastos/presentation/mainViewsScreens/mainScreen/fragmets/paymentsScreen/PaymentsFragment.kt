@@ -11,13 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -29,12 +33,15 @@ import com.jarica.compartirgastos.presentation.ui.amountText
 import com.jarica.compartirgastos.presentation.ui.payForText
 import com.jarica.compartirgastos.presentation.ui.payToText
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @Composable
-fun PaymentsFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
-
+fun PaymentsFragment(
+    idGroup: Int?,
+    mainScreenViewModel: MainScreenViewModel
+) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStatePaymentsFragment by produceState<PaymentsScreenUiState>(
@@ -71,7 +78,10 @@ fun PaymentsFragment(idGroup: Int?, mainScreenViewModel: MainScreenViewModel) {
 @Composable
 fun PaymentsList(paymentsList: List<PaymentsModel>, idGroup: Int?) {
 
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         items(paymentsList) { payment ->
             if (payment.idGroup == idGroup) {
                 ItemPaymentName(payment)
@@ -87,22 +97,68 @@ fun ItemPaymentName(item: PaymentsModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White)
+            .clip(RoundedCornerShape(8.dp))
+            .background(Grey)
             .padding(horizontal = 32.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom
     ) {
-
-        Text(payToText, color = Black, fontFamily = rubik, fontSize = 13.sp)
-        Text(item.namePersonWhoPay, color = Black, fontFamily = rubik, fontSize = 13.sp)
+        Text(
+            payForText,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
+        Text(
+            item.namePersonWhoPay,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
         Spacer(modifier = Modifier.weight(1f))
-        Text(payForText, color = Black, fontFamily = rubik, fontSize = 13.sp)
-        Text(item.namePersonWhoReceive, color = Black, fontFamily = rubik, fontSize = 13.sp)
+        Text(
+            payToText,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
+        Text(
+            item.namePersonWhoReceive,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
+
         Spacer(modifier = Modifier.weight(1f))
-        Text(amountText, color = Black, fontFamily = rubik, fontSize = 13.sp)
-        Text(item.amount, color = Black, fontFamily = rubik, fontSize = 13.sp)
-        Text(" €", color = Black, fontFamily = rubik, fontSize = 13.sp)
-
-
+        Text(
+            amountText,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
+        Text(
+            item.amount,
+            fontSize = 12.sp,
+            color = Black,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
+        Text(
+            " €",
+            fontSize = 12.sp,
+            color = DarkOrange,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal
+        )
     }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        thickness = 1.dp,
+        color = DarkOrange.copy(0.2f)
+    )
 }

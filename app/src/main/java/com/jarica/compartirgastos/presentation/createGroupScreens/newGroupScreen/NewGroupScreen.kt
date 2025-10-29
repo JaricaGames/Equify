@@ -1,48 +1,39 @@
 package com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.HEADER_WEIGHT
 import com.jarica.compartirgastos.domain.models.GroupNameModel
-import com.jarica.compartirgastos.presentation.ui.labelTextFieldNewGroupScreen
-import com.jarica.compartirgastos.presentation.ui.next
+import com.jarica.compartirgastos.presentation.composables.CustomHeader
+import com.jarica.compartirgastos.presentation.composables.CustomTextField
+import com.jarica.compartirgastos.presentation.ui.newGroupText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,118 +46,80 @@ fun NewGroupScreen(
 
     val groupName: String by newGroupViewModel.groupName.observeAsState("")
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.padding(top = 16.dp),
-                colors = topAppBarColors(
-                    containerColor = Transparent,
-                    actionIconContentColor = Black,
-                    navigationIconContentColor = Black
-                ),
+    MainViewNewGroupScreen(newGroupViewModel, groupName, navigateToAddPeople, navigateToGroupsScreen)
 
-                navigationIcon = {
-                    IconButton(modifier = Modifier
-                        .clip(
-                            shape = CircleShape
-                        )
-                        .size(40.dp), onClick = {
-                        navigateToGroupsScreen()
-                    }) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.arrow_back),
-                            contentDescription = "",
-                            )
-                    }
-                },
-                actions = {
-
-                    if (groupName.isNotEmpty()) {
-                        Text(
-                            next,
-                            fontFamily = rubik,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .clickable {
-                                    val groupNameModel = GroupNameModel(
-                                        groupName = groupName
-                                    )
-                                    navigateToAddPeople(
-                                        groupNameModel.idGroupName,
-                                        groupNameModel.groupName
-                                    )
-                                    newGroupViewModel.onNextSelected()
-
-
-                                })
-
-                    }
-
-
-                },
-                title = {
-                }
-            )
-        }
-    ) { paddingValues ->
-        MainViewNewGroupScreen(paddingValues, newGroupViewModel, groupName)
-    }
 }
 
 @Composable
 fun MainViewNewGroupScreen(
-    paddingValues: PaddingValues,
     newGroupViewModel: NewGroupViewModel,
     groupName: String,
+    navigateToAddPeople: (Int, String) -> Unit,
+    navigateToGroupsScreen: () -> Unit,
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp, vertical = paddingValues.calculateTopPadding()),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-
-        //Spacer(modifier = Modifier.size(125.dp))
-        Text(
-            labelTextFieldNewGroupScreen,
-            fontFamily = rubik,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+        CustomHeader(
+            navigate = { navigateToGroupsScreen() },
+            modifier = Modifier.weight(HEADER_WEIGHT),
+            text = newGroupText,
+            icon = R.drawable.arrow_back
         )
-        Spacer(Modifier.height(16.dp))
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = groupName,
-            onValueChange = { descriptionText ->
-                newGroupViewModel.onValueTextFieldChange(descriptionText)
-            },
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .weight(1f-HEADER_WEIGHT)
+        ){
+            Spacer(modifier = Modifier.weight(0.02f))
 
-            shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(labelTextFieldNewGroupScreen) },
-            singleLine = true,
-            maxLines = 1,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black,
+            CustomTextField(
+                value = groupName,
+                onValueChange = { newGroupViewModel.onValueTextFieldChange(it) },
+                placeholderText = newGroupText,
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                )
+            )
+            Spacer(modifier = Modifier.weight(0.02f))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = groupName.isNotEmpty(),
+                colors = ButtonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = Grey,
+                    disabledContentColor = Black
+                ),
+                onClick = {
+                    val groupNameModel = GroupNameModel(
+                        groupName = groupName
+                    )
+                    navigateToAddPeople(
+                        groupNameModel.idGroupName,
+                        groupNameModel.groupName
+                    )
+                    newGroupViewModel.onNextSelected()
+                }) {
+                Text(
+                    newGroupText,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
-            ),
-        )
-        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

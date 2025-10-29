@@ -1,50 +1,44 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.addPeopleScreenFromMain
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.HEADER_WEIGHT
 import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.presentation.composables.CustomHeader
+import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addPeopleText
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,144 +49,90 @@ fun AddPeopleScreenFromMain(
 
     val addNameToGroup: String by addPeopleFromMainViewModel.addNameToGroup.observeAsState("")
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                colors = topAppBarColors(
-                    containerColor = Transparent,
-                    actionIconContentColor = Black,
-                    navigationIconContentColor = Black
-                ),
 
-                navigationIcon = {
-                    IconButton(
-                        modifier = Modifier
-                            .clip(
-                                shape = CircleShape
-                            )
-                            .size(40.dp), onClick = {
-                            addPeopleFromMainViewModel.onBackPressed()
-                            navigateToMainScreen()
-                        }) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.arrow_back),
-                            contentDescription = "",
-
-                            )
-
-                    }
-                },
-
-
-                actions = {
-
-                    if (addNameToGroup.isNotEmpty()) {
-                        Text(
-                            addPeopleText,
-                            fontFamily = rubik,
-                            fontWeight = FontWeight.Medium,
-                            color = Black,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .clickable {
-                                    val newPerson = PersonModel(
-                                        idPerson = null,
-                                        name = addNameToGroup,
-                                        equity = "0",
-                                        idGroupName = iDGroupName!!
-                                    )
-                                    addPeopleFromMainViewModel.insertPeople(newPerson)
-                                    navigateToMainScreen()
-
-
-                                })
-                    }
-
-
-                },
-                title = {
-                }
-            )
-        }
-    ) { paddingValues ->
-        MainViewAddPeopleScreen(
-            paddingValues,
-            addNameToGroup,
-            addPeopleFromMainViewModel
-        )
-
-    }
+    MainViewAddPeopleScreen(
+        addNameToGroup,
+        addPeopleFromMainViewModel,
+        navigateToMainScreen
+    )
 
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewAddPeopleScreen(
-    paddingValues: PaddingValues,
     addNameToGroup: String,
-    addPeopleViewModel: AddPeopleScreenFromMainViewModel
+    addPeopleFromMainViewModel: AddPeopleScreenFromMainViewModel,
+    navigateToMainScreen: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(125.dp))
-        Text(
-            addPeopleText,
-            fontFamily = rubik,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+        CustomHeader(
+            navigateToMainScreen,
+            modifier = Modifier.weight(HEADER_WEIGHT),
+            text = addPeopleText,
+            icon = R.drawable.arrow_back
         )
-        Spacer(Modifier.height(16.dp))
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = addNameToGroup,
-            onValueChange = {
-                addPeopleViewModel.onValueTextFieldChange(it)
-            },
-            textStyle = TextStyle(
-                fontFamily = rubik,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W300
-            ),
-            shape = RoundedCornerShape(8.dp),
-            placeholder = {
-                Text(
-                    labelTextFieldAddPeopleScreen, fontFamily = rubik,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W300,
-                    color = Black
+        Column(modifier = Modifier
+            .padding(horizontal = 32.dp)
+            .weight(1f-HEADER_WEIGHT)) {
+
+            Spacer(Modifier.height(20.dp))
+
+            CustomTextField(
+                value = addNameToGroup,
+                onValueChange = { addPeopleFromMainViewModel.onValueTextFieldChange(it) },
+                placeholderText = labelTextFieldAddPeopleScreen,
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
                 )
-            },
-            singleLine = true,
-            maxLines = 1,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black
-
-            ),
-        )
-
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                thickness = 1.dp,
+                color = DarkOrange.copy(0.2f)
+            )
+            Spacer(Modifier.size(20.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = addNameToGroup.isNotEmpty(),
+                colors = ButtonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = Grey,
+                    disabledContentColor = Black
+                ),
+                onClick = {
+                    val newPerson = PersonModel(
+                        idPerson = null,
+                        name = addNameToGroup,
+                        equity = "0",
+                        idGroupName = iDGroupName!!
+                    )
+                    addPeopleFromMainViewModel.insertPeople(newPerson)
+                    navigateToMainScreen()
+                    navigateToMainScreen()
+                }) {
+                Text(
+                    addPeopleText,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+            }
+        }
 
     }
 }
+
 
 

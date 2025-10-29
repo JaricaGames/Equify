@@ -3,6 +3,7 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.configurationSc
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.presentation.ui.alertDialogText
 import com.jarica.compartirgastos.presentation.ui.cancel
@@ -19,9 +21,9 @@ import com.jarica.compartirgastos.presentation.ui.confirmAlertDialogText1
 import com.jarica.compartirgastos.presentation.ui.confirmAlertDialogText2
 import com.jarica.compartirgastos.presentation.ui.mainAlertDialogText
 import com.jarica.compartirgastos.presentation.ui.ok
-import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Yellow
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.White
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.presentation.ui.titleConfirmAlertDialogText
 
 
@@ -36,16 +38,17 @@ fun AlertDialogErrorClear(
             Button(
                 onClick = { onDismiss() },
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonColors(
-                    containerColor = Yellow,
-                    contentColor = Black,
-                    disabledContainerColor = Yellow,
-                    disabledContentColor = Yellow
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = DarkOrange,
+                    disabledContentColor = DarkOrange
                 )
             ) {
                 Text(
                     "Ok",
-                    fontFamily = rubik,
+                    fontFamily = parkinsans,
                     textAlign = TextAlign.Start,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W300
@@ -55,8 +58,9 @@ fun AlertDialogErrorClear(
         title = {
             Text(
                 mainAlertDialogText,
-                fontFamily = rubik,
-                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = parkinsans,
+                textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -64,7 +68,7 @@ fun AlertDialogErrorClear(
         text = {
             Text(
                 "$personSelected $alertDialogText",
-                fontFamily = rubik,
+                fontFamily = parkinsans,
                 textAlign = TextAlign.Center,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W300,
@@ -84,16 +88,17 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
             Button(
                 onClick = { onConfirm() },
                 modifier = Modifier,
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonColors(
-                    containerColor = Yellow,
-                    contentColor = Black,
-                    disabledContainerColor = Yellow,
-                    disabledContentColor = Yellow
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = DarkOrange,
+                    disabledContentColor = DarkOrange
                 )
             ) {
                 Text(
                     ok,
-                    fontFamily = rubik,
+                    fontFamily = parkinsans,
                     textAlign = TextAlign.Start,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W300
@@ -107,7 +112,7 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
             ) {
                 Text(
                 cancel,
-                fontFamily = rubik,
+                    fontFamily = parkinsans,
                 textAlign = TextAlign.Start,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.W200
@@ -122,7 +127,7 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
 
                 Text(
                     titleConfirmAlertDialogText,
-                    fontFamily = rubik,
+                    fontFamily = parkinsans,
                     textAlign = TextAlign.Start,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -138,8 +143,8 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    " $confirmAlertDialogText1 $personSelected $confirmAlertDialogText2" ,
-                    fontFamily = rubik,
+                    " $confirmAlertDialogText1 $personSelected$confirmAlertDialogText2" ,
+                    fontFamily = parkinsans,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W300,

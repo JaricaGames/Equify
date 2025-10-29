@@ -1,145 +1,136 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.fragments
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.HEADER_WEIGHT
+import com.jarica.compartirgastos.presentation.composables.CustomHeader
+import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.changeGroupName
 import com.jarica.compartirgastos.presentation.ui.customizeGroupScreenText
 import com.jarica.compartirgastos.presentation.ui.labelCustomizeGroupScreenText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomizeGroupScreen(
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
-    navigateToGroupScreen: () -> Unit
+    navigateToConfiguration: () -> Unit
 ) {
 
     val newGroupNameToGroup: String by customizeGroupScreenViewModel.newGroupNameToGroup.observeAsState(
         ""
     )
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                colors = topAppBarColors(
-                    containerColor = Transparent,
-                    actionIconContentColor = Black,
-                    navigationIconContentColor = Black
-                ),
+    CustomizeGroupMainScreen(
+        customizeGroupScreenViewModel,
+        newGroupNameToGroup,
+        navigateToConfiguration
+    )
 
-                navigationIcon = {
-                    IconButton(
-                        modifier = Modifier
-                            .clip(
-                                shape = CircleShape
-                            )
-                            .size(40.dp), onClick = {
-
-                        }) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.arrow_back),
-                            contentDescription = "",
-                        )
-
-                    }
-                },
-
-
-                actions = {
-
-                    if (newGroupNameToGroup.isNotEmpty()) {
-                        Text(
-                            changeGroupName,
-                            fontFamily = rubik,
-                            fontWeight = FontWeight.Medium,
-                            color = Black,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .clickable {
-                                    customizeGroupScreenViewModel.onEditGroupNameById(
-                                        iDGroupName!!,
-                                        newGroupNameToGroup
-                                    )
-                                    navigateToGroupScreen()
-                                })
-                    }
-
-                },
-                title = {
-                }
-            )
-        }
-    ) { paddingValues ->
-        CustomizeGroupMainScreen(
-            paddingValues,
-            customizeGroupScreenViewModel,
-            newGroupNameToGroup
-        )
-
-    }
 }
 
 
 @Composable
 fun CustomizeGroupMainScreen(
-    paddingValues: PaddingValues,
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
     newGroupNameToGroup: String,
+    navigateToConfiguration: () -> Unit,
 
     ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(Modifier.height(125.dp))
-        HeaderCustomizeGroupScreen(customizeGroupScreenViewModel, newGroupNameToGroup)
+        CustomHeader(
+            navigateToConfiguration,
+            modifier = Modifier.weight(HEADER_WEIGHT),
+            customizeGroupScreenText,
+            icon = R.drawable.arrow_back
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .weight(1f - HEADER_WEIGHT)
+        ) {
+
+            Spacer(Modifier.height(20.dp))
+            CustomTextField(
+                value = newGroupNameToGroup,
+                onValueChange = { customizeGroupScreenViewModel.onValueTextFieldChange(it) },
+                placeholderText = labelCustomizeGroupScreenText,
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                    color = Black
+                )
+            )
+            Spacer(Modifier.height(20.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = newGroupNameToGroup.isNotEmpty(),
+                colors = ButtonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = Grey,
+                    disabledContentColor = Black
+                ),
+                onClick = {
+                    customizeGroupScreenViewModel.onEditGroupNameById(
+                        iDGroupName!!,
+                        newGroupNameToGroup
+                    )
+                    navigateToConfiguration()
+                }) {
+                Text(
+                    changeGroupName,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            //HeaderCustomizeGroupScreen(customizeGroupScreenViewModel, newGroupNameToGroup)
+        }
     }
 }
+
+/*
 
 @Composable
 fun HeaderCustomizeGroupScreen(
@@ -155,32 +146,19 @@ fun HeaderCustomizeGroupScreen(
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold
     )
-
-    Spacer(Modifier.height(16.dp))
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+    Spacer(Modifier.height(20.dp))
+    CustomTextField(
         value = newGroupNameToGroup,
-        onValueChange = {
-            customizeGroupScreenViewModel.onValueTextFieldChange(it)
-        },
-        shape = RoundedCornerShape(8.dp),
-        placeholder = { Text(labelCustomizeGroupScreenText) },
-        singleLine = true,
-        maxLines = 1,
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = White,
-            unfocusedLabelColor = Black,
-            unfocusedTextColor = Black,
-            focusedContainerColor = White,
-            focusedTextColor = Black,
-            focusedLabelColor = Black,
-            unfocusedPlaceholderColor = Black,
-            focusedIndicatorColor = Transparent,
-            unfocusedIndicatorColor = Transparent,
-            cursorColor = Black
-
+        onValueChange = { customizeGroupScreenViewModel.onValueTextFieldChange(it) },
+        placeholderText = labelCustomizeGroupScreenText,
+        textStyle = TextStyle(
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+            color = Black
         ),
-    )
+
+        Spacer(Modifier(20.dp))
 }
+*/
