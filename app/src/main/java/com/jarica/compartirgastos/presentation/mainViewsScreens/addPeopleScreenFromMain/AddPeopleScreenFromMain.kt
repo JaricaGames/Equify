@@ -78,9 +78,11 @@ fun MainViewAddPeopleScreen(
             text = addPeopleText,
             icon = R.drawable.arrow_back
         )
-        Column(modifier = Modifier
-            .padding(horizontal = 32.dp)
-            .weight(1f-HEADER_WEIGHT)) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .weight(1f - HEADER_WEIGHT)
+        ) {
 
             Spacer(Modifier.height(20.dp))
 

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -81,12 +80,13 @@ fun PeopleList(groupNameList: List<PersonModel>, idGroup: Int?) {
 
     LazyColumn(
         modifier = Modifier.padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(groupNameList) { person ->
             if (person.idGroupName == idGroup) {
                 ItemPeopleName(person)
-                Spacer(modifier = Modifier.size(8.dp))
+               // Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }

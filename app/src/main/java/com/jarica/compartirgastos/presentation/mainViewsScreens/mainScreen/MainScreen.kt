@@ -1,14 +1,12 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -96,75 +91,92 @@ fun MainScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = DarkBlue,
-                    actionIconContentColor = White,
-                    navigationIconContentColor = White
-                ),
+    /* Scaffold(
+         topBar = {
+             TopAppBar(
+                 colors = topAppBarColors(
+                     containerColor = DarkBlue,
+                     actionIconContentColor = White,
+                     navigationIconContentColor = White
+                 ),
 
-                navigationIcon = {
-                    IconButton(
-                        modifier = Modifier
-                            .size(75.dp),
-                        onClick = {
-                            navigateToGroupsScreen()
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.arrow_back),
-                            contentDescription = "",
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(
-                        modifier = Modifier
-                            .size(50.dp),
-                        onClick = {
-                            navigateToConfiguration()
-                        }) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.ellipsis),
-                            contentDescription = "",
+                 navigationIcon = {
+                     IconButton(
+                         modifier = Modifier
+                             .size(75.dp),
+                         onClick = {
+                             navigateToGroupsScreen()
+                         }
+                     ) {
+                         Icon(
+                             modifier = Modifier.size(25.dp),
+                             painter = painterResource(R.drawable.arrow_back),
+                             contentDescription = "",
+                         )
+                     }
+                 },
+                 actions = {
+                     IconButton(
+                         modifier = Modifier
+                             .size(50.dp),
+                         onClick = {
+                             navigateToConfiguration()
+                         }) {
+                         Icon(
+                             modifier = Modifier.size(25.dp),
+                             painter = painterResource(R.drawable.ellipsis),
+                             contentDescription = "",
 
-                            )
-                    }
-                },
-                title = {
-                }
-            )
-        }
-    ) { paddingValues ->
-        MainView(
-            navigateToAddCostScreen,
-            navigateToAddPeopleFromGroup,
-            idGroup,
-            mainScreenViewModel,
-            paddingValues,
-            nameOfGroup,
-            doTheCountsScreenViewModel,
-            isResumeSelected,
-            isCostSelected,
-            navigateToAddPayScreen,
-            navigateToEditCost,
-            navigateToDoTheCounts,
-            uiStatePeopleGroupFragment,
-            onDoTheCountsClicked
-        )
-
-
-        BackHandler {
-            // Aquí decides qué hacer al pulsar atrás
-            navigateToGroupsScreen()
-        }
-    }
+                             )
+                     }
+                 },
+                 title = {
+                 }
+             )
+         }
+     ) { paddingValues ->
+         MainView(
+             navigateToAddCostScreen,
+             navigateToAddPeopleFromGroup,
+             idGroup,
+             mainScreenViewModel,
+             paddingValues,
+             nameOfGroup,
+             doTheCountsScreenViewModel,
+             isResumeSelected,
+             isCostSelected,
+             navigateToAddPayScreen,
+             navigateToEditCost,
+             navigateToDoTheCounts,
+             uiStatePeopleGroupFragment,
+             onDoTheCountsClicked
+         )
 
 
+         BackHandler {
+             // Aquí decides qué hacer al pulsar atrás
+             navigateToGroupsScreen()
+         }
+     }
+
+ */
+    MainView(
+        navigateToAddCostScreen,
+        navigateToAddPeopleFromGroup,
+        idGroup,
+        mainScreenViewModel,
+        nameOfGroup,
+        doTheCountsScreenViewModel,
+        isResumeSelected,
+        isCostSelected,
+        navigateToAddPayScreen,
+        navigateToEditCost,
+        navigateToDoTheCounts,
+        uiStatePeopleGroupFragment,
+        onDoTheCountsClicked,
+        navigateToGroupsScreen,
+        navigateToConfiguration
+    )
 }
 
 
@@ -174,7 +186,6 @@ fun MainView(
     navigateToAddPeopleFromGroup: () -> Unit,
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
-    paddingValues: PaddingValues,
     nameOfGroup: String,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     isResumeSelected: Boolean,
@@ -183,19 +194,20 @@ fun MainView(
     navigateToEditCost: (CostModel) -> Unit,
     navigateToDoTheCounts: () -> Unit,
     uiStatePeopleGroupFragment: MainUiState,
-    onDoTheCountsClicked: () -> Unit
+    onDoTheCountsClicked: () -> Unit,
+    navigateToGroupsScreen: () -> Unit,
+    navigateToConfiguration: () -> Unit
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(paddingValues),
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
         //HEADER
-        Header(nameOfGroup, Modifier.weight(0.15f))
+        Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration)
         Spacer(Modifier.weight(0.02f))
         //BOXS DE SELECCIONAR ACCION
         ActionsBoxes(
@@ -450,7 +462,7 @@ fun ActionsBoxes(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            ) {
+        ) {
 
             Box(
                 modifier = Modifier
@@ -637,23 +649,58 @@ fun ActionsBoxes(
 }
 
 @Composable
-fun Header(nameOfGroup: String, modifier: Modifier) {
-    Box(
-        modifier = modifier
+fun Header(
+    nameOfGroup: String,
+    navigateToGroupsScreen: () -> Unit,
+    navigateToConfiguration: () -> Unit
+) {
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
-            .background(color = DarkBlue)
-            .padding(start = 40.dp),
-        contentAlignment = Alignment.CenterStart
+            .background(color = DarkBlue).padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 25.dp)) {
+            IconButton(
+                onClick = {
+                    navigateToGroupsScreen()
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.size(25.dp),
+                    painter = painterResource(R.drawable.arrow_back),
+                    contentDescription = "",
+                    tint = White
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            IconButton(
+                onClick = {
+                    navigateToConfiguration()
+                }) {
+                Icon(
+                    modifier = Modifier.size(25.dp),
+                    painter = painterResource(R.drawable.ellipsis),
+                    contentDescription = "",
+                    tint = White
+                    )
+            }
+        }
         Text(
             nameOfGroup,
-            fontSize = 30.sp,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp),
+            textAlign = TextAlign.Start,
+            fontSize = 26.sp,
             color = White,
             fontFamily = parkinsans,
             fontWeight = FontWeight.W600
         )
     }
+
 }
 
 @SuppressLint("MissingPermission")

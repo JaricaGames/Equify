@@ -81,13 +81,12 @@ const val exportArrayListDoTheCountsText = "Exportar PDF"
 const val exportArrayListDoTheCountsLargeText = "Exporta el resumen en un PDF, donde se indica claramente cuanto debe cada miembro y a quien le tiene que pagar"
 const val noAppToOpenPDFText = "No hay app para abrir PDF"
 const val oweToText = " le debe a "
-const val dateText = " Fecha: "
+const val dateText = " Fecha "
 const val payToDoTheCountsText = "PAGOS PARA AJUSTAR CUENTAS"
 const val costListText = "LISTA DE GASTOS"
 const val titleText = "Título"
-const val toText = "De"
+const val toText = "Pagado por"
 const val noAppToOpenPDF = "No hay app para abrir PDF"
-const val oweTo = " le debe a "
 
 
 
