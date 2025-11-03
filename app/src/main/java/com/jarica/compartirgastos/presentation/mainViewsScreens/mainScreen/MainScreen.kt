@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -91,75 +94,6 @@ fun MainScreen(
         }
     }
 
-    /* Scaffold(
-         topBar = {
-             TopAppBar(
-                 colors = topAppBarColors(
-                     containerColor = DarkBlue,
-                     actionIconContentColor = White,
-                     navigationIconContentColor = White
-                 ),
-
-                 navigationIcon = {
-                     IconButton(
-                         modifier = Modifier
-                             .size(75.dp),
-                         onClick = {
-                             navigateToGroupsScreen()
-                         }
-                     ) {
-                         Icon(
-                             modifier = Modifier.size(25.dp),
-                             painter = painterResource(R.drawable.arrow_back),
-                             contentDescription = "",
-                         )
-                     }
-                 },
-                 actions = {
-                     IconButton(
-                         modifier = Modifier
-                             .size(50.dp),
-                         onClick = {
-                             navigateToConfiguration()
-                         }) {
-                         Icon(
-                             modifier = Modifier.size(25.dp),
-                             painter = painterResource(R.drawable.ellipsis),
-                             contentDescription = "",
-
-                             )
-                     }
-                 },
-                 title = {
-                 }
-             )
-         }
-     ) { paddingValues ->
-         MainView(
-             navigateToAddCostScreen,
-             navigateToAddPeopleFromGroup,
-             idGroup,
-             mainScreenViewModel,
-             paddingValues,
-             nameOfGroup,
-             doTheCountsScreenViewModel,
-             isResumeSelected,
-             isCostSelected,
-             navigateToAddPayScreen,
-             navigateToEditCost,
-             navigateToDoTheCounts,
-             uiStatePeopleGroupFragment,
-             onDoTheCountsClicked
-         )
-
-
-         BackHandler {
-             // Aquí decides qué hacer al pulsar atrás
-             navigateToGroupsScreen()
-         }
-     }
-
- */
     MainView(
         navigateToAddCostScreen,
         navigateToAddPeopleFromGroup,
@@ -664,7 +598,7 @@ fun Header(
     ) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 25.dp)) {
+            .padding(WindowInsets.statusBars.asPaddingValues())) {
             IconButton(
                 onClick = {
                     navigateToGroupsScreen()
