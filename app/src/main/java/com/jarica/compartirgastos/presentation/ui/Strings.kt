@@ -1,5 +1,11 @@
 package com.jarica.compartirgastos.presentation.ui
 
+const val app_name = "Equify"
+
+//SplashScreen
+const val initalPhrase = "Divide gastos,\nmultiplica momentos"
+
+
 //InitialScreenObject Screen
 const val mainText = "Empecemos"
 const val secondaryText = "Creemos un nuevo grupo"

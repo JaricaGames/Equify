@@ -2,27 +2,24 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +35,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.HEADER_WEIGHT
+import com.jarica.compartirgastos.domain.models.CostOfPersonModel
+import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.ui.PayFor
-import com.jarica.compartirgastos.presentation.ui.descriptionPlaceHolder
 import com.jarica.compartirgastos.presentation.ui.editCost
+import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.Transparent
+import com.jarica.compartirgastos.presentation.ui.theme.DarkBlue
+import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
-import com.jarica.compartirgastos.presentation.ui.theme.rubik
+import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +59,10 @@ fun EditCostScreen(
     editCostScreenViewModel: EditCostScreenViewModel,
     navigateToMainScreen: () -> Unit
 ) {
+
+    val descriptionCost: String by editCostScreenViewModel.descriptionCost .observeAsState(description)
+    val payFor: String by editCostScreenViewModel.payFor .observeAsState(personString)
+    val amountCost: Float by editCostScreenViewModel.amountCost .observeAsState(amount)
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiEditCostUiState by produceState<EditCostUiState>(
@@ -77,136 +83,163 @@ fun EditCostScreen(
             val listOfCostOfPerson =
                 (uiEditCostUiState as EditCostUiState.Success).listOfCostOfPerson
 
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        colors = topAppBarColors(
-                            containerColor = Transparent,
-                            actionIconContentColor = Black,
-                            navigationIconContentColor = Black
-                        ),
 
-                        navigationIcon = {
-                            IconButton(
-                                modifier = Modifier
-                                    .clip(
-                                        shape = CircleShape
-                                    )
-                                    .size(40.dp), onClick = {
-                                        navigateToMainScreen()
-                                }) {
-                                Icon(
-                                    modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.arrow_back),
-                                    contentDescription = "",
-                                    )
+            MainViewEditCostScreen(
+                amountCost,
+                descriptionCost,
+                payFor,
+                navigateToMainScreen,
+                editCostScreenViewModel,
+                idCost,
+                listOfCostOfPerson
+            )
 
-                            }
-                        },
-
-
-                        actions = {
-                            IconButton(
-                                modifier = Modifier
-                                    .clip(
-                                        shape = CircleShape
-                                    )
-                                    .size(40.dp), onClick = {
-                                    editCostScreenViewModel.onDeletedSelected(
-                                        idCost,
-                                        listOfCostOfPerson,
-                                    )
-                                    navigateToMainScreen()
-
-                                }) {
-                                Icon(
-                                    modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.delete_svgrepo),
-                                    tint = Black,
-                                    contentDescription = "",
-
-                                    )
-
-                            }
-
-                        },
-                        title = {
-                        }
-                    )
-                }
-            ) { paddingValues ->
-                MainViewEditCostScreen(
-                    paddingValues,
-                    amount,
-                    description,
-                    personString
-                )
-
-            }
         }
     }
-
-
 }
+
 
 @Composable
 fun MainViewEditCostScreen(
-    paddingValues: PaddingValues,
     amount: Float,
     description: String,
-    personString: String
+    personString: String,
+    navigateToMainScreen: () -> Unit,
+    editCostScreenViewModel: EditCostScreenViewModel,
+    idCost: Int,
+    listOfCostOfPerson: List<CostOfPersonModel>,
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient))
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
-        Text(
-            editCost,
-            fontFamily = rubik,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(Modifier.height(16.dp))
-        //TEXTFIELD DESCRIPCION
-        TextField(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
-            value = description,
-            readOnly = true,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(descriptionPlaceHolder) },
-            singleLine = true,
-            maxLines = 1,
-            textStyle = TextStyle(fontFamily = rubik),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black
+                .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
+                .background(color = DarkBlue)
+                .padding(bottom = 20.dp)
+                .weight(HEADER_WEIGHT),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomStart)
+                    .padding(start = 16.dp)
+                    .size(24.dp) // un poco más pequeño
+                    .offset(x = 2.dp), // ajusta visualmente el centrado fino,
+                onClick =
+                    { navigateToMainScreen() }
+            ) {
+                Icon(
 
-            ),
-        )
+                    painter = painterResource(R.drawable.arrow_back),
+                    contentDescription = "",
+                    tint = White
+                )
+            }
+            Text(
+                editCost,
+                fontSize = 16.sp,
+                color = White,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.W600,
+                textAlign = TextAlign.Center
+            )
+            IconButton(
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomEnd)
+                    .padding(end = 16.dp)
+                    .size(24.dp) // un poco más pequeño
+                    .offset(x = 2.dp), // ajusta visualmente el centrado fino,
+                onClick =
+                    {
+                        editCostScreenViewModel.onDeletedSelected(
+                            idCost,
+                            listOfCostOfPerson,
+                        )
+                        navigateToMainScreen()
+                    }
+            ) {
+                Icon(
 
-        Spacer(Modifier.height(16.dp))
+                    painter = painterResource(R.drawable.delete_svgrepo),
+                    contentDescription = "",
+                    tint = White
+                )
+            }
+        }
 
-        //TEXTFIELD CANTIDAD
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .weight(1f - HEADER_WEIGHT)
+        ) {
+            Spacer(modifier = Modifier.weight(0.02f))
+            CustomTextField(
+                value = description,
+                onValueChange = { editCostScreenViewModel.onDescriptionTextFieldChange(it) },
+                placeholderText = labelTextFieldAddPeopleScreen,
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                )
+            )
+            Spacer(modifier = Modifier.weight(0.02f))
+            CustomTextField(
+                value = amount.toString(),
+                onValueChange = { editCostScreenViewModel.onAmountTextFieldChange(it.toFloat())},
+                placeholderText = "",
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                ),
+                suffixText = "€"
+            )
+            Spacer(modifier = Modifier.weight(0.02f))
+            CustomTextField(
+                value = "$PayFor      $personString",
+                onValueChange = { editCostScreenViewModel.onPayForTextFieldChange(it)},
+                placeholderText = "",
+                textStyle = TextStyle(
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                )
+            )
+            Spacer(modifier = Modifier.weight(0.02f))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White,
+                    disabledContainerColor = Grey,
+                    disabledContentColor = Black
+                ),
+                onClick = {
+
+                }) {
+                Text(
+                    editCost,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+        }
+    }
+
+    /*
+    //TEXTFIELD CANTIDAD
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -237,7 +270,7 @@ fun MainViewEditCostScreen(
 
         Spacer(Modifier.height(16.dp))
 
-        //TEXTFIELD person
+    //TEXTFIELD person
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -265,7 +298,7 @@ fun MainViewEditCostScreen(
         )
 
 
-        Spacer(modifier = Modifier.weight(0.8f))
-    }
+        Spacer(modifier = Modifier.weight(0.8f))*/
 }
+
 
