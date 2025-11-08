@@ -10,14 +10,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -53,7 +51,6 @@ fun InitialScreen(
                 .blur(
                     radiusX = 8.dp,
                     radiusY = 8.dp,
-                    edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
                 ),
             colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0.2f) }),
             contentScale = ContentScale.Crop

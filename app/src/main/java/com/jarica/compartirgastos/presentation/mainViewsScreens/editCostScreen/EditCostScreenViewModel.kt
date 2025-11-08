@@ -1,5 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.costsUseCases.DeleteCostOfPersonUseCase
@@ -29,6 +31,27 @@ class EditCostScreenViewModel @Inject constructor(
     private val getPersonByIdUseCase: GetPersonByIdUseCase
 ):ViewModel() {
 
+
+    private val _descriptionCost = MutableLiveData<String>()
+    val descriptionCost: LiveData<String> = _descriptionCost
+
+    private val _amountCost = MutableLiveData<Float>()
+    val amountCost: LiveData<Float> = _amountCost
+
+    private val _payFor = MutableLiveData<String>()
+    val payFor: LiveData<String> = _payFor
+
+    fun onDescriptionTextFieldChange(description: String) {
+        _descriptionCost.value = description
+    }
+
+    fun onPayForTextFieldChange(payFor: String) {
+        _payFor.value = payFor
+    }
+
+    fun onAmountTextFieldChange(amount: Float) {
+        _amountCost.value = amount
+    }
 
     val uiEditCostUiState : StateFlow<EditCostUiState> =
         getCostOfPersonsUseCase().map(EditCostUiState::Success)

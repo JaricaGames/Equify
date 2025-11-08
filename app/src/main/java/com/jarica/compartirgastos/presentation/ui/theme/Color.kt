@@ -10,6 +10,7 @@ val Pink80 = Color(0xFFEFB8C8)
 val DarkOrange = Color(0xFFE45637)
 val PurpleGrey40 = Color(0xFFE45637)
 val DarkBlue = Color(0xFF35526A)
+val ClearBlue = Color(0xFF4b7598)
 val VeryDarkBlue = Color(0xFF2A333F)
 val Grey = Color(0xFFF4F4F4)
 val Pink40 = Color(0xFF2A333F)
@@ -29,4 +30,9 @@ val Transparent = Color(0x00FFFFFF)
 val BackgroundColorGradient = arrayOf(
     0.8f to White,
     1f to White,
+)
+
+val BackgroundSplashScreenColorGradient = arrayOf(
+    0.6f to DarkBlue,
+    1f to ClearBlue,
 )
