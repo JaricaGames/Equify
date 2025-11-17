@@ -4,6 +4,9 @@ const val ID_GROUP_SAVED = "idGroupSaved"
 const val PREFERENCES_NAME = "preferences_name"
 const val TAG = "PdfCreator"
 
+//email
+const val EMAIL_DIRECTION = "jarica.games@gmail.com"
+const val EMAIL_SUBJECT = "FeedBack"
 
 //Table Names
 const val PEOPLE_TABLE = "peopleTable"

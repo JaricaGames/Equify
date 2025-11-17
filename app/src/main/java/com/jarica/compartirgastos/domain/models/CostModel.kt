@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class CostModel(
     val idCost: Int,
     val idPerson: Int,
-    val amount: Float,
-    val description: String,
+    var amount: Float,
+    var description: String,
     val idGroup: Int,
-    val personString:String
+    var personString:String
 )

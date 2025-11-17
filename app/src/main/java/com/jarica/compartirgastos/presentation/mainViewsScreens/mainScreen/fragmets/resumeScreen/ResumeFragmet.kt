@@ -42,6 +42,7 @@ import kotlin.math.absoluteValue
 fun ResumeFragment(
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
+    modifier: Modifier,
 ) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -60,7 +61,7 @@ fun ResumeFragment(
         is MainUiState.Error -> {}
         is MainUiState.Loading -> {
 
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         }

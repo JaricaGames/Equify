@@ -1,6 +1,8 @@
 package com.jarica.compartirgastos.core.navigation
 
 import android.app.Activity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jarica.compartirgastos.presentation.SplashScreen.SplashScreen
 import com.jarica.compartirgastos.presentation.SplashScreen.SplashScreenViewModel
+import com.jarica.compartirgastos.presentation.aboutEquify.AboutEquifyScreen
+import com.jarica.compartirgastos.presentation.aboutEquify.AboutEquifyScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.presentation.createGroupScreens.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.presentation.createGroupScreens.newGroupScreen.NewGroupScreen
@@ -34,6 +38,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainS
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun NavigationWrapper(
     newGroupViewModel: NewGroupViewModel,
@@ -48,6 +53,7 @@ fun NavigationWrapper(
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     splashScreenViewModel: SplashScreenViewModel,
+    aboutScreenViewModel: AboutEquifyScreenViewModel,
 ) {
 
     val activity = LocalContext.current as? Activity
@@ -74,6 +80,11 @@ fun NavigationWrapper(
                 },
                 navigateToNewGroup = {
                     navController.navigate(NewGroupScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToAboutScreen = {
+                    navController.navigate(AboutEquifyScreenObject) {
                         launchSingleTop = true
                     }
                 }
@@ -256,6 +267,11 @@ fun NavigationWrapper(
                     navController.navigate(AddPeopleScreenFromMainObject) {
                         launchSingleTop = true
                     }
+                },
+                navigateToAboutScreen = {
+                    navController.navigate(AboutEquifyScreenObject) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -298,6 +314,14 @@ fun NavigationWrapper(
             )
         }
 
+        composable<AboutEquifyScreenObject> {
+            AboutEquifyScreen(
+                navigateBack = {
+                    navController.popBackStack()
+                },
+                aboutScreenViewModel = aboutScreenViewModel
+            )
+        }
     }
 }
 

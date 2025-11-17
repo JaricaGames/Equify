@@ -1,5 +1,7 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -21,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +40,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.EMAIL_DIRECTION
+import com.jarica.compartirgastos.core.EMAIL_SUBJECT
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
@@ -44,12 +49,15 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScr
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.AlertDialogs.AlertDialogErrorClear
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
+import com.jarica.compartirgastos.presentation.ui.aboutText
 import com.jarica.compartirgastos.presentation.ui.addPeopleConfigurationText
 import com.jarica.compartirgastos.presentation.ui.administratePeopleConfigurationText
 import com.jarica.compartirgastos.presentation.ui.configurationTextScreen
 import com.jarica.compartirgastos.presentation.ui.customizeGroupScreenText
 import com.jarica.compartirgastos.presentation.ui.deleteGroupText
+import com.jarica.compartirgastos.presentation.ui.feedbackText
 import com.jarica.compartirgastos.presentation.ui.groupMembersText
+import com.jarica.compartirgastos.presentation.ui.informationText
 import com.jarica.compartirgastos.presentation.ui.otherText
 import com.jarica.compartirgastos.presentation.ui.personalizationGroupText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
@@ -59,6 +67,8 @@ import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,8 +76,32 @@ fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     navigateToCustomizeGroup: () -> Unit,
     navigateToGroupScreen: () -> Unit,
-    navigateToAddPeopleScreen: () -> Unit
+    navigateToAddPeopleScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit,
 ) {
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        configurationScreenViewModel.event.collect { event ->
+            when (event) {
+
+                ConfigurationScreenViewModel.UiEvent.SendEmail -> {
+                    withContext(Dispatchers.Main) {
+                        val email = EMAIL_DIRECTION
+
+                        val intentGmail = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:")
+                            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                            putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT)
+                            setPackage("com.google.android.gm") // Paquete oficial de Gmail
+                        }
+                        context.startActivity(intentGmail)
+
+                    }
+                }
+            }
+        }
+    }
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStatePeopleGroupFragment by produceState<MainUiState>(
@@ -95,36 +129,35 @@ fun ConfigurationScreen(
         is MainUiState.Loading -> {}
         is MainUiState.Success -> {
 
-                MainConfigurationScreen(
-                    configurationScreenViewModel,
-                    nameOfGroup,
-                    (uiStatePeopleGroupFragment as MainUiState.Success).peopleList,
-                    navigateToCustomizeGroup,
-                    navigateToGroupScreen,
-                    navigateToAddPeopleScreen
+            MainConfigurationScreen(
+                configurationScreenViewModel,
+                nameOfGroup,
+                (uiStatePeopleGroupFragment as MainUiState.Success).peopleList,
+                navigateToCustomizeGroup,
+                navigateToGroupScreen,
+                navigateToAddPeopleScreen,
+                navigateToAboutScreen
+            )
+
+            if (showDialogError) {
+                AlertDialogErrorClear(
+                    personSelected,
+                    onDismiss = { configurationScreenViewModel.onDismiss() }
                 )
+            }
 
-                if (showDialogError) {
-                    AlertDialogErrorClear(
-                        personSelected,
-                        onDismiss = { configurationScreenViewModel.onDismiss() }
-                    )
-                }
-
-                if (showDialogConfirm) {
-                    AlertDialogConfirm(
-                        personSelected,
-                        onDismiss = { configurationScreenViewModel.onDismiss() },
-                        onConfirm = { configurationScreenViewModel.onConfirmDeletePerson() }
-                    )
-                }
-
+            if (showDialogConfirm) {
+                AlertDialogConfirm(
+                    personSelected,
+                    onDismiss = { configurationScreenViewModel.onDismiss() },
+                    onConfirm = { configurationScreenViewModel.onConfirmDeletePerson() }
+                )
             }
 
         }
+
     }
-
-
+}
 
 
 @Composable
@@ -135,6 +168,7 @@ fun MainConfigurationScreen(
     navigateToCustomizeGroup: () -> Unit,
     navigateToMainScreen: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit,
 ) {
 
     configurationScreenViewModel.getGroupNameById(iDGroupName!!)
@@ -153,21 +187,138 @@ fun MainConfigurationScreen(
             icon = R.drawable.arrow_back
         )
 
-        Column(
-            modifier = Modifier.padding(horizontal = 32.dp).weight(1f-HEADER_WEIGHT)
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .weight(1f - HEADER_WEIGHT)
         ) {
-            Spacer(Modifier.height(20.dp))
-            PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup)
-            Spacer(Modifier.height(20.dp))
-            AdministrateGroupMembers(navigateToAddPeopleScreen)
-            Spacer(Modifier.height(20.dp))
-            GroupMembers(peopleList, configurationScreenViewModel)
-            Spacer(Modifier.height(20.dp))
-            Other(configurationScreenViewModel, navigateToMainScreen)
-        }
-    }
 
+            item { Spacer(Modifier.height(20.dp)) }
+
+            item { PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup) }
+            item { Spacer(Modifier.height(20.dp)) }
+
+            item { AdministrateGroupMembers(navigateToAddPeopleScreen) }
+            item { Spacer(Modifier.height(20.dp)) }
+
+            item {
+                // Aquí convertimos GroupMembers en una Column normal,
+                // no LazyColumn dentro de LazyColumn
+                Text(
+                    groupMembersText,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                    color = Black
+                )
+                Spacer(Modifier.height(6.dp))
+
+                peopleList
+                    .filter { it.idGroupName == iDGroupName }
+                    .forEach { person ->
+                        ItemPeopleNameConfigurationScreen(person, configurationScreenViewModel)
+                    }
+            }
+
+            item { Spacer(Modifier.height(20.dp)) }
+
+            item { Other(configurationScreenViewModel, navigateToMainScreen) }
+            item { Spacer(Modifier.height(20.dp)) }
+
+            item { Information(configurationScreenViewModel, navigateToAboutScreen) }
+            item { Spacer(Modifier.height(20.dp)) }
+        }
+
+    }
 }
+
+@Composable
+fun Information(
+    configurationScreenViewModel: ConfigurationScreenViewModel,
+    navigateToAboutScreen: () -> Unit
+) {
+    Text(
+        informationText,
+        fontFamily = parkinsans,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Start,
+        fontSize = 12.sp,
+        color = Black
+    )
+    Spacer(Modifier.height(6.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(Grey)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable {
+                navigateToAboutScreen()
+            },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(Modifier.size(6.dp))
+        Text(
+            aboutText,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+        )
+        Spacer(Modifier.weight(1f))
+        Icon(
+            painterResource(R.drawable.information),
+            "",
+            tint = DarkOrange,
+            modifier = Modifier.size(20.dp)
+        )
+
+    }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        thickness = 1.dp,
+        color = DarkOrange.copy(0.2f)
+    )
+    Spacer(Modifier.height(6.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(Grey)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable {
+                configurationScreenViewModel.onFeedbackClicked()
+            },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(Modifier.size(6.dp))
+        Text(
+            feedbackText,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+        )
+        Spacer(Modifier.weight(1f))
+        Icon(
+            painterResource(R.drawable.feedback),
+            "",
+            tint = DarkOrange,
+            modifier = Modifier.size(20.dp)
+        )
+    }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        thickness = 1.dp,
+        color = DarkOrange.copy(0.2f)
+    )
+}
+
 
 @Composable
 fun Other(
@@ -221,7 +372,7 @@ fun Other(
         color = DarkOrange.copy(0.2f)
     )
 }
-
+/*
 @Composable
 fun GroupMembers(
     peopleList: List<PersonModel>,
@@ -248,7 +399,7 @@ fun GroupMembers(
         }
     }
 
-}
+}*/
 
 @Composable
 fun ItemPeopleNameConfigurationScreen(

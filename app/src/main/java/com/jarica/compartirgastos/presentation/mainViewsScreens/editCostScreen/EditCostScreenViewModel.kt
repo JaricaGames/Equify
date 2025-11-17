@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.costsUseCases.DeleteCostOfPersonUseCase
 import com.jarica.compartirgastos.domain.costsUseCases.DeleteCostUseCase
+import com.jarica.compartirgastos.domain.costsUseCases.GetCostByIdCost
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostOfPersonsUseCase
+import com.jarica.compartirgastos.domain.costsUseCases.UpdateCostUseCase
 import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonByIdUseCase
@@ -28,7 +30,9 @@ class EditCostScreenViewModel @Inject constructor(
     private val deleteCostUseCase: DeleteCostUseCase,
     private val deleteCostOfPersonUseCase: DeleteCostOfPersonUseCase,
     private val updatePersonByIdUseCase: UpdatePersonByIdUseCase,
-    private val getPersonByIdUseCase: GetPersonByIdUseCase
+    private val getPersonByIdUseCase: GetPersonByIdUseCase,
+    private val getCostByIdCost: GetCostByIdCost,
+    private val updateCostUseCase: UpdateCostUseCase
 ):ViewModel() {
 
 
@@ -90,6 +94,7 @@ class EditCostScreenViewModel @Inject constructor(
         }
 
 
+
 /*
         viewModelScope.launch(Dispatchers.IO) {
             updateCostUseCase(CostModel(
@@ -102,6 +107,18 @@ class EditCostScreenViewModel @Inject constructor(
             ))
         }*/
 
+    }
+
+    fun updateCost(personString: String, description: String, amount: Float, idCost: Int) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val cost = getCostByIdCost(idCost)
+            cost.description = description
+            cost.amount = amount
+            cost.personString = personString
+
+            updateCostUseCase(costModel = cost)
+        }
     }
 
 }

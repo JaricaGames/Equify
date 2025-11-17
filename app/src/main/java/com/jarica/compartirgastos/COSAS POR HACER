@@ -2,9 +2,6 @@
 ------------------------------
 POR HACER
 
-COMPROBAR LAS PILAS DE NAVEGACION
-
-CREAR SPLASH SCREEN
 
 “Divide gastos, multiplica momentos.”
 
@@ -19,6 +16,7 @@ COMPARTIR EN LINEA
 AÑADIR MONEDAS
 
 ------------------------------
+
 HECHO
 
 HACER EL BOTON DE CONFIGURACION EN LA PANTALLA PRINCIPAL.
@@ -54,4 +52,9 @@ ANUNCIOS ---------- DONE
 CAMBIAR HEADER MAINSCREEN DE SCADFOLD A COLUMN+ROW ----- DONE
 
 MEJORAR LAS VISUAL ------------ DONE
+
+COMPROBAR LAS PILAS DE NAVEGACION   ------------ DONE
+
+CREAR SPLASH SCREEN  ------------ DONE
+
 ------------------------------
