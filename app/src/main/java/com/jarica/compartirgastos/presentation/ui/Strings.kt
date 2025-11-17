@@ -67,6 +67,10 @@ const val administratePeopleConfigurationText = "Administrar miembros"
 const val groupMembersText = "Miembros del grupo"
 const val otherText = "Otro"
 const val deleteGroupText = "Borrar Grupo"
+const val informationText = "Información"
+const val aboutText = "Sobre Equify"
+const val feedbackText = " Envianos tu Feedback"
+
 
 //CustomizeGroupScreen
 const val customizeGroupScreenText = "Editar Grupo"
@@ -94,6 +98,12 @@ const val titleText = "Título"
 const val toText = "Pagado por"
 const val noAppToOpenPDF = "No hay app para abrir PDF"
 
-
+//AboutScreen
+const val aboutScreenText = "Sobre Equify"
+const val aboutScreenLongText = "Hola, soy Juan Antonio desde Cáceres. Si Equify te está haciendo más fácil repartir gastos, ¡déjanos tu valoración en Google Play! Tu opinión nos ayuda a crecer. ⭐" +
+        "¡Gracias por formar parte de Equify! \uD83D\uDE4C"
+const val buttonAboutScreenText = "Valorar Equify"
+const val aboutScreenLongText2 = "¿Tienes alguna idea para mejorar Equify?\n" +
+        "Envíanos tu feedback, ¡queremos escucharte y seguir mejorando!"
 
 

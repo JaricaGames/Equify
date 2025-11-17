@@ -13,12 +13,15 @@ import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,7 +46,7 @@ class ConfigurationScreenViewModel @Inject constructor(
     private val _showDialogConfirm = MutableLiveData<Boolean>()
     val showDialogConfirm: LiveData<Boolean> = _showDialogConfirm
 
-    private var personSelectedModel:PersonModel? = null
+    private var personSelectedModel: PersonModel? = null
 
     val uiStateConfigurationScreen: StateFlow<MainUiState> =
         getPeopleNamesUseCase().map(MainUiState::Success)
@@ -51,38 +54,51 @@ class ConfigurationScreenViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)
 
 
+    private val _event = MutableSharedFlow<UiEvent>()
+    val event = _event.asSharedFlow()
+
+
+    // ----------------------------------------
+    // Obtener nombre del grupo
     fun getGroupNameById(idGroup: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _nameOfGroup.postValue(getGroupByIdUseCase(idGroup).groupName)
+        viewModelScope.launch {
+            val groupName = withContext(Dispatchers.IO) {
+                getGroupByIdUseCase(idGroup).groupName
+            }
+            _nameOfGroup.value = groupName
         }
     }
 
+    // ----------------------------------------
+    // Borrar grupo
     fun deleteGroup(iDGroupName: Int) {
-
         viewModelScope.launch(Dispatchers.IO) {
-            val groupToDelete = getGroupByIdUseCase(idGroup = iDGroupName)
+            val groupToDelete = getGroupByIdUseCase(iDGroupName)
             deleteGroupByIdUseCase(groupToDelete, iDGroupName)
         }
     }
 
+    // ----------------------------------------
+    // Usuario seleccionado de un grupo
     fun onGroupMemberClicked(person: PersonModel) {
-
         _personSelected.value = person.name
         personSelectedModel = person
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
+            val listOfCosts = withContext(Dispatchers.IO) {
+                getCostByIdPerson(person.idPerson!!)
+            }
 
-            val listOfCosts = getCostByIdPerson(person.idPerson!!)
-
-            if(listOfCosts.isNotEmpty()){
-                _showDialogError.postValue(true)
-            }else{
-                _showDialogConfirm.postValue(true)
-
+            // Ahora estamos en Main Thread
+            if (listOfCosts.isNotEmpty()) {
+                _showDialogError.value = true
+            } else {
+                _showDialogConfirm.value = true
             }
         }
     }
 
+    // ----------------------------------------
     fun onDismiss() {
         _showDialogError.value = false
         _showDialogConfirm.value = false
@@ -93,13 +109,25 @@ class ConfigurationScreenViewModel @Inject constructor(
         _nameOfGroup.value = ""
     }
 
+    // ----------------------------------------
     fun onConfirmDeletePerson() {
-
-        viewModelScope.launch(Dispatchers.IO) {
-            deletePersonById(personSelectedModel!!)
+        personSelectedModel?.let { person ->
+            viewModelScope.launch(Dispatchers.IO) {
+                deletePersonById(person)
+            }
         }
-       // deletePersonById(personSelected)
-         _showDialogConfirm.postValue(false)
+        _showDialogConfirm.value = false
+    }
+
+    fun onFeedbackClicked() {
+
+        viewModelScope.launch {
+            _event.emit(UiEvent.SendEmail)
+        }
+    }
+
+    sealed class UiEvent {
+        object SendEmail : UiEvent()
     }
 
 }

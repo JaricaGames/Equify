@@ -42,7 +42,8 @@ import com.jarica.compartirgastos.presentation.ui.totalCostText
 fun CostFragment(
     idGroup: Int?,
     mainScreenViewModel: MainScreenViewModel,
-    navigateToEditCost: (CostModel) -> Unit
+    navigateToEditCost: (CostModel) -> Unit,
+    modifier: Modifier
 ) {
 
     val totalCost: Float by mainScreenViewModel.totalCost.observeAsState(0f)
@@ -70,7 +71,7 @@ fun CostFragment(
                 navigateToEditCost
             )
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .padding(horizontal = 16.dp)
                     .clip(shape = RoundedCornerShape(16.dp))
             )

@@ -167,7 +167,9 @@ fun MainViewEditCostScreen(
             ) {
                 Icon(
 
-                    painter = painterResource(R.drawable.delete_svgrepo),
+                    painter = painterResource(
+                        id = R.drawable.delete_svgrepo
+                    ),
                     contentDescription = "",
                     tint = White
                 )
@@ -193,7 +195,7 @@ fun MainViewEditCostScreen(
             Spacer(modifier = Modifier.weight(0.02f))
             CustomTextField(
                 value = amount.toString(),
-                onValueChange = { editCostScreenViewModel.onAmountTextFieldChange(it.toFloat())},
+                onValueChange = { },
                 placeholderText = "",
                 textStyle = TextStyle(
                     fontFamily = parkinsans,
@@ -205,7 +207,7 @@ fun MainViewEditCostScreen(
             Spacer(modifier = Modifier.weight(0.02f))
             CustomTextField(
                 value = "$PayFor      $personString",
-                onValueChange = { editCostScreenViewModel.onPayForTextFieldChange(it)},
+                onValueChange = { },
                 placeholderText = "",
                 textStyle = TextStyle(
                     fontFamily = parkinsans,
@@ -223,7 +225,8 @@ fun MainViewEditCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-
+                    editCostScreenViewModel.updateCost(personString,description, amount, idCost )
+                    navigateToMainScreen()
                 }) {
                 Text(
                     editCost,

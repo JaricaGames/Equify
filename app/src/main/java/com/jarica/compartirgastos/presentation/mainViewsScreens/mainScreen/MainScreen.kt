@@ -142,7 +142,7 @@ fun MainView(
     ) {
         //HEADER
         Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration)
-        Spacer(Modifier.weight(0.02f))
+        Spacer(Modifier.size(12.dp))
         //BOXS DE SELECCIONAR ACCION
         ActionsBoxes(
             mainScreenViewModel,
@@ -154,21 +154,21 @@ fun MainView(
             uiStatePeopleGroupFragment,
             onDoTheCountsClicked,
         )
-        Spacer(Modifier.weight(0.02f))
+        Spacer(Modifier.size(12.dp))
         //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
         ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
-        Spacer(Modifier.weight(0.02f))
+        Spacer(Modifier.size(12.dp))
         // LISTADOS (RESUMEN O GASTOS)
         if (isResumeSelected) {
-            ResumeFragment(idGroup, mainScreenViewModel)
+            ResumeFragment(idGroup, mainScreenViewModel, Modifier.weight(1f))
         } else {
             if (isCostSelected) {
-                CostFragment(idGroup, mainScreenViewModel, navigateToEditCost)
+                CostFragment(idGroup, mainScreenViewModel, navigateToEditCost, Modifier.weight(1f))
             } else {
-                PaymentsFragment(idGroup, mainScreenViewModel)
+                PaymentsFragment(idGroup, mainScreenViewModel, Modifier.weight(1f))
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(Modifier.weight(1f))
         BannerAdViewMainScreen()
     }
 }

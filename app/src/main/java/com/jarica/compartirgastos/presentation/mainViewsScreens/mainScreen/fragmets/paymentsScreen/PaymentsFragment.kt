@@ -40,7 +40,8 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @Composable
 fun PaymentsFragment(
     idGroup: Int?,
-    mainScreenViewModel: MainScreenViewModel
+    mainScreenViewModel: MainScreenViewModel,
+    modifier: Modifier
 ) {
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -57,7 +58,7 @@ fun PaymentsFragment(
     when (uiStatePaymentsFragment) {
         is PaymentsScreenUiState.Error -> {}
         is PaymentsScreenUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         }

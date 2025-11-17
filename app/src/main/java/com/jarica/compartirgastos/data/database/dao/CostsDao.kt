@@ -25,6 +25,10 @@ interface CostsDao {
     @Query("SELECT * FROM CostsOfPersonTable WHERE iDPerson LIKE :idPerson ")
     suspend fun getCostsById(idPerson: Int): List<CostsOfPersonsEntity>
 
+   // Metodo que devuelve un gasto por ID
+    @Query("SELECT * FROM costsTable WHERE iDCost LIKE :idCost ")
+    suspend fun getCostsByIdCost(idCost: Int): CostEntity
+
     //Metodo que inserta un nuevo gasto
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCost(cost: CostEntity)

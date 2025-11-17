@@ -52,12 +52,12 @@ class AppRepository @Inject constructor(
     }
 
 
-    suspend fun getGroupMembersById(id:Int): List<String>{
+    suspend fun getGroupMembersById(id: Int): List<String> {
         return groupNameDao.getGroupsMembersById(id)
     }
 
     //Metodo que actualiza algun valor del grupo (ej:nombre)
-    suspend fun updateGroup(groupNameModel: GroupNameModel){
+    suspend fun updateGroup(groupNameModel: GroupNameModel) {
         return groupNameDao.updateGroupName(
             GroupNameEntity(
                 idGroupName = groupNameModel.idGroupName,
@@ -69,7 +69,7 @@ class AppRepository @Inject constructor(
 
 
     //Metodo que borra un grupo y lo que lleva ese grupo (costos, personas, etc...)
-    suspend fun deleteGroup(groupNameModel: GroupNameModel, iDGroupName: Int){
+    suspend fun deleteGroup(groupNameModel: GroupNameModel, iDGroupName: Int) {
 
         groupNameDao.deleteGroupName(
             GroupNameEntity(
@@ -91,7 +91,7 @@ class AppRepository @Inject constructor(
         .map { items -> items.map { PersonModel(it.idPerson, it.name, it.equity, it.idGroupName) } }
 
 
-    suspend fun getPersonById(idPerson: Int):PersonModel{
+    suspend fun getPersonById(idPerson: Int): PersonModel {
         return personNameDao.getPersonById(idPerson).toDomain()
     }
 
@@ -118,7 +118,7 @@ class AppRepository @Inject constructor(
         )
     }
 
-    suspend fun updatePersonById(idPerson:Int, equity: String){
+    suspend fun updatePersonById(idPerson: Int, equity: String) {
         personNameDao.updatePersonById(idPerson, equity)
     }
 
@@ -171,11 +171,11 @@ class AppRepository @Inject constructor(
         )
     }
 
-    suspend fun deleteCost(idCost:Int){
+    suspend fun deleteCost(idCost: Int) {
         costsDao.deleteCost(idCost = idCost)
     }
 
-    suspend fun deleteCostOfPerson(idCost:Int){
+    suspend fun deleteCostOfPerson(idCost: Int) {
         costsDao.deleteCostOfPerson(idCost = idCost)
     }
 
@@ -196,6 +196,23 @@ class AppRepository @Inject constructor(
         return costsDao.getCostsById(id)
     }
 
+    suspend fun getCostByIdCost(id: Int): CostModel {
+        return costsDao.getCostsByIdCost(id).toDomain()
+    }
+
+    suspend fun updateCost(costModel: CostModel) {
+        costsDao.updateCost(
+            costEntity = CostEntity(
+                costModel.idCost,
+                costModel.idPerson,
+                costModel.amount,
+                costModel.description,
+                costModel.idGroup,
+                costModel.personString
+            )
+        )
+    }
+
 
 //PAYMENTS:DAO
 //Mapear de PaymentEntity a PaymentModel
@@ -213,7 +230,7 @@ class AppRepository @Inject constructor(
             }
         }
 
-    suspend fun insertPayment(paymentsModel: PaymentsModel){
+    suspend fun insertPayment(paymentsModel: PaymentsModel) {
         paymentsDao.insertPayment(
             PaymentEntity(
                 idPayment = null,
@@ -231,6 +248,17 @@ class AppRepository @Inject constructor(
 
 fun GroupNameEntity.toDomain(): GroupNameModel {
     return GroupNameModel(this.idGroupName, this.groupName)
+}
+
+fun CostEntity.toDomain(): CostModel {
+    return CostModel(
+        idCost = this.idCost,
+        idPerson = this.idPerson,
+        amount = this.amount,
+        description = this.description,
+        idGroup = this.idGroup,
+        personString = this.personString
+    )
 }
 
 

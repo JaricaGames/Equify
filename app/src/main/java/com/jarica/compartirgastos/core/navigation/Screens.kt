@@ -50,6 +50,9 @@ data object DoTheCountsScreenObject
 @Serializable
 data object SplashScreenObject
 
+@Serializable
+data object AboutEquifyScreenObject
+
 
 
 

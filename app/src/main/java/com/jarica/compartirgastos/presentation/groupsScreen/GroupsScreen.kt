@@ -2,7 +2,6 @@ package com.jarica.compartirgastos.presentation.groupsScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +21,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,6 +60,7 @@ fun GroupsScreen(
     navigateToMainScreen: (Int) -> Unit,
     navigateToInitialScreen: () -> Unit,
     navigateToNewGroup: () -> Unit,
+    navigateToAboutScreen: () -> Unit,
 
     ) {
 
@@ -91,41 +92,48 @@ fun GroupsScreen(
                 navigateToInitialScreen()
             } else {
 
-                FloatingActionButton(
-                    onClick = { navigateToNewGroup() },
-                    modifier = Modifier.padding(30.dp),
-                    containerColor = DarkOrange,
-                    contentColor = White
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add")
-                }
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.Top) {
+                Scaffold(floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { navigateToNewGroup() },
+                        modifier = Modifier.padding(30.dp),
+                        containerColor = DarkOrange,
+                        contentColor = White
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    }
+                })
+                { innerPadding ->
 
-                    CustomHeader(
-                        { TODO() },
-                        modifier = Modifier.weight(HEADER_WEIGHT),
-                        text = groupsText,
-                        icon = null
-                    )
-                    Column(modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .weight(1f - HEADER_WEIGHT)) {
-                        Spacer(modifier = Modifier.size(20.dp))
-                        GroupList(
-                            listOfGroups,
-                            groupViewModel,
-                            navigateToMainScreen,
-                            navigateToInitialScreen,
+                    Column(modifier = Modifier.padding(innerPadding)
+                        .fillMaxSize()
+                        .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.Top) {
+
+                        CustomHeader(
+                            navigateToAboutScreen,
+                            modifier = Modifier.weight(HEADER_WEIGHT),
+                            text = groupsText,
+                            icon = R.drawable.information
                         )
-                        Spacer(modifier = Modifier.size(20.dp))
-                        BannerAdViewGroupScreen()
+                        Column(modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .weight(1f - HEADER_WEIGHT)) {
+                            Spacer(modifier = Modifier.size(20.dp))
+                            GroupList(
+                                listOfGroups,
+                                groupViewModel,
+                                navigateToMainScreen,
+                                navigateToInitialScreen,
+                            )
+                            Spacer(modifier = Modifier.size(20.dp))
+                            BannerAdViewGroupScreen()
 
+                        }
                     }
                 }
+
+
             }
 
 
@@ -172,7 +180,6 @@ fun ItemGroupName(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(VeryDarkBlue)
-            .border(width = 2.dp, color = DarkOrange, shape = RoundedCornerShape(8.dp))
             .padding(horizontal = 32.dp, vertical = 8.dp)
             .clickable {
                 groupViewModel.onGroupSelected(

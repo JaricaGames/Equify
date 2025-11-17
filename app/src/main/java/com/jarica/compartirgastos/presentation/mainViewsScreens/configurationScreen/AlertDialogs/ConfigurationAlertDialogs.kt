@@ -108,15 +108,17 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
 
         dismissButton = {
             TextButton(
-                onClick = {onDismiss()}
+                onClick = { onDismiss() }
             ) {
                 Text(
-                cancel,
+                    cancel,
                     fontFamily = parkinsans,
-                textAlign = TextAlign.Start,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.W200
-            ) }
+                    color = White,
+                    textAlign = TextAlign.Start,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.W200
+                )
+            }
         },
 
         title = {
@@ -143,7 +145,7 @@ fun AlertDialogConfirm(personSelected: String, onDismiss: () -> Unit, onConfirm:
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    " $confirmAlertDialogText1 $personSelected$confirmAlertDialogText2" ,
+                    " $confirmAlertDialogText1 $personSelected$confirmAlertDialogText2",
                     fontFamily = parkinsans,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,

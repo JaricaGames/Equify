@@ -55,6 +55,7 @@ class AddPeopleScreenFromMainViewModel @Inject constructor(
                 personModel = person
             )
         }
+        _addNameToGroup.value = ""
     }
 
     fun onBackPressed() {

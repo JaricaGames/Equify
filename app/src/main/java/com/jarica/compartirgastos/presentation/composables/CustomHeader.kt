@@ -49,7 +49,6 @@ fun CustomHeader(
         ) {
             icon?.let{
                 Icon(
-
                     painter = painterResource(icon),
                     contentDescription = "",
                     tint = White
