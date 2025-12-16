@@ -185,6 +185,7 @@ fun NavigationWrapper(
                         launchSingleTop = true
                     }
                 },
+
                 navigateToMainScreen = {
                     navController.navigate(MainScreenObject(iDGroupName = addPeopleScreen.iDGroupName)) {
                         launchSingleTop = true
@@ -208,6 +209,7 @@ fun NavigationWrapper(
 
 
         composable<AddPayScreenObject> {
+
             AddPaymentScreen(
                 addPaymentScreenViewModel,
                 navigateToMainScreen = {
