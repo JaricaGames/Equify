@@ -169,7 +169,7 @@ fun MainView(
             }
         }
         Spacer(Modifier.weight(1f))
-        BannerAdViewMainScreen()
+       // BannerAdViewMainScreen()
     }
 }
 
