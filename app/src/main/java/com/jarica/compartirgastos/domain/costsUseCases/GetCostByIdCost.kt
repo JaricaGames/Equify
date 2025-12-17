@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetCostByIdCost @Inject constructor(
     private val repository: AppRepository
 ) {
-    suspend operator fun invoke(idCost: Int): CostModel{
+    suspend operator fun invoke(idCost: String): CostModel{
         return repository.getCostByIdCost(idCost)
     }
 }

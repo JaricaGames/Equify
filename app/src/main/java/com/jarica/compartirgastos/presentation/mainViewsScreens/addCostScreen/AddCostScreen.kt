@@ -245,12 +245,14 @@ fun MainViewAddCostScreen(
                     addCostViewModel.addCostToGroup(
                         personToAddCosts = personToAddCosts!!,
                         listOfPeople,
-                        iDGroupName
+                        iDGroupName,
+                        amountText,
+                        descriptionText
                     )
-                    addCostViewModel.updatePerson(
+/*                    addCostViewModel.updatePerson(
                         personToAddCosts = personToAddCosts,
                         listOfPeople = listOfPeople
-                    )
+                    )*/
                     addCostViewModel.cleanTexts()
                     navigateToMainScreen()
                 }) {

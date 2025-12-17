@@ -28,12 +28,12 @@ class  GroupsScreenViewModel @Inject constructor(
     val isDeleteGroupClicked: LiveData<Boolean> = _isDeleteGroupClicked
 
 
-    fun onGroupSelected(idGroupName: Int, groupName: String) {
+    fun onGroupSelected(idGroupName: String, groupName: String) {
         iDGroupName = idGroupName
         groupNameCompanionObject = groupName
     }
 
-    fun onDeletedSelected(groupNameModel: GroupNameModel, iDGroupName: Int) {
+    fun onDeletedSelected(groupNameModel: GroupNameModel, iDGroupName: String) {
         viewModelScope.launch {
             deleteGroupByIdUseCase(groupNameModel, iDGroupName)
         }

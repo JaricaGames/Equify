@@ -14,14 +14,8 @@ import com.jarica.compartirgastos.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 
 @HiltViewModel
@@ -57,7 +51,7 @@ class EditCostScreenViewModel @Inject constructor(
         _amountCost.value = amount
     }
 
-    val uiEditCostUiState : StateFlow<EditCostUiState> =
+    /*val uiEditCostUiState : StateFlow<EditCostUiState> =
         getCostOfPersonsUseCase().map(EditCostUiState::Success)
             .catch { EditCostUiState.Error(it) }
             .stateIn(
@@ -65,10 +59,10 @@ class EditCostScreenViewModel @Inject constructor(
                 SharingStarted.WhileSubscribed(5000),
                 EditCostUiState.Loading
             )
-
+*/
 
     fun onDeletedSelected(
-        idCost: Int,
+        idCost: String,
         listOfCostOfPerson: List<CostOfPersonModel>,
     ) {
 
@@ -81,10 +75,10 @@ class EditCostScreenViewModel @Inject constructor(
                 if(costOfPerson.iDCost == idCost) {
 
                     val personToUpdate = getPersonByIdUseCase(costOfPerson.iDPerson!!)
-                    updatePersonByIdUseCase(
+                    /*updatePersonByIdUseCase(
                         idPerson = costOfPerson.iDPerson,
                         equity = (personToUpdate.equity.toFloat().absoluteValue - costOfPerson.amount).toString()
-                    )
+                    )*/
                 }
             }
 
@@ -109,13 +103,13 @@ class EditCostScreenViewModel @Inject constructor(
 
     }
 
-    fun updateCost(personString: String, description: String, amount: Float, idCost: Int) {
+    fun updateCost( description: String, amount: Float, idCost: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
             val cost = getCostByIdCost(idCost)
             cost.description = description
             cost.amount = amount
-            cost.personString = personString
+            //cost.personString = personString
 
             updateCostUseCase(costModel = cost)
         }

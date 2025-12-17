@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.costsUseCases.InsertCostOfPersonsUseCase
 import com.jarica.compartirgastos.domain.costsUseCases.InsertCostUseCase
 import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
@@ -86,22 +85,20 @@ class AddCostScreenViewModel @Inject constructor(
     fun addCostToGroup(
         personToAddCosts: PersonModel,
         listOfPeople: List<PersonModel>,
-        iDGroupName: Int?
+        iDGroupName: String?,
+        amountText: String,
+        descriptionText: String
     ) {
 
-        val idCost = System.currentTimeMillis().hashCode()
         val numberOfPeople = calculateNumberOfPeople(listOfPeople)
 
         viewModelScope.launch(Dispatchers.IO) {
 
             insertCostUseCase(
                 CostModel(
-                    idCost = idCost,
-                    idPerson = personToAddCosts.idPerson!!,
-                    amount = amountText.value!!.toFloat(),
-                    description = descriptionText.value!!,
-                    idGroup = personToAddCosts.idGroupName,
-                    personString = personToAddCosts.name
+                    amount = amountText.toFloat(),
+                    idGroup = iDGroupName!!,
+                    description = descriptionText
                 )
             )
 
@@ -110,7 +107,7 @@ class AddCostScreenViewModel @Inject constructor(
 
                     //Calcular la cantidad del que paga
                     if(personToAddCosts.idPerson == person.idPerson){
-                        insertCostOfPersonsUseCase(
+                        /*insertCostOfPersonsUseCase(
                             CostOfPersonModel(
                                 iDCostOfPerson = null,
                                 iDCost = idCost,
@@ -118,9 +115,9 @@ class AddCostScreenViewModel @Inject constructor(
                                 amount = amountText.value!!.toFloat() - amountText.value!!.toFloat()/numberOfPeople,
                                 iDGroup = iDGroupName
                             )
-                        )
+                        )*/
                     }else{ // calculas la cantidad del que no paga
-                        insertCostOfPersonsUseCase(
+                        /*insertCostOfPersonsUseCase(
                             CostOfPersonModel(
                                 iDCostOfPerson = null,
                                 iDCost = idCost,
@@ -128,7 +125,7 @@ class AddCostScreenViewModel @Inject constructor(
                                 amount = amountText.value!!.toFloat()/numberOfPeople,
                                 iDGroup = iDGroupName
                             )
-                        )
+                        )*/
                     }
 
                 }
@@ -150,23 +147,23 @@ class AddCostScreenViewModel @Inject constructor(
             //Si es el que paga se le suma al equity tod menos lo que le toca a cada uno
             if(personToAddCosts.idPerson == person.idPerson){
 
-                val personToUpdate = person.copy(equity =  ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
+            //    val personToUpdate = person.copy(equity =  ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
 
 
                 viewModelScope.launch(Dispatchers.IO) {
-                    updatePersonUseCase(
+                    /*updatePersonUseCase(
                         personModel = personToUpdate
-                    )
+                    )*/
                 }
             }
             //Si no es el que paga se le resta al equity lo que le toca a cada uno por pagar
             else{
                 val personToUpdate =
-                    person.copy(equity = (person.equity.toFloat() - amountByPeople).toString())
+                   // person.copy(equity = (person.equity.toFloat() - amountByPeople).toString())
                 viewModelScope.launch(Dispatchers.IO) {
-                    updatePersonUseCase(
+                    /*updatePersonUseCase(
                         personModel = personToUpdate
-                    )
+                    )*/
                 }
             }
         }

@@ -5,12 +5,9 @@ import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
 import com.jarica.compartirgastos.data.database.entities.CostEntity
-import com.jarica.compartirgastos.data.database.entities.CostsOfPersonsEntity
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
-import com.jarica.compartirgastos.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
 import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.domain.models.GroupNameModel
 import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
@@ -47,7 +44,7 @@ class AppRepository @Inject constructor(
 
     }
 
-    suspend fun getGroupNameById(id: Int): GroupNameModel {
+    suspend fun getGroupNameById(id: String): GroupNameModel {
         return groupNameDao.getGroupNameById(idGroup = id).toDomain()
     }
 
@@ -69,7 +66,7 @@ class AppRepository @Inject constructor(
 
 
     //Metodo que borra un grupo y lo que lleva ese grupo (costos, personas, etc...)
-    suspend fun deleteGroup(groupNameModel: GroupNameModel, iDGroupName: Int) {
+    suspend fun deleteGroup(groupNameModel: GroupNameModel, iDGroupName: String) {
 
         groupNameDao.deleteGroupName(
             GroupNameEntity(
@@ -80,7 +77,7 @@ class AppRepository @Inject constructor(
         )
         personNameDao.deletePersonNameByIdGroup(iDGroupName)
         costsDao.deleteAllCostOfAGroup(iDGroupName)
-        costsDao.deleteCostOfPersonOfAGroup(iDGroupName)
+       // costsDao.deleteCostOfPersonOfAGroup(iDGroupName)
         paymentsDao.deletePaymentsOfAGroup(iDGroupName)
     }
 
@@ -88,19 +85,24 @@ class AppRepository @Inject constructor(
 
     //Mapear de GroupEntity a GroupNameModel
     val personModel: Flow<List<PersonModel>> = personNameDao.getAllPeopleName()
-        .map { items -> items.map { PersonModel(it.idPerson, it.name, it.equity, it.idGroupName) } }
+        .map { items -> items.map {
+            PersonModel(
+                it.idPerson,
+                it.name,
+             //   it.equity,
+                it.idGroupName) } }
 
 
-    suspend fun getPersonById(idPerson: Int): PersonModel {
+    suspend fun getPersonById(idPerson: String): PersonModel {
         return personNameDao.getPersonById(idPerson).toDomain()
     }
 
     suspend fun insertPersonName(personModel: PersonModel) {
         personNameDao.insertPersonName(
             PersonEntity(
-                idPerson = null,
+                idPerson = personModel.idPerson,
                 name = personModel.name,
-                equity = personModel.equity,
+          //      equity = personModel.equity,
                 idGroupName = personModel.idGroupName
             )
         )
@@ -112,18 +114,18 @@ class AppRepository @Inject constructor(
             PersonEntity(
                 idPerson = personModel.idPerson,
                 name = personModel.name,
-                equity = personModel.equity,
+             //  equity = personModel.equity,
                 idGroupName = personModel.idGroupName
             )
         )
     }
 
-    suspend fun updatePersonById(idPerson: Int, equity: String) {
+/*    suspend fun updatePersonById(idPerson: Int, equity: String) {
         personNameDao.updatePersonById(idPerson, equity)
-    }
+    }*/
 
     suspend fun deletePersonNameByIdPerson(personModel: PersonModel) {
-        personNameDao.deletePersonNameByIdPerson(personModel.idPerson!!)
+        personNameDao.deletePersonNameByIdPerson(personModel.idPerson)
     }
 
 
@@ -134,69 +136,69 @@ class AppRepository @Inject constructor(
             items.map {
                 CostModel(
                     it.idCost,
-                    it.idPerson,
+                   // it.idPerson,
                     it.amount,
                     it.description,
                     it.idGroup,
-                    it.personString
+//it.personString
                 )
             }
         }
 
     //Mapear de CostOfPersonEntity a CostOfPersonModel
-    val costOfPersonModel: Flow<List<CostOfPersonModel>> = costsDao.getAllCostsOfPerson()
+    /*val costOfPersonModel: Flow<List<CostOfPersonModel>> = costsDao.getAllCostsOfPerson()
         .map { items ->
             items.map {
                 CostOfPersonModel(
-                    it.iDCostOfPerson,
+                 //   it.iDCostOfPerson,
                     it.iDCost,
                     it.iDPerson,
                     it.amount,
-                    it.iDGroup
+                 //   it.iDGroup
                 )
             }
-        }
+        }*/
 
 
     suspend fun insertCost(costModel: CostModel) {
         costsDao.insertCost(
             CostEntity(
                 idCost = costModel.idCost,
-                idPerson = costModel.idPerson,
+                //idPerson = costModel.idPerson,
                 amount = costModel.amount,
                 description = costModel.description,
                 idGroup = costModel.idGroup,
-                personString = costModel.personString
+               // personString = costModel.personString
             )
         )
     }
 
-    suspend fun deleteCost(idCost: Int) {
+    suspend fun deleteCost(idCost: String) {
         costsDao.deleteCost(idCost = idCost)
     }
 
-    suspend fun deleteCostOfPerson(idCost: Int) {
+/*    suspend fun deleteCostOfPerson(idCost: String) {
         costsDao.deleteCostOfPerson(idCost = idCost)
-    }
+    }*/
 
-    suspend fun insertCostOfPerson(costModelOfPerson: CostOfPersonModel) {
+    /*suspend fun insertCostOfPerson(costModelOfPerson: CostOfPersonModel) {
 
         costsDao.insertCostOfPerson(
-            CostsOfPersonsEntity(
-                iDCostOfPerson = null,
+            DistributionCost(
+               // iDCostOfPerson = null,
                 iDCost = costModelOfPerson.iDCost,
                 iDPerson = costModelOfPerson.iDPerson,
                 amount = costModelOfPerson.amount,
-                iDGroup = costModelOfPerson.iDGroup
+              //  iDGroup = costModelOfPerson.iDGroup
             )
         )
-    }
+    }*/
 
-    suspend fun getCostsById(id: Int): List<CostsOfPersonsEntity> {
+/*    suspend fun getCostsById(id: String): List<DistributionCost> {
         return costsDao.getCostsById(id)
-    }
+    }*/
 
-    suspend fun getCostByIdCost(id: Int): CostModel {
+    suspend fun getCostByIdCost(id: String): CostModel {
         return costsDao.getCostsByIdCost(id).toDomain()
     }
 
@@ -204,11 +206,11 @@ class AppRepository @Inject constructor(
         costsDao.updateCost(
             costEntity = CostEntity(
                 costModel.idCost,
-                costModel.idPerson,
+             //   costModel.idPerson,
                 costModel.amount,
                 costModel.description,
                 costModel.idGroup,
-                costModel.personString
+              //  costModel.personString
             )
         )
     }
@@ -221,26 +223,26 @@ class AppRepository @Inject constructor(
         .map { items ->
             items.map {
                 PaymentsModel(
-                    it.idPayment,
-                    it.amount,
-                    it.namePersonWhoPay,
-                    it.namePersonWhoReceive,
-                    it.idGroup
+                    idPayment = it.idPayment,
+                    amount = it.amount,
+                    idPersonWhoPay = it.idPersonWhoPay,
+                    idPersonWhoReceive = it.idPersonWhoReceive,
+                    idGroup = it.idGroup
                 )
             }
         }
 
-    suspend fun insertPayment(paymentsModel: PaymentsModel) {
+    /*suspend fun insertPayment(paymentsModel: PaymentsModel) {
         paymentsDao.insertPayment(
             PaymentEntity(
-                idPayment = null,
-                amount = paymentsModel.amount,
-                namePersonWhoPay = paymentsModel.namePersonWhoPay,
-                namePersonWhoReceive = paymentsModel.namePersonWhoReceive,
-                idGroup = paymentsModel.idGroup
+                idPayment = it.idPayment,
+                amount = TODO(),
+                idPersonWhoPay = TODO(),
+                idPersonWhoReceive = TODO(),
+                idGroup = TODO()
             )
         )
-    }
+    }*/
 
 
 }
@@ -253,11 +255,11 @@ fun GroupNameEntity.toDomain(): GroupNameModel {
 fun CostEntity.toDomain(): CostModel {
     return CostModel(
         idCost = this.idCost,
-        idPerson = this.idPerson,
+       // idPerson = this.idPerson,
         amount = this.amount,
         description = this.description,
         idGroup = this.idGroup,
-        personString = this.personString
+        //personString = this.personString
     )
 }
 
@@ -266,7 +268,7 @@ fun PersonEntity.toDomain(): PersonModel {
     return PersonModel(
         idPerson = this.idPerson,
         name = this.name,
-        equity = this.equity,
+       // equity = this.equity,
         idGroupName = this.idGroupName
     )
 }

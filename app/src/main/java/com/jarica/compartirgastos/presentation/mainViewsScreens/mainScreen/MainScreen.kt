@@ -66,7 +66,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
@@ -118,7 +118,7 @@ fun MainScreen(
 fun MainView(
     navigateToAddCostScreen: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     nameOfGroup: String,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,

@@ -27,7 +27,7 @@ class CustomizeGroupScreenViewModel @Inject constructor(
         _newGroupNameToGroup.value = newGroupNameName
     }
 
-    fun onEditGroupNameById(idGroup: Int, newName: String) {
+    fun onEditGroupNameById(idGroup: String, newName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val group = getGroupByIdUseCase(idGroup)
             group.groupName = newName

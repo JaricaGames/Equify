@@ -13,7 +13,9 @@ const val PEOPLE_TABLE = "peopleTable"
 const val GROUPS_NAME_TABLE = "groupNameTable"
 const val COSTS_TABLE = "costsTable"
 const val PAYMENTS_TABLE = "paymentsTable"
-const val COSTS_OF_PERSONS_TABLE = "CostsOfPersonTable"
+const val DISTRIBUTION_COST_TABLE = "distributionCostTable"
+const val DISTRIBUTION_PAYMENT_TABLE = "distributionPaymentCostTable"
+const val PAYMENTS_BETWEEN_PERSONS_TABLE = "PaymentsBetweenPersonsTable"
 
 //Admob
 const val TAG_ADMOB = "AdViewModel"

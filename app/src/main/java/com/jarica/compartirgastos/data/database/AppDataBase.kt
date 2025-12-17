@@ -7,7 +7,8 @@ import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
 import com.jarica.compartirgastos.data.database.entities.CostEntity
-import com.jarica.compartirgastos.data.database.entities.CostsOfPersonsEntity
+import com.jarica.compartirgastos.data.database.entities.DistributionCostEntity
+import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEntity
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
@@ -19,7 +20,8 @@ import com.jarica.compartirgastos.data.database.entities.PersonEntity
         PersonEntity::class,
         CostEntity::class,
         PaymentEntity::class,
-        CostsOfPersonsEntity::class],
+        DistributionCostEntity::class,
+        DistributionPaymentEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -30,6 +32,9 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun personNameDao(): PersonNameDao
     abstract fun costsDao(): CostsDao
     abstract fun paymentsDao(): PaymentsDao
-
-
+   // abstract fun distributionCostDao(): PaymentsDao
+   // abstract fun distributionPaymentDao(): PaymentsDao
 }
+
+
+

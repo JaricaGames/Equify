@@ -104,7 +104,7 @@ class MainScreenViewModel @Inject constructor(
 
     //------------ Variable que se usa para asber el grupo activo -------------------
     companion object {
-        var iDGroupName: Int? = null
+        var iDGroupName: String? = null
         var groupNameCompanionObject: String? = null
     }
     //----------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ class MainScreenViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PaymentsScreenUiState.Loading)
 
 
-    fun getGroupNameById(idGroup: Int) {
+    fun getGroupNameById(idGroup: String) {
         viewModelScope.launch {
             _nameOfGroup.value = getGroupByIdUseCase(idGroup).groupName
         }

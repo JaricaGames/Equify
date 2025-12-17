@@ -8,7 +8,7 @@ class GetPersonByIdUseCase @Inject constructor(
     private val appRepository: AppRepository
 ) {
 
-    suspend operator fun invoke(idPerson:Int):PersonModel{
+    suspend operator fun invoke(idPerson: String):PersonModel{
         return appRepository.getPersonById(idPerson)
     }
 }

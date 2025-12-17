@@ -43,11 +43,11 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPeopleScreen(
-    idGroupName: Int,
+    idGroupName: String,
     groupName: String,
     addPeopleViewModel: AddPeopleScreenViewModel,
     navigateToNewGroupScreen: () -> Unit,
-    navigateToMainScreen: (Int) -> Unit,
+    navigateToMainScreen: (String) -> Unit,
 ) {
 
     val peopleList = addPeopleViewModel.personList
@@ -75,9 +75,9 @@ fun MainViewAddPeopleScreen(
     peopleList: List<String>,
     navigateToNewGroupScreen: () -> Unit,
     isTextNext: Boolean,
-    idGroupName: Int,
+    idGroupName: String,
     groupName: String,
-    navigateToMainScreen: (Int) -> Unit,
+    navigateToMainScreen: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -176,7 +176,7 @@ fun MainViewAddPeopleScreen(
                     ),
                     onClick = {
                         val newGroup = GroupNameModel(
-                            idGroupName = idGroupName,
+                            idGroupName = idGroupName.toString(),
                             groupName = groupName
 
                         )

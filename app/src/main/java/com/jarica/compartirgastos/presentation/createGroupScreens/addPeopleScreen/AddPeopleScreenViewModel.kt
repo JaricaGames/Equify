@@ -63,14 +63,14 @@ class AddPeopleScreenViewModel @Inject constructor(
 
     //METODO QUE INSERTA LA LISTA DE NOMBRES EN LA BBDD, USA EL IDGRIOP QUE SE LE PASA POR PARAMETROS DE LA VISTA ANTERIOR.
 
-    fun insertPeople(peopleList: List<String>, idGroupName: Int) {
+    fun insertPeople(peopleList: List<String>, idGroupName: String) {
 
         peopleList.forEach { personName ->
 
             val personModel = PersonModel(
-                idPerson = null,
+                idPerson = personName,
                 name = personName,
-                equity = "0.0",
+             //   equity = "0.0",
                 idGroupName = idGroupName
             )
             viewModelScope.launch(Dispatchers.IO) {

@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,14 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
 import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
-import com.jarica.compartirgastos.presentation.ui.PayFor
 import com.jarica.compartirgastos.presentation.ui.editCost
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
@@ -52,20 +48,20 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCostScreen(
-    idCost: Int,
+    idCost: String,
     amount: Float,
     description: String,
-    personString: String,
+//personString: String,
     editCostScreenViewModel: EditCostScreenViewModel,
     navigateToMainScreen: () -> Unit
 ) {
 
     val descriptionCost: String by editCostScreenViewModel.descriptionCost .observeAsState(description)
-    val payFor: String by editCostScreenViewModel.payFor .observeAsState(personString)
+    //val payFor: String by editCostScreenViewModel.payFor .observeAsState(personString)
     val amountCost: Float by editCostScreenViewModel.amountCost .observeAsState(amount)
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiEditCostUiState by produceState<EditCostUiState>(
+    /*val uiEditCostUiState by produceState<EditCostUiState>(
         initialValue = EditCostUiState.Loading,
         key1 = lifecycle,
         key2 = editCostScreenViewModel,
@@ -87,7 +83,7 @@ fun EditCostScreen(
             MainViewEditCostScreen(
                 amountCost,
                 descriptionCost,
-                payFor,
+                //payFor,
                 navigateToMainScreen,
                 editCostScreenViewModel,
                 idCost,
@@ -95,7 +91,7 @@ fun EditCostScreen(
             )
 
         }
-    }
+    }*/
 }
 
 
@@ -103,10 +99,10 @@ fun EditCostScreen(
 fun MainViewEditCostScreen(
     amount: Float,
     description: String,
-    personString: String,
+    //personString: String,
     navigateToMainScreen: () -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
-    idCost: Int,
+    idCost: String,
     listOfCostOfPerson: List<CostOfPersonModel>,
 ) {
 
@@ -206,7 +202,7 @@ fun MainViewEditCostScreen(
             )
             Spacer(modifier = Modifier.weight(0.02f))
             CustomTextField(
-                value = "$PayFor      $personString",
+                value = "", //"$PayFor      $personString",
                 onValueChange = { },
                 placeholderText = "",
                 textStyle = TextStyle(
@@ -225,7 +221,7 @@ fun MainViewEditCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    editCostScreenViewModel.updateCost(personString,description, amount, idCost )
+                    editCostScreenViewModel.updateCost(description, amount, idCost )
                     navigateToMainScreen()
                 }) {
                 Text(

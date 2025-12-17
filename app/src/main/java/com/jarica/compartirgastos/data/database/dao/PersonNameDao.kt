@@ -21,21 +21,21 @@ interface PersonNameDao {
 
     //Metodo que borra una persona por idde grupo
     @Query(value = "DELETE FROM peopleTable WHERE idGroupName like :idGroupName ")
-    suspend fun deletePersonNameByIdGroup(idGroupName:Int)
+    suspend fun deletePersonNameByIdGroup(idGroupName: String)
 
     //Metodo que borra una persona por id
     @Query(value = "DELETE FROM peopleTable WHERE idPerson like :idPerson ")
-    suspend fun deletePersonNameByIdPerson(idPerson: Int)
+    suspend fun deletePersonNameByIdPerson(idPerson: String)
 
     //Metodo que actualiza un usuario
     @Update
     suspend fun updatePerson(personEntity: PersonEntity)
 
-    //Metodo que actualiza un usuario por id
+/*    //Metodo que actualiza un usuario por id
     @Query("UPDATE peopleTable SET equity=:equity WHERE idPerson like :idPerson")
-    suspend fun updatePersonById(idPerson:Int, equity: String)
+    suspend fun updatePersonById(idPerson:Int, equity: String)*/
 
     //Metodo que devuelve un usuario por id
     @Query("SELECT * FROM peopleTable WHERE  idPerson LIKE :idPerson")
-    suspend fun getPersonById(idPerson:Int):PersonEntity
+    suspend fun getPersonById(idPerson: String):PersonEntity
 }

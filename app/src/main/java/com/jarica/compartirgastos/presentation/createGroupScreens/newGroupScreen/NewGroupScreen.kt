@@ -41,7 +41,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 fun NewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
     navigateToGroupsScreen: () -> Unit,
-    navigateToAddPeople: (Int, String) -> Unit
+    navigateToAddPeople: (String, String) -> Unit
 ) {
 
     val groupName: String by newGroupViewModel.groupName.observeAsState("")
@@ -54,7 +54,7 @@ fun NewGroupScreen(
 fun MainViewNewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
     groupName: String,
-    navigateToAddPeople: (Int, String) -> Unit,
+    navigateToAddPeople: (String, String) -> Unit,
     navigateToGroupsScreen: () -> Unit,
 ) {
 

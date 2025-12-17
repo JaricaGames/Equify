@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteGroupByIdUseCase @Inject constructor(
     private val repository: AppRepository
 ) {
-    suspend operator fun invoke(groupNameModel: GroupNameModel, iDGroupName: Int) {
+    suspend operator fun invoke(groupNameModel: GroupNameModel, iDGroupName: String) {
         return repository.deleteGroup(groupNameModel, iDGroupName)
     }
 }

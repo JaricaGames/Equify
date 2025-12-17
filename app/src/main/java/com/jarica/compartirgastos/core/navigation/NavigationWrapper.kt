@@ -149,7 +149,7 @@ fun NavigationWrapper(
                             idCost = costToEdit.idCost,
                             amount = costToEdit.amount,
                             description = costToEdit.description,
-                            personString = costToEdit.personString,
+                            // personString = costToEdit.personString,
                         )
                     ) { launchSingleTop = true }
                 },
@@ -240,7 +240,7 @@ fun NavigationWrapper(
                 idCost = editCostScreen.idCost,
                 amount = editCostScreen.amount,
                 description = editCostScreen.description,
-                personString = editCostScreen.personString,
+                //personString = editCostScreen.personString,
                 editCostScreenViewModel = editCostScreenViewModel,
                 navigateToMainScreen = {
                     navController.navigate(MainScreenObject(iDGroupName)) {

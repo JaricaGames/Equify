@@ -33,14 +33,11 @@ import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
-import com.jarica.compartirgastos.presentation.ui.theyOweyou
-import com.jarica.compartirgastos.presentation.ui.youOwe
-import kotlin.math.absoluteValue
 
 @Composable
 
 fun ResumeFragment(
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     modifier: Modifier,
 ) {
@@ -77,7 +74,7 @@ fun ResumeFragment(
 }
 
 @Composable
-fun PeopleList(groupNameList: List<PersonModel>, idGroup: Int?) {
+fun PeopleList(groupNameList: List<PersonModel>, idGroup: String) {
 
     LazyColumn(
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -114,7 +111,7 @@ fun ItemPeopleName(item: PersonModel) {
         )
         Spacer(modifier = Modifier.weight(1f))
 
-        if (item.equity.toFloat() > 0f) {
+        /*if (item.equity.toFloat() > 0f) {
             Row {
                 Text(
                     theyOweyou + "%.2f".format(item.equity.toFloat()),
@@ -177,7 +174,7 @@ fun ItemPeopleName(item: PersonModel) {
                 )
             }
         }
-
+*/
 
     }
     HorizontalDivider(

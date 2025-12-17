@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetGroupByIdUseCase @Inject constructor(
     private val repository: AppRepository
 ) {
-    suspend operator fun invoke(idGroup: Int):GroupNameModel{
+    suspend operator fun invoke(idGroup: String):GroupNameModel{
         return repository.getGroupNameById(idGroup)
     }
 }

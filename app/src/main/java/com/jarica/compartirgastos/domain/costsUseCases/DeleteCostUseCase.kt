@@ -8,7 +8,7 @@ class DeleteCostUseCase @Inject constructor(
     private val appRepository: AppRepository
 ) {
 
-    suspend operator fun invoke(idCost:Int){
+    suspend operator fun invoke(idCost: String){
         appRepository.deleteCost(idCost = idCost)
     }
 

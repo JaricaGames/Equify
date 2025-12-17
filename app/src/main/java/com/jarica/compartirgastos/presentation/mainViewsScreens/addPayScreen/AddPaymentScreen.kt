@@ -83,10 +83,10 @@ fun AddPaymentScreen(
     val isPaidToSelected: Boolean by addPaymentScreenViewModel.isPaidToSelected.observeAsState(false)
 
     val personWhoReceive: PersonModel by addPaymentScreenViewModel.personWhoReceive.observeAsState(
-        PersonModel(idPerson = null, name = "", equity = "", idGroupName = 0)
+        PersonModel(idPerson = "", name = "", idGroupName = "")
     )
     val personWhoPay: PersonModel by addPaymentScreenViewModel.personWhoPay.observeAsState(
-        PersonModel(idPerson = null, name = "", equity = "", idGroupName = 0)
+        PersonModel(idPerson = "", name = "", idGroupName = "")
     )
 
 

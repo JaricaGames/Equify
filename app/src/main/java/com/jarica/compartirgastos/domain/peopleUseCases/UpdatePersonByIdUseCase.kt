@@ -7,7 +7,7 @@ class UpdatePersonByIdUseCase @Inject constructor(
     private val appRepository: AppRepository
 ) {
 
-    suspend operator fun invoke(idPerson:Int, equity: String){
+/*    suspend operator fun invoke(idPerson:Int, equity: String){
         appRepository.updatePersonById(idPerson, equity)
-    }
+    }*/
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.domain.models.PaymentsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.paymentUseCases.InsertPaymentUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
@@ -95,13 +94,13 @@ class AddPaymentScreenViewModel @Inject constructor(
     fun addPayment(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            insertPaymentUseCase(paymentsModel = PaymentsModel(
+            /*insertPaymentUseCase(paymentsModel = PaymentsModel(
                 idPayment = null,
                 amount = amountText,
                 namePersonWhoPay = personWhoPay.name,
                 namePersonWhoReceive = personWhoReceive.name,
                 idGroup = personWhoPay.idGroupName
-            )  )
+            )  )*/
         }
 
 
@@ -109,8 +108,8 @@ class AddPaymentScreenViewModel @Inject constructor(
 
     fun updatePersons(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
 
-        personWhoPay.equity = (personWhoPay.equity.toFloat() + amountText.toFloat()).toString()
-        personWhoReceive.equity = (personWhoReceive.equity.toFloat() - amountText.toFloat()).toString()
+       // personWhoPay.equity = (personWhoPay.equity.toFloat() + amountText.toFloat()).toString()
+       // personWhoReceive.equity = (personWhoReceive.equity.toFloat() - amountText.toFloat()).toString()
 
         viewModelScope.launch(Dispatchers.IO) {
             updatePersonUseCase(personWhoReceive)

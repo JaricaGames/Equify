@@ -57,7 +57,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @Composable
 fun GroupsScreen(
     groupViewModel: GroupsScreenViewModel,
-    navigateToMainScreen: (Int) -> Unit,
+    navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     navigateToNewGroup: () -> Unit,
     navigateToAboutScreen: () -> Unit,
@@ -145,7 +145,7 @@ fun GroupsScreen(
 fun GroupList(
     groupsList: List<GroupNameModel>,
     groupViewModel: GroupsScreenViewModel,
-    navigateToMainScreen: (Int) -> Unit,
+    navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
 ) {
 
@@ -170,7 +170,7 @@ fun GroupList(
 fun ItemGroupName(
     group: GroupNameModel,
     groupViewModel: GroupsScreenViewModel,
-    navigateToMainScreen: (Int) -> Unit,
+    navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     groupsList: List<GroupNameModel>,
 ) {

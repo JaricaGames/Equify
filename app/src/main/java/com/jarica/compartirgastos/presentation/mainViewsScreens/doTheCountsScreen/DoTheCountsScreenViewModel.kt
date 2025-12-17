@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @HiltViewModel
 class DoTheCountsScreenViewModel @Inject constructor(
@@ -68,7 +67,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
                 //Compruebo si el equity es menor que 0, en ese caso tiene que pagar
 
-                if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
+                /*if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
 
                     //Calculo a quien le tiene que pagar
                     run personWhoReceive@{
@@ -111,7 +110,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                             }
                         }
                     }
-                }
+                }*/
 
             }
         }
@@ -125,7 +124,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         _listOfPersons.value!!.forEach { person ->
             if (person.idGroupName == iDGroupName) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    updatePersonUseCase(personModel = person.copy(equity = "0"))
+                   // updatePersonUseCase(personModel = person.copy(equity = "0"))
                 }
             }
         }
@@ -358,14 +357,14 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 amountCells.borderColorBottom = BaseColor.BLACK
                 table.addCell(amountCells)
 
-                val personWhoPayCells = PdfPCell(Phrase(cost.personString))
+                /*val personWhoPayCells = PdfPCell(Phrase(cost.personString))
                 personWhoPayCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 personWhoPayCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 personWhoPayCells.setPadding(8f)
                 personWhoPayCells.border = PdfPCell.NO_BORDER
                 personWhoPayCells.borderWidthBottom = 1f
                 personWhoPayCells.borderColorBottom = BaseColor.BLACK
-                table.addCell(personWhoPayCells)
+                table.addCell(personWhoPayCells)*/
 
             } else {
 
@@ -387,14 +386,14 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 amountCells.borderColorBottom = BaseColor.BLACK
                 table.addCell(amountCells)
 
-                val personWhoPayCells = PdfPCell(Phrase(cost.personString))
+                /*val personWhoPayCells = PdfPCell(Phrase(cost.personString))
                 personWhoPayCells.horizontalAlignment = PdfPCell.ALIGN_CENTER
                 personWhoPayCells.verticalAlignment = PdfPCell.ALIGN_MIDDLE
                 personWhoPayCells.setPadding(8f)
                 personWhoPayCells.border = PdfPCell.NO_BORDER
                 personWhoPayCells.borderWidthBottom = 3f
                 personWhoPayCells.borderColorBottom = BaseColor.BLACK
-                table.addCell(personWhoPayCells)
+                table.addCell(personWhoPayCells)*/
 
 
             }

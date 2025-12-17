@@ -60,7 +60,7 @@ class ConfigurationScreenViewModel @Inject constructor(
 
     // ----------------------------------------
     // Obtener nombre del grupo
-    fun getGroupNameById(idGroup: Int) {
+    fun getGroupNameById(idGroup: String) {
         viewModelScope.launch {
             val groupName = withContext(Dispatchers.IO) {
                 getGroupByIdUseCase(idGroup).groupName
@@ -71,7 +71,7 @@ class ConfigurationScreenViewModel @Inject constructor(
 
     // ----------------------------------------
     // Borrar grupo
-    fun deleteGroup(iDGroupName: Int) {
+    fun deleteGroup(iDGroupName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val groupToDelete = getGroupByIdUseCase(iDGroupName)
             deleteGroupByIdUseCase(groupToDelete, iDGroupName)
@@ -85,16 +85,16 @@ class ConfigurationScreenViewModel @Inject constructor(
         personSelectedModel = person
 
         viewModelScope.launch {
-            val listOfCosts = withContext(Dispatchers.IO) {
+/*            val listOfCosts = withContext(Dispatchers.IO) {
                 getCostByIdPerson(person.idPerson!!)
-            }
+            }*/
 
             // Ahora estamos en Main Thread
-            if (listOfCosts.isNotEmpty()) {
+            /*if (listOfCosts.isNotEmpty()) {
                 _showDialogError.value = true
             } else {
                 _showDialogConfirm.value = true
-            }
+            }*/
         }
     }
 

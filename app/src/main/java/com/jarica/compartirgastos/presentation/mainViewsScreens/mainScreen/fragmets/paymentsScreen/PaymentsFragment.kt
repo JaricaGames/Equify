@@ -39,7 +39,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 
 @Composable
 fun PaymentsFragment(
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     modifier: Modifier
 ) {
@@ -77,7 +77,7 @@ fun PaymentsFragment(
 }
 
 @Composable
-fun PaymentsList(paymentsList: List<PaymentsModel>, idGroup: Int?) {
+fun PaymentsList(paymentsList: List<PaymentsModel>, idGroup: String?) {
 
     LazyColumn(
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -112,7 +112,7 @@ fun ItemPaymentName(item: PaymentsModel) {
             fontWeight = FontWeight.Normal
         )
         Text(
-            item.namePersonWhoPay,
+            item.idPersonWhoPay,
             fontSize = 12.sp,
             color = Black,
             fontFamily = parkinsans,
@@ -127,7 +127,7 @@ fun ItemPaymentName(item: PaymentsModel) {
             fontWeight = FontWeight.Normal
         )
         Text(
-            item.namePersonWhoReceive,
+            item.idPersonWhoReceive,
             fontSize = 12.sp,
             color = Black,
             fontFamily = parkinsans,
@@ -143,7 +143,7 @@ fun ItemPaymentName(item: PaymentsModel) {
             fontWeight = FontWeight.Normal
         )
         Text(
-            item.amount,
+            item.amount.toString(),
             fontSize = 12.sp,
             color = Black,
             fontFamily = parkinsans,

@@ -40,7 +40,7 @@ import com.jarica.compartirgastos.presentation.ui.totalCostText
 
 @Composable
 fun CostFragment(
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     navigateToEditCost: (CostModel) -> Unit,
     modifier: Modifier
@@ -129,7 +129,7 @@ fun TotalCostComponent(
 @Composable
 fun CostsList(
     costList: List<CostModel>,
-    idGroup: Int?,
+    idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
     navigateToEditCost: (CostModel) -> Unit,
 ) {

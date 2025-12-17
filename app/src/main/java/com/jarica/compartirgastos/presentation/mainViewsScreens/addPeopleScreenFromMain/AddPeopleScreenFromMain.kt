@@ -27,10 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
-import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.ui.addPeopleText
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
@@ -112,13 +110,13 @@ fun MainViewAddPeopleScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    val newPerson = PersonModel(
+/*                    val newPerson = PersonModel(
                         idPerson = null,
                         name = addNameToGroup,
                         equity = "0",
                         idGroupName = iDGroupName!!
                     )
-                    addPeopleFromMainViewModel.insertPeople(newPerson)
+                    addPeopleFromMainViewModel.insertPeople(newPerson)*/
                     navigateToMainScreen()
                     navigateToMainScreen()
                 }) {

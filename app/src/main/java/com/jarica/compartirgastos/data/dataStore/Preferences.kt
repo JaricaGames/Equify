@@ -3,6 +3,7 @@ package com.jarica.compartirgastos.data.dataStore
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.jarica.compartirgastos.core.PREFERENCES_NAME
 import kotlinx.coroutines.flow.first
@@ -23,9 +24,9 @@ class Preferences @Inject constructor(
         }
     }
 
-    suspend fun getIdGroup(key: String):Int?{
+    suspend fun getIdGroup(key: String): String?{
         return try {
-            val preferenceKey = intPreferencesKey(key)
+            val preferenceKey = stringPreferencesKey(key)
             val preferences = context.dataStore.data.first()
             preferences[preferenceKey]
 
