@@ -25,9 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.addEverybodyText
 import com.jarica.compartirgastos.presentation.ui.addPeopleText
 import com.jarica.compartirgastos.presentation.ui.createText
@@ -48,6 +49,7 @@ fun AddPeopleScreen(
     addPeopleViewModel: AddPeopleScreenViewModel,
     navigateToNewGroupScreen: () -> Unit,
     navigateToMainScreen: (String) -> Unit,
+    mainScreenViewModel: MainScreenViewModel,
 ) {
 
     val peopleList = addPeopleViewModel.personList
@@ -63,7 +65,8 @@ fun AddPeopleScreen(
         isTextNext,
         idGroupName,
         groupName,
-        navigateToMainScreen
+        navigateToMainScreen,
+        mainScreenViewModel
     )
 }
 
@@ -78,6 +81,7 @@ fun MainViewAddPeopleScreen(
     idGroupName: String,
     groupName: String,
     navigateToMainScreen: (String) -> Unit,
+    mainScreenViewModel: MainScreenViewModel,
 ) {
     Column(
         modifier = Modifier
@@ -175,14 +179,19 @@ fun MainViewAddPeopleScreen(
                         disabledContentColor = Black
                     ),
                     onClick = {
-                        val newGroup = GroupNameModel(
-                            idGroupName = idGroupName.toString(),
+                        val newGroup = GroupModel(
+                            idGroupName = idGroupName,
                             groupName = groupName
 
                         )
-                        addPeopleViewModel.insertGroupName(newGroup)
+                        mainScreenViewModel.setGroupId(newGroup.idGroupName)
+                        //iDGroupName = idGroupName
+                       /* addPeopleViewModel.insertGroupName(newGroup)
                         addPeopleViewModel.insertPeople(peopleList, idGroupName)
-                        navigateToMainScreen(newGroup.idGroupName)
+                        navigateToMainScreen(newGroup.idGroupName)*/
+                        addPeopleViewModel.saveGroupData(newGroup, peopleList) {
+                            navigateToMainScreen(newGroup.idGroupName)
+                        }
                     }) {
                     Text(
                         createText,

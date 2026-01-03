@@ -9,11 +9,20 @@ import com.jarica.compartirgastos.domain.costsUseCases.DeleteCostUseCase
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostByIdCost
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostOfPersonsUseCase
 import com.jarica.compartirgastos.domain.costsUseCases.UpdateCostUseCase
+import com.jarica.compartirgastos.domain.distributionCostUseCases.GetPaymentsByIdCost
 import com.jarica.compartirgastos.domain.models.CostOfPersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +35,8 @@ class EditCostScreenViewModel @Inject constructor(
     private val updatePersonByIdUseCase: UpdatePersonByIdUseCase,
     private val getPersonByIdUseCase: GetPersonByIdUseCase,
     private val getCostByIdCost: GetCostByIdCost,
-    private val updateCostUseCase: UpdateCostUseCase
+    private val updateCostUseCase: UpdateCostUseCase,
+    private val getPaymentsByIdCost: GetPaymentsByIdCost
 ):ViewModel() {
 
 
@@ -51,15 +61,49 @@ class EditCostScreenViewModel @Inject constructor(
         _amountCost.value = amount
     }
 
+    private val _costIdFlow = MutableStateFlow<String?>(value = null)
     /*val uiEditCostUiState : StateFlow<EditCostUiState> =
-        getCostOfPersonsUseCase().map(EditCostUiState::Success)
+        getPaymentsByIdCost().map(EditCostUiState::Success)
             .catch { EditCostUiState.Error(it) }
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(5000),
                 EditCostUiState.Loading
-            )
+            )*/
+
+/*
+    val uiEditCostUiState: StateFlow<EditCostUiState> = _costIdFlow
+        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .flatMapLatest { idcost ->
+            // Ahora 'id' es seguro (no null), llamamos al caso de uso
+            getPaymentsByIdCost(idcost)
+        }
+        .map(EditCostUiState::Success)
+        .catch { EditCostUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), EditCostUiState.Loading)
 */
+
+    private val _costId = MutableStateFlow<String?>(null)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val uiStateEditCost: StateFlow<EditCostUiState> =
+        _costId
+            .filterNotNull()
+            .flatMapLatest { costId ->
+                getPaymentsByIdCost(costId)
+                    .map {distributionList ->
+                        EditCostUiState.Success(distributionList) }
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                EditCostUiState.Loading
+            )
+
+    fun setIdCost(costId: String?) {
+        _costId.value = costId
+    }
+
 
     fun onDeletedSelected(
         idCost: String,

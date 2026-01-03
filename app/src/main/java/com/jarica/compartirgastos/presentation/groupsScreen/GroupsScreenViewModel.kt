@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.groupsUseCases.DeleteGroupByIdUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupNamesUseCase
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.groupNameCompanionObject
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +33,7 @@ class  GroupsScreenViewModel @Inject constructor(
         groupNameCompanionObject = groupName
     }
 
-    fun onDeletedSelected(groupNameModel: GroupNameModel, iDGroupName: String) {
+    fun onDeletedSelected(groupNameModel: GroupModel, iDGroupName: String) {
         viewModelScope.launch {
             deleteGroupByIdUseCase(groupNameModel, iDGroupName)
         }

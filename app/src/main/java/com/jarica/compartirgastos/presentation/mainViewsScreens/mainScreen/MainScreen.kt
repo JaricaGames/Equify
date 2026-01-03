@@ -1,53 +1,82 @@
 package com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.costsScreen.CostFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.paymentsScreen.PaymentsFragment
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeFragment
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.presentation.ui.addCost
 import com.jarica.compartirgastos.presentation.ui.addPay
 import com.jarica.compartirgastos.presentation.ui.addPeople
@@ -56,18 +85,19 @@ import com.jarica.compartirgastos.presentation.ui.doTheCount
 import com.jarica.compartirgastos.presentation.ui.payments
 import com.jarica.compartirgastos.presentation.ui.resume
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
-import com.jarica.compartirgastos.presentation.ui.theme.Black
 import com.jarica.compartirgastos.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
-import com.jarica.compartirgastos.presentation.ui.theme.VeryDarkBlue
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.presentation.ui.totalCostText
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     idGroup: String?,
     mainScreenViewModel: MainScreenViewModel,
+    resumeViewModel: ResumeViewModel,
     navigateToAddCostScreen: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
@@ -76,41 +106,335 @@ fun MainScreen(
     navigateToConfiguration: () -> Unit,
     navigateToDoTheCounts: () -> Unit,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
-    onDoTheCountsClicked: () -> Unit
+    onDoTheCountsClicked: () -> Unit,
+    editCostScreenViewModel: EditCostScreenViewModel
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
-    val isResumeSelected: Boolean by mainScreenViewModel.isResumeSelected.observeAsState(true)
-    val isCostSelected: Boolean by mainScreenViewModel.isCostsSelected.observeAsState(false)
+    val isFabExpanded: Boolean by mainScreenViewModel.isFabExpanded.observeAsState(false)
+    val sumCosts by mainScreenViewModel.SumCostByGroup.collectAsState()
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiStatePeopleGroupFragment by produceState<MainUiState>(
-        initialValue = MainUiState.Loading,
-        key1 = lifecycle,
-        key2 = mainScreenViewModel,
+
+    Scaffold(
+        bottomBar = {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.White,
+                tonalElevation = 0.dp,
+            ) {
+                ButtonDoTheCounts(mainScreenViewModel, navigateToDoTheCounts)
+
+            }
+
+        },
+        floatingActionButton = {
+            ExpandableFab(
+                expanded = isFabExpanded,
+                onFabClick = { mainScreenViewModel.onFabClick() },
+                onAddCost = {
+                    navigateToAddCostScreen()
+                    mainScreenViewModel.onFabClick()
+                },
+                onAddPayment = {
+                    navigateToAddPayScreen()
+                    mainScreenViewModel.onFabClick()
+                },
+                onAddPerson = {
+                    navigateToAddPeopleFromGroup()
+                    mainScreenViewModel.onFabClick()
+                }
+            )
+        }
+    ) { innerPadding ->
+        when (sumCosts) {
+            is TotalExpensesUiState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is TotalExpensesUiState.Error -> {}
+            is TotalExpensesUiState.Success -> {
+                Box {
+                    MainView(
+                        navigateToAddCostScreen,
+                        navigateToAddPeopleFromGroup,
+                        idGroup,
+                        mainScreenViewModel,
+                        nameOfGroup,
+                        doTheCountsScreenViewModel,
+                        navigateToAddPayScreen,
+                        navigateToEditCost,
+                        navigateToDoTheCounts,
+                        //uiStatePeopleGroupFragment,
+                        onDoTheCountsClicked,
+                        navigateToGroupsScreen,
+                        navigateToConfiguration,
+                        resumeViewModel,
+                        innerPadding,
+                        (sumCosts as TotalExpensesUiState.Success),
+                        editCostScreenViewModel
+                    )
+                    if (isFabExpanded) {
+                        Scrim(onDismiss = { mainScreenViewModel.onFabClick() })
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun Scrim(onDismiss: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onDismiss()
+            }
+    )
+}
+
+@Composable
+fun ExpandableFab(
+    expanded: Boolean,
+    onFabClick: () -> Unit,
+    onAddCost: () -> Unit,
+    onAddPayment: () -> Unit,
+    onAddPerson: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.End
     ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            mainScreenViewModel.uiStateResumeGroup.collect { value = it }
+
+        AnimatedVisibility(
+            visible = expanded,
+            enter = fadeIn() + slideInVertically { it / 2 },
+            exit = fadeOut() + slideOutVertically { it / 2 }
+        ) {
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SmallFab(addCost, R.drawable.moneycash, onAddCost)
+                SmallFab(addPay, R.drawable.addpay, onAddPayment)
+                SmallFab(addPeople, R.drawable.people_add, onAddPerson)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        FloatingActionButton(
+            containerColor = DarkOrange,
+            onClick = onFabClick
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                tint = White,
+                modifier = Modifier.rotate(
+                    animateFloatAsState(
+                        if (expanded) 45f else 0f,
+                    ).value
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun SmallFab(
+    text: String,
+    icon: Int,
+    onClick: () -> Unit
+) {
+    Row(
+
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Surface(
+            color = DarkOrange,
+            modifier = Modifier.clickable(onClick = onClick),
+            tonalElevation = 0.dp,
+            shadowElevation = 2.dp,
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.labelLarge,
+                color = White
+
+
+            )
+        }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        SmallFloatingActionButton(onClick = onClick, containerColor = DarkOrange) {
+            Icon(
+                painter = painterResource(id = icon),
+                contentDescription = "",
+                modifier = Modifier.size(24.dp),
+                tint = White
+            )
+        }
+    }
+}
+
+
+@Composable
+fun ButtonDoTheCounts(mainScreenViewModel: MainScreenViewModel, navigateToDoTheCounts: () -> Unit) {
+    Row() {
+
+        Spacer(modifier = Modifier.weight(1f))
+        Button(
+            onClick = {
+                mainScreenViewModel.onDoTheCountsClicked()
+                navigateToDoTheCounts()
+            },
+            modifier = Modifier
+                .padding(vertical = 32.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = DarkOrange,
+                contentColor = White
+            )
+        ) {
+            Text(
+                text = doTheCount,
+                modifier = Modifier.padding(horizontal = 32.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MainScreenWithPager(
+    mainScreenViewModel: MainScreenViewModel,
+    idGroup: String?,
+    resumeViewModel: ResumeViewModel,
+    navigateToEditCost: (CostModel) -> Unit,
+    editCostScreenViewModel: EditCostScreenViewModel,
+) {
+    LaunchedEffect(idGroup) {
+        if (idGroup != null) {
+            mainScreenViewModel.setGroupId(idGroup)
         }
     }
 
-    MainView(
-        navigateToAddCostScreen,
-        navigateToAddPeopleFromGroup,
-        idGroup,
-        mainScreenViewModel,
-        nameOfGroup,
-        doTheCountsScreenViewModel,
-        isResumeSelected,
-        isCostSelected,
-        navigateToAddPayScreen,
-        navigateToEditCost,
-        navigateToDoTheCounts,
-        uiStatePeopleGroupFragment,
-        onDoTheCountsClicked,
-        navigateToGroupsScreen,
-        navigateToConfiguration
+    val pagerState = rememberPagerState(
+        initialPage = mainScreenViewModel.selectedTab.ordinal,
+        pageCount = { MainScreenViewModel.MainTab.entries.size }
     )
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(pagerState.currentPage) {
+        mainScreenViewModel.onTabSelected(MainScreenViewModel.MainTab.entries[pagerState.currentPage])
+    }
+
+    Column {
+        MainTabs(
+            selectedTab = mainScreenViewModel.selectedTab,
+            onTabSelected = {
+                mainScreenViewModel.onTabSelected(it)
+                scope.launch {
+                    pagerState.animateScrollToPage(it.ordinal)
+                }
+            }
+        )
+
+        HorizontalPager(state = pagerState) { page ->
+            when (MainScreenViewModel.MainTab.entries[page]) {
+                MainScreenViewModel.MainTab.RESUME -> ResumeFragment(
+                    idGroup = idGroup,
+                    Modifier.weight(1f),
+                    resumeViewModel
+                )
+
+                MainScreenViewModel.MainTab.COSTS -> CostFragment(
+                    idGroup,
+                    mainScreenViewModel,
+                    navigateToEditCost,
+                    editCostScreenViewModel
+                )
+
+                MainScreenViewModel.MainTab.PAYMENTS -> PaymentsFragment(
+                    idGroup,
+                    mainScreenViewModel,
+                    Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MainTabs(
+    selectedTab: MainScreenViewModel.MainTab,
+    onTabSelected: (MainScreenViewModel.MainTab) -> Unit
+) {
+    val tabs = MainScreenViewModel.MainTab.entries.toTypedArray()
+
+    TabRow(
+        selectedTabIndex = selectedTab.ordinal,
+        containerColor = White,
+        contentColor = MaterialTheme.colorScheme.primary,
+        indicator = { tabPositions ->
+            // Obtenemos la posición de la pestaña seleccionada actual
+            val currentTabPosition = tabPositions[selectedTab.ordinal]
+
+            // Creamos una Box que ocupe el ancho y posición de la pestaña actual
+            Box(
+                modifier = Modifier
+                    .tabIndicatorOffset(currentTabPosition)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter // Alineamos el contenido (la barrita) abajo y al centro
+            ) {
+                // Dibujamos el indicador real con el tamaño deseado
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .height(3.dp) // Altura de la línea
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(DarkOrange)
+                )
+            }
+        },
+        divider = {
+            HorizontalDivider(color = Color.Transparent)
+        }
+    ) {
+        tabs.forEach { tab ->
+
+            val tabTitle = when (tab) {
+                MainScreenViewModel.MainTab.RESUME -> resume
+                MainScreenViewModel.MainTab.COSTS -> costs
+                MainScreenViewModel.MainTab.PAYMENTS -> payments
+            }
+            val isSelected = selectedTab == tab
+            Tab(
+                selected = selectedTab == tab,
+                onClick = { onTabSelected(tab) },
+                text = {
+                    Text(
+                        text = tabTitle.lowercase().replaceFirstChar { it.uppercase() },
+                        fontWeight = if (isSelected) FontWeight.Normal else FontWeight.Light,
+                        fontFamily = parkinsans,
+                        fontSize = 16.sp
+                    )
+                }
+            )
+        }
+    }
 }
 
 
@@ -122,250 +446,50 @@ fun MainView(
     mainScreenViewModel: MainScreenViewModel,
     nameOfGroup: String,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
-    isResumeSelected: Boolean,
-    isCostSelected: Boolean,
     navigateToAddPayScreen: () -> Unit,
     navigateToEditCost: (CostModel) -> Unit,
     navigateToDoTheCounts: () -> Unit,
-    uiStatePeopleGroupFragment: MainUiState,
+    // uiStatePeopleGroupFragment: MainUiState,
     onDoTheCountsClicked: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
-    navigateToConfiguration: () -> Unit
+    navigateToConfiguration: () -> Unit,
+    resumeViewModel: ResumeViewModel,
+    innerPadding: PaddingValues,
+    success: TotalExpensesUiState.Success,
+    editCostScreenViewModel: EditCostScreenViewModel,
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            //.padding(innerPadding)
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
+        mainScreenViewModel.getGroupNameById(idGroup!!)
         //HEADER
-        Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration)
-        Spacer(Modifier.size(12.dp))
+        Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration, success)
+        Spacer(Modifier.size(6.dp))
         //BOXS DE SELECCIONAR ACCION
-        ActionsBoxes(
-            mainScreenViewModel,
-            navigateToAddCostScreen,
-            doTheCountsScreenViewModel,
-            navigateToAddPeopleFromGroup,
-            navigateToAddPayScreen,
-            navigateToDoTheCounts,
-            uiStatePeopleGroupFragment,
-            onDoTheCountsClicked,
-        )
-        Spacer(Modifier.size(12.dp))
-        //BOXS SELECCIONAR FRAGMETS (RESUME O GASTOS)
-        ChooseScreen(mainScreenViewModel, isResumeSelected, isCostSelected)
-        Spacer(Modifier.size(12.dp))
-        // LISTADOS (RESUMEN O GASTOS)
-        if (isResumeSelected) {
-            ResumeFragment(idGroup, mainScreenViewModel, Modifier.weight(1f))
-        } else {
-            if (isCostSelected) {
-                CostFragment(idGroup, mainScreenViewModel, navigateToEditCost, Modifier.weight(1f))
-            } else {
-                PaymentsFragment(idGroup, mainScreenViewModel, Modifier.weight(1f))
-            }
-        }
+        /* ActionsBoxes(
+             navigateToAddCostScreen,
+             doTheCountsScreenViewModel,
+             navigateToAddPeopleFromGroup,
+             navigateToAddPayScreen,
+             navigateToDoTheCounts,
+             uiStatePeopleGroupFragment,
+             onDoTheCountsClicked,
+         )*/
+        MainScreenWithPager(mainScreenViewModel, idGroup, resumeViewModel, navigateToEditCost, editCostScreenViewModel)
         Spacer(Modifier.weight(1f))
-       // BannerAdViewMainScreen()
+        // BannerAdViewMainScreen()
     }
 }
 
-@Composable
-fun ChooseScreen(
-    mainScreenViewModel: MainScreenViewModel,
-    isResumeSelected: Boolean,
-    isCostSelected: Boolean
-) {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(White),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        if (isResumeSelected) {
-
-            //RESUME FRAGMENT
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(VeryDarkBlue)
-                    .padding(vertical = 6.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    resume,
-                    fontSize = 12.sp,
-                    color = White,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .weight(0.5f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                    .padding(vertical = 6.dp)
-                    .clickable { mainScreenViewModel.onCostSelected() },
-
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    costs,
-                    fontSize = 11.sp,
-                    color = Black,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .weight(0.5f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                    .padding(vertical = 6.dp)
-                    .clickable { mainScreenViewModel.onPaymentsSelected() },
-
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    payments,
-                    fontSize = 11.sp,
-                    color = Black,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-        } else {
-
-            if (isCostSelected) {
-
-                //COSt FRAGMENT
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                        .padding(vertical = 6.dp)
-                        .clickable { mainScreenViewModel.onResumeSelected() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        resume,
-                        fontSize = 11.sp,
-                        color = Black,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(VeryDarkBlue)
-                        .padding(vertical = 6.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        costs,
-                        fontSize = 12.sp,
-                        color = White,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                        .padding(vertical = 6.dp)
-                        .clickable { mainScreenViewModel.onPaymentsSelected() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        payments,
-                        fontSize = 11.sp,
-                        color = Black,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-            } else {
-                //PAYMENTS FRAGMENT
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                        .padding(vertical = 6.dp)
-                        .clickable {
-                            mainScreenViewModel.onResumeSelected()
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        resume,
-                        fontSize = 11.sp,
-                        color = Black,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, shape = RoundedCornerShape(16.dp), color = Black.copy(0.1f))
-                        .padding(vertical = 6.dp)
-                        .clickable { mainScreenViewModel.onCostSelected() },
-
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        costs,
-                        fontSize = 11.sp,
-                        color = Black,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(VeryDarkBlue)
-                        .padding(vertical = 6.dp),
-
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        payments,
-                        fontSize = 12.sp,
-                        color = White,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-
-            }
-        }
-    }
-}
-
+/*
 @Composable
 fun ActionsBoxes(
-    mainScreenViewModel: MainScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToAddPeopleFromGroup: () -> Unit,
@@ -580,25 +704,29 @@ fun ActionsBoxes(
 
 
     }
-}
+}*/
 
 @Composable
 fun Header(
     nameOfGroup: String,
     navigateToGroupsScreen: () -> Unit,
-    navigateToConfiguration: () -> Unit
+    navigateToConfiguration: () -> Unit,
+    success: TotalExpensesUiState.Success
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
-            .background(color = DarkBlue).padding(horizontal = 8.dp),
+            .background(color = DarkBlue)
+            .padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(WindowInsets.statusBars.asPaddingValues())) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WindowInsets.statusBars.asPaddingValues())
+        ) {
             IconButton(
                 onClick = {
                     navigateToGroupsScreen()
@@ -621,17 +749,30 @@ fun Header(
                     painter = painterResource(R.drawable.ellipsis),
                     contentDescription = "",
                     tint = White
-                    )
+                )
             }
         }
         Text(
             nameOfGroup,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, top = 8.dp),
             textAlign = TextAlign.Start,
             fontSize = 26.sp,
             color = White,
             fontFamily = parkinsans,
             fontWeight = FontWeight.W600
+        )
+        Text(
+            totalCostText + ": " + success.totalCost.toString() + " €",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, bottom = 8.dp),
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+            color = White,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Light
         )
     }
 

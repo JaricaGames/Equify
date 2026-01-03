@@ -44,8 +44,9 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.ui.groupsText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
@@ -57,6 +58,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
 @Composable
 fun GroupsScreen(
     groupViewModel: GroupsScreenViewModel,
+    mainScreenViewModel: MainScreenViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     navigateToNewGroup: () -> Unit,
@@ -125,6 +127,7 @@ fun GroupsScreen(
                                 groupViewModel,
                                 navigateToMainScreen,
                                 navigateToInitialScreen,
+                                mainScreenViewModel
                             )
                             Spacer(modifier = Modifier.size(20.dp))
                             BannerAdViewGroupScreen()
@@ -143,10 +146,11 @@ fun GroupsScreen(
 
 @Composable
 fun GroupList(
-    groupsList: List<GroupNameModel>,
+    groupsList: List<GroupModel>,
     groupViewModel: GroupsScreenViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
+    mainScreenViewModel: MainScreenViewModel,
 ) {
 
     LazyColumn(
@@ -158,7 +162,8 @@ fun GroupList(
                 groupViewModel,
                 navigateToMainScreen,
                 navigateToInitialScreen,
-                groupsList
+                groupsList,
+                mainScreenViewModel
             )
             Spacer(modifier = Modifier.size(8.dp))
 
@@ -168,11 +173,12 @@ fun GroupList(
 
 @Composable
 fun ItemGroupName(
-    group: GroupNameModel,
+    group: GroupModel,
     groupViewModel: GroupsScreenViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
-    groupsList: List<GroupNameModel>,
+    groupsList: List<GroupModel>,
+    mainScreenViewModel: MainScreenViewModel,
 ) {
 
     Row(
@@ -186,6 +192,7 @@ fun ItemGroupName(
                     group.idGroupName,
                     group.groupName
                 ) // Guardame el grupo elegido
+                mainScreenViewModel.setGroupId(group.idGroupName)
                 navigateToMainScreen(group.idGroupName) // navegamos a la pantalla del grupo elegido
             },
         horizontalArrangement = Arrangement.Start

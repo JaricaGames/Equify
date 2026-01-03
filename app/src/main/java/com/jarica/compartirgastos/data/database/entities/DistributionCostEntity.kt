@@ -8,16 +8,18 @@ import com.jarica.compartirgastos.core.DISTRIBUTION_COST_TABLE
 
 @Entity(
     tableName = DISTRIBUTION_COST_TABLE,
-    primaryKeys = ["iDCost", "iDPerson"],
-    indices = [Index("iDPerson")]
+    primaryKeys = ["idCost", "idPerson"],
+    indices = [
+        Index("idPerson"),
+        Index("idGroup"),
+        Index("idCost")]
 )
 
 data class DistributionCostEntity(
 
-    //@PrimaryKey(autoGenerate = true)
-    //@ColumnInfo(name = "iDCostOfPerson") val iDCostOfPerson: Int?,
-    @ColumnInfo(name = "iDCost") val iDCost: String,
-    @ColumnInfo(name = "iDPerson") val iDPerson: String,
+    @ColumnInfo(name = "idCost") val idCost: String,
+    @ColumnInfo(name = "idGroup") val idGroup: String,
+    @ColumnInfo(name = "idPerson") val idPerson: String,
     @ColumnInfo(name = "amount") val amount: Float,
-    //@ColumnInfo(name = "iDGroup") val iDGroup: String,
+   // @ColumnInfo(name = "name") val name: String,
 )

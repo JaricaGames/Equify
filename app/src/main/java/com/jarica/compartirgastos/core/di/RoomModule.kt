@@ -34,5 +34,14 @@ object RoomModule {
     @Provides
     fun providePaymentsDao(db:AppDataBase) = db.paymentsDao()
 
+    @Provides
+    fun provideDistributionPaymentsDao(db:AppDataBase) = db.distributionPaymentDao()
+
+    @Provides
+    fun provideDistributionCostDao(db:AppDataBase) = db.distributionCostDao()
+
+    @Provides
+    fun personBalanceDao(db:AppDataBase) = db.PersonBalanceDao()
+
 
 }

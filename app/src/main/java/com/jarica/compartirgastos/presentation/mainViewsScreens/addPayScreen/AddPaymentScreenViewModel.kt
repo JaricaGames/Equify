@@ -106,7 +106,7 @@ class AddPaymentScreenViewModel @Inject constructor(
 
     }
 
-    fun updatePersons(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
+/*    fun updatePersons(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
 
        // personWhoPay.equity = (personWhoPay.equity.toFloat() + amountText.toFloat()).toString()
        // personWhoReceive.equity = (personWhoReceive.equity.toFloat() - amountText.toFloat()).toString()
@@ -116,7 +116,7 @@ class AddPaymentScreenViewModel @Inject constructor(
             updatePersonUseCase(personWhoPay)
         }
 
-    }
+    }*/
 
     fun clearTexts() {
         _amountText.value = ""

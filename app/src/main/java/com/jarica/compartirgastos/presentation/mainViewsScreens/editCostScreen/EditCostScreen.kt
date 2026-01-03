@@ -18,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,10 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.CostOfPersonModel
+import com.jarica.compartirgastos.domain.models.CostPaymentsModel
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.ui.editCost
 import com.jarica.compartirgastos.presentation.ui.labelTextFieldAddPeopleScreen
@@ -56,12 +57,15 @@ fun EditCostScreen(
     navigateToMainScreen: () -> Unit
 ) {
 
-    val descriptionCost: String by editCostScreenViewModel.descriptionCost .observeAsState(description)
+    val uiStateEditCost by editCostScreenViewModel.uiStateEditCost.collectAsState()
+    val descriptionCost: String by editCostScreenViewModel.descriptionCost.observeAsState(
+        description
+    )
     //val payFor: String by editCostScreenViewModel.payFor .observeAsState(personString)
-    val amountCost: Float by editCostScreenViewModel.amountCost .observeAsState(amount)
+    val amountCost: Float by editCostScreenViewModel.amountCost.observeAsState(amount)
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    /*val uiEditCostUiState by produceState<EditCostUiState>(
+    /*val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val uiEditCostUiState by produceState<EditCostUiState>(
         initialValue = EditCostUiState.Loading,
         key1 = lifecycle,
         key2 = editCostScreenViewModel,
@@ -70,16 +74,17 @@ fun EditCostScreen(
             editCostScreenViewModel.uiEditCostUiState.collect { value = it }
         }
     }
+*/
 
-    when (uiEditCostUiState) {
+    LaunchedEffect(idCost) {
+        editCostScreenViewModel.setIdCost(idCost)
+    }
+
+    when (uiStateEditCost) {
         is EditCostUiState.Loading -> {}
         is EditCostUiState.Error -> {}
         is EditCostUiState.Success -> {
-
-            val listOfCostOfPerson =
-                (uiEditCostUiState as EditCostUiState.Success).listOfCostOfPerson
-
-
+            // costPaymentsList = state.listOfCostPaymentsModel
             MainViewEditCostScreen(
                 amountCost,
                 descriptionCost,
@@ -87,13 +92,12 @@ fun EditCostScreen(
                 navigateToMainScreen,
                 editCostScreenViewModel,
                 idCost,
-                listOfCostOfPerson
+                (uiStateEditCost as EditCostUiState.Success).listOfCostPaymentsModel
+                //listOfCostOfPerson
             )
-
         }
-    }*/
+    }
 }
-
 
 @Composable
 fun MainViewEditCostScreen(
@@ -103,7 +107,8 @@ fun MainViewEditCostScreen(
     navigateToMainScreen: () -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
     idCost: String,
-    listOfCostOfPerson: List<CostOfPersonModel>,
+    costPaymentsList: List<CostPaymentsModel>,
+   // listOfCostOfPerson: List<CostOfPersonModel>,
 ) {
 
     Column(
@@ -154,11 +159,11 @@ fun MainViewEditCostScreen(
                     .offset(x = 2.dp), // ajusta visualmente el centrado fino,
                 onClick =
                     {
-                        editCostScreenViewModel.onDeletedSelected(
+                       /* editCostScreenViewModel.onDeletedSelected(
                             idCost,
-                            listOfCostOfPerson,
+                           // listOfCostOfPerson,
                         )
-                        navigateToMainScreen()
+                        navigateToMainScreen()*/
                     }
             ) {
                 Icon(
@@ -202,7 +207,11 @@ fun MainViewEditCostScreen(
             )
             Spacer(modifier = Modifier.weight(0.02f))
             CustomTextField(
-                value = "", //"$PayFor      $personString",
+                value = costPaymentsList.joinToString(
+                    separator = ", ",
+                    prefix = "[",
+                    postfix = "]"
+                ) { it.name },
                 onValueChange = { },
                 placeholderText = "",
                 textStyle = TextStyle(
@@ -299,5 +308,7 @@ fun MainViewEditCostScreen(
 
         Spacer(modifier = Modifier.weight(0.8f))*/
 }
+
+
 
 

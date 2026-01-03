@@ -9,3 +9,9 @@ sealed interface MainUiState {
     data class Success(val peopleList:List<PersonModel>): MainUiState
 
 }
+
+sealed class TotalExpensesUiState {
+    object Loading : TotalExpensesUiState()
+    data class Success(val totalCost: Float) : TotalExpensesUiState()
+    data class Error(val throwable: Throwable) : TotalExpensesUiState()
+}

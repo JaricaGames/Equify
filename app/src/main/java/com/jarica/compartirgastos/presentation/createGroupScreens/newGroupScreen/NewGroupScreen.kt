@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
 import com.jarica.compartirgastos.presentation.ui.newGroupText
@@ -99,7 +99,7 @@ fun MainViewNewGroupScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    val groupNameModel = GroupNameModel(
+                    val groupNameModel = GroupModel(
                         groupName = groupName
                     )
                     navigateToAddPeople(

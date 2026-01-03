@@ -15,19 +15,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
+import com.jarica.compartirgastos.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.groupNameCompanionObject
@@ -51,7 +52,6 @@ import com.jarica.compartirgastos.presentation.ui.noAppToOpenPDF
 import com.jarica.compartirgastos.presentation.ui.oweToText
 import com.jarica.compartirgastos.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.presentation.ui.theme.Black
-import com.jarica.compartirgastos.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
@@ -65,10 +65,9 @@ fun DoTheCountsScreen(
     mainScreenViewModel: MainScreenViewModel,
 ) {
 
-
+    val listOfPayments by mainScreenViewModel.paymentsToDoTheCounts.collectAsState()
     val context = LocalContext.current
 
-    val listOfPayments by doTheCountsScreenViewModel.listOfPayments.observeAsState(arrayListOf())
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
@@ -122,7 +121,7 @@ fun DoTheCountsScreen(
 
 @Composable
 fun MainViewDoTheCountsScreen(
-    listOfPayments: ArrayList<PaymentsToCountsModel>,
+    listOfPayments: List<PaymentsToDoCountsModel>,
     createPdfLauncher: ManagedActivityResultLauncher<String, Uri?>,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToGroupScreen: () -> Unit
@@ -142,6 +141,7 @@ fun MainViewDoTheCountsScreen(
             text = exportArrayListDoTheCountsText,
             icon = R.drawable.arrow_back
         )
+        Spacer(Modifier.size(16.dp))
         Column(
             modifier = Modifier
                 .padding(horizontal = 32.dp)
@@ -150,14 +150,14 @@ fun MainViewDoTheCountsScreen(
             verticalArrangement = Arrangement.Top
         ) {
 
-            Spacer(Modifier.weight(0.05f))
+            Spacer(Modifier.size(16.dp))
             Icon(
                 modifier = Modifier.size(75.dp),
                 painter = painterResource(R.drawable.pdfsvg),
                 contentDescription = "",
                 tint = Color.Unspecified
             )
-            Spacer(Modifier.weight(0.05f))
+            Spacer(Modifier.size(16.dp))
             Text(
                 exportArrayListDoTheCountsLargeText,
                 color = Black,
@@ -166,7 +166,7 @@ fun MainViewDoTheCountsScreen(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center
             )
-            Spacer(Modifier.weight(0.05f))
+            Spacer(Modifier.size(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonColors(
@@ -188,43 +188,43 @@ fun MainViewDoTheCountsScreen(
                     fontSize = 16.sp,
                 )
             }
-            Spacer(Modifier.weight(0.05f))
-            listOfPayments.forEach { item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(DarkBlue)
-                        .padding(horizontal = 32.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        item.namePersonWhoPay + oweToText + item.namePersonWhoReceive,
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center,
-                        fontSize = 12.sp,
-                        color = White
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        "%.2f".format(item.amount.toFloat()) + " €",
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Start,
-                        fontSize = 12.sp,
-                        color = White
-                    )
-
-
-                }
-                Spacer(Modifier.weight(0.01f))
-
-            }
-            Spacer(Modifier.weight(1f))
-
+            Spacer(Modifier.weight(16f))
+            PaymentsListDoTheCounts(paymentsList = listOfPayments)
         }
 
+    }
+}
+
+@Composable
+fun PaymentsListDoTheCounts(paymentsList: List<PaymentsToDoCountsModel>) {
+
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(paymentsList) { item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    item.namePersonWhoPay + oweToText + item.namePersonWhoReceive,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                    fontSize = 12.sp,
+                    color = Black
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    "%.2f".format(item.amount.toFloat()) + " €",
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                    color = Black
+                )
+            }
+        }
     }
 }
 

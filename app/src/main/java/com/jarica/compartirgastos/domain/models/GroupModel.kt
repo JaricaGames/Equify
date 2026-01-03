@@ -6,7 +6,7 @@ import java.util.UUID
 
 
 @Parcelize
-data class GroupNameModel (
+data class GroupModel (
     val idGroupName:String = UUID.randomUUID().toString(),
     var groupName: String
 ) : Parcelable

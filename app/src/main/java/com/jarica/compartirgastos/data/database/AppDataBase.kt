@@ -3,8 +3,11 @@ package com.jarica.compartirgastos.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.jarica.compartirgastos.data.database.dao.CostsDao
+import com.jarica.compartirgastos.data.database.dao.DistributionCostDao
+import com.jarica.compartirgastos.data.database.dao.DistributionPaymentDao
 import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PaymentsDao
+import com.jarica.compartirgastos.data.database.dao.PersonBalanceDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
 import com.jarica.compartirgastos.data.database.entities.CostEntity
 import com.jarica.compartirgastos.data.database.entities.DistributionCostEntity
@@ -32,8 +35,10 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun personNameDao(): PersonNameDao
     abstract fun costsDao(): CostsDao
     abstract fun paymentsDao(): PaymentsDao
-   // abstract fun distributionCostDao(): PaymentsDao
-   // abstract fun distributionPaymentDao(): PaymentsDao
+    abstract fun distributionCostDao(): DistributionCostDao
+    abstract fun distributionPaymentDao(): DistributionPaymentDao
+    abstract fun PersonBalanceDao(): PersonBalanceDao
+
 }
 
 

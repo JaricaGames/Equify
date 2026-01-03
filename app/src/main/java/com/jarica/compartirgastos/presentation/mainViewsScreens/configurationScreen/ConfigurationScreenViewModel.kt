@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.domain.costsUseCases.GetCostByIdPersonUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.DeleteGroupByIdUseCase
 import com.jarica.compartirgastos.domain.groupsUseCases.GetGroupByIdUseCase
+import com.jarica.compartirgastos.domain.models.PersonBalance
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.DeletePersonByIdUseCase
 import com.jarica.compartirgastos.domain.peopleUseCases.GetPeopleNamesUseCase
@@ -80,9 +81,9 @@ class ConfigurationScreenViewModel @Inject constructor(
 
     // ----------------------------------------
     // Usuario seleccionado de un grupo
-    fun onGroupMemberClicked(person: PersonModel) {
+    fun onGroupMemberClicked(person: PersonBalance) {
         _personSelected.value = person.name
-        personSelectedModel = person
+        //personSelectedModel = person
 
         viewModelScope.launch {
 /*            val listOfCosts = withContext(Dispatchers.IO) {

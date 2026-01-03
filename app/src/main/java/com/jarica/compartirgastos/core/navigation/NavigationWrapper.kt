@@ -37,6 +37,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.E
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreen
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeViewModel
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
@@ -54,6 +55,7 @@ fun NavigationWrapper(
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     splashScreenViewModel: SplashScreenViewModel,
     aboutScreenViewModel: AboutEquifyScreenViewModel,
+    resumeViewModel: ResumeViewModel
 ) {
 
     val activity = LocalContext.current as? Activity
@@ -68,6 +70,7 @@ fun NavigationWrapper(
 
             GroupsScreen(
                 groupScreenViewModel,
+                mainScreenViewModel,
                 navigateToMainScreen = {
                     navController.navigate(MainScreenObject(iDGroupName)) {
                         launchSingleTop = true
@@ -104,7 +107,7 @@ fun NavigationWrapper(
             NewGroupScreen(
                 newGroupViewModel,
                 navigateToGroupsScreen = {
-                    navController.navigate(GroupsScreenObject) {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
                         launchSingleTop = true
                     }
                 },
@@ -123,6 +126,8 @@ fun NavigationWrapper(
             MainScreen(
                 groupScreen.iDGroupName,
                 mainScreenViewModel,
+                resumeViewModel,
+                editCostScreenViewModel = editCostScreenViewModel,
                 navigateToGroupsScreen = {
                     navController.navigate(GroupsScreenObject) {
                         launchSingleTop = true
@@ -192,7 +197,8 @@ fun NavigationWrapper(
                     }
                 },
                 idGroupName = addPeopleScreen.iDGroupName,
-                groupName = addPeopleScreen.groupName!!
+                groupName = addPeopleScreen.groupName!!,
+                mainScreenViewModel = mainScreenViewModel
             )
         }
 

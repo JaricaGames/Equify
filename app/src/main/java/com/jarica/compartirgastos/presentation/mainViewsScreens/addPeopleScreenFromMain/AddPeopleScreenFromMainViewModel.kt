@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.groupsUseCases.InsertGroupNameUseCase
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.InsertPersonNameUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
@@ -34,10 +34,10 @@ class AddPeopleScreenFromMainViewModel @Inject constructor(
 
 
     //INSERTAR GRUPO EN LA BBDD
-    fun insertGroupName(groupName: GroupNameModel) {
+    fun insertGroupName(groupName: GroupModel) {
         viewModelScope.launch(Dispatchers.IO) {
             insertGroupNameUseCase(
-                GroupNameModel(
+                GroupModel(
                     idGroupName = groupName.idGroupName,
                     groupName = groupName.groupName
                 )

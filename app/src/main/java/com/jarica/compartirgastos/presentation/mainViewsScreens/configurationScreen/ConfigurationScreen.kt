@@ -43,12 +43,13 @@ import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.EMAIL_DIRECTION
 import com.jarica.compartirgastos.core.EMAIL_SUBJECT
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
-import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.domain.models.PersonBalance
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.AlertDialogs.AlertDialogConfirm
 import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScreen.AlertDialogs.AlertDialogErrorClear
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainUiState
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeUiState
 import com.jarica.compartirgastos.presentation.ui.aboutText
 import com.jarica.compartirgastos.presentation.ui.addPeopleConfigurationText
 import com.jarica.compartirgastos.presentation.ui.administratePeopleConfigurationText
@@ -132,7 +133,7 @@ fun ConfigurationScreen(
             MainConfigurationScreen(
                 configurationScreenViewModel,
                 nameOfGroup,
-                (uiStatePeopleGroupFragment as MainUiState.Success).peopleList,
+                (uiStatePeopleGroupFragment as ResumeUiState.Success).peopleList,
                 navigateToCustomizeGroup,
                 navigateToGroupScreen,
                 navigateToAddPeopleScreen,
@@ -164,7 +165,7 @@ fun ConfigurationScreen(
 fun MainConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     nameOfGroup: String,
-    peopleList: List<PersonModel>,
+    peopleList: List<PersonBalance>,
     navigateToCustomizeGroup: () -> Unit,
     navigateToMainScreen: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
@@ -216,7 +217,6 @@ fun MainConfigurationScreen(
                 Spacer(Modifier.height(6.dp))
 
                 peopleList
-                    .filter { it.idGroupName == iDGroupName }
                     .forEach { person ->
                         ItemPeopleNameConfigurationScreen(person, configurationScreenViewModel)
                     }
@@ -403,7 +403,7 @@ fun GroupMembers(
 
 @Composable
 fun ItemPeopleNameConfigurationScreen(
-    person: PersonModel,
+    person: PersonBalance,
     configurationScreenViewModel: ConfigurationScreenViewModel,
 ) {
     Row(

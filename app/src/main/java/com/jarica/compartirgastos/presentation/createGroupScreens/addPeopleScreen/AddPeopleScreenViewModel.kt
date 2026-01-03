@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.domain.groupsUseCases.InsertGroupNameUseCase
-import com.jarica.compartirgastos.domain.models.GroupNameModel
+import com.jarica.compartirgastos.domain.models.GroupModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.InsertPersonNameUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.iDGroupName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,10 +42,10 @@ class AddPeopleScreenViewModel @Inject constructor(
 
 
     //INSERTAR GRUPO EN LA BBDD
-    fun insertGroupName(groupName: GroupNameModel) {
+    fun insertGroupName(groupName: GroupModel) {
         viewModelScope.launch(Dispatchers.IO) {
             insertGroupNameUseCase(
-                GroupNameModel(
+                GroupModel(
                     idGroupName = groupName.idGroupName,
                     groupName = groupName.groupName
                 )
@@ -68,9 +69,8 @@ class AddPeopleScreenViewModel @Inject constructor(
         peopleList.forEach { personName ->
 
             val personModel = PersonModel(
-                idPerson = personName,
                 name = personName,
-             //   equity = "0.0",
+                //   equity = "0.0",
                 idGroupName = idGroupName
             )
             viewModelScope.launch(Dispatchers.IO) {
@@ -80,6 +80,32 @@ class AddPeopleScreenViewModel @Inject constructor(
             }
         }
         _personList.clear()
+    }
+
+    fun saveGroupData(group: GroupModel, peopleList: List<String>, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            // 1. Insertamos el grupo
+            insertGroupNameUseCase(group)
+            // Guardo en la variable companion de grupo el grupo activo
+            iDGroupName = group.idGroupName
+
+            // 2. Insertamos las personas
+            peopleList.forEach { personName ->
+                val personModel = PersonModel(
+                    name = personName,
+                    idGroupName = group.idGroupName
+                )
+                insertPersonNameUseCase(personModel = personModel)
+            }
+            _personList.clear()
+
+            // 3. Solo cuando TODO ha terminado, llamamos al callback
+            // Volvemos al hilo principal para la navegación
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
     }
 
     fun onBackPressed() {

@@ -25,17 +25,19 @@ const val addPeopleText = "Añadir persona"
 const val addEverybodyText = "Añade a todos los participantes"
 
 //MainScreenObject
-const val addCost = "Añadir\nGasto"
+const val addCost = "Añadir Gasto"
 const val addCostText = "Añadir Gasto"
-const val addPay = "Añadir\nPago"
+const val addPay = "Añadir Pago"
 const val costs = "Gastos"
 const val payments = "Pagos"
 const val resume = "Resumen"
-const val doTheCount = "Echar\ncuentas"
-const val addPeople = "Añadir\nPersona"
+const val doTheCount = "Echar cuentas"
+const val addPeople = "Añadir Persona"
 const val youOwe = "Debe: "
 const val theyOweyou = "Le deben: "
 const val totalCostText = "Total de Gasto: "
+
+
 
 //AddCostScreenObject
 const val descriptionPlaceHolder = "Descripción"

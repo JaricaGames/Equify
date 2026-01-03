@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.HEADER_WEIGHT
+import com.jarica.compartirgastos.domain.models.CostModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.presentation.composables.CustomTextField
@@ -52,6 +53,7 @@ import com.jarica.compartirgastos.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.presentation.ui.theme.White
 import com.jarica.compartirgastos.presentation.ui.theme.parkinsans
+import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,8 +134,9 @@ fun MainViewAddCostScreen(
 
         Column(
             modifier = Modifier
-            .padding(horizontal = 32.dp)
-            .weight(1f-HEADER_WEIGHT)) {
+                .padding(horizontal = 32.dp)
+                .weight(1f - HEADER_WEIGHT)
+        ) {
 
             Spacer(Modifier.height(20.dp))
             //TEXTFIELD DESCRIPCION
@@ -242,19 +245,41 @@ fun MainViewAddCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    addCostViewModel.addCostToGroup(
-                        personToAddCosts = personToAddCosts!!,
-                        listOfPeople,
-                        iDGroupName,
-                        amountText,
-                        descriptionText
+                    val numberOfPeople = addCostViewModel.calculateNumberOfPeople(listOfPeople)
+                    val sharedId = UUID.randomUUID().toString()
+                    val costModel = CostModel(
+                        idCost = sharedId,
+                        amount = amountText.toFloat(),
+                        description = descriptionText,
+                        idGroup = iDGroupName
                     )
-/*                    addCostViewModel.updatePerson(
-                        personToAddCosts = personToAddCosts,
-                        listOfPeople = listOfPeople
-                    )*/
+                    addCostViewModel.addCost(
+                        costModel,
+                        listOfPeople,
+                        numberOfPeople,
+                        amountText.toFloat(),
+                        personToAddCosts!!.idPerson,
+                        personToAddCosts.name,
+                        { navigateToMainScreen() }
+                    )
                     addCostViewModel.cleanTexts()
-                    navigateToMainScreen()
+
+                    /*addCostViewModel.insertDistributionCost(
+                        listOfPeople,
+                        numberOfPeople,
+                        costModel.idCost,
+                        amountText.toFloat()
+                    )
+                    addCostViewModel.insertDistributionPayment(
+                        costModel.idCost,
+                        amountText.toFloat(),
+                        personToAddCosts!!.idPerson,
+                        personToAddCosts.name,
+
+
+                        )
+
+                    navigateToMainScreen()*/
                 }) {
                 Text(
                     addCostText,
@@ -268,6 +293,7 @@ fun MainViewAddCostScreen(
         }
     }
 }
+
 
 
 

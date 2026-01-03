@@ -3,7 +3,6 @@ package com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScre
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +16,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.jarica.compartirgastos.domain.models.CostModel
+import com.jarica.compartirgastos.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.domain.models.PersonModel
 import com.jarica.compartirgastos.domain.peopleUseCases.UpdatePersonUseCase
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel.Companion.groupNameCompanionObject
@@ -24,8 +24,6 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainS
 import com.jarica.compartirgastos.presentation.ui.amountText
 import com.jarica.compartirgastos.presentation.ui.costListText
 import com.jarica.compartirgastos.presentation.ui.dateText
-import com.jarica.compartirgastos.presentation.ui.oweToText
-import com.jarica.compartirgastos.presentation.ui.payForText
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellow2RGB
 import com.jarica.compartirgastos.presentation.ui.theme.DarkYellowRGB
 import com.jarica.compartirgastos.presentation.ui.titleText
@@ -46,9 +44,8 @@ class DoTheCountsScreenViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-
-    private val _listOfPayments = MutableLiveData<ArrayList<PaymentsToCountsModel>>()
-    val listOfPayments: LiveData<ArrayList<PaymentsToCountsModel>> = _listOfPayments
+/*    private val _listOfPayments = MutableLiveData<ArrayList<PaymentsToCountsModel>>()
+    val listOfPayments: LiveData<ArrayList<PaymentsToCountsModel>> = _listOfPayments*/
 
     private val _listOfPersons = MutableLiveData<List<PersonModel>>()
     //val listOfPersons: LiveData<List<PersonModel>> = _listOfPersons
@@ -56,7 +53,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
     fun doTheCounts(peopleList: List<PersonModel>) {
 
 //Array de pagos
-        val arrayPaymentsToDoTheCounts = ArrayList<PaymentsToCountsModel>(emptyList())
+        /*val arrayPaymentsToDoTheCounts = ArrayList<PaymentsToCountsModel>(emptyList())
 
         // Copia las personas para no modificar la lista original.
         val mutablePeopleList = peopleList.map { it.copy() }
@@ -67,7 +64,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
                 //Compruebo si el equity es menor que 0, en ese caso tiene que pagar
 
-                /*if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
+                *//*if (personWhoPay.equity.toFloat() < 0 && personWhoPay.idGroupName == iDGroupName) {
 
                     //Calculo a quien le tiene que pagar
                     run personWhoReceive@{
@@ -110,12 +107,12 @@ class DoTheCountsScreenViewModel @Inject constructor(
                             }
                         }
                     }
-                }*/
+                }
 
             }
         }
 
-        _listOfPayments.value = arrayPaymentsToDoTheCounts
+        _listOfPayments.value = arrayPaymentsToDoTheCounts*/
 
 
     }
@@ -135,8 +132,8 @@ class DoTheCountsScreenViewModel @Inject constructor(
     fun createPdf(
         contentResolver: ContentResolver,
         uri: Uri,
-        listOfPayments: ArrayList<PaymentsToCountsModel>,
-        costsList: List<CostModel>,
+        listOfPayments: List<PaymentsToDoCountsModel>,
+        costsList: List<CostModel>
     ) {
         val document = Document()
 
@@ -166,7 +163,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
             document.add(fillInPayTable(costsList))
 
             //RELENAMOS TABLA DE PAGOS ENTRE PERSONAS
-            document.add(fillInPaymentsToDoTheCounts(listOfPayments))
+            //document.add(fillInPaymentsToDoTheCounts(listOfPayments))
 
             //CERRAMOS DOCUMENTO
             document.close()
@@ -174,7 +171,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
     }
 
-    private fun fillInPaymentsToDoTheCounts(listOfPayments: ArrayList<PaymentsToCountsModel>): PdfPTable {
+    /*private fun fillInPaymentsToDoTheCounts(listOfPayments: ArrayList<PaymentsToCountsModel>): PdfPTable {
 
         // PAGOS PARA AJUSTES //
         // Crear tabla con 4columnas
@@ -281,7 +278,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         }
         table.spacingBefore = 40f
         return table
-    }
+    }*/
 
     private fun fillInPayTable(costsList: List<CostModel>): PdfPTable {
 
@@ -407,10 +404,4 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
 
 
-data class PaymentsToCountsModel(
-    val amount: String,
-    val namePersonWhoPay: String,
-    val namePersonWhoReceive: String,
-
-    )
 

@@ -46,7 +46,7 @@ interface CostsDao {
     suspend fun deleteAllCostOfAGroup(idGroup: String)
 
     //Metodo que borra todos los gasto por persona con un IdCost
-/*    @Query("DELETE FROM CostsOfPersonTable WHERE idCost LIKE :idCost ")
+  /*  @Query("DELETE FROM CostsOfPersonTable WHERE idCost LIKE :idCost ")
     suspend fun deleteCostOfPerson(idCost: String)*/
 
     //Metodo que borra todos los gasto por persona de un grupo
@@ -60,5 +60,10 @@ interface CostsDao {
     //Metodo que actualiza un gasto por persona
     @Update
     suspend fun updateCostOfPerson(costsOfPersonsEntity: DistributionCostEntity)
+
+    //Metodo que devuelve la suma de todos los gastos de un grupo
+    @Query("""SELECT COALESCE(SUM(amount), 0) FROM costsTable WHERE idGroup = :groupId""")
+    fun getTotalExpensesByGroup(groupId: String): Flow<Float>
+
 
 }

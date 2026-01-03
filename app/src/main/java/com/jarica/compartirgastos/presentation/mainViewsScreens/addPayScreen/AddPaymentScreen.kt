@@ -300,11 +300,11 @@ fun MainScreenAddPayment(
                         personWhoReceive,
                         amountText
                     )
-                    addPaymentScreenViewModel.updatePersons(
+/*                    addPaymentScreenViewModel.updatePersons(
                         personWhoPay,
                         personWhoReceive,
                         amountText
-                    )
+                    )*/
                     addPaymentScreenViewModel.clearTexts()
                     navigateToMainScreen()
                 }) {

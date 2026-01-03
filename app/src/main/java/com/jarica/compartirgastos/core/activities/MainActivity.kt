@@ -1,10 +1,12 @@
 package com.jarica.compartirgastos.core.activities
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.view.WindowCompat
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
@@ -21,6 +23,7 @@ import com.jarica.compartirgastos.presentation.mainViewsScreens.configurationScr
 import com.jarica.compartirgastos.presentation.mainViewsScreens.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.MainScreenViewModel
+import com.jarica.compartirgastos.presentation.mainViewsScreens.mainScreen.fragmets.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.presentation.ui.theme.CompartirGastosTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,16 +43,18 @@ class MainActivity : ComponentActivity() {
     private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
     private val splashScreenViewModel: SplashScreenViewModel by viewModels()
     private val aboutScreenViewModel: AboutEquifyScreenViewModel by viewModels()
+    private val resumeScreenViewModel: ResumeViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         // Para el caso de 3 botones, desactiva la protección del contraste
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightNavigationBars = true // O false, según el color de fondo
+        windowInsetsController.isAppearanceLightNavigationBars =
+            true // O false, según el color de fondo
         setContent {
 
             LaunchedEffect(Unit) {
@@ -70,7 +75,8 @@ class MainActivity : ComponentActivity() {
                     customizeGroupScreenViewModel,
                     doTheCountsScreenViewModel,
                     splashScreenViewModel,
-                    aboutScreenViewModel
+                    aboutScreenViewModel,
+                    resumeScreenViewModel
                 )
             }
         }

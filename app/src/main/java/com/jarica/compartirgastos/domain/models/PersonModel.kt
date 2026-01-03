@@ -8,6 +8,5 @@ import java.util.UUID
 data class PersonModel(
     val idPerson: String = UUID.randomUUID().toString(),
     val name: String,
-    //var equity: String = "0.0",
     val idGroupName: String,
 )

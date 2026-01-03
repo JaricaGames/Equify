@@ -24,6 +24,7 @@ val WhiteYellow2 = Color(0xFFFDE3B3)
 val DarkYellowRGB = BaseColor(254, 177, 39,100)
 val DarkYellow2RGB = BaseColor(254, 177, 39,30)
 val Green = Color(0xFF069C0C)
+val DarkGreen = Color(0xFF1A6A4F)
 val Red = Color(0xFFF44336)
 val Transparent = Color(0x00FFFFFF)
 
