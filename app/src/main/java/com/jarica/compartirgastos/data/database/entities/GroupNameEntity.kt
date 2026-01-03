@@ -3,7 +3,7 @@ package com.jarica.compartirgastos.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jarica.compartirgastos.core.GROUPS_NAME_TABLE
+import com.jarica.compartirgastos.core.utils.GROUPS_NAME_TABLE
 
 @Entity(tableName = GROUPS_NAME_TABLE)
 data class GroupNameEntity(

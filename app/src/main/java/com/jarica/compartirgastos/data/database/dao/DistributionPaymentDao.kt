@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEntity
-import com.jarica.compartirgastos.data.dto.CostPaymentDto
+import com.jarica.compartirgastos.features.costs.data.dto.CostPaymentDto
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,9 +1,16 @@
 package com.jarica.compartirgastos.data
 
+import com.jarica.compartirgastos.core.domain.models.CostModel
+import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
+import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
+import com.jarica.compartirgastos.core.domain.models.DistributionPaymentModel
+import com.jarica.compartirgastos.core.domain.models.GroupModel
+import com.jarica.compartirgastos.core.domain.models.PaymentsModel
+import com.jarica.compartirgastos.core.domain.models.PersonBalance
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.data.database.dao.CostsDao
 import com.jarica.compartirgastos.data.database.dao.DistributionCostDao
 import com.jarica.compartirgastos.data.database.dao.DistributionPaymentDao
-import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.data.database.dao.PersonBalanceDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
@@ -12,15 +19,8 @@ import com.jarica.compartirgastos.data.database.entities.DistributionCostEntity
 import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEntity
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
-import com.jarica.compartirgastos.data.dto.toDomain
-import com.jarica.compartirgastos.domain.models.CostModel
-import com.jarica.compartirgastos.domain.models.CostPaymentsModel
-import com.jarica.compartirgastos.domain.models.DistributionCostModel
-import com.jarica.compartirgastos.domain.models.DistributionPaymentModel
-import com.jarica.compartirgastos.domain.models.GroupModel
-import com.jarica.compartirgastos.domain.models.PaymentsModel
-import com.jarica.compartirgastos.domain.models.PersonBalance
-import com.jarica.compartirgastos.domain.models.PersonModel
+import com.jarica.compartirgastos.features.costs.data.dto.toDomain
+import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -29,7 +29,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AppRepository @Inject constructor(
-    private val groupNameDao: GroupNameDao,
+    private val groupNameDao: GroupsDao,
     private val personNameDao: PersonNameDao,
     private val costsDao: CostsDao,
     private val paymentsDao: PaymentsDao,
@@ -38,24 +38,12 @@ class AppRepository @Inject constructor(
     private val personBalanceDao: PersonBalanceDao
 ) {
 
-    //GROUP_NAME_DAO
+    /*//GROUP_NAME_DAO
 
     //Mapear de GroupEntity a GroupNameModel
     val groupNamesModel: Flow<List<GroupModel>> = groupNameDao.getAllGroupName()
         .map { items -> items.map { GroupModel(it.idGroupName, it.groupName) } }
 
-
-    //Metodo que inserta un grupo
-    suspend fun insertGroupName(groupNameModel: GroupModel) {
-        groupNameDao.insertGroupName(
-            GroupNameEntity(
-                idGroupName = groupNameModel.idGroupName,
-                groupName = groupNameModel.groupName
-
-            )
-        )
-
-    }
 
     suspend fun getGroupNameById(id: String): GroupModel {
         return groupNameDao.getGroupNameById(idGroup = id).toDomain()
@@ -92,7 +80,7 @@ class AppRepository @Inject constructor(
         costsDao.deleteAllCostOfAGroup(iDGroupName)
         // costsDao.deleteCostOfPersonOfAGroup(iDGroupName)
         paymentsDao.deletePaymentsOfAGroup(iDGroupName)
-    }
+    }*/
 
     //PERSON_NAME_DAO
 

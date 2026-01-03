@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.jarica.compartirgastos.core.COSTS_TABLE
+import com.jarica.compartirgastos.core.utils.COSTS_TABLE
 
 @Entity(
     tableName = COSTS_TABLE,

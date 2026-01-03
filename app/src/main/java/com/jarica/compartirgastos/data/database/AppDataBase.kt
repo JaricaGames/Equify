@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import com.jarica.compartirgastos.data.database.dao.CostsDao
 import com.jarica.compartirgastos.data.database.dao.DistributionCostDao
 import com.jarica.compartirgastos.data.database.dao.DistributionPaymentDao
-import com.jarica.compartirgastos.data.database.dao.GroupNameDao
 import com.jarica.compartirgastos.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.data.database.dao.PersonBalanceDao
 import com.jarica.compartirgastos.data.database.dao.PersonNameDao
@@ -15,6 +14,7 @@ import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEnti
 import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.data.database.entities.PersonEntity
+import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
 
 
 @Database(
@@ -31,7 +31,7 @@ import com.jarica.compartirgastos.data.database.entities.PersonEntity
 
 abstract class AppDataBase : RoomDatabase() {
 
-    abstract fun groupNameDao(): GroupNameDao
+    abstract fun groupNameDao(): GroupsDao
     abstract fun personNameDao(): PersonNameDao
     abstract fun costsDao(): CostsDao
     abstract fun paymentsDao(): PaymentsDao

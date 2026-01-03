@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.jarica.compartirgastos.core.PEOPLE_TABLE
+import com.jarica.compartirgastos.core.utils.PEOPLE_TABLE
 
 
 @Entity(

@@ -3,7 +3,7 @@ package com.jarica.compartirgastos.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import com.jarica.compartirgastos.core.DISTRIBUTION_PAYMENT_TABLE
+import com.jarica.compartirgastos.core.utils.DISTRIBUTION_PAYMENT_TABLE
 
 
 @Entity(

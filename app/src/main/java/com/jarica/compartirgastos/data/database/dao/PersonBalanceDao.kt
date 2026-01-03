@@ -2,7 +2,7 @@ package com.jarica.compartirgastos.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.jarica.compartirgastos.domain.models.PersonBalance
+import com.jarica.compartirgastos.core.domain.models.PersonBalance
 import kotlinx.coroutines.flow.Flow
 
 @Dao
