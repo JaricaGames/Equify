@@ -27,7 +27,7 @@ class PeopleRepository @Inject constructor(
         }
 
 
-    suspend fun getPersonById(idPerson: String): PersonModel? {
+    suspend fun getPersonById(idPerson: String): PersonModel {
         return personNameDao.getPersonById(idPerson).toDomain()
     }
 
