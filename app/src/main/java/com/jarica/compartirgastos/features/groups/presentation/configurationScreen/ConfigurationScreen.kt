@@ -63,9 +63,9 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.EMAIL_DIRECTION
 import com.jarica.compartirgastos.core.utils.EMAIL_SUBJECT
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
+import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeUiState
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainUiState
-import com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen.ResumeUiState
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogConfirm
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogErrorClear
 import kotlinx.coroutines.Dispatchers

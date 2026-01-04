@@ -1,9 +1,9 @@
-package com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen
+package com.jarica.compartirgastos.features.balances.presentation.resumeScreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetBalancesByGroupUseCase
+import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.GetBalancesByGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

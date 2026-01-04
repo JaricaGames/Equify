@@ -1,15 +1,15 @@
 package com.jarica.compartirgastos.features.costs.domain.costsUseCases
 
-import com.jarica.compartirgastos.core.data.AppRepository
+import com.jarica.compartirgastos.features.costs.data.costsRepository.CostsRepository
 import javax.inject.Inject
 
 
 class DeleteCostUseCase @Inject constructor(
-    private val appRepository: AppRepository
+    private val costsRepository: CostsRepository
 ) {
 
     suspend operator fun invoke(idCost: String){
-        appRepository.deleteCost(idCost = idCost)
+        costsRepository.deleteCost(idCost = idCost)
     }
 
 }

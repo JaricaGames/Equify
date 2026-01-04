@@ -45,14 +45,6 @@ interface CostsDao {
     @Query("DELETE FROM costsTable WHERE idGroup LIKE :idGroup ")
     suspend fun deleteAllCostOfAGroup(idGroup: String)
 
-    //Metodo que borra todos los gasto por persona con un IdCost
-  /*  @Query("DELETE FROM CostsOfPersonTable WHERE idCost LIKE :idCost ")
-    suspend fun deleteCostOfPerson(idCost: String)*/
-
-    //Metodo que borra todos los gasto por persona de un grupo
-/*    @Query("DELETE FROM CostsOfPersonTable WHERE idGroup LIKE :idGroup ")
-    suspend fun deleteCostOfPersonOfAGroup(idGroup: String)*/
-
     //Metodo que actualiza un gasto
     @Update
     suspend fun updateCost(costEntity: CostEntity)

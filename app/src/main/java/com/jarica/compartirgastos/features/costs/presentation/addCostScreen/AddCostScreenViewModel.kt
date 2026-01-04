@@ -8,11 +8,10 @@ import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
 import com.jarica.compartirgastos.core.domain.models.DistributionPaymentModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertCostOfPersonsUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertCostUseCase
-import com.jarica.compartirgastos.features.costs.domain.distributionCostUseCases.InsertDistributionCostUseCase
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
-import com.jarica.compartirgastos.features.payments.domain.distributionPaymentsUseCases.InsertDistributionPaymentUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleNamesUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +34,6 @@ class AddCostScreenViewModel @Inject constructor(
     private val insertDistributionCostUseCase: InsertDistributionCostUseCase,
     private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase,
-    private val insertCostOfPersonsUseCase: InsertCostOfPersonsUseCase
 ) : ViewModel() {
 
     val uiAddCostsUiState: StateFlow<AddCostsUiState> =

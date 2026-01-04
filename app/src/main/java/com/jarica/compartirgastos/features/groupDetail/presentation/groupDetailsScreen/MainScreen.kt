@@ -84,11 +84,11 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.presentation.ui.totalCostText
+import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
+import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeFragment
+import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostFragment
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.doTheCounts.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen.ResumeFragment
-import com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsFragment
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen
+package com.jarica.compartirgastos.features.balances.presentation.resumeScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

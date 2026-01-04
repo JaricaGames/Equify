@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.costs.domain.costsUseCases
+package com.jarica.compartirgastos.features.balances.domain.balancesUseCases
 
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.domain.models.PersonBalance

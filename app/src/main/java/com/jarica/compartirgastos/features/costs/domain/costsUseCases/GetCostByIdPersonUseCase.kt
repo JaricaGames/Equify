@@ -1,12 +1,12 @@
 package com.jarica.compartirgastos.features.costs.domain.costsUseCases
 
-import com.jarica.compartirgastos.core.data.AppRepository
+import com.jarica.compartirgastos.features.costs.data.costsRepository.CostsRepository
 import javax.inject.Inject
 
 class GetCostByIdPersonUseCase @Inject constructor(
-    private val repository: AppRepository
+    private val costsRepository: CostsRepository
 ) {
 /*    suspend operator fun invoke(idPerson: String): List<DistributionCost> {
-        return repository.getCostsById(idPerson)
+        return costsRepository.getCostsById(idPerson)
     }*/
 }

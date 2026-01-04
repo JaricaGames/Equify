@@ -13,11 +13,11 @@ import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.core.presentation.ui.theme.CompartirGastosTheme
 import com.jarica.compartirgastos.features.Splash.presentation.SplashScreen.SplashScreenViewModel
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
+import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
+import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreenViewModel
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.doTheCounts.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel

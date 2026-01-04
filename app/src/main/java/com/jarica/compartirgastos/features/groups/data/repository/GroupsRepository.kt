@@ -1,7 +1,7 @@
 package com.jarica.compartirgastos.features.groups.data.repository
 
 import com.jarica.compartirgastos.core.data.database.entities.GroupNameEntity
-import com.jarica.compartirgastos.core.data.toDomain
+import com.jarica.compartirgastos.core.data.mappers.toDomain
 import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
 import kotlinx.coroutines.flow.Flow

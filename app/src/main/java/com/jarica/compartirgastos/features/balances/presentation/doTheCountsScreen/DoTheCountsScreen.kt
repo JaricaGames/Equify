@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.doTheCounts.presentation.doTheCountsScreen
+package com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen
 
 import android.content.Intent
 import android.net.Uri

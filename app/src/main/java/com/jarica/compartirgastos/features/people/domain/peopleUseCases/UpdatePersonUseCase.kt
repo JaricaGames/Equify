@@ -1,13 +1,13 @@
 package com.jarica.compartirgastos.features.people.domain.peopleUseCases
 
-import com.jarica.compartirgastos.core.data.AppRepository
+import com.jarica.compartirgastos.features.people.data.PeopleRepository
 import javax.inject.Inject
 
 class UpdatePersonUseCase @Inject constructor(
-    private val repository: AppRepository
+    private val peopleRepository: PeopleRepository
 ) {
 
 /*    suspend operator fun invoke(personModel: PersonModel){
-        repository.updateEquity(personModel = personModel)
+        peopleRepository.updateEquity(personModel = personModel)
     }*/
 }

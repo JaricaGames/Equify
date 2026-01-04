@@ -1,14 +1,14 @@
 package com.jarica.compartirgastos.features.people.domain.peopleUseCases
 
-import com.jarica.compartirgastos.core.data.AppRepository
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.features.people.data.PeopleRepository
 import javax.inject.Inject
 
 class GetPersonByIdUseCase @Inject constructor(
-    private val appRepository: AppRepository
+    private val peopleRepository: PeopleRepository
 ) {
 
     suspend operator fun invoke(idPerson: String):PersonModel{
-        return appRepository.getPersonById(idPerson)
+        return peopleRepository.getPersonById(idPerson)
     }
 }

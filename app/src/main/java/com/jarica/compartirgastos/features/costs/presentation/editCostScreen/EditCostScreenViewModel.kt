@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.CostOfPersonModel
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteCostOfPersonUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostByIdCost
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostOfPersonsUseCase
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetDistributionPaymentsByIdCost
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.UpdateCostUseCase
-import com.jarica.compartirgastos.features.costs.domain.distributionCostUseCases.GetPaymentsByIdCost
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,14 +27,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCostScreenViewModel @Inject constructor(
-    getCostOfPersonsUseCase: GetCostOfPersonsUseCase,
     private val deleteCostUseCase: DeleteCostUseCase,
-    private val deleteCostOfPersonUseCase: DeleteCostOfPersonUseCase,
     private val updatePersonByIdUseCase: UpdatePersonByIdUseCase,
     private val getPersonByIdUseCase: GetPersonByIdUseCase,
     private val getCostByIdCost: GetCostByIdCost,
     private val updateCostUseCase: UpdateCostUseCase,
-    private val getPaymentsByIdCost: GetPaymentsByIdCost
+    private val getPaymentsByIdCost: GetDistributionPaymentsByIdCost
 ):ViewModel() {
 
 
@@ -128,7 +124,6 @@ class EditCostScreenViewModel @Inject constructor(
 
             //Moeotos que borran los gastos
             deleteCostUseCase(idCost)
-            deleteCostOfPersonUseCase(idCost)
         }
 
 
