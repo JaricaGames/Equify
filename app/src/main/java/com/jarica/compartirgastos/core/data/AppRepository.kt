@@ -1,5 +1,16 @@
-package com.jarica.compartirgastos.data
+package com.jarica.compartirgastos.core.data
 
+import com.jarica.compartirgastos.core.data.database.dao.CostsDao
+import com.jarica.compartirgastos.core.data.database.dao.DistributionCostDao
+import com.jarica.compartirgastos.core.data.database.dao.DistributionPaymentDao
+import com.jarica.compartirgastos.core.data.database.dao.PaymentsDao
+import com.jarica.compartirgastos.core.data.database.dao.PersonBalanceDao
+import com.jarica.compartirgastos.core.data.database.dao.PersonNameDao
+import com.jarica.compartirgastos.core.data.database.entities.CostEntity
+import com.jarica.compartirgastos.core.data.database.entities.DistributionCostEntity
+import com.jarica.compartirgastos.core.data.database.entities.DistributionPaymentEntity
+import com.jarica.compartirgastos.core.data.database.entities.GroupNameEntity
+import com.jarica.compartirgastos.core.data.database.entities.PersonEntity
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
 import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
@@ -8,17 +19,6 @@ import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonBalance
 import com.jarica.compartirgastos.core.domain.models.PersonModel
-import com.jarica.compartirgastos.data.database.dao.CostsDao
-import com.jarica.compartirgastos.data.database.dao.DistributionCostDao
-import com.jarica.compartirgastos.data.database.dao.DistributionPaymentDao
-import com.jarica.compartirgastos.data.database.dao.PaymentsDao
-import com.jarica.compartirgastos.data.database.dao.PersonBalanceDao
-import com.jarica.compartirgastos.data.database.dao.PersonNameDao
-import com.jarica.compartirgastos.data.database.entities.CostEntity
-import com.jarica.compartirgastos.data.database.entities.DistributionCostEntity
-import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEntity
-import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
-import com.jarica.compartirgastos.data.database.entities.PersonEntity
 import com.jarica.compartirgastos.features.costs.data.dto.toDomain
 import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
 import kotlinx.coroutines.flow.Flow
@@ -246,7 +246,7 @@ class AppRepository @Inject constructor(
                 idPerson = distributionPaymentModel.iDPerson,
                 amount = distributionPaymentModel.amount,
                 idGroup = distributionPaymentModel.idGroup,
-               // name = distributionPaymentModel.name
+                // name = distributionPaymentModel.name
             )
         )
     }

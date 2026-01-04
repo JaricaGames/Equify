@@ -2,7 +2,7 @@ package com.jarica.compartirgastos.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.jarica.compartirgastos.data.database.AppDataBase
+import com.jarica.compartirgastos.core.data.database.AppDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

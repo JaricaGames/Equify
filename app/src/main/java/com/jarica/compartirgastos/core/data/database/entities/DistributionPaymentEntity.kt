@@ -1,21 +1,21 @@
-package com.jarica.compartirgastos.data.database.entities
+package com.jarica.compartirgastos.core.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import com.jarica.compartirgastos.core.utils.DISTRIBUTION_COST_TABLE
+import com.jarica.compartirgastos.core.utils.DISTRIBUTION_PAYMENT_TABLE
 
 
 @Entity(
-    tableName = DISTRIBUTION_COST_TABLE,
+    tableName = DISTRIBUTION_PAYMENT_TABLE,
     primaryKeys = ["idCost", "idPerson"],
     indices = [
         Index("idPerson"),
-        Index("idGroup"),
-        Index("idCost")]
+        Index("idCost"),
+        Index("idGroup")
+    ]
 )
-
-data class DistributionCostEntity(
+data class DistributionPaymentEntity(
 
     @ColumnInfo(name = "idCost") val idCost: String,
     @ColumnInfo(name = "idGroup") val idGroup: String,

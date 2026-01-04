@@ -1,10 +1,10 @@
-package com.jarica.compartirgastos.data.database.dao
+package com.jarica.compartirgastos.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.jarica.compartirgastos.data.database.entities.DistributionPaymentEntity
+import com.jarica.compartirgastos.core.data.database.entities.DistributionPaymentEntity
 import com.jarica.compartirgastos.features.costs.data.dto.CostPaymentDto
 import kotlinx.coroutines.flow.Flow
 

@@ -1,7 +1,7 @@
 package com.jarica.compartirgastos.features.payments.domain.distributionPaymentsUseCases
 
+import com.jarica.compartirgastos.core.data.AppRepository
 import com.jarica.compartirgastos.core.domain.models.DistributionPaymentModel
-import com.jarica.compartirgastos.data.AppRepository
 import javax.inject.Inject
 
 class InsertDistributionPaymentUseCase @Inject constructor(

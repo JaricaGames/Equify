@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
+import com.jarica.compartirgastos.core.data.database.entities.GroupNameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

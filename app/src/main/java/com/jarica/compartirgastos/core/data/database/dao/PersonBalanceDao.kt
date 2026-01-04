@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.data.database.dao
+package com.jarica.compartirgastos.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query

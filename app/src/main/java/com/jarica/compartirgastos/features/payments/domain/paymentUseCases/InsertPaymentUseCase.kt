@@ -1,6 +1,6 @@
 package com.jarica.compartirgastos.features.payments.domain.paymentUseCases
 
-import com.jarica.compartirgastos.data.AppRepository
+import com.jarica.compartirgastos.core.data.AppRepository
 import javax.inject.Inject
 
 

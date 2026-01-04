@@ -1,7 +1,7 @@
 package com.jarica.compartirgastos.features.groups.domain.useCases
 
+import com.jarica.compartirgastos.core.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.core.domain.models.GroupModel
-import com.jarica.compartirgastos.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.features.groups.data.repository.GroupsRepository
 import javax.inject.Inject
 

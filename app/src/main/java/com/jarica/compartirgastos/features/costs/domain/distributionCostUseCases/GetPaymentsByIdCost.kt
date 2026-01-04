@@ -1,7 +1,7 @@
 package com.jarica.compartirgastos.features.costs.domain.distributionCostUseCases
 
+import com.jarica.compartirgastos.core.data.AppRepository
 import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
-import com.jarica.compartirgastos.data.AppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

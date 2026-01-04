@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.data.database.entities
+package com.jarica.compartirgastos.core.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

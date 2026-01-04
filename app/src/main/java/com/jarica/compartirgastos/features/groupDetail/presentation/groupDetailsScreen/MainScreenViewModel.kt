@@ -17,7 +17,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.domain.models.PersonBalance
-import com.jarica.compartirgastos.data.dataStore.Preferences
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DoTheCountsUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetBalancesByGroupUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostsUseCase
@@ -56,7 +55,7 @@ class MainScreenViewModel @Inject constructor(
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     getCostsUseCase: GetCostsUseCase,
-    val preferences: Preferences,
+    //val preferences: Preferences,
     getPaymentsUseCase: GetPaymentsUseCase,
     @param:ApplicationContext private val context: Context
 ) : ViewModel() {

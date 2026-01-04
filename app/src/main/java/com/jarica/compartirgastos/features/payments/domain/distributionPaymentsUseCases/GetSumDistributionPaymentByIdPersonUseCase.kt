@@ -1,6 +1,6 @@
 package com.jarica.compartirgastos.features.payments.domain.distributionPaymentsUseCases
 
-import com.jarica.compartirgastos.data.AppRepository
+import com.jarica.compartirgastos.core.data.AppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.data.dataStore
+package com.jarica.compartirgastos.core.data.dataStore
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
