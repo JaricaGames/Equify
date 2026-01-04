@@ -36,13 +36,14 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomizeGroupScreen(
+    idGroupName: String,
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
-    navigateToConfiguration: () -> Unit
+    navigateToConfiguration: () -> Unit,
+
 ) {
 
     val newGroupNameToGroup: String by customizeGroupScreenViewModel.newGroupNameToGroup.observeAsState(
@@ -52,7 +53,8 @@ fun CustomizeGroupScreen(
     CustomizeGroupMainScreen(
         customizeGroupScreenViewModel,
         newGroupNameToGroup,
-        navigateToConfiguration
+        navigateToConfiguration,
+        idGroupName
     )
 
 }
@@ -63,6 +65,7 @@ fun CustomizeGroupMainScreen(
     customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
     newGroupNameToGroup: String,
     navigateToConfiguration: () -> Unit,
+    idGroupName: String,
 
     ) {
 
@@ -110,7 +113,7 @@ fun CustomizeGroupMainScreen(
                 ),
                 onClick = {
                     customizeGroupScreenViewModel.onEditGroupNameById(
-                        iDGroupName!!,
+                        idGroupName,
                         newGroupNameToGroup
                     )
                     navigateToConfiguration()

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.data.dataStore.Preferences
 import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.features.groups.domain.useCases.InsertGroupNameUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.InsertPersonNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +50,7 @@ class AddPeopleScreenViewModel @Inject constructor(
                 )
             )
             // Guardo en la variable companion de grupo el grupo activo
-            iDGroupName = groupName.idGroupName
+            //iDGroupName = groupName.idGroupName
         }
     }
 
@@ -88,7 +87,7 @@ class AddPeopleScreenViewModel @Inject constructor(
             // 1. Insertamos el grupo
             insertGroupNameUseCase(group)
             // Guardo en la variable companion de grupo el grupo activo
-            iDGroupName = group.idGroupName
+           // iDGroupName = group.idGroupName
 
             // 2. Insertamos las personas
             peopleList.forEach { personName ->

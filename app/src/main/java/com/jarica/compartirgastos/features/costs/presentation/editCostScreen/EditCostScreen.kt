@@ -61,20 +61,8 @@ fun EditCostScreen(
     val descriptionCost: String by editCostScreenViewModel.descriptionCost.observeAsState(
         description
     )
-    //val payFor: String by editCostScreenViewModel.payFor .observeAsState(personString)
     val amountCost: Float by editCostScreenViewModel.amountCost.observeAsState(amount)
 
-    /*val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiEditCostUiState by produceState<EditCostUiState>(
-        initialValue = EditCostUiState.Loading,
-        key1 = lifecycle,
-        key2 = editCostScreenViewModel,
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            editCostScreenViewModel.uiEditCostUiState.collect { value = it }
-        }
-    }
-*/
 
     LaunchedEffect(idCost) {
         editCostScreenViewModel.setIdCost(idCost)

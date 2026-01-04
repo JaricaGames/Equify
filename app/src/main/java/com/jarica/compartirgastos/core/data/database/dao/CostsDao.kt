@@ -14,16 +14,8 @@ interface CostsDao {
 
 
     //Metodo que lista los gastos
-    @Query("SELECT * FROM costsTable ORDER BY iDCost ASC")
-    fun getAllCosts(): Flow<List<CostEntity>>
-
-/*   // Metodo que lista los gastos por persona
-    @Query("SELECT * FROM CostsOfPersonTable ORDER BY iDCost ASC")
-    fun getAllCostsOfPerson(): Flow<List<DistributionCost>>*/
-
-   // Metodo que devuelve todos los gastos de una persona
-/*    @Query("SELECT * FROM CostsOfPersonTable WHERE iDPerson LIKE :idPerson ")
-    suspend fun getCostsById(idPerson: String): List<DistributionCost>*/
+    @Query("SELECT * FROM costsTable WHERE idGroup = :idGroup ORDER BY iDCost ASC")
+    fun getAllCostsByIdGroup(idGroup: String): Flow<List<CostEntity>>
 
    // Metodo que devuelve un gasto por ID
     @Query("SELECT * FROM costsTable WHERE iDCost LIKE :idCost ")
@@ -55,7 +47,7 @@ interface CostsDao {
 
     //Metodo que devuelve la suma de todos los gastos de un grupo
     @Query("""SELECT COALESCE(SUM(amount), 0) FROM costsTable WHERE idGroup = :groupId""")
-    fun getTotalExpensesByGroup(groupId: String): Flow<Float>
+    fun getSumCostsByIdGroup(groupId: String): Flow<Float>
 
 
 }

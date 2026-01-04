@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.payments.domain.paymentUseCases.InsertPaymentUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleNamesUseCase
@@ -23,7 +24,7 @@ class AddPaymentScreenViewModel @Inject constructor(
     getPeopleNamesUseCase: GetPeopleNamesUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase,
     private val insertPaymentUseCase: InsertPaymentUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
 
     val uiAddPaymentUiState: StateFlow<AddPaymentUiState> =
@@ -94,29 +95,19 @@ class AddPaymentScreenViewModel @Inject constructor(
     fun addPayment(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            /*insertPaymentUseCase(paymentsModel = PaymentsModel(
-                idPayment = null,
-                amount = amountText,
-                namePersonWhoPay = personWhoPay.name,
-                namePersonWhoReceive = personWhoReceive.name,
-                idGroup = personWhoPay.idGroupName
-            )  )*/
+            insertPaymentUseCase(
+                paymentsModel = PaymentsModel(
+                    amount = amountText.toFloat(),
+                    idPersonWhoPay = personWhoPay.idPerson,
+                    idPersonWhoReceive = personWhoReceive.idPerson,
+                    idGroup = personWhoPay.idGroupName
+                )
+            )
         }
 
 
     }
 
-/*    fun updatePersons(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
-
-       // personWhoPay.equity = (personWhoPay.equity.toFloat() + amountText.toFloat()).toString()
-       // personWhoReceive.equity = (personWhoReceive.equity.toFloat() - amountText.toFloat()).toString()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            updatePersonUseCase(personWhoReceive)
-            updatePersonUseCase(personWhoPay)
-        }
-
-    }*/
 
     fun clearTexts() {
         _amountText.value = ""

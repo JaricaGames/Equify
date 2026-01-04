@@ -1,6 +1,5 @@
 package com.jarica.compartirgastos.features.payments.presentation.paymentsScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,16 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,14 +29,12 @@ import com.jarica.compartirgastos.core.presentation.ui.payForText
 import com.jarica.compartirgastos.core.presentation.ui.payToText
 import com.jarica.compartirgastos.core.presentation.ui.theme.Black
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
-import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
 
 @Composable
 fun PaymentsFragment(
     idGroup: String?,
-    mainScreenViewModel: MainScreenViewModel,
+    paymentsViewModel: PaymentsScreenViewModel,
     modifier: Modifier
 ) {
 
@@ -48,10 +42,10 @@ fun PaymentsFragment(
     val uiStatePaymentsFragment by produceState<PaymentsScreenUiState>(
         initialValue = PaymentsScreenUiState.Loading,
         key1 = lifecycle,
-        key2 = mainScreenViewModel,
+        key2 = paymentsViewModel,
     ) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            mainScreenViewModel.uiStatePayments.collect { value = it }
+            paymentsViewModel.uiStatePayments.collect { value = it }
         }
     }
 
@@ -65,7 +59,6 @@ fun PaymentsFragment(
 
         is PaymentsScreenUiState.Success -> {
 
-            mainScreenViewModel.getGroupNameById(idGroup!!)
             PaymentsList(
                 (uiStatePaymentsFragment as PaymentsScreenUiState.Success).paymentsList,
                 idGroup
@@ -98,8 +91,6 @@ fun ItemPaymentName(item: PaymentsModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(Grey)
             .padding(horizontal = 32.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom
@@ -157,9 +148,4 @@ fun ItemPaymentName(item: PaymentsModel) {
             fontWeight = FontWeight.Normal
         )
     }
-    HorizontalDivider(
-        modifier = Modifier.padding(horizontal = 8.dp),
-        thickness = 1.dp,
-        color = DarkOrange.copy(0.2f)
-    )
 }

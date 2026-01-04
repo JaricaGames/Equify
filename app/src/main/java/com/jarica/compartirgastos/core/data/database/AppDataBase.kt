@@ -13,7 +13,7 @@ import com.jarica.compartirgastos.core.data.database.entities.DistributionPaymen
 import com.jarica.compartirgastos.core.data.database.entities.GroupNameEntity
 import com.jarica.compartirgastos.core.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.core.data.database.entities.PersonEntity
-import com.jarica.compartirgastos.features.balances.data.dao.PersonBalanceDao
+import com.jarica.compartirgastos.features.balances.data.dao.BalancesDao
 import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
 
 
@@ -37,7 +37,7 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun paymentsDao(): PaymentsDao
     abstract fun distributionCostDao(): DistributionCostDao
     abstract fun distributionPaymentDao(): DistributionPaymentDao
-    abstract fun PersonBalanceDao(): PersonBalanceDao
+    abstract fun PersonBalanceDao(): BalancesDao
 
 }
 

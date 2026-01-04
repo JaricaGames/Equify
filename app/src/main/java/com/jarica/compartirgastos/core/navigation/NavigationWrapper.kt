@@ -18,11 +18,11 @@ import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScre
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreen
 import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreenViewModel
+import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreen
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
+import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreen
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreen
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreen
@@ -34,16 +34,18 @@ import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.Ne
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreen
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
+import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMain
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun NavigationWrapper(
     newGroupViewModel: NewGroupViewModel,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
     addPeopleViewModel: AddPeopleScreenViewModel,
     addCostViewModel: AddCostScreenViewModel,
     groupScreenViewModel: GroupsScreenViewModel,
@@ -55,7 +57,9 @@ fun NavigationWrapper(
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     splashScreenViewModel: SplashScreenViewModel,
     aboutScreenViewModel: AboutEquifyScreenViewModel,
-    resumeViewModel: ResumeViewModel
+    resumeViewModel: ResumeViewModel,
+    costsViewModel: CostsViewModel,
+    paymentsViewModel: PaymentsScreenViewModel
 ) {
 
     val activity = LocalContext.current as? Activity
@@ -71,8 +75,8 @@ fun NavigationWrapper(
             GroupsScreen(
                 groupScreenViewModel,
                 mainScreenViewModel,
-                navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
+                navigateToMainScreen = { selectedId ->
+                    navController.navigate(MainScreenObject(selectedId)) {
                         launchSingleTop = true
                     }
                 },
@@ -102,11 +106,13 @@ fun NavigationWrapper(
             })
         }
 
-        composable<NewGroupScreenObject> {
+        composable<NewGroupScreenObject> { backStackEntry ->
+
+            val iDGroupName: String = backStackEntry.toRoute()
 
             NewGroupScreen(
                 newGroupViewModel,
-                navigateToGroupsScreen = {
+                navigateToGroupsDetailsScreen = {
                     navController.navigate(MainScreenObject(iDGroupName)) {
                         launchSingleTop = true
                     }
@@ -122,11 +128,14 @@ fun NavigationWrapper(
         composable<MainScreenObject> { backStackEntry ->
 
             val groupScreen: MainScreenObject = backStackEntry.toRoute()
+            val currentId = groupScreen.iDGroupName
 
             MainScreen(
-                groupScreen.iDGroupName,
+                currentId,
                 mainScreenViewModel,
                 resumeViewModel,
+                costsViewModel,
+                paymentsViewModel,
                 editCostScreenViewModel = editCostScreenViewModel,
                 navigateToGroupsScreen = {
                     navController.navigate(GroupsScreenObject) {
@@ -134,17 +143,17 @@ fun NavigationWrapper(
                     }
                 },
                 navigateToAddCostScreen = {
-                    navController.navigate(AddCostScreenObject) {
+                    navController.navigate(AddCostScreenObject(iDGroupName = currentId)) {
                         launchSingleTop = true
                     }
                 },
                 navigateToAddPeopleFromGroup = {
                     navController.navigate(
-                        AddPeopleScreenFromMainObject
+                        AddPeopleScreenFromMainObject(iDGroupName = currentId)
                     ) { launchSingleTop = true }
                 },
                 navigateToAddPayScreen = {
-                    navController.navigate(AddPayScreenObject) {
+                    navController.navigate(AddPayScreenObject(iDGroupName = currentId)) {
                         launchSingleTop = true
                     }
                 },
@@ -154,17 +163,18 @@ fun NavigationWrapper(
                             idCost = costToEdit.idCost,
                             amount = costToEdit.amount,
                             description = costToEdit.description,
-                            // personString = costToEdit.personString,
+                            iDGroupName = currentId
+
                         )
                     ) { launchSingleTop = true }
                 },
                 navigateToConfiguration = {
-                    navController.navigate(ConfigurationScreenObject) {
+                    navController.navigate(ConfigurationScreenObject(iDGroupName = currentId)) {
                         launchSingleTop = true
                     }
                 },
                 navigateToDoTheCounts = {
-                    navController.navigate(DoTheCountsScreenObject) {
+                    navController.navigate(DoTheCountsScreenObject(iDGroupName = currentId)) {
                         launchSingleTop = true
                     }
                 },
@@ -202,11 +212,16 @@ fun NavigationWrapper(
             )
         }
 
-        composable<AddCostScreenObject> {
+        composable<AddCostScreenObject> { backStackEntry ->
+
+            val args: AddCostScreenObject = backStackEntry.toRoute()
+            val groupId = args.iDGroupName
+
             AddCostScreen(
                 addCostViewModel,
+                idGroupName = groupId,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
+                    navController.navigate(MainScreenObject(groupId)) {
                         launchSingleTop = true
                     }
                 }
@@ -214,12 +229,15 @@ fun NavigationWrapper(
         }
 
 
-        composable<AddPayScreenObject> {
+        composable<AddPayScreenObject> { backStackEntry ->
+            val args: AddPayScreenObject = backStackEntry.toRoute()
+            val groupId = args.iDGroupName
 
             AddPaymentScreen(
+                groupId,
                 addPaymentScreenViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
+                    navController.navigate(MainScreenObject(groupId)) {
                         launchSingleTop = true
                     }
                 })
@@ -227,8 +245,13 @@ fun NavigationWrapper(
         }
 
 
-        composable<AddPeopleScreenFromMainObject> {
+        composable<AddPeopleScreenFromMainObject> { backStackEntry ->
+
+            val args: AddPeopleScreenFromMainObject = backStackEntry.toRoute()
+            val iDGroupName = args.iDGroupName
+
             AddPeopleScreenFromMain(
+                iDGroupName,
                 addPeopleScreenFromMainViewModel,
                 navigateToMainScreen = {
                     navController.navigate(MainScreenObject(iDGroupName)) {
@@ -249,18 +272,22 @@ fun NavigationWrapper(
                 //personString = editCostScreen.personString,
                 editCostScreenViewModel = editCostScreenViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
+                    navController.navigate(MainScreenObject(editCostScreen.iDGroupName)) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        composable<ConfigurationScreenObject> {
+        composable<ConfigurationScreenObject> { backStackEntry ->
+            val args: ConfigurationScreenObject = backStackEntry.toRoute()
+            val iDGroupName = args.iDGroupName
+
             ConfigurationScreen(
                 configurationScreenViewModel,
+                iDGroupName,
                 navigateToCustomizeGroup = {
-                    navController.navigate(CustomizeGroupScreenObject) {
+                    navController.navigate(CustomizeGroupScreenObject(iDGroupName)) {
                         launchSingleTop = true
                     }
                 },
@@ -284,8 +311,12 @@ fun NavigationWrapper(
             )
         }
 
-        composable<CustomizeGroupScreenObject> {
+        composable<CustomizeGroupScreenObject> { backStackEntry ->
+            val args: CustomizeGroupScreenObject = backStackEntry.toRoute()
+            val iDGroupName = args.iDGroupName
+
             CustomizeGroupScreen(
+                idGroupName = iDGroupName,
                 customizeGroupScreenViewModel,
                 navigateToConfiguration = {
                     navController.navigate(ConfigurationScreenObject) {
@@ -296,15 +327,19 @@ fun NavigationWrapper(
 
         }
 
-        composable<DoTheCountsScreenObject> {
+        composable<DoTheCountsScreenObject> { backStackEntry ->
+            val args: DoTheCountsScreenObject = backStackEntry.toRoute()
+            val currentGroupId = args.iDGroupName
+
             DoTheCountsScreen(
                 doTheCountsScreenViewModel,
                 navigateToGroupScreen = {
                     navController.navigate(
-                        MainScreenObject(iDGroupName = iDGroupName)
+                        MainScreenObject(iDGroupName = currentGroupId)
                     ) { launchSingleTop = true }
                 },
                 mainScreenViewModel = mainScreenViewModel,
+                idGroupName = currentGroupId
             )
         }
 

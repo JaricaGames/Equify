@@ -1,6 +1,5 @@
 package com.jarica.compartirgastos.features.balances.presentation.resumeScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.GetBalancesByGroupUseCase
@@ -28,12 +27,8 @@ class ResumeViewModel @Inject constructor(
             .filterNotNull()
             .flatMapLatest { groupId ->
                 getBalancesByGroupUseCase(groupId)
-                    .map {listaBalances ->
-                        // AÑADE ESTO PARA DEPURAR
-                        listaBalances.forEach {
-                            Log.d("DEBUG_RESUME", "Persona: ${it.name}, Balance: ${it.balance}")
-                        }
-                        ResumeUiState.Success(listaBalances) }
+                    .map {balancesList ->
+                        ResumeUiState.Success(balancesList) }
             }
             .stateIn(
                 viewModelScope,

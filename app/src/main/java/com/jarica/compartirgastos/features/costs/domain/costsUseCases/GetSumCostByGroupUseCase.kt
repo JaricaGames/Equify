@@ -8,6 +8,6 @@ class GetSumCostByGroupUseCase @Inject constructor(
     private val costsRepository: CostsRepository
 ) {
     operator fun invoke(groupId: String): Flow<Float> {
-        return costsRepository.getTotalExpensesByGroup(groupId)
+        return costsRepository.getSumCostsByIdGroup(groupId)
     }
 }

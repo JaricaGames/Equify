@@ -9,6 +9,6 @@ class GetBalancesByGroupUseCase @Inject constructor(
     private val balancesRepository: BalancesRepository
 )
 {
-    operator fun invoke(groupId: String): Flow<List<PersonBalance>> =
+    operator fun invoke(groupId: String?): Flow<List<PersonBalance>> =
         balancesRepository.getBalancesByGroup(groupId)
 }

@@ -51,11 +51,11 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPaymentScreen(
+    groupId: String,
     addPaymentScreenViewModel: AddPaymentScreenViewModel,
     navigateToMainScreen: () -> Unit
 ) {
@@ -109,7 +109,8 @@ fun AddPaymentScreen(
                     isPaidToSelected,
                     navigateToMainScreen,
                     personWhoPay,
-                    personWhoReceive
+                    personWhoReceive,
+                    groupId
                 )
             }
         }
@@ -129,6 +130,7 @@ fun MainScreenAddPayment(
     navigateToMainScreen: () -> Unit,
     personWhoPay: PersonModel,
     personWhoReceive: PersonModel,
+    groupId: String,
 ) {
 
     Column(
@@ -190,7 +192,7 @@ fun MainScreenAddPayment(
                                     .clickable {
                                         addPaymentScreenViewModel.onPersonWhoPaySelected(person)
                                     }) {
-                                if (person.idGroupName == iDGroupName && personWhoReceiveText != person.name) {
+                                if (person.idGroupName == groupId && personWhoReceiveText != person.name) {
                                     Text(
                                         person.name,
                                         fontFamily = parkinsans,
@@ -249,7 +251,7 @@ fun MainScreenAddPayment(
                                     .clickable {
                                         addPaymentScreenViewModel.onPersonWhoReceiveSelected(person)
                                     }) {
-                                if (person.idGroupName == iDGroupName && personWhoPayText != person.name) {
+                                if (person.idGroupName == groupId && personWhoPayText != person.name) {
                                     Text(
                                         person.name,
                                         fontFamily = parkinsans,

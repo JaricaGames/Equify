@@ -51,7 +51,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -88,16 +87,20 @@ import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScre
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeFragment
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostFragment
+import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsFragment
+import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     idGroup: String?,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
     resumeViewModel: ResumeViewModel,
+    costsViewModel: CostsViewModel,
+    paymentsViewModel: PaymentsScreenViewModel,
     navigateToAddCostScreen: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     navigateToGroupsScreen: () -> Unit,
@@ -110,9 +113,10 @@ fun MainScreen(
     editCostScreenViewModel: EditCostScreenViewModel
 ) {
 
-    val nameOfGroup: String by mainScreenViewModel.nameOfGroup.observeAsState("")
-    val isFabExpanded: Boolean by mainScreenViewModel.isFabExpanded.observeAsState(false)
-    val sumCosts by mainScreenViewModel.SumCostByGroup.collectAsState()
+    val nameOfGroup: String by mainScreenViewModel.nameOfGroup.collectAsState("")
+    val isFabExpanded: Boolean by mainScreenViewModel.isFabExpanded.collectAsState(false)
+    val sumCosts by mainScreenViewModel.sumCostByGroup.collectAsState()
+
 
 
     Scaffold(
@@ -173,7 +177,9 @@ fun MainScreen(
                         resumeViewModel,
                         innerPadding,
                         (sumCosts as TotalExpensesUiState.Success),
-                        editCostScreenViewModel
+                        editCostScreenViewModel,
+                        costsViewModel,
+                        paymentsViewModel
                     )
                     if (isFabExpanded) {
                         Scrim(onDismiss = { mainScreenViewModel.onFabClick() })
@@ -288,13 +294,13 @@ fun SmallFab(
 
 
 @Composable
-fun ButtonDoTheCounts(mainScreenViewModel: MainScreenViewModel, navigateToDoTheCounts: () -> Unit) {
-    Row() {
+fun ButtonDoTheCounts(mainScreenViewModel: GroupDetailsViewModel, navigateToDoTheCounts: () -> Unit) {
+    Row {
 
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-                mainScreenViewModel.onDoTheCountsClicked()
+               // mainScreenViewModel.onDoTheCountsClicked()
                 navigateToDoTheCounts()
             },
             modifier = Modifier
@@ -318,11 +324,13 @@ fun ButtonDoTheCounts(mainScreenViewModel: MainScreenViewModel, navigateToDoTheC
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenWithPager(
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
     idGroup: String?,
     resumeViewModel: ResumeViewModel,
     navigateToEditCost: (CostModel) -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
+    costsViewModel: CostsViewModel,
+    paymentsViewModel: PaymentsScreenViewModel,
 ) {
     LaunchedEffect(idGroup) {
         if (idGroup != null) {
@@ -332,12 +340,12 @@ fun MainScreenWithPager(
 
     val pagerState = rememberPagerState(
         initialPage = mainScreenViewModel.selectedTab.ordinal,
-        pageCount = { MainScreenViewModel.MainTab.entries.size }
+        pageCount = { GroupDetailsViewModel.MainTab.entries.size }
     )
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(pagerState.currentPage) {
-        mainScreenViewModel.onTabSelected(MainScreenViewModel.MainTab.entries[pagerState.currentPage])
+        mainScreenViewModel.onTabSelected(GroupDetailsViewModel.MainTab.entries[pagerState.currentPage])
     }
 
     Column {
@@ -352,23 +360,23 @@ fun MainScreenWithPager(
         )
 
         HorizontalPager(state = pagerState) { page ->
-            when (MainScreenViewModel.MainTab.entries[page]) {
-                MainScreenViewModel.MainTab.RESUME -> ResumeFragment(
+            when (GroupDetailsViewModel.MainTab.entries[page]) {
+                GroupDetailsViewModel.MainTab.RESUME -> ResumeFragment(
                     idGroup = idGroup,
                     Modifier.weight(1f),
                     resumeViewModel
                 )
 
-                MainScreenViewModel.MainTab.COSTS -> CostFragment(
+                GroupDetailsViewModel.MainTab.COSTS -> CostFragment(
                     idGroup,
-                    mainScreenViewModel,
                     navigateToEditCost,
-                    editCostScreenViewModel
+                    editCostScreenViewModel,
+                    costsViewModel
                 )
 
-                MainScreenViewModel.MainTab.PAYMENTS -> PaymentsFragment(
+                GroupDetailsViewModel.MainTab.PAYMENTS -> PaymentsFragment(
                     idGroup,
-                    mainScreenViewModel,
+                    paymentsViewModel,
                     Modifier.weight(1f)
                 )
             }
@@ -378,10 +386,10 @@ fun MainScreenWithPager(
 
 @Composable
 fun MainTabs(
-    selectedTab: MainScreenViewModel.MainTab,
-    onTabSelected: (MainScreenViewModel.MainTab) -> Unit
+    selectedTab: GroupDetailsViewModel.MainTab,
+    onTabSelected: (GroupDetailsViewModel.MainTab) -> Unit
 ) {
-    val tabs = MainScreenViewModel.MainTab.entries.toTypedArray()
+    val tabs = GroupDetailsViewModel.MainTab.entries.toTypedArray()
 
     TabRow(
         selectedTabIndex = selectedTab.ordinal,
@@ -416,9 +424,9 @@ fun MainTabs(
         tabs.forEach { tab ->
 
             val tabTitle = when (tab) {
-                MainScreenViewModel.MainTab.RESUME -> resume
-                MainScreenViewModel.MainTab.COSTS -> costs
-                MainScreenViewModel.MainTab.PAYMENTS -> payments
+                GroupDetailsViewModel.MainTab.RESUME -> resume
+                GroupDetailsViewModel.MainTab.COSTS -> costs
+                GroupDetailsViewModel.MainTab.PAYMENTS -> payments
             }
             val isSelected = selectedTab == tab
             Tab(
@@ -443,7 +451,7 @@ fun MainView(
     navigateToAddCostScreen: () -> Unit,
     navigateToAddPeopleFromGroup: () -> Unit,
     idGroup: String?,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
     nameOfGroup: String,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToAddPayScreen: () -> Unit,
@@ -457,6 +465,8 @@ fun MainView(
     innerPadding: PaddingValues,
     success: TotalExpensesUiState.Success,
     editCostScreenViewModel: EditCostScreenViewModel,
+    costsViewModel: CostsViewModel,
+    paymentsViewModel: PaymentsScreenViewModel,
 ) {
 
     Column(
@@ -481,7 +491,7 @@ fun MainView(
              uiStatePeopleGroupFragment,
              onDoTheCountsClicked,
          )*/
-        MainScreenWithPager(mainScreenViewModel, idGroup, resumeViewModel, navigateToEditCost, editCostScreenViewModel)
+        MainScreenWithPager(mainScreenViewModel, idGroup, resumeViewModel, navigateToEditCost, editCostScreenViewModel, costsViewModel, paymentsViewModel)
         Spacer(Modifier.weight(1f))
         // BannerAdViewMainScreen()
     }

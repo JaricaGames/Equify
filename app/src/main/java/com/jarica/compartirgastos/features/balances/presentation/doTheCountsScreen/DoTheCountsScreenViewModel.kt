@@ -1,46 +1,40 @@
 package com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen
 
-import android.content.ContentResolver
 import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.itextpdf.text.BaseColor
-import com.itextpdf.text.Document
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
-import com.itextpdf.text.Paragraph
 import com.itextpdf.text.Phrase
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
-import com.itextpdf.text.pdf.PdfWriter
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.ui.amountText
 import com.jarica.compartirgastos.core.presentation.ui.costListText
-import com.jarica.compartirgastos.core.presentation.ui.dateText
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkYellow2RGB
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkYellowRGB
 import com.jarica.compartirgastos.core.presentation.ui.titleText
 import com.jarica.compartirgastos.core.presentation.ui.toText
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.groupNameCompanionObject
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
+import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCase
+import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.GetBalancesByGroupUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class DoTheCountsScreenViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase,
+    private val getBalancesByGroupUseCase: GetBalancesByGroupUseCase,
+    private val doTheCountsUseCase: DoTheCountsUseCase,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -49,6 +43,23 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
     private val _listOfPersons = MutableLiveData<List<PersonModel>>()
     //val listOfPersons: LiveData<List<PersonModel>> = _listOfPersons
+
+    private val _paymentsState = MutableStateFlow<List<PaymentsToDoCountsModel>>(emptyList())
+    val paymentsState: StateFlow<List<PaymentsToDoCountsModel>> = _paymentsState
+
+    fun calculatePayments(groupId: String?) {
+        viewModelScope.launch {
+
+            try {
+                val balances = getBalancesByGroupUseCase(groupId).first()
+                val result = doTheCountsUseCase(balances)
+                _paymentsState.value = result
+
+            } catch (e: Exception) {
+                _paymentsState.value = emptyList()
+            }
+        }
+    }
 
     fun doTheCounts(peopleList: List<PersonModel>) {
 
@@ -117,7 +128,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
     }
 
-    fun putEverythingToZero() {
+/*    fun putEverythingToZero() {
         _listOfPersons.value!!.forEach { person ->
             if (person.idGroupName == iDGroupName) {
                 viewModelScope.launch(Dispatchers.IO) {
@@ -125,11 +136,11 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
 
     //Crea el PDF
-    fun createPdf(
+    /*fun createPdf(
         contentResolver: ContentResolver,
         uri: Uri,
         listOfPayments: List<PaymentsToDoCountsModel>,
@@ -169,7 +180,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
             document.close()
         }
 
-    }
+    }*/
 
     /*private fun fillInPaymentsToDoTheCounts(listOfPayments: ArrayList<PaymentsToCountsModel>): PdfPTable {
 
@@ -333,7 +344,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
 
         // Rellenar filas desde la lista
-        costsList.forEachIndexed() { index, cost ->
+        costsList.forEachIndexed { index, cost ->
             // PAra hacer el borde a la fila de abajo comparamos el ultima indice del array
             if (index != costsList.lastIndex) {
                 val titleCells = PdfPCell(Phrase(cost.description))

@@ -15,3 +15,4 @@ sealed class TotalExpensesUiState {
     data class Success(val totalCost: Float) : TotalExpensesUiState()
     data class Error(val throwable: Throwable) : TotalExpensesUiState()
 }
+

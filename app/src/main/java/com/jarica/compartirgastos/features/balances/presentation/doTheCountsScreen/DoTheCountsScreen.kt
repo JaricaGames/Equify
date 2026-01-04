@@ -23,9 +23,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,9 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomHeader
@@ -53,24 +51,29 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsScreenUiState
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.groupNameCompanionObject
+import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoTheCountsScreen(
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToGroupScreen: () -> Unit,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
+    idGroupName: String?,
 ) {
 
-    val listOfPayments by mainScreenViewModel.paymentsToDoTheCounts.collectAsState()
+    // DISPARADOR: Calcula al entrar
+    LaunchedEffect(idGroupName) {
+        doTheCountsScreenViewModel.calculatePayments(idGroupName)
+    }
+
+    val paymentsList by doTheCountsScreenViewModel.paymentsState.collectAsState()
+   // val listOfPayments by mainScreenViewModel.paymentsToDoTheCounts.collectAsState()
     val context = LocalContext.current
 
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiStateCosts by produceState<CostsScreenUiState>(
+    LocalLifecycleOwner.current.lifecycle
+    /*val uiStateCosts by produceState<CostsScreenUiState>(
         initialValue = CostsScreenUiState.Loading,
         key1 = lifecycle,
         key2 = mainScreenViewModel
@@ -78,7 +81,7 @@ fun DoTheCountsScreen(
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             mainScreenViewModel.uiStateCosts.collect { value = it }
         }
-    }
+    }*/
 
 
     val createPdfLauncher = rememberLauncherForActivityResult(
@@ -88,12 +91,12 @@ fun DoTheCountsScreen(
             uri?.let {
 
                 // Crear el PDF
-                doTheCountsScreenViewModel.createPdf(
+                /*doTheCountsScreenViewModel.createPdf(
                     context.contentResolver,
                     it,
                     listOfPayments,
-                    (uiStateCosts as CostsScreenUiState.Success).costsList
-                )
+                    //(uiStateCosts as CostsScreenUiState.Success).costsList
+                )*/
 
                 // Intent para abrirlo inmediatamente
                 val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -110,7 +113,7 @@ fun DoTheCountsScreen(
     )
 
     MainViewDoTheCountsScreen(
-        listOfPayments,
+        paymentsList,
         createPdfLauncher,
         doTheCountsScreenViewModel,
         navigateToGroupScreen
@@ -176,12 +179,14 @@ fun MainViewDoTheCountsScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    groupNameCompanionObject?.let { createPdfLauncher.launch(it) }
+                    //groupNameCompanionObject?.let { createPdfLauncher.launch(it) }
                 })
             {
                 Text(
                     exportArrayListDoTheCountsText,
-                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(),
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center,

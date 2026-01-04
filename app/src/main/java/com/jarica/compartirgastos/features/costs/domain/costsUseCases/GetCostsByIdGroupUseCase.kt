@@ -5,9 +5,10 @@ import com.jarica.compartirgastos.features.costs.data.costsRepository.CostsRepos
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetCostsUseCase @Inject constructor(
+class GetCostsByIdGroupUseCase @Inject constructor(
     private val costsRepository: CostsRepository
 ) {
-    operator fun invoke(): Flow<List<CostModel>> = costsRepository.costModel
+    operator fun invoke(idGroup: String): Flow<List<CostModel>>
+    =  costsRepository.getCostsByGroup(idGroup)
 
 }

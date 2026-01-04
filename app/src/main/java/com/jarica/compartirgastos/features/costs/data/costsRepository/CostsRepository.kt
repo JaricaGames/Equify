@@ -23,36 +23,14 @@ class CostsRepository @Inject constructor(
     private val distributionCostDao: DistributionCostDao,
     private val distributionPaymentDao: DistributionPaymentDao
 ) {
-    //Mapear de CostEntity a CostModel
-    val costModel: Flow<List<CostModel>> = costsDao.getAllCosts()
-        .map { items ->
-            items.map {
-                CostModel(
-                    it.idCost,
-                    // it.idPerson,
-                    it.amount,
-                    it.description,
-                    it.idGroup,
-                    //it.personString
-                )
-            }
-        }
 
-    //Mapear de CostOfPersonEntity a CostOfPersonModel
-    /*val costOfPersonModel: Flow<List<CostOfPersonModel>> = costsDao.getAllCostsOfPerson()
-        .map { items ->
-            items.map {
-                CostOfPersonModel(
-                 //   it.iDCostOfPerson,
-                    it.iDCost,
-                    it.iDPerson,
-                    it.amount,
-                 //   it.iDGroup
-                )
-            }
-        }*/
-    fun getTotalExpensesByGroup(groupId: String): Flow<Float> {
-        return costsDao.getTotalExpensesByGroup(groupId)
+    fun getCostsByGroup(groupId: String): Flow<List<CostModel>> {
+        return costsDao.getAllCostsByIdGroup(groupId)
+            .map { it.map { dto -> dto.toDomain() } }
+    }
+
+    fun getSumCostsByIdGroup(groupId: String): Flow<Float> {
+        return costsDao.getSumCostsByIdGroup(groupId)
     }
 
     suspend fun insertCost(costModel: CostModel) {
@@ -79,17 +57,12 @@ class CostsRepository @Inject constructor(
         costsDao.updateCost(
             costEntity = CostEntity(
                 costModel.idCost,
-                //   costModel.idPerson,
                 costModel.amount,
                 costModel.description,
                 costModel.idGroup,
-                //  costModel.personString
             )
         )
     }
-
-    //DISTRIBUTION_COST_DAO
-    //Mapear de DistributionCostEntity a DistributionCostModel
 
     suspend fun insertDistributionCost(distributionCostModel: DistributionCostModel) {
         distributionCostDao.insertDistributionCost(
@@ -98,12 +71,10 @@ class CostsRepository @Inject constructor(
                 idPerson = distributionCostModel.iDPerson,
                 amount = distributionCostModel.amount,
                 idGroup = distributionCostModel.idGroup,
-                //name = distributionCostModel.name
             )
         )
     }
 
-    //DISTRIBUTION_PAYMENT_DAO
     //Mapear de DistributionPaymentEntity a DistributionPaymentModel
     suspend fun insertDistributionPayment(distributionPaymentModel: DistributionPaymentModel) {
         distributionPaymentDao.insertDistributionPayment(
@@ -112,13 +83,12 @@ class CostsRepository @Inject constructor(
                 idPerson = distributionPaymentModel.iDPerson,
                 amount = distributionPaymentModel.amount,
                 idGroup = distributionPaymentModel.idGroup,
-                // name = distributionPaymentModel.name
             )
         )
     }
 
     fun getDistributionPaymentsByIdCost(idCost: String): Flow<List<CostPaymentsModel>> {
-        return distributionPaymentDao.getPaymentsByCost(idCost)
+        return distributionPaymentDao.getDistributionPaymentsByIdCost(idCost)
             .map { it.map { dto -> dto.toDomain() } }
     }
 }

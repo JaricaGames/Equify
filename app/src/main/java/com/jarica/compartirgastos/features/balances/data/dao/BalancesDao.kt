@@ -6,7 +6,7 @@ import com.jarica.compartirgastos.core.domain.models.PersonBalance
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface PersonBalanceDao {
+interface BalancesDao {
 
     @Query("""
         SELECT
@@ -28,6 +28,6 @@ interface PersonBalanceDao {
     ) pay ON p.idPerson = pay.idPerson
     WHERE p.idGroupName = :groupId
     """)
-    fun getBalancesByGroup(groupId: String): Flow<List<PersonBalance>>
+    fun getBalancesByGroup(groupId: String?): Flow<List<PersonBalance>>
 
 }

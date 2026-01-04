@@ -38,11 +38,11 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPeopleScreenFromMain(
+    iDGroupName: String,
     addPeopleFromMainViewModel: AddPeopleScreenFromMainViewModel,
     navigateToMainScreen: () -> Unit,
 ) {
@@ -53,7 +53,8 @@ fun AddPeopleScreenFromMain(
     MainViewAddPeopleScreen(
         addNameToGroup,
         addPeopleFromMainViewModel,
-        navigateToMainScreen
+        navigateToMainScreen,
+        iDGroupName
     )
 
 }
@@ -63,7 +64,8 @@ fun AddPeopleScreenFromMain(
 fun MainViewAddPeopleScreen(
     addNameToGroup: String,
     addPeopleFromMainViewModel: AddPeopleScreenFromMainViewModel,
-    navigateToMainScreen: () -> Unit
+    navigateToMainScreen: () -> Unit,
+    iDGroupName: String
 ) {
     Column(
         modifier = Modifier
@@ -114,7 +116,7 @@ fun MainViewAddPeopleScreen(
                 onClick = {
                     val newPerson = PersonModel(
                         name = addNameToGroup,
-                        idGroupName = iDGroupName!!
+                        idGroupName = iDGroupName
                     )
                     addPeopleFromMainViewModel.insertPeople(newPerson)
                     navigateToMainScreen()

@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.features.payments.data.paymentsRepository
 
 import com.jarica.compartirgastos.core.data.database.dao.PaymentsDao
+import com.jarica.compartirgastos.core.data.database.entities.PaymentEntity
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,15 +26,15 @@ class PaymentsRepository @Inject constructor(
             }
         }
 
-    /*suspend fun insertPayment(paymentsModel: PaymentsModel) {
+    suspend fun insertPayment(paymentsModel: PaymentsModel) {
         paymentsDao.insertPayment(
             PaymentEntity(
-                idPayment = it.idPayment,
-                amount = TODO(),
-                idPersonWhoPay = TODO(),
-                idPersonWhoReceive = TODO(),
-                idGroup = TODO()
+                idPayment = paymentsModel.idPayment,
+                amount = paymentsModel.amount,
+                idPersonWhoPay = paymentsModel.idPersonWhoPay,
+                idPersonWhoReceive = paymentsModel.idPersonWhoReceive,
+                idGroup = paymentsModel.idGroup
             )
         )
-    }*/
+    }
 }

@@ -16,13 +16,15 @@ import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.Abou
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreenViewModel
+import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
+import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
+import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val newGroupViewModel: NewGroupViewModel by viewModels()
-    private val groupViewModel: MainScreenViewModel by viewModels()
+    private val groupViewModel: GroupDetailsViewModel by viewModels()
     private val addPeopleViewModel: AddPeopleScreenViewModel by viewModels()
     private val addPeopleScreenFromMainViewModel: AddPeopleScreenFromMainViewModel by viewModels()
     private val addCostViewModel: AddCostScreenViewModel by viewModels()
@@ -44,6 +46,10 @@ class MainActivity : ComponentActivity() {
     private val splashScreenViewModel: SplashScreenViewModel by viewModels()
     private val aboutScreenViewModel: AboutEquifyScreenViewModel by viewModels()
     private val resumeScreenViewModel: ResumeViewModel by viewModels()
+    private val costsViewModel: CostsViewModel by viewModels()
+    private val paymentsViewModel: PaymentsScreenViewModel by viewModels()
+
+
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +82,9 @@ class MainActivity : ComponentActivity() {
                     doTheCountsScreenViewModel,
                     splashScreenViewModel,
                     aboutScreenViewModel,
-                    resumeScreenViewModel
+                    resumeScreenViewModel,
+                    costsViewModel,
+                    paymentsViewModel
                 )
             }
         }

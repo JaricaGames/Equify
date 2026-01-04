@@ -64,7 +64,6 @@ import com.jarica.compartirgastos.core.utils.EMAIL_DIRECTION
 import com.jarica.compartirgastos.core.utils.EMAIL_SUBJECT
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeUiState
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainUiState
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogConfirm
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogErrorClear
@@ -75,6 +74,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
+    iDGroupName: String,
     navigateToCustomizeGroup: () -> Unit,
     navigateToGroupScreen: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
@@ -131,6 +131,7 @@ fun ConfigurationScreen(
         is MainUiState.Success -> {
 
             MainConfigurationScreen(
+                iDGroupName,
                 configurationScreenViewModel,
                 nameOfGroup,
                 (uiStatePeopleGroupFragment as ResumeUiState.Success).peopleList,
@@ -163,6 +164,7 @@ fun ConfigurationScreen(
 
 @Composable
 fun MainConfigurationScreen(
+    iDGroupName: String,
     configurationScreenViewModel: ConfigurationScreenViewModel,
     nameOfGroup: String,
     peopleList: List<PersonBalance>,
@@ -172,7 +174,7 @@ fun MainConfigurationScreen(
     navigateToAboutScreen: () -> Unit,
 ) {
 
-    configurationScreenViewModel.getGroupNameById(iDGroupName!!)
+    configurationScreenViewModel.getGroupNameById(iDGroupName)
 
     Column(
         modifier = Modifier
@@ -224,7 +226,7 @@ fun MainConfigurationScreen(
 
             item { Spacer(Modifier.height(20.dp)) }
 
-            item { Other(configurationScreenViewModel, navigateToMainScreen) }
+            item { Other(configurationScreenViewModel, navigateToMainScreen, iDGroupName) }
             item { Spacer(Modifier.height(20.dp)) }
 
             item { Information(configurationScreenViewModel, navigateToAboutScreen) }
@@ -324,6 +326,7 @@ fun Information(
 fun Other(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     navigateToMainScreen: () -> Unit,
+    iDGroupName: String,
 ) {
     Text(
         otherText,
@@ -342,7 +345,7 @@ fun Other(
             .background(Grey)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
-                configurationScreenViewModel.deleteGroup(iDGroupName!!)
+                configurationScreenViewModel.deleteGroup(iDGroupName)
                 navigateToMainScreen()
             },
         horizontalArrangement = Arrangement.Start,

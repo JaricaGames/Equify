@@ -11,9 +11,7 @@ import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleNamesUseCase
-import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -33,7 +31,6 @@ class AddCostScreenViewModel @Inject constructor(
     private val insertCostUseCase: InsertCostUseCase,
     private val insertDistributionCostUseCase: InsertDistributionCostUseCase,
     private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
-    private val updatePersonUseCase: UpdatePersonUseCase,
 ) : ViewModel() {
 
     val uiAddCostsUiState: StateFlow<AddCostsUiState> =
@@ -88,6 +85,7 @@ class AddCostScreenViewModel @Inject constructor(
     }
 
     fun addCost(
+        idGroupName: String,
         costModel: CostModel,
         listOfPeople: List<PersonModel>,
         numberOfPeople: Int,
@@ -104,13 +102,13 @@ class AddCostScreenViewModel @Inject constructor(
                 costModel
             )
             listOfPeople.forEach { person ->
-                if (person.idGroupName == iDGroupName) {
+                if (person.idGroupName == idGroupName) {
                     insertDistributionCostUseCase(
                         DistributionCostModel(
                             iDCost = costModel.idCost,
                             iDPerson = person.idPerson,
                             amount = amount / numberOfPeople,
-                            idGroup = iDGroupName!!,
+                            idGroup = idGroupName,
                             name = person.name
 
                         )
@@ -124,7 +122,7 @@ class AddCostScreenViewModel @Inject constructor(
                     iDCost = costModel.idCost,
                     iDPerson = personToAddCosts,
                     amount = amount,
-                    idGroup = iDGroupName!!,
+                    idGroup = idGroupName,
                     name = name
                 )
             )
@@ -138,88 +136,11 @@ class AddCostScreenViewModel @Inject constructor(
 
     }
 
-    fun insertDistributionCost(
-        listOfPeople: List<PersonModel>,
-        numberOfPeople: Int,
-        idCost: String,
-        amount: Float
-    ) {
-        listOfPeople.forEach { person ->
-            if (person.idGroupName == iDGroupName) {
-                viewModelScope.launch(Dispatchers.IO) {
-                    insertDistributionCostUseCase(
-                        DistributionCostModel(
-                            iDCost = idCost,
-                            iDPerson = person.idPerson,
-                            amount = amount / numberOfPeople,
-                            idGroup = iDGroupName!!,
-                            name = person.name
-
-                        )
-                    )
-
-                }
-            }
-        }
-    }
-
-    fun insertDistributionPayment(
-        idCost: String,
-        amount: Float,
-        personToAddCosts: String,
-        name: String
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            insertDistributionPaymentUseCase(
-                DistributionPaymentModel(
-                    iDCost = idCost,
-                    iDPerson = personToAddCosts,
-                    amount = amount,
-                    idGroup = iDGroupName!!,
-                    name = name
-                )
-            )
-
-        }
-    }
-
-    /*fun updatePerson(personToAddCosts: PersonModel, listOfPeople: List<PersonModel>) {
-
-        val numberOfPeople = calculateNumberOfPeople(listOfPeople)
-        val amountByPeople = _amountText.value!!.toFloat() / numberOfPeople
-
-        listOfPeople.forEach { person ->
-
-            //Si es el que paga se le suma al equity tod menos lo que le toca a cada uno
-            if (personToAddCosts.idPerson == person.idPerson) {
-
-                //    val personToUpdate = person.copy(equity =  ((_amountText.value!!.toFloat() + person.equity.toFloat()-amountByPeople).toString()))
-
-
-                viewModelScope.launch(Dispatchers.IO) {
-                    *//*updatePersonUseCase(
-                            personModel = personToUpdate
-                        )*//*
-                    }
-                }
-                //Si no es el que paga se le resta al equity lo que le toca a cada uno por pagar
-                else {
-                    val personToUpdate =
-                        // person.copy(equity = (person.equity.toFloat() - amountByPeople).toString())
-                        viewModelScope.launch(Dispatchers.IO) {
-                            *//*updatePersonUseCase(
-                                personModel = personToUpdate
-                            )*//*
-                        }
-                }
-            }
-        }*/
-
-    fun calculateNumberOfPeople(listOfPeople: List<PersonModel>): Int {
+    fun calculateNumberOfPeople(listOfPeople: List<PersonModel>, idGroupName: String): Int {
 
         var numberOfPeople = 0
         listOfPeople.forEach { person ->
-            if (person.idGroupName == iDGroupName) numberOfPeople++
+            if (person.idGroupName == idGroupName) numberOfPeople++
         }
         return numberOfPeople
     }

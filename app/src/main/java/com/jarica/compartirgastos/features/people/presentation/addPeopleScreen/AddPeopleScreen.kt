@@ -39,7 +39,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
+import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +49,7 @@ fun AddPeopleScreen(
     addPeopleViewModel: AddPeopleScreenViewModel,
     navigateToNewGroupScreen: () -> Unit,
     navigateToMainScreen: (String) -> Unit,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
 ) {
 
     val peopleList = addPeopleViewModel.personList
@@ -81,7 +81,7 @@ fun MainViewAddPeopleScreen(
     idGroupName: String,
     groupName: String,
     navigateToMainScreen: (String) -> Unit,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
 ) {
     Column(
         modifier = Modifier

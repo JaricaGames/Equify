@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -26,25 +27,27 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Black
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
 
 @Composable
 fun CostFragment(
     idGroup: String?,
-    mainScreenViewModel: MainScreenViewModel,
     navigateToEditCost: (CostModel) -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
+    costsViewModel: CostsViewModel,
 ) {
 
+    LaunchedEffect(idGroup) {
+        costsViewModel.setGroup(idGroup)
+    }
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateCosts by produceState<CostsScreenUiState>(
         initialValue = CostsScreenUiState.Loading,
         key1 = lifecycle,
-        key2 = mainScreenViewModel
+        key2 = costsViewModel
     ) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            mainScreenViewModel.uiStateCosts.collect { value = it }
+            costsViewModel.uiStateCosts.collect { value = it }
         }
     }
 

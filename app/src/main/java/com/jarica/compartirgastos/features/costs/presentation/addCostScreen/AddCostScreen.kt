@@ -52,7 +52,6 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel.Companion.iDGroupName
 import java.util.UUID
 
 
@@ -61,6 +60,7 @@ import java.util.UUID
 fun AddCostScreen(
     addCostViewModel: AddCostScreenViewModel,
     navigateToMainScreen: () -> Unit,
+    idGroupName: String,
 ) {
 
     val descriptionText: String by addCostViewModel.descriptionText.observeAsState("")
@@ -95,7 +95,8 @@ fun AddCostScreen(
                 fromTextAddCosts,
                 listOfPeople,
                 navigateToMainScreen,
-                personToAddCosts
+                personToAddCosts,
+                idGroupName
             )
         }
 
@@ -116,6 +117,7 @@ fun MainViewAddCostScreen(
     listOfPeople: List<PersonModel>,
     navigateToMainScreen: () -> Unit,
     personToAddCosts: PersonModel?,
+    idGroupName: String,
 
     ) {
     Column(
@@ -219,7 +221,7 @@ fun MainViewAddCostScreen(
                                         addCostViewModel.onPersonSelected(person)
 
                                     }) {
-                                if (person.idGroupName == iDGroupName) {
+                                /*if (person.idGroupName == iDGroupName) {
                                     Text(
                                         person.name,
                                         fontFamily = parkinsans,
@@ -228,7 +230,7 @@ fun MainViewAddCostScreen(
                                         fontSize = 12.sp,
                                     )
                                     Spacer(modifier = Modifier.size(8.dp))
-                                }
+                                }*/
                             }
                         }
                     }
@@ -245,15 +247,16 @@ fun MainViewAddCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    val numberOfPeople = addCostViewModel.calculateNumberOfPeople(listOfPeople)
+                    val numberOfPeople = addCostViewModel.calculateNumberOfPeople(listOfPeople, idGroupName)
                     val sharedId = UUID.randomUUID().toString()
                     val costModel = CostModel(
                         idCost = sharedId,
                         amount = amountText.toFloat(),
                         description = descriptionText,
-                        idGroup = iDGroupName
+                        idGroup = idGroupName
                     )
                     addCostViewModel.addCost(
+                        idGroupName,
                         costModel,
                         listOfPeople,
                         numberOfPeople,

@@ -30,5 +30,5 @@ interface DistributionPaymentDao {
         JOIN peopleTable p ON p.idPerson = dp.idPerson
         WHERE dp.idCost = :costId
     """)
-    fun getPaymentsByCost(costId: String): Flow<List<CostPaymentDto>>
+    fun getDistributionPaymentsByIdCost(costId: String): Flow<List<CostPaymentDto>>
 }

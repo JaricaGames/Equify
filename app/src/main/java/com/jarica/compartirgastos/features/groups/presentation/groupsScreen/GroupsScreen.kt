@@ -25,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,13 +51,13 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.VeryDarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreenViewModel
+import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupsScreen(
     groupViewModel: GroupsScreenViewModel,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     navigateToNewGroup: () -> Unit,
@@ -66,7 +65,6 @@ fun GroupsScreen(
 
     ) {
 
-    val isDeleteGroupDialog: Boolean by groupViewModel.isDeleteGroupClicked.observeAsState(false)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateGroupScreen by produceState<GroupUiState>(
         initialValue = GroupUiState.Loading,
@@ -150,11 +148,10 @@ fun GroupList(
     groupViewModel: GroupsScreenViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
 ) {
 
-    LazyColumn(
-    ) {
+    LazyColumn {
 
         items(groupsList) { group ->
             ItemGroupName(
@@ -178,7 +175,7 @@ fun ItemGroupName(
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     groupsList: List<GroupModel>,
-    mainScreenViewModel: MainScreenViewModel,
+    mainScreenViewModel: GroupDetailsViewModel,
 ) {
 
     Row(
