@@ -218,7 +218,7 @@ fun MainViewEditCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    editCostScreenViewModel.updateCost(description, amount, idCost )
+                    //editCostScreenViewModel.updateCost(description, amount, idCost )
                     navigateToMainScreen()
                 }) {
                 Text(

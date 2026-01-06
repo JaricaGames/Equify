@@ -17,7 +17,7 @@ import com.jarica.compartirgastos.core.utils.DISTRIBUTION_COST_TABLE
     foreignKeys = [
         ForeignKey(
             entity = CostEntity::class,
-            parentColumns = ["idCost"], // Asegúrate que coincida con el @ColumnInfo name en CostEntity
+            parentColumns = ["idCost"],
             childColumns = ["idCost"],
             onDelete = ForeignKey.CASCADE
         ),

@@ -3,6 +3,7 @@ package com.jarica.compartirgastos.features.payments.presentation.paymentsScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.features.payments.domain.paymentUseCases.GetPaymentsByIdGroupUseCase
+import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPersonByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentsScreenViewModel @Inject constructor(
-    getPaymentsUseCase: GetPaymentsByIdGroupUseCase
-): ViewModel() {
+    getPaymentsUseCase: GetPaymentsByIdGroupUseCase,
+    private val getPersonByIdUseCase: GetPersonByIdUseCase
+) : ViewModel() {
 
     private val _groupId = MutableStateFlow<String?>(null)
 
@@ -28,19 +30,20 @@ class PaymentsScreenViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiStatePayments: StateFlow<PaymentsScreenUiState> = _groupId
-        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .filterNotNull()
         .flatMapLatest { id ->
-            // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getPaymentsUseCase(id)
         }
         .map(PaymentsScreenUiState::Success)
         .catch { PaymentsScreenUiState.Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PaymentsScreenUiState.Loading)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            PaymentsScreenUiState.Loading
+        )
 
-
-   /* val uiStatePayments : StateFlow<PaymentsScreenUiState> = getPaymentsUseCase().map(
-        PaymentsScreenUiState::Success)
-        .catch { PaymentsScreenUiState.Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PaymentsScreenUiState.Loading)*/
+    suspend fun getPersonName(personId: String): String {
+        return getPersonByIdUseCase(personId).name
+    }
 
 }

@@ -35,12 +35,24 @@ class AddCostScreenViewModel @Inject constructor(
     private val insertCostUseCase: InsertCostUseCase,
     private val insertDistributionCostUseCase: InsertDistributionCostUseCase,
     private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
+    private val getPeopleByIdGroupUseCase: GetPeopleByIdGroupUseCase
 ) : ViewModel() {
 
     private val _groupId = MutableStateFlow<String?>(null)
     fun setGroup(groupId: String?) {
         _groupId.value = groupId
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val uiStatePeopleList: StateFlow<AddCostsPersonListUiState> = _groupId
+        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .flatMapLatest { id ->
+            // Ahora 'id' es seguro (no null), llamamos al caso de uso
+            getPeopleByIdGroupUseCase(id)
+        }
+        .map(AddCostsPersonListUiState::Success)
+        .catch { AddCostsPersonListUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddCostsPersonListUiState.Loading)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiAddCostsUiState: StateFlow<AddCostsUiState> = _groupId
@@ -52,15 +64,6 @@ class AddCostScreenViewModel @Inject constructor(
         .map(AddCostsUiState::Success)
         .catch { AddCostsUiState.Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddCostsUiState.Loading)
-
-    /*val uiAddCostsUiState: StateFlow<AddCostsUiState> =
-        getPeopleNamesUseCase(_groupId).map(AddCostsUiState::Success)
-            .catch { AddCostsUiState.Error(it) }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
-                AddCostsUiState.Loading
-            )*/
 
     //Variable texto descripcion
     private val _descriptionText = MutableLiveData<String>()
@@ -147,6 +150,7 @@ class AddCostScreenViewModel @Inject constructor(
                 )
             )
             withContext(Dispatchers.Main) {
+                cleanTexts()
                 navigateToMainScreen()
             }
 

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
 import com.jarica.compartirgastos.features.payments.domain.paymentUseCases.InsertPaymentUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleByIdGroupUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
@@ -27,7 +29,9 @@ import javax.inject.Inject
 class AddPaymentScreenViewModel @Inject constructor(
     getPeopleByIdGroup: GetPeopleByIdGroupUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase,
-    private val insertPaymentUseCase: InsertPaymentUseCase
+    private val insertPaymentUseCase: InsertPaymentUseCase,
+    private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
+    private val insertDistributionCostUseCase: InsertDistributionCostUseCase
 ) : ViewModel() {
 
     private val _groupId = MutableStateFlow<String?>(null)
@@ -75,6 +79,11 @@ class AddPaymentScreenViewModel @Inject constructor(
     private val _personWhoReceive = MutableLiveData<PersonModel>()
     val personWhoReceive: LiveData<PersonModel> = _personWhoReceive
 
+    fun clearText(){
+        _amountText.value = ""
+        _personWhoPayText.value = ""
+        _personWhoReceiveText.value = ""
+    }
 
     fun onFromSelected(paidForSelected: Boolean) {
         _isPaidForSelected.value = !paidForSelected
@@ -114,6 +123,7 @@ class AddPaymentScreenViewModel @Inject constructor(
                     idGroup = personWhoPay.idGroupName
                 )
             )
+
         }
 
 

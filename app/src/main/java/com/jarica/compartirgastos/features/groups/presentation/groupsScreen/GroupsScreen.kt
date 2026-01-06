@@ -87,7 +87,6 @@ fun GroupsScreen(
 
             val listOfGroups = (uiStateGroupScreen as GroupUiState.Success).groupsList
 
-            // Si la lista esta vacia vamos a la pantalla inicial, si tiene grupos seguimos en la pantalla
             if (listOfGroups.isEmpty()) {
                 navigateToInitialScreen()
             } else {
@@ -104,7 +103,7 @@ fun GroupsScreen(
                 })
                 { innerPadding ->
 
-                    Column(modifier = Modifier.padding(innerPadding)
+                    Column(modifier = Modifier
                         .fillMaxSize()
                         .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
                         horizontalAlignment = Alignment.End,

@@ -61,6 +61,7 @@ fun AddPaymentScreen(
     navigateToMainScreen: () -> Unit
 ) {
 
+    addPaymentScreenViewModel.clearText()
     LaunchedEffect(groupId) {
         addPaymentScreenViewModel.setGroup(groupId)
     }

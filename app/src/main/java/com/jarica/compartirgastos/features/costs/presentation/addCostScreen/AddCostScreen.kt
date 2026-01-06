@@ -63,6 +63,7 @@ fun AddCostScreen(
     navigateToMainScreen: () -> Unit,
     idGroupName: String,
 ) {
+            addCostViewModel.cleanTexts()
 
     LaunchedEffect(idGroupName) {
         addCostViewModel.setGroup(idGroupName)
@@ -226,7 +227,7 @@ fun MainViewAddCostScreen(
                                         addCostViewModel.onPersonSelected(person)
 
                                     }) {
-                                /*if (person.idGroupName == iDGroupName) {
+                                if (person.idGroupName == idGroupName) {
                                     Text(
                                         person.name,
                                         fontFamily = parkinsans,
@@ -235,7 +236,7 @@ fun MainViewAddCostScreen(
                                         fontSize = 12.sp,
                                     )
                                     Spacer(modifier = Modifier.size(8.dp))
-                                }*/
+                                }
                             }
                         }
                     }
@@ -270,24 +271,6 @@ fun MainViewAddCostScreen(
                         personToAddCosts.name,
                         { navigateToMainScreen() }
                     )
-                    addCostViewModel.cleanTexts()
-
-                    /*addCostViewModel.insertDistributionCost(
-                        listOfPeople,
-                        numberOfPeople,
-                        costModel.idCost,
-                        amountText.toFloat()
-                    )
-                    addCostViewModel.insertDistributionPayment(
-                        costModel.idCost,
-                        amountText.toFloat(),
-                        personToAddCosts!!.idPerson,
-                        personToAddCosts.name,
-
-
-                        )
-
-                    navigateToMainScreen()*/
                 }) {
                 Text(
                     addCostText,

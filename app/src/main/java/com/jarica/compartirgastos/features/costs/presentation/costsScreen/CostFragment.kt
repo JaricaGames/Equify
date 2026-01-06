@@ -79,7 +79,7 @@ fun CostsList(
 ) {
 
     LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {

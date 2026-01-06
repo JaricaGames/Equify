@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.features.payments.presentation.paymentsScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ fun PaymentsFragment(
         paymentsViewModel.setGroup(idGroup)
     }
 
+
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStatePaymentsFragment by produceState<PaymentsScreenUiState>(
         initialValue = PaymentsScreenUiState.Loading,
@@ -66,7 +68,8 @@ fun PaymentsFragment(
 
             PaymentsList(
                 (uiStatePaymentsFragment as PaymentsScreenUiState.Success).paymentsList,
-                idGroup
+                idGroup,
+                paymentsViewModel,
             )
 
         }
@@ -75,82 +78,93 @@ fun PaymentsFragment(
 }
 
 @Composable
-fun PaymentsList(paymentsList: List<PaymentsModel>, idGroup: String?) {
+fun PaymentsList(
+    paymentsList: List<PaymentsModel>,
+    idGroup: String?,
+    paymentsViewModel: PaymentsScreenViewModel
+) {
 
     LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(paymentsList) { payment ->
-            if (payment.idGroup == idGroup) {
-                ItemPaymentName(payment)
-                Spacer(modifier = Modifier.size(8.dp))
-            }
+        items(
+            paymentsList,
+            key = { it.idPayment }
+        ) { payment ->
+            ItemPaymentName(payment, paymentsViewModel)
         }
     }
 }
 
 @Composable
-fun ItemPaymentName(item: PaymentsModel) {
+fun ItemPaymentName(
+    item: PaymentsModel,
+    paymentsViewModel: PaymentsScreenViewModel
+) {
+    val namePersonWhoPay by produceState(initialValue = "", key1 = item.idPersonWhoPay) {
+        val name = paymentsViewModel.getPersonName(item.idPersonWhoPay)
+        value = name
+    }
+
+    val namePersonWhoReceive by produceState(initialValue = "", key1 = item.idPersonWhoReceive) {
+        val name = paymentsViewModel.getPersonName(item.idPersonWhoReceive)
+        value = name
+    }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Bottom
-    ) {
-        Text(
-            payForText,
-            fontSize = 12.sp,
-            color = Black,
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal
-        )
-        Text(
-            item.idPersonWhoPay,
-            fontSize = 12.sp,
-            color = Black,
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            payToText,
-            fontSize = 12.sp,
-            color = Black,
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal
-        )
-        Text(
-            item.idPersonWhoReceive,
-            fontSize = 12.sp,
-            color = Black,
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal
-        )
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start) {
+            Text(
+                "$payForText $namePersonWhoPay",
+                fontSize = 15.sp,
+                color = Black,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.size(2.dp))
 
+            Text(
+                "$payToText $namePersonWhoReceive",
+                fontSize = 15.sp,
+                color = Black,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Normal
+            )
+
+        }
         Spacer(modifier = Modifier.weight(1f))
         Text(
             amountText,
-            fontSize = 12.sp,
+            fontSize = 15.sp,
             color = Black,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Normal
         )
         Text(
             item.amount.toString(),
-            fontSize = 12.sp,
+            fontSize = 15.sp,
             color = Black,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Normal
         )
         Text(
             " €",
-            fontSize = 12.sp,
+            fontSize = 15.sp,
             color = DarkOrange,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Normal
         )
     }
 }
+
+
+
+
