@@ -4,8 +4,8 @@ import com.jarica.compartirgastos.core.domain.models.PersonModel
 
 sealed interface AddPaymentUiState {
 
-    data object LoadingAddPayment: AddPaymentUiState
-    data class ErrorAddPayment(val throwable: Throwable): AddPaymentUiState
-    data class SuccessAddPayment(val listOfPeople: List<PersonModel>): AddPaymentUiState
+    data object Loading: AddPaymentUiState
+    data class Error(val throwable: Throwable): AddPaymentUiState
+    data class Success(val listOfPeople: List<PersonModel>): AddPaymentUiState
 
 }

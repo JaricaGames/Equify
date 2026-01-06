@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments
+package com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,10 +41,10 @@ import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
 @Composable
 fun CustomizeGroupScreen(
     idGroupName: String,
-    customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
-    navigateToConfiguration: () -> Unit,
+    customizeGroupScreenViewModel: EditGroupNameScreenViewModel,
+    navigateToGroupsDetails: () -> Unit,
 
-) {
+    ) {
 
     val newGroupNameToGroup: String by customizeGroupScreenViewModel.newGroupNameToGroup.observeAsState(
         ""
@@ -53,7 +53,7 @@ fun CustomizeGroupScreen(
     CustomizeGroupMainScreen(
         customizeGroupScreenViewModel,
         newGroupNameToGroup,
-        navigateToConfiguration,
+        navigateToGroupsDetails,
         idGroupName
     )
 
@@ -62,7 +62,7 @@ fun CustomizeGroupScreen(
 
 @Composable
 fun CustomizeGroupMainScreen(
-    customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
+    customizeGroupScreenViewModel: EditGroupNameScreenViewModel,
     newGroupNameToGroup: String,
     navigateToConfiguration: () -> Unit,
     idGroupName: String,

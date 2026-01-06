@@ -5,8 +5,9 @@ import com.jarica.compartirgastos.features.payments.data.paymentsRepository.Paym
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPaymentsUseCase @Inject constructor(
+class GetPaymentsByIdGroupUseCase @Inject constructor(
     private val paymentsRepository: PaymentsRepository
 ) {
-    operator fun invoke(): Flow<List<PaymentsModel>> = paymentsRepository.paymentsModel
+    operator fun invoke(idGroup: String): Flow<List<PaymentsModel>> =
+        paymentsRepository.getPaymentsByIdGroup(idGroup)
 }

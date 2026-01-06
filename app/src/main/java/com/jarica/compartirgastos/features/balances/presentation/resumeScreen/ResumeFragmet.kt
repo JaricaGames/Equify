@@ -35,17 +35,6 @@ fun ResumeFragment(
     modifier: Modifier,
     resumeViewModel: ResumeViewModel,
 ) {
-/*
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiStatePeopleGroupFragment by produceState<ResumeUiState>(
-        initialValue = ResumeUiState.Loading,
-        key1 = lifecycle,
-        key2 = resumeViewModel,
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            resumeViewModel.uiStateResumeGroup.collect { value = it }
-        }
-    }*/
 
     LaunchedEffect(idGroup) {
         resumeViewModel.setGroup(idGroup)

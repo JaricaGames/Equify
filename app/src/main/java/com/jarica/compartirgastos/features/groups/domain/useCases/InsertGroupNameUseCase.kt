@@ -11,7 +11,7 @@ class InsertGroupNameUseCase @Inject constructor(
     suspend operator fun invoke(groupNameModel: GroupModel) {
         repository.groupNameDao.insertGroupName(
             GroupNameEntity(
-                idGroupName = groupNameModel.idGroupName,
+                idGroup = groupNameModel.idGroupName,
                 groupName = groupNameModel.groupName
 
             )

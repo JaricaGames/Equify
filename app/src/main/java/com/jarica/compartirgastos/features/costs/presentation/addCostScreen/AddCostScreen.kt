@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
@@ -62,6 +63,10 @@ fun AddCostScreen(
     navigateToMainScreen: () -> Unit,
     idGroupName: String,
 ) {
+
+    LaunchedEffect(idGroupName) {
+        addCostViewModel.setGroup(idGroupName)
+    }
 
     val descriptionText: String by addCostViewModel.descriptionText.observeAsState("")
     val amountText: String by addCostViewModel.amountText.observeAsState("")

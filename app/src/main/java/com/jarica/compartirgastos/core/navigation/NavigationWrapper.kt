@@ -25,8 +25,8 @@ import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetails
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreen
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreen
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
-import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreen
-import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreenViewModel
+import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.CustomizeGroupScreen
+import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.EditGroupNameScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreen
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.initialScreen.InitialScreen
@@ -53,7 +53,7 @@ fun NavigationWrapper(
     addPaymentScreenViewModel: AddPaymentScreenViewModel,
     editCostScreenViewModel: EditCostScreenViewModel,
     configurationScreenViewModel: ConfigurationScreenViewModel,
-    customizeGroupScreenViewModel: CustomizeGroupScreenViewModel,
+    customizeGroupScreenViewModel: EditGroupNameScreenViewModel,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     splashScreenViewModel: SplashScreenViewModel,
     aboutScreenViewModel: AboutEquifyScreenViewModel,
@@ -99,28 +99,25 @@ fun NavigationWrapper(
         }
 
         composable<InitialScreenObject> {
-            InitialScreen(navigateToNewGroup = {
-                navController.navigate(NewGroupScreenObject) {
-                    launchSingleTop = true
-                }
-            })
+            InitialScreen(
+                navigateToNewGroup = {
+                    navController.navigate(NewGroupScreenObject) {
+                        launchSingleTop = true
+                    }
+                })
         }
 
-        composable<NewGroupScreenObject> { backStackEntry ->
-
-            val iDGroupName: String = backStackEntry.toRoute()
+        composable<NewGroupScreenObject> {
 
             NewGroupScreen(
                 newGroupViewModel,
-                navigateToGroupsDetailsScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
-                        launchSingleTop = true
-                    }
-                },
                 navigateToAddPeople = { idGroupName, groupName ->
                     navController.navigate(
                         AddPeopleScreenObject(idGroupName, groupName)
                     ) { launchSingleTop = true }
+                },
+                navigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -298,8 +295,16 @@ fun NavigationWrapper(
                         )
                     ) { launchSingleTop = true }
                 },
+                navigateToGroupsList = {
+                    navController.navigate(GroupsScreenObject) {
+                        popUpTo(GroupsScreenObject) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
                 navigateToAddPeopleScreen = {
-                    navController.navigate(AddPeopleScreenFromMainObject) {
+                    navController.navigate(AddPeopleScreenFromMainObject(iDGroupName)) {
                         launchSingleTop = true
                     }
                 },
@@ -318,8 +323,8 @@ fun NavigationWrapper(
             CustomizeGroupScreen(
                 idGroupName = iDGroupName,
                 customizeGroupScreenViewModel,
-                navigateToConfiguration = {
-                    navController.navigate(ConfigurationScreenObject) {
+                navigateToGroupsDetails = {
+                    navController.navigate(MainScreenObject(iDGroupName)) {
                         launchSingleTop = true
                     }
                 },

@@ -8,6 +8,6 @@ fun PersonEntity.toDomain(): PersonModel {
         idPerson = this.idPerson,
         name = this.name,
         // equity = this.equity,
-        idGroupName = this.idGroupName
+        idGroupName = this.idGroup
     )
 }

@@ -7,13 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.payments.domain.paymentUseCases.InsertPaymentUseCase
-import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleNamesUseCase
+import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleByIdGroupUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -21,20 +25,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPaymentScreenViewModel @Inject constructor(
-    getPeopleNamesUseCase: GetPeopleNamesUseCase,
+    getPeopleByIdGroup: GetPeopleByIdGroupUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase,
     private val insertPaymentUseCase: InsertPaymentUseCase
 ) : ViewModel() {
 
+    private val _groupId = MutableStateFlow<String?>(null)
+    fun setGroup(groupId: String?) {
+        _groupId.value = groupId
+    }
 
-    val uiAddPaymentUiState: StateFlow<AddPaymentUiState> =
-        getPeopleNamesUseCase().map(AddPaymentUiState::SuccessAddPayment)
-            .catch { AddPaymentUiState.ErrorAddPayment(it) }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
-                AddPaymentUiState.LoadingAddPayment
-            )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val uiStatePeopleList: StateFlow<AddPaymentUiState> = _groupId
+        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .flatMapLatest { id ->
+            // Ahora 'id' es seguro (no null), llamamos al caso de uso
+            getPeopleByIdGroup(id)
+        }
+        .map(AddPaymentUiState::Success)
+        .catch { AddPaymentUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddPaymentUiState.Loading)
+
 
     //Variable texto Cantidad
     private val _amountText = MutableLiveData<String>()

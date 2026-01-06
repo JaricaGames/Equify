@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments
+package com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CustomizeGroupScreenViewModel @Inject constructor(
+class EditGroupNameScreenViewModel @Inject constructor(
     private val editGroupNameToGroupUseCase: EditGroupNameToGroupUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
 ):ViewModel(){

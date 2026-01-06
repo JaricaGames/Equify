@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 interface PaymentsDao {
 
     //Metodo que lista los pagos
-    @Query(value = "SELECT * FROM paymentsTable")
-    fun getAllPayments(): Flow<List<PaymentEntity>>
+    @Query(value = "SELECT * FROM paymentsTable WHERE idGroup = :idGroup")
+    fun getPaymentsByIdGroup(idGroup: String): Flow<List<PaymentEntity>>
 
     //Metodo que inserta una nuevo pago
     @Insert(onConflict = OnConflictStrategy.REPLACE)

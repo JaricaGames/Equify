@@ -46,13 +46,13 @@ class GroupDetailsViewModel @Inject constructor(
             // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getSumCostByGroupUseCase(id)
         }
-            .map(TotalExpensesUiState::Success)
-            .catch { TotalExpensesUiState.Error(it) }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TotalExpensesUiState.Loading)
-
+        .map(TotalExpensesUiState::Success)
+        .catch { TotalExpensesUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TotalExpensesUiState.Loading)
 
     enum class MainTab {
-        RESUME, COSTS, PAYMENTS}
+        RESUME, COSTS, PAYMENTS
+    }
 
     var selectedTab by mutableStateOf(MainTab.RESUME)
         private set
@@ -98,7 +98,6 @@ class GroupDetailsViewModel @Inject constructor(
     }
 
 
-
     fun showAdThenNavigate(activity: Activity, onNavigate: () -> Unit) {
         interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
@@ -119,19 +118,25 @@ class GroupDetailsViewModel @Inject constructor(
 
 
     fun setGroupId(id: String) {
-      //  iDGroupName = id
+        //  iDGroupName = id
         _groupIdFlow.value = id
-        getGroupNameById(id)
+        //getGroupNameById(id)
     }
 
-    fun getGroupNameById(idGroup: String) {
+    fun getGroupNameById(idGroup: String?) {
         viewModelScope.launch {
-            _nameOfGroup.value = getGroupByIdUseCase(idGroup).groupName
+            try {
+                val group = getGroupByIdUseCase(idGroup!!)
+                _nameOfGroup.value = group.groupName
+            } catch (e: Exception) {
+            _nameOfGroup.value = "Nuevo grupo"
+            }
+            _nameOfGroup.value = getGroupByIdUseCase(idGroup!!).groupName
         }
     }
 
     fun onFabClick() {
-        _isFabExpanded.value = !_isFabExpanded.value!!
+        _isFabExpanded.value = !_isFabExpanded.value
     }
 
 }

@@ -117,7 +117,9 @@ fun MainScreen(
     val isFabExpanded: Boolean by mainScreenViewModel.isFabExpanded.collectAsState(false)
     val sumCosts by mainScreenViewModel.sumCostByGroup.collectAsState()
 
-
+    LaunchedEffect(idGroup) {
+        mainScreenViewModel.getGroupNameById(idGroup)
+    }
 
     Scaffold(
         bottomBar = {
@@ -294,13 +296,16 @@ fun SmallFab(
 
 
 @Composable
-fun ButtonDoTheCounts(mainScreenViewModel: GroupDetailsViewModel, navigateToDoTheCounts: () -> Unit) {
+fun ButtonDoTheCounts(
+    mainScreenViewModel: GroupDetailsViewModel,
+    navigateToDoTheCounts: () -> Unit
+) {
     Row {
 
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-               // mainScreenViewModel.onDoTheCountsClicked()
+                // mainScreenViewModel.onDoTheCountsClicked()
                 navigateToDoTheCounts()
             },
             modifier = Modifier
@@ -359,7 +364,11 @@ fun MainScreenWithPager(
             }
         )
 
-        HorizontalPager(state = pagerState) { page ->
+        HorizontalPager(
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
             when (GroupDetailsViewModel.MainTab.entries[page]) {
                 GroupDetailsViewModel.MainTab.RESUME -> ResumeFragment(
                     idGroup = idGroup,
@@ -477,7 +486,7 @@ fun MainView(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        mainScreenViewModel.getGroupNameById(idGroup!!)
+        //mainScreenViewModel.getGroupNameById(idGroup!!)
         //HEADER
         Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration, success)
         Spacer(Modifier.size(6.dp))
@@ -491,7 +500,15 @@ fun MainView(
              uiStatePeopleGroupFragment,
              onDoTheCountsClicked,
          )*/
-        MainScreenWithPager(mainScreenViewModel, idGroup, resumeViewModel, navigateToEditCost, editCostScreenViewModel, costsViewModel, paymentsViewModel)
+        MainScreenWithPager(
+            mainScreenViewModel,
+            idGroup,
+            resumeViewModel,
+            navigateToEditCost,
+            editCostScreenViewModel,
+            costsViewModel,
+            paymentsViewModel
+        )
         Spacer(Modifier.weight(1f))
         // BannerAdViewMainScreen()
     }

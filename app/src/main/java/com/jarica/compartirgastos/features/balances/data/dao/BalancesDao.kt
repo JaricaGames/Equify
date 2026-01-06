@@ -26,7 +26,7 @@ interface BalancesDao {
         WHERE idGroup = :groupId
         GROUP BY idPerson
     ) pay ON p.idPerson = pay.idPerson
-    WHERE p.idGroupName = :groupId
+    WHERE p.idGroup = :groupId
     """)
     fun getBalancesByGroup(groupId: String?): Flow<List<PersonBalance>>
 

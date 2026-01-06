@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.features.payments.data.paymentsRepository
 
 import com.jarica.compartirgastos.core.data.database.dao.PaymentsDao
 import com.jarica.compartirgastos.core.data.database.entities.PaymentEntity
+import com.jarica.compartirgastos.core.data.mappers.toDomain
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,7 +14,7 @@ class PaymentsRepository @Inject constructor(
     private val paymentsDao: PaymentsDao)
 {
 
-    val paymentsModel: Flow<List<PaymentsModel>> = paymentsDao.getAllPayments()
+  /*  val paymentsModel: Flow<List<PaymentsModel>> = paymentsDao.getPaymentsByIdGroup()
         .map { items ->
             items.map {
                 PaymentsModel(
@@ -24,7 +25,14 @@ class PaymentsRepository @Inject constructor(
                     idGroup = it.idGroup
                 )
             }
-        }
+        }*/
+
+
+    fun getPaymentsByIdGroup(groupId: String): Flow<List<PaymentsModel>> {
+        return paymentsDao.getPaymentsByIdGroup (groupId)
+            .map { it.map { dto -> dto.toDomain() } }
+    }
+
 
     suspend fun insertPayment(paymentsModel: PaymentsModel) {
         paymentsDao.insertPayment(

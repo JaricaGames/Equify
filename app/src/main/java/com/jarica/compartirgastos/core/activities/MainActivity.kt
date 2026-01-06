@@ -20,7 +20,7 @@ import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsV
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
-import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.fragments.CustomizeGroupScreenViewModel
+import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.EditGroupNameScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     private val addPaymentScreenViewModel: AddPaymentScreenViewModel by viewModels()
     private val editCostScreenViewModel: EditCostScreenViewModel by viewModels()
     private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
-    private val customizeGroupScreenViewModel: CustomizeGroupScreenViewModel by viewModels()
+    private val customizeGroupScreenViewModel: EditGroupNameScreenViewModel by viewModels()
     private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
     private val splashScreenViewModel: SplashScreenViewModel by viewModels()
     private val aboutScreenViewModel: AboutEquifyScreenViewModel by viewModels()

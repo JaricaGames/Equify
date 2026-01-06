@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.Flow
 interface GroupsDao {
 
     //Metodo que lista los grupos
-    @Query("SELECT * FROM groupNameTable ORDER BY idGroupName ASC")
+    @Query("SELECT * FROM groupNameTable ORDER BY idGroup ASC")
     fun getAllGroupName(): Flow<List<GroupNameEntity>>
 
     //Metodo que inserta un nuevo grupo
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroupName(groupName: GroupNameEntity)
 
     //Metodo que borra un grupo
@@ -29,10 +29,10 @@ interface GroupsDao {
     suspend fun updateGroupName(groupName: GroupNameEntity)
 
     //Metodo que devuelve un grupo por su ID
-    @Query("SELECT * FROM groupNameTable WHERE idGroupName LIKE :idGroup ")
+    @Query("SELECT * FROM groupNameTable WHERE idGroup LIKE :idGroup ")
     suspend fun getGroupNameById(idGroup: String): GroupNameEntity
 
     //Metodo que devuelve los miembros de de un grupo
-    @Query("SELECT name FROM peopleTable WHERE idGroupName LIKE :idGroup ")
+    @Query("SELECT name FROM peopleTable WHERE idGroup LIKE :idGroup ")
     suspend fun getGroupsMembersById(idGroup: Int):List<String>
 }

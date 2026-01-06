@@ -14,8 +14,8 @@ class PeopleRepository @Inject constructor(
     private val personNameDao: PersonNameDao,
 ){
 
-    //Mapear de GroupEntity a GroupNameModel
-    val personModel: Flow<List<PersonModel>> = personNameDao.getAllPeopleName()
+/*    //Mapear de GroupEntity a GroupNameModel
+    val personModel: Flow<List<PersonModel>> = personNameDao.getPeopleByIdGroup()
         .map { items ->
             items.map {
                 PersonModel(
@@ -24,8 +24,12 @@ class PeopleRepository @Inject constructor(
                     it.idGroupName
                 )
             }
-        }
+        }*/
 
+     fun getPeopleByIdGroup(groupId: String): Flow<List<PersonModel>> {
+        return personNameDao.getPeopleByIdGroup (groupId)
+            .map { it.map { dto -> dto.toDomain() } }
+    }
 
     suspend fun getPersonById(idPerson: String): PersonModel {
         return personNameDao.getPersonById(idPerson).toDomain()
@@ -37,7 +41,7 @@ class PeopleRepository @Inject constructor(
                 idPerson = personModel.idPerson,
                 name = personModel.name,
                 //      equity = personModel.equity,
-                idGroupName = personModel.idGroupName
+                idGroup = personModel.idGroupName
             )
         )
 

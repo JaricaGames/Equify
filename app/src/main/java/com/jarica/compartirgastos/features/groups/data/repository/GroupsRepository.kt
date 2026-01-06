@@ -16,7 +16,7 @@ class GroupsRepository @Inject constructor(
 
     //Mapear de GroupEntity a GroupNameModel
     val groupNamesModel: Flow<List<GroupModel>> = groupNameDao.getAllGroupName()
-        .map { items -> items.map { GroupModel(it.idGroupName, it.groupName) } }
+        .map { items -> items.map { GroupModel(it.idGroup, it.groupName) } }
 
 
     suspend fun getGroupNameById(id: String): GroupModel {
@@ -32,7 +32,7 @@ class GroupsRepository @Inject constructor(
     suspend fun updateGroup(groupNameModel: GroupModel) {
         return groupNameDao.updateGroupName(
             GroupNameEntity(
-                idGroupName = groupNameModel.idGroupName,
+                idGroup = groupNameModel.idGroupName,
                 groupName = groupNameModel.groupName
 
             )
@@ -45,7 +45,7 @@ class GroupsRepository @Inject constructor(
 
         groupNameDao.deleteGroupName(
             GroupNameEntity(
-                idGroupName = groupNameModel.idGroupName,
+                idGroup = groupNameModel.idGroupName,
                 groupName = groupNameModel.groupName
 
             )

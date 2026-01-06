@@ -40,20 +40,6 @@ class AddPeopleScreenViewModel @Inject constructor(
     }
 
 
-    //INSERTAR GRUPO EN LA BBDD
-    fun insertGroupName(groupName: GroupModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            insertGroupNameUseCase(
-                GroupModel(
-                    idGroupName = groupName.idGroupName,
-                    groupName = groupName.groupName
-                )
-            )
-            // Guardo en la variable companion de grupo el grupo activo
-            //iDGroupName = groupName.idGroupName
-        }
-    }
-
     // Metodo que inserta el nombre en la variable lista de nombres
     fun insertNameOnList(name: String) {
         _personList.add(name)
@@ -61,33 +47,12 @@ class AddPeopleScreenViewModel @Inject constructor(
         _createText.value = false
     }
 
-    //METODO QUE INSERTA LA LISTA DE NOMBRES EN LA BBDD, USA EL IDGRIOP QUE SE LE PASA POR PARAMETROS DE LA VISTA ANTERIOR.
 
-    fun insertPeople(peopleList: List<String>, idGroupName: String) {
-
-        peopleList.forEach { personName ->
-
-            val personModel = PersonModel(
-                name = personName,
-                //   equity = "0.0",
-                idGroupName = idGroupName
-            )
-            viewModelScope.launch(Dispatchers.IO) {
-                insertPersonNameUseCase(
-                    personModel = personModel
-                )
-            }
-        }
-        _personList.clear()
-    }
-
-    fun saveGroupData(group: GroupModel, peopleList: List<String>, onSuccess: () -> Unit) {
+    fun saveGroupData(group: GroupModel, peopleList: List<String>, onSuccess: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
 
             // 1. Insertamos el grupo
             insertGroupNameUseCase(group)
-            // Guardo en la variable companion de grupo el grupo activo
-           // iDGroupName = group.idGroupName
 
             // 2. Insertamos las personas
             peopleList.forEach { personName ->
@@ -102,7 +67,7 @@ class AddPeopleScreenViewModel @Inject constructor(
             // 3. Solo cuando TODO ha terminado, llamamos al callback
             // Volvemos al hilo principal para la navegación
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(group.idGroupName)
             }
         }
     }

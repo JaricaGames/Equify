@@ -41,7 +41,7 @@ object RoomModule {
     fun provideDistributionCostDao(db:AppDataBase) = db.distributionCostDao()
 
     @Provides
-    fun personBalanceDao(db:AppDataBase) = db.PersonBalanceDao()
+    fun personBalanceDao(db:AppDataBase) = db.balanceDao()
 
 
 }

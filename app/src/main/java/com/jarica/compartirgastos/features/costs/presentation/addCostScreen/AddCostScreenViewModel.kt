@@ -11,13 +11,17 @@ import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
-import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleNamesUseCase
+import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleByIdGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -27,20 +31,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCostScreenViewModel @Inject constructor(
-    getPeopleNamesUseCase: GetPeopleNamesUseCase,
+    getPeopleNamesUseCase: GetPeopleByIdGroupUseCase,
     private val insertCostUseCase: InsertCostUseCase,
     private val insertDistributionCostUseCase: InsertDistributionCostUseCase,
     private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
 ) : ViewModel() {
 
-    val uiAddCostsUiState: StateFlow<AddCostsUiState> =
-        getPeopleNamesUseCase().map(AddCostsUiState::Success)
+    private val _groupId = MutableStateFlow<String?>(null)
+    fun setGroup(groupId: String?) {
+        _groupId.value = groupId
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val uiAddCostsUiState: StateFlow<AddCostsUiState> = _groupId
+        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .flatMapLatest { id ->
+            // Ahora 'id' es seguro (no null), llamamos al caso de uso
+            getPeopleNamesUseCase(id)
+        }
+        .map(AddCostsUiState::Success)
+        .catch { AddCostsUiState.Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddCostsUiState.Loading)
+
+    /*val uiAddCostsUiState: StateFlow<AddCostsUiState> =
+        getPeopleNamesUseCase(_groupId).map(AddCostsUiState::Success)
             .catch { AddCostsUiState.Error(it) }
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(5000),
                 AddCostsUiState.Loading
-            )
+            )*/
 
     //Variable texto descripcion
     private val _descriptionText = MutableLiveData<String>()

@@ -40,7 +40,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.core.domain.models.PersonBalance
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomHeader
 import com.jarica.compartirgastos.core.presentation.ui.aboutText
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleConfigurationText
@@ -63,8 +63,6 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.EMAIL_DIRECTION
 import com.jarica.compartirgastos.core.utils.EMAIL_SUBJECT
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeUiState
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainUiState
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogConfirm
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogErrorClear
 import kotlinx.coroutines.Dispatchers
@@ -75,11 +73,28 @@ import kotlinx.coroutines.withContext
 fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     iDGroupName: String,
-    navigateToCustomizeGroup: () -> Unit,
     navigateToGroupScreen: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
     navigateToAboutScreen: () -> Unit,
+    navigateToCustomizeGroup: (String) -> Unit,
+    navigateToGroupsList: () -> Unit,
 ) {
+    LaunchedEffect(iDGroupName) {
+        configurationScreenViewModel.setGroup(iDGroupName)
+    }
+
+
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    val uiConfigurationState by produceState<ConfigurationScreenUiState>(
+        initialValue = ConfigurationScreenUiState.Loading,
+        key1 = lifecycle,
+        key2 = configurationScreenViewModel,
+    ) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            configurationScreenViewModel.uiStatePeopleList.collect { value = it }
+        }
+    }
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -104,16 +119,6 @@ fun ConfigurationScreen(
         }
     }
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiStatePeopleGroupFragment by produceState<MainUiState>(
-        initialValue = MainUiState.Loading,
-        key1 = lifecycle,
-        key2 = configurationScreenViewModel,
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            configurationScreenViewModel.uiStateConfigurationScreen.collect { value = it }
-        }
-    }
 
     val nameOfGroup: String by configurationScreenViewModel.nameOfGroup.observeAsState("")
     val showDialogError: Boolean by configurationScreenViewModel.showDialogError.observeAsState(
@@ -124,21 +129,22 @@ fun ConfigurationScreen(
     )
     val personSelected: String by configurationScreenViewModel.personSelected.observeAsState("")
 
-    when (uiStatePeopleGroupFragment) {
+    when (uiConfigurationState) {
 
-        is MainUiState.Error -> {}
-        is MainUiState.Loading -> {}
-        is MainUiState.Success -> {
+        is ConfigurationScreenUiState.Error -> {}
+        is ConfigurationScreenUiState.Loading -> {}
+        is ConfigurationScreenUiState.Success -> {
 
             MainConfigurationScreen(
                 iDGroupName,
                 configurationScreenViewModel,
                 nameOfGroup,
-                (uiStatePeopleGroupFragment as ResumeUiState.Success).peopleList,
-                navigateToCustomizeGroup,
+                (uiConfigurationState as ConfigurationScreenUiState.Success).listOfPeople,
+                { navigateToCustomizeGroup(iDGroupName) },
                 navigateToGroupScreen,
                 navigateToAddPeopleScreen,
-                navigateToAboutScreen
+                navigateToAboutScreen,
+                navigateToGroupsList
             )
 
             if (showDialogError) {
@@ -167,11 +173,12 @@ fun MainConfigurationScreen(
     iDGroupName: String,
     configurationScreenViewModel: ConfigurationScreenViewModel,
     nameOfGroup: String,
-    peopleList: List<PersonBalance>,
-    navigateToCustomizeGroup: () -> Unit,
+    peopleList: List<PersonModel>,
+    navigateToCustomizeGroup: (String) -> Unit,
     navigateToMainScreen: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
     navigateToAboutScreen: () -> Unit,
+    navigateToGroupsList: () -> Unit,
 ) {
 
     configurationScreenViewModel.getGroupNameById(iDGroupName)
@@ -197,16 +204,11 @@ fun MainConfigurationScreen(
         ) {
 
             item { Spacer(Modifier.height(20.dp)) }
-
-            item { PersonalizationGroup(nameOfGroup, navigateToCustomizeGroup) }
+            item { PersonalizationGroup(nameOfGroup) { navigateToCustomizeGroup(iDGroupName)}}
             item { Spacer(Modifier.height(20.dp)) }
-
             item { AdministrateGroupMembers(navigateToAddPeopleScreen) }
             item { Spacer(Modifier.height(20.dp)) }
-
             item {
-                // Aquí convertimos GroupMembers en una Column normal,
-                // no LazyColumn dentro de LazyColumn
                 Text(
                     groupMembersText,
                     fontFamily = parkinsans,
@@ -217,7 +219,6 @@ fun MainConfigurationScreen(
                     color = Black
                 )
                 Spacer(Modifier.height(6.dp))
-
                 peopleList
                     .forEach { person ->
                         ItemPeopleNameConfigurationScreen(person, configurationScreenViewModel)
@@ -226,7 +227,7 @@ fun MainConfigurationScreen(
 
             item { Spacer(Modifier.height(20.dp)) }
 
-            item { Other(configurationScreenViewModel, navigateToMainScreen, iDGroupName) }
+            item { Other(configurationScreenViewModel, navigateToMainScreen, iDGroupName, navigateToGroupsList) }
             item { Spacer(Modifier.height(20.dp)) }
 
             item { Information(configurationScreenViewModel, navigateToAboutScreen) }
@@ -327,6 +328,7 @@ fun Other(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     navigateToMainScreen: () -> Unit,
     iDGroupName: String,
+    navigateToGroupsList: () -> Unit,
 ) {
     Text(
         otherText,
@@ -345,7 +347,7 @@ fun Other(
             .background(Grey)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
-                configurationScreenViewModel.deleteGroup(iDGroupName)
+                configurationScreenViewModel.deleteGroup(iDGroupName) { navigateToGroupsList() }
                 navigateToMainScreen()
             },
         horizontalArrangement = Arrangement.Start,
@@ -406,7 +408,7 @@ fun GroupMembers(
 
 @Composable
 fun ItemPeopleNameConfigurationScreen(
-    person: PersonBalance,
+    person: PersonModel,
     configurationScreenViewModel: ConfigurationScreenViewModel,
 ) {
     Row(
@@ -498,7 +500,10 @@ fun AdministrateGroupMembers(navigateToAddPeopleScreen: () -> Unit) {
 }
 
 @Composable
-fun PersonalizationGroup(nameOfGroup: String, navigateToCustomizeGroup: () -> Unit) {
+fun PersonalizationGroup(
+    nameOfGroup: String,
+    navigateToCustomizeGroup: () -> Unit,
+) {
 
     Text(
         personalizationGroupText,

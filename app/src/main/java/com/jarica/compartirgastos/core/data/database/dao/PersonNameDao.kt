@@ -12,15 +12,15 @@ import kotlinx.coroutines.flow.Flow
 interface PersonNameDao {
 
     //Metodo que lista las personas
-    @Query(value = "SELECT * FROM peopleTable ORDER BY idPerson ASC")
-    fun getAllPeopleName(): Flow<List<PersonEntity>>
+    @Query(value = "SELECT * FROM peopleTable WHERE idGroup = :idGroup ORDER BY idPerson ASC")
+    fun getPeopleByIdGroup(idGroup: String): Flow<List<PersonEntity>>
 
     //Metodo que inserta una nueva persoina
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPersonName(personName: PersonEntity)
 
     //Metodo que borra una persona por idde grupo
-    @Query(value = "DELETE FROM peopleTable WHERE idGroupName like :idGroupName ")
+    @Query(value = "DELETE FROM peopleTable WHERE idGroup like :idGroupName ")
     suspend fun deletePersonNameByIdGroup(idGroupName: String)
 
     //Metodo que borra una persona por id

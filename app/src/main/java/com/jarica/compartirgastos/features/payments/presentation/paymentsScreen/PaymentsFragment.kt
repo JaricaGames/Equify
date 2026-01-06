@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -37,6 +38,10 @@ fun PaymentsFragment(
     paymentsViewModel: PaymentsScreenViewModel,
     modifier: Modifier
 ) {
+
+    LaunchedEffect(idGroup) {
+        paymentsViewModel.setGroup(idGroup)
+    }
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStatePaymentsFragment by produceState<PaymentsScreenUiState>(

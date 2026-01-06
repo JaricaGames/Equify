@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.core.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import com.jarica.compartirgastos.core.utils.DISTRIBUTION_PAYMENT_TABLE
 
@@ -13,6 +14,20 @@ import com.jarica.compartirgastos.core.utils.DISTRIBUTION_PAYMENT_TABLE
         Index("idPerson"),
         Index("idCost"),
         Index("idGroup")
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = CostEntity::class,
+            parentColumns = ["idCost"],
+            childColumns = ["idCost"],
+            onDelete = ForeignKey.CASCADE // <-- Si se borra el Gasto, se borra el pago
+        ),
+        ForeignKey(
+            entity = PersonEntity::class,
+            parentColumns = ["idPerson"],
+            childColumns = ["idPerson"],
+            onDelete = ForeignKey.CASCADE // <-- Si se borra la Persona, se borra su pago
+        )
     ]
 )
 data class DistributionPaymentEntity(

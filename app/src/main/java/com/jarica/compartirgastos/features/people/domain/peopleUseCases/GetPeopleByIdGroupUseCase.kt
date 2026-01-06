@@ -5,8 +5,12 @@ import com.jarica.compartirgastos.features.people.data.PeopleRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPeopleNamesUseCase @Inject constructor(
+class GetPeopleByIdGroupUseCase @Inject constructor(
     private val peopleRepository: PeopleRepository
 ){
-    operator fun invoke(): Flow<List<PersonModel>> = peopleRepository.personModel
+    operator fun invoke (groupId: String): Flow<List<PersonModel>> =
+         peopleRepository.getPeopleByIdGroup(groupId)
+
 }
+
+

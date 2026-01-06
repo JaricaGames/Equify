@@ -40,13 +40,13 @@ import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
 
 fun NewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
-    navigateToGroupsDetailsScreen: () -> Unit,
-    navigateToAddPeople: (String, String) -> Unit
+    navigateToAddPeople: (String, String) -> Unit,
+    navigateBack: () -> Boolean
 ) {
 
     val groupName: String by newGroupViewModel.groupName.observeAsState("")
 
-    MainViewNewGroupScreen(newGroupViewModel, groupName, navigateToAddPeople, navigateToGroupsDetailsScreen)
+    MainViewNewGroupScreen(newGroupViewModel, groupName, navigateToAddPeople,navigateBack )
 
 }
 
@@ -55,7 +55,7 @@ fun MainViewNewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
     groupName: String,
     navigateToAddPeople: (String, String) -> Unit,
-    navigateToGroupsDetailsScreen: () -> Unit,
+    navigateBack: () -> Boolean,
 ) {
 
     Column(
@@ -66,7 +66,7 @@ fun MainViewNewGroupScreen(
         verticalArrangement = Arrangement.Top
     ) {
         CustomHeader(
-            navigate = { navigateToGroupsDetailsScreen() },
+            navigate = { navigateBack() },
             modifier = Modifier.weight(HEADER_WEIGHT),
             text = newGroupText,
             icon = R.drawable.arrow_back

@@ -185,10 +185,6 @@ fun MainViewAddPeopleScreen(
 
                         )
                         mainScreenViewModel.setGroupId(newGroup.idGroupName)
-                        //iDGroupName = idGroupName
-                       /* addPeopleViewModel.insertGroupName(newGroup)
-                        addPeopleViewModel.insertPeople(peopleList, idGroupName)
-                        navigateToMainScreen(newGroup.idGroupName)*/
                         addPeopleViewModel.saveGroupData(newGroup, peopleList) {
                             navigateToMainScreen(newGroup.idGroupName)
                         }

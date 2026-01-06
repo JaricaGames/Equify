@@ -37,7 +37,7 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun paymentsDao(): PaymentsDao
     abstract fun distributionCostDao(): DistributionCostDao
     abstract fun distributionPaymentDao(): DistributionPaymentDao
-    abstract fun PersonBalanceDao(): BalancesDao
+    abstract fun balanceDao(): BalancesDao
 
 }
 

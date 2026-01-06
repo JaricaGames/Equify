@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
@@ -60,15 +61,19 @@ fun AddPaymentScreen(
     navigateToMainScreen: () -> Unit
 ) {
 
+    LaunchedEffect(groupId) {
+        addPaymentScreenViewModel.setGroup(groupId)
+    }
+
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiAddPaymentState by produceState<AddPaymentUiState>(
-        initialValue = AddPaymentUiState.LoadingAddPayment,
+        initialValue = AddPaymentUiState.Loading,
         key1 = lifecycle,
         key2 = addPaymentScreenViewModel,
     ) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            addPaymentScreenViewModel.uiAddPaymentUiState.collect { value = it }
+            addPaymentScreenViewModel.uiStatePeopleList.collect { value = it }
         }
     }
 
@@ -91,12 +96,12 @@ fun AddPaymentScreen(
 
 
     when (uiAddPaymentState) {
-        is AddPaymentUiState.ErrorAddPayment -> {}
-        is AddPaymentUiState.LoadingAddPayment -> {}
-        is AddPaymentUiState.SuccessAddPayment -> {
+        is AddPaymentUiState.Error -> {}
+        is AddPaymentUiState.Loading -> {}
+        is AddPaymentUiState.Success -> {
 
             val listOfPeople =
-                (uiAddPaymentState as AddPaymentUiState.SuccessAddPayment).listOfPeople
+                (uiAddPaymentState as AddPaymentUiState.Success).listOfPeople
 
 
                 MainScreenAddPayment(
