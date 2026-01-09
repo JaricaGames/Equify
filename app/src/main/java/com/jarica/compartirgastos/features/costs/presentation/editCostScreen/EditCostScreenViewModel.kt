@@ -11,6 +11,7 @@ import com.jarica.compartirgastos.features.costs.domain.costsUseCases.UpdateCost
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -54,28 +56,6 @@ class EditCostScreenViewModel @Inject constructor(
         _amountCost.value = amount
     }
 
-    private val _costIdFlow = MutableStateFlow<String?>(value = null)
-    /*val uiEditCostUiState : StateFlow<EditCostUiState> =
-        getPaymentsByIdCost().map(EditCostUiState::Success)
-            .catch { EditCostUiState.Error(it) }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
-                EditCostUiState.Loading
-            )*/
-
-    /*
-        val uiEditCostUiState: StateFlow<EditCostUiState> = _costIdFlow
-            .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
-            .flatMapLatest { idcost ->
-                // Ahora 'id' es seguro (no null), llamamos al caso de uso
-                getPaymentsByIdCost(idcost)
-            }
-            .map(EditCostUiState::Success)
-            .catch { EditCostUiState.Error(it) }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), EditCostUiState.Loading)
-    */
-
     private val _costId = MutableStateFlow<String?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -98,30 +78,19 @@ class EditCostScreenViewModel @Inject constructor(
         _costId.value = costId
     }
 
+    fun onDeletedSelected(idCost: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteCostUseCase(idCost)
+        }
+    }
 
-    /*
-            viewModelScope.launch(Dispatchers.IO) {
-                updateCostUseCase(CostModel(
-                    idCost = idCost,
-                    idPerson = idPerson,
-                    amount = amount,
-                    description = description,
-                    idGroup = iDGroupName!!,
-                    personString = personString
-                ))
-            }*/
+    fun updateCost(description: String, amount: Float, idCost: String) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val cost = getCostByIdCost(idCost)
+            cost.description = description
+            updateCostUseCase(costModel = cost)
+        }
+    }
 
 }
-
-/*fun updateCost( description: String, amount: Float, idCost: String) {
-
-    viewModelScope.launch(Dispatchers.IO) {
-        val cost = getCostByIdCost(idCost)
-        cost.description = description
-        cost.amount = amount
-        //cost.personString = personString
-
-        updateCostUseCase(costModel = cost)
-    }
-}*/
-

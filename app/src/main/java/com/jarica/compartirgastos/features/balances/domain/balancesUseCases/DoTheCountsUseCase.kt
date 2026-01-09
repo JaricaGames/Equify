@@ -5,8 +5,6 @@ import com.jarica.compartirgastos.core.domain.models.PersonBalance
 import javax.inject.Inject
 
 class DoTheCountsUseCase @Inject constructor(
-    //private val appRepository: AppRepository,
-    //private val getBalancesByGroupUseCase: GetBalancesByGroupUseCase
 ){
 
     operator fun invoke(
@@ -22,6 +20,9 @@ class DoTheCountsUseCase @Inject constructor(
             .filter { it.balance < 0 }
             .map { it.copy(balance = -it.balance) }
             .toMutableList()
+
+        debtors.sortByDescending { it.balance }
+        creditors.sortByDescending { it.balance }
 
         val payments = mutableListOf<PaymentsToDoCountsModel>()
 
@@ -48,8 +49,8 @@ class DoTheCountsUseCase @Inject constructor(
             debtors[i] = debtor.copy(balance = debtor.balance - amount)
             creditors[j] = creditor.copy(balance = creditor.balance - amount)
 
-            if (debtors[i].balance == 0f) i++
-            if (creditors[j].balance == 0f) j++
+            if (debtors[i].balance < 0.01f) i++
+            if (creditors[j].balance < 0.01f) j++
         }
 
         return payments

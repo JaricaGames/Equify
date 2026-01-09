@@ -45,9 +45,8 @@ class AddCostScreenViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiStatePeopleList: StateFlow<AddCostsPersonListUiState> = _groupId
-        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .filterNotNull()
         .flatMapLatest { id ->
-            // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getPeopleByIdGroupUseCase(id)
         }
         .map(AddCostsPersonListUiState::Success)
@@ -56,32 +55,26 @@ class AddCostScreenViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiAddCostsUiState: StateFlow<AddCostsUiState> = _groupId
-        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .filterNotNull()
         .flatMapLatest { id ->
-            // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getPeopleNamesUseCase(id)
         }
         .map(AddCostsUiState::Success)
         .catch { AddCostsUiState.Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddCostsUiState.Loading)
 
-    //Variable texto descripcion
     private val _descriptionText = MutableLiveData<String>()
     val descriptionText: LiveData<String> = _descriptionText
 
-    //Variable texto cantidad
     private val _amountText = MutableLiveData<String>()
     val amountText: LiveData<String> = _amountText
 
-    //Variable cuadro seleccionar persona
     private val _isFromSelected = MutableLiveData<Boolean>()
     val isFromSelected: LiveData<Boolean> = _isFromSelected
 
-    //Variable texto seleccionar persona
     private val _fromTextAddCost = MutableLiveData<String>()
     val fromTextAddCost: LiveData<String> = _fromTextAddCost
 
-    //Variable texto seleccionar persona
     private val _personToAddCost = MutableLiveData<PersonModel?>()
     val personToAddCost: LiveData<PersonModel?> = _personToAddCost
 

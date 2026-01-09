@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.Splash.presentation.SplashScreen
+package com.jarica.compartirgastos.features.splash.presentation.splashScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,7 +32,6 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SplashScreen(
-    splashScreenViewModel: SplashScreenViewModel,
     navigateToGroupsScreen: () -> Unit)
 {
 

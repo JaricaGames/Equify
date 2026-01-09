@@ -9,8 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.jarica.compartirgastos.features.Splash.presentation.SplashScreen.SplashScreen
-import com.jarica.compartirgastos.features.Splash.presentation.SplashScreen.SplashScreenViewModel
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreen
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreen
@@ -34,11 +32,14 @@ import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.Ne
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreen
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
+import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentScreen
+import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentViewModel
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreen
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMain
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
+import com.jarica.compartirgastos.features.splash.presentation.splashScreen.SplashScreen
 
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -55,11 +56,11 @@ fun NavigationWrapper(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     customizeGroupScreenViewModel: EditGroupNameScreenViewModel,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
-    splashScreenViewModel: SplashScreenViewModel,
     aboutScreenViewModel: AboutEquifyScreenViewModel,
     resumeViewModel: ResumeViewModel,
     costsViewModel: CostsViewModel,
-    paymentsViewModel: PaymentsScreenViewModel
+    paymentsViewModel: PaymentsScreenViewModel,
+    editPaymentsViewModel: EditPaymentViewModel
 ) {
 
     val activity = LocalContext.current as? Activity
@@ -182,6 +183,17 @@ fun NavigationWrapper(
                             navController.navigate("detail")
                         }
                     }
+                },
+                navigateToEditPayments = { paymentToEdit ->
+                    navController.navigate(
+                        EditPaymentScreenObject(
+                            idGroup = paymentToEdit.idGroup,
+                            idPayment = paymentToEdit.idPayment,
+                            amount = paymentToEdit.amount,
+                            personWhoPay = paymentToEdit.idPersonWhoPay,
+                            personWhoReceive = paymentToEdit.idPersonWhoReceive
+                        )
+                    )
                 }
             )
         }
@@ -343,14 +355,12 @@ fun NavigationWrapper(
                         MainScreenObject(iDGroupName = currentGroupId)
                     ) { launchSingleTop = true }
                 },
-                mainScreenViewModel = mainScreenViewModel,
                 idGroupName = currentGroupId
             )
         }
 
         composable<SplashScreenObject> {
             SplashScreen(
-                splashScreenViewModel,
                 navigateToGroupsScreen = {
                     navController.navigate(GroupsScreenObject) {
                         popUpTo(SplashScreenObject) {
@@ -368,6 +378,25 @@ fun NavigationWrapper(
                     navController.popBackStack()
                 },
                 aboutScreenViewModel = aboutScreenViewModel
+            )
+        }
+
+        composable<EditPaymentScreenObject> { backStackEntry ->
+
+            val editPaymentScreen: EditPaymentScreenObject = backStackEntry.toRoute()
+            val currentGroupId = editPaymentScreen.idGroup
+
+            EditPaymentScreen(
+                idPayment = editPaymentScreen.idPayment,
+                amount = editPaymentScreen.amount,
+                personWhoPay = editPaymentScreen.personWhoPay,
+                personWhoReceive = editPaymentScreen.personWhoReceive,
+                editPaymentsViewModel = editPaymentsViewModel,
+                navigateToMainScreen = {
+                    navController.navigate(
+                        MainScreenObject(iDGroupName = currentGroupId)
+                    ) { launchSingleTop = true }
+                }
             )
         }
     }

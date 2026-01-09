@@ -42,7 +42,6 @@ data class EditCostScreenObject(
     val amount: Float,
     val description: String,
     val iDGroupName: String
-    //val personString: String
 )
 
 @Serializable
@@ -66,6 +65,15 @@ data object SplashScreenObject
 
 @Serializable
 data object AboutEquifyScreenObject
+
+@Serializable
+data class EditPaymentScreenObject(
+    val idGroup: String,
+    val idPayment: String,
+    val amount: Float,
+    val personWhoPay: String,
+    val personWhoReceive: String
+)
 
 
 

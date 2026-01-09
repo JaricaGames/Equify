@@ -1,4 +1,4 @@
-package com.jarica.compartirgastos.features.costs.presentation.editCostScreen
+package com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,21 +7,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,14 +30,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
-import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomTextField
+import com.jarica.compartirgastos.core.presentation.ui.amountPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.editCost
-import com.jarica.compartirgastos.core.presentation.ui.labelTextFieldAddPeopleScreen
+import com.jarica.compartirgastos.core.presentation.ui.payForPlaceHolder
+import com.jarica.compartirgastos.core.presentation.ui.payToPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.theme.BackgroundColorGradient
 import com.jarica.compartirgastos.core.presentation.ui.theme.Black
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
@@ -46,53 +49,50 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditCostScreen(
-    idCost: String,
+fun EditPaymentScreen(
+    idPayment: String,
     amount: Float,
-    description: String,
-    editCostScreenViewModel: EditCostScreenViewModel,
+    personWhoPay: String,
+    personWhoReceive: String,
+    editPaymentsViewModel: EditPaymentViewModel,
     navigateToMainScreen: () -> Unit
 ) {
 
-    val uiStateEditCost by editCostScreenViewModel.uiStateEditCost.collectAsState()
-    val descriptionCost: String by editCostScreenViewModel.descriptionCost.observeAsState(
-        description
+    val amountPayment: Float by editPaymentsViewModel.amountPayment.observeAsState(amount)
+
+    val namePersonWhoPay by produceState(initialValue = "", key1 = personWhoPay) {
+        val name = editPaymentsViewModel.getPersonName(personWhoPay)
+        value = name
+    }
+
+    val namePersonWhoReceive by produceState(initialValue = "", key1 = personWhoReceive) {
+        val name = editPaymentsViewModel.getPersonName(personWhoReceive)
+        value = name
+    }
+
+
+    MainScreenAddPayment(
+        editPaymentsViewModel,
+        amount,
+        navigateToMainScreen,
+        idPayment,
+        namePersonWhoPay,
+        namePersonWhoReceive,
+        amountPayment
     )
-    val amountCost: Float by editCostScreenViewModel.amountCost.observeAsState(amount)
-
-
-    LaunchedEffect(idCost) {
-        editCostScreenViewModel.setIdCost(idCost)
-    }
-
-    when (uiStateEditCost) {
-        is EditCostUiState.Loading -> {}
-        is EditCostUiState.Error -> {}
-        is EditCostUiState.Success -> {
-            // costPaymentsList = state.listOfCostPaymentsModel
-            MainViewEditCostScreen(
-                amountCost,
-                descriptionCost,
-                //payFor,
-                navigateToMainScreen,
-                editCostScreenViewModel,
-                idCost,
-                (uiStateEditCost as EditCostUiState.Success).listOfCostPaymentsModel
-            )
-        }
-    }
 }
 
+
 @Composable
-fun MainViewEditCostScreen(
+fun MainScreenAddPayment(
+    editPaymentScreenViewModel: EditPaymentViewModel,
     amount: Float,
-    description: String,
     navigateToMainScreen: () -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
-    idCost: String,
-    costPaymentsList: List<CostPaymentsModel>,
+    idPayment: String,
+    namePersonWhoPay: String,
+    namePersonWhoReceive: String,
+    amountPayment: Float
 ) {
 
     Column(
@@ -143,7 +143,7 @@ fun MainViewEditCostScreen(
                     .offset(x = 2.dp),
                 onClick =
                     {
-                        editCostScreenViewModel.onDeletedSelected(idCost)
+                        editPaymentScreenViewModel.onDeletedSelected(idPayment)
                         navigateToMainScreen()
                     }
             ) {
@@ -163,47 +163,77 @@ fun MainViewEditCostScreen(
                 .padding(horizontal = 32.dp)
                 .weight(1f - HEADER_WEIGHT)
         ) {
-            Spacer(modifier = Modifier.weight(0.02f))
-            CustomTextField(
-                value = description,
-                onValueChange = { editCostScreenViewModel.onDescriptionTextFieldChange(it) },
-                placeholderText = labelTextFieldAddPeopleScreen,
-                textStyle = TextStyle(
+
+            Spacer(Modifier.height(20.dp))
+            // TEXTFIELD PAGADO POR
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Grey),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
+            ) {
+                Text(
+                    "$payForPlaceHolder:      $namePersonWhoPay",
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
                 )
-            )
-            Spacer(modifier = Modifier.weight(0.02f))
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    thickness = 1.dp,
+                    color = DarkOrange.copy(0.2f)
+                )
+
+            }
+            Spacer(modifier = Modifier.size(20.dp))
+            // TEXTFIELD PAGADO A
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Grey),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
+            ) {
+                Text(
+                    "$payToPlaceHolder:      $namePersonWhoReceive",
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 12.sp,
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    thickness = 1.dp,
+                    color = DarkOrange.copy(0.2f)
+                )
+
+            }
+            Spacer(modifier = Modifier.size(20.dp))
+            //TEXTFIELD CANTIDAD
             CustomTextField(
-                value = amount.toString(),
-                enabled = false,
-                onValueChange = { },
-                placeholderText = "",
+                value = amountPayment.toString(),
+                enabled = true,
+                onValueChange = { editPaymentScreenViewModel.onAmountTextFieldChange(it)},
+                placeholderText = amountPlaceHolder,
                 textStyle = TextStyle(
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 ),
-                suffixText = "€"
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
             )
-            Spacer(modifier = Modifier.weight(0.02f))
-            CustomTextField(
-                value = costPaymentsList.joinToString(
-                    separator = ", ",
-                    prefix = "[",
-                    postfix = "]"
-                ) { it.name },
-                onValueChange = { },
-                enabled = false,
-                placeholderText = "",
-                textStyle = TextStyle(
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
-                )
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                thickness = 1.dp,
+                color = DarkOrange.copy(0.2f)
             )
-            Spacer(modifier = Modifier.weight(0.02f))
+            Spacer(Modifier.size(20.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonColors(
@@ -213,7 +243,7 @@ fun MainViewEditCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    editCostScreenViewModel.updateCost(description, amount, idCost )
+                    editPaymentScreenViewModel.updatePaymentSelected(idPayment, amountPayment)
                     navigateToMainScreen()
                 }) {
                 Text(
@@ -227,71 +257,8 @@ fun MainViewEditCostScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
         }
+
+
     }
-
-    /*
-    //TEXTFIELD CANTIDAD
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = amount.toString(),
-            readOnly = true,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            maxLines = 1,
-            suffix = { Text("€") },
-            textStyle = TextStyle(fontFamily = rubik),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = White,
-                unfocusedSuffixColor = Black,
-                focusedSuffixColor = Black
-            ),
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-    //TEXTFIELD person
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = "$PayFor      $personString",
-            readOnly = true,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            maxLines = 1,
-            textStyle = TextStyle(fontFamily = rubik),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black
-
-            ),
-        )
-
-
-        Spacer(modifier = Modifier.weight(0.8f))*/
 }
-
-
-
 

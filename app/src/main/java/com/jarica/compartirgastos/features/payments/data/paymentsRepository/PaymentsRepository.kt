@@ -14,23 +14,14 @@ class PaymentsRepository @Inject constructor(
     private val paymentsDao: PaymentsDao)
 {
 
-  /*  val paymentsModel: Flow<List<PaymentsModel>> = paymentsDao.getPaymentsByIdGroup()
-        .map { items ->
-            items.map {
-                PaymentsModel(
-                    idPayment = it.idPayment,
-                    amount = it.amount,
-                    idPersonWhoPay = it.idPersonWhoPay,
-                    idPersonWhoReceive = it.idPersonWhoReceive,
-                    idGroup = it.idGroup
-                )
-            }
-        }*/
-
 
     fun getPaymentsByIdGroup(groupId: String): Flow<List<PaymentsModel>> {
         return paymentsDao.getPaymentsByIdGroup (groupId)
             .map { it.map { dto -> dto.toDomain() } }
+    }
+
+    suspend fun getPaymentByIdPayment(idPayment: String): PaymentsModel {
+        return paymentsDao.getPaymentByIdPayment(idPayment).toDomain()
     }
 
 
@@ -45,4 +36,22 @@ class PaymentsRepository @Inject constructor(
             )
         )
     }
+
+    suspend fun deletePaymentById(idPayment: String){
+        paymentsDao.deletePaymentById(idPayment)
+    }
+
+    suspend fun updatePaymentById(paymentModel: PaymentsModel){
+        paymentsDao.updatePaymentById(
+            PaymentEntity(
+                paymentModel.idPayment,
+                paymentModel.amount,
+                paymentModel.idPersonWhoPay,
+                paymentModel.idPersonWhoReceive,
+                paymentModel.idGroup
+            )
+        )
+    }
+
+
 }

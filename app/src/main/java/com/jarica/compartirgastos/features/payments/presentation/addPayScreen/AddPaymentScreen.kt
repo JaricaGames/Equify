@@ -171,7 +171,7 @@ fun MainScreenAddPayment(
                 verticalArrangement = Arrangement.Top
             ) {
                 Text(
-                    "$payForPlaceHolder:      $personWhoPayText",
+                    "$payForPlaceHolder:     $personWhoPay.name",
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.Normal,
@@ -257,7 +257,7 @@ fun MainScreenAddPayment(
                                     .clickable {
                                         addPaymentScreenViewModel.onPersonWhoReceiveSelected(person)
                                     }) {
-                                if (person.idGroupName == groupId && personWhoPayText != person.name) {
+                                if (person.idGroupName == groupId && personWhoPay.name != person.name) {
                                     Text(
                                         person.name,
                                         fontFamily = parkinsans,
@@ -295,7 +295,7 @@ fun MainScreenAddPayment(
             Spacer(Modifier.size(20.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = personWhoPayText != "" && personWhoReceiveText != "" && amountText != "",
+                enabled = personWhoPay.name != "" && personWhoReceive.name != "" && amountText != "",
                 colors = ButtonColors(
                     containerColor = DarkOrange,
                     contentColor = White,

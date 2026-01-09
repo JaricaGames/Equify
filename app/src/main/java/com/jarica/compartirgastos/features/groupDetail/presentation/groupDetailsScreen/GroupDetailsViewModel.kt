@@ -41,9 +41,8 @@ class GroupDetailsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val sumCostByGroup: StateFlow<TotalExpensesUiState> = _groupIdFlow
-        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .filterNotNull()
         .flatMapLatest { id ->
-            // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getSumCostByGroupUseCase(id)
         }
         .map(TotalExpensesUiState::Success)
@@ -75,6 +74,29 @@ class GroupDetailsViewModel @Inject constructor(
     private var interstitialAd: InterstitialAd? = null
     private val _isAdLoaded = MutableStateFlow(false)
     val isAdLoaded: StateFlow<Boolean> = _isAdLoaded
+
+
+
+    fun setGroupId(id: String) {
+        _groupIdFlow.value = id
+    }
+
+    fun getGroupNameById(idGroup: String?) {
+        viewModelScope.launch {
+            try {
+                val group = getGroupByIdUseCase(idGroup!!)
+                _nameOfGroup.value = group.groupName
+            } catch (e: Exception) {
+                _nameOfGroup.value = "Nuevo grupo"
+            }
+            _nameOfGroup.value = getGroupByIdUseCase(idGroup!!).groupName
+        }
+    }
+
+    fun onFabClick() {
+        _isFabExpanded.value = !_isFabExpanded.value
+    }
+
 
     fun loadAd() {
         val adRequest = AdRequest.Builder().build()
@@ -116,27 +138,5 @@ class GroupDetailsViewModel @Inject constructor(
 
     // ------------------- ADMOB -------------------------
 
-
-    fun setGroupId(id: String) {
-        //  iDGroupName = id
-        _groupIdFlow.value = id
-        //getGroupNameById(id)
-    }
-
-    fun getGroupNameById(idGroup: String?) {
-        viewModelScope.launch {
-            try {
-                val group = getGroupByIdUseCase(idGroup!!)
-                _nameOfGroup.value = group.groupName
-            } catch (e: Exception) {
-            _nameOfGroup.value = "Nuevo grupo"
-            }
-            _nameOfGroup.value = getGroupByIdUseCase(idGroup!!).groupName
-        }
-    }
-
-    fun onFabClick() {
-        _isFabExpanded.value = !_isFabExpanded.value
-    }
 
 }

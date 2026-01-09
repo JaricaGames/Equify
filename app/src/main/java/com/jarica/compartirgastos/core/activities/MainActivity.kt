@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.core.view.WindowCompat
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.core.presentation.ui.theme.CompartirGastosTheme
-import com.jarica.compartirgastos.features.Splash.presentation.SplashScreen.SplashScreenViewModel
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
@@ -24,6 +23,7 @@ import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScre
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
+import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentViewModel
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
@@ -43,11 +43,11 @@ class MainActivity : ComponentActivity() {
     private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
     private val customizeGroupScreenViewModel: EditGroupNameScreenViewModel by viewModels()
     private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
-    private val splashScreenViewModel: SplashScreenViewModel by viewModels()
     private val aboutScreenViewModel: AboutEquifyScreenViewModel by viewModels()
     private val resumeScreenViewModel: ResumeViewModel by viewModels()
     private val costsViewModel: CostsViewModel by viewModels()
     private val paymentsViewModel: PaymentsScreenViewModel by viewModels()
+    private val editPaymentsViewModel: EditPaymentViewModel by viewModels()
 
 
 
@@ -57,12 +57,10 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // Para el caso de 3 botones, desactiva la protección del contraste
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightNavigationBars =
-            true // O false, según el color de fondo
+            true
         setContent {
-
             LaunchedEffect(Unit) {
                 groupViewModel.loadAd()
             }
@@ -80,11 +78,11 @@ class MainActivity : ComponentActivity() {
                     configurationScreenViewModel,
                     customizeGroupScreenViewModel,
                     doTheCountsScreenViewModel,
-                    splashScreenViewModel,
                     aboutScreenViewModel,
                     resumeScreenViewModel,
                     costsViewModel,
-                    paymentsViewModel
+                    paymentsViewModel,
+                    editPaymentsViewModel
                 )
             }
         }

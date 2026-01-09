@@ -101,7 +101,7 @@ fun GroupsScreen(
                         Icon(Icons.Default.Add, contentDescription = "Add")
                     }
                 })
-                { innerPadding ->
+                { paddingValues ->
 
                     Column(modifier = Modifier
                         .fillMaxSize()
@@ -182,7 +182,6 @@ fun ItemGroupName(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(VeryDarkBlue)
-            .padding(horizontal = 32.dp, vertical = 8.dp)
             .clickable {
                 groupViewModel.onGroupSelected(
                     group.idGroupName,
@@ -190,18 +189,21 @@ fun ItemGroupName(
                 ) // Guardame el grupo elegido
                 mainScreenViewModel.setGroupId(group.idGroupName)
                 navigateToMainScreen(group.idGroupName) // navegamos a la pantalla del grupo elegido
-            },
-        horizontalArrangement = Arrangement.Start
+            }
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
+        Spacer(Modifier.size(12.dp))
         Text(
             group.groupName,
             color = White,
             fontFamily = parkinsans,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = painterResource(R.drawable.delete_svgrepo),
             contentDescription = "",
@@ -210,12 +212,10 @@ fun ItemGroupName(
                 .size(20.dp)
                 .clickable {
                     groupViewModel.onDeletedSelected(group, group.idGroupName)
-                    if (groupsList.isEmpty()) navigateToInitialScreen()
-
+                    if (groupsList.size <=1) navigateToInitialScreen()
                 }
         )
     }
-
 }
 
 @SuppressLint("MissingPermission")

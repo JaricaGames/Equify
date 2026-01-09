@@ -1,5 +1,6 @@
 package com.jarica.compartirgastos.features.payments.presentation.paymentsScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,8 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 fun PaymentsFragment(
     idGroup: String?,
     paymentsViewModel: PaymentsScreenViewModel,
-    modifier: Modifier
+    modifier: Modifier,
+    navigateToEditPayments: (PaymentsModel) -> Unit
 ) {
 
     LaunchedEffect(idGroup) {
@@ -70,6 +72,7 @@ fun PaymentsFragment(
                 (uiStatePaymentsFragment as PaymentsScreenUiState.Success).paymentsList,
                 idGroup,
                 paymentsViewModel,
+                navigateToEditPayments
             )
 
         }
@@ -81,7 +84,8 @@ fun PaymentsFragment(
 fun PaymentsList(
     paymentsList: List<PaymentsModel>,
     idGroup: String?,
-    paymentsViewModel: PaymentsScreenViewModel
+    paymentsViewModel: PaymentsScreenViewModel,
+    navigateToEditPayments: (PaymentsModel) -> Unit
 ) {
 
     LazyColumn(
@@ -93,7 +97,7 @@ fun PaymentsList(
             paymentsList,
             key = { it.idPayment }
         ) { payment ->
-            ItemPaymentName(payment, paymentsViewModel)
+            ItemPaymentName(payment, paymentsViewModel, navigateToEditPayments)
         }
     }
 }
@@ -101,7 +105,8 @@ fun PaymentsList(
 @Composable
 fun ItemPaymentName(
     item: PaymentsModel,
-    paymentsViewModel: PaymentsScreenViewModel
+    paymentsViewModel: PaymentsScreenViewModel,
+    navigateToEditPayments: (PaymentsModel) -> Unit
 ) {
     val namePersonWhoPay by produceState(initialValue = "", key1 = item.idPersonWhoPay) {
         val name = paymentsViewModel.getPersonName(item.idPersonWhoPay)
@@ -116,7 +121,9 @@ fun ItemPaymentName(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp).clickable {
+                navigateToEditPayments(item)
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     )

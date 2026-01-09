@@ -12,3 +12,4 @@ fun PaymentEntity.toDomain(): PaymentsModel {
         idGroup = this.idGroup
     )
 }
+

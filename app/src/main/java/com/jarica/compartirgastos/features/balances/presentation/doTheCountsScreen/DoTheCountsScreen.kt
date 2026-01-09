@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomHeader
@@ -51,14 +50,12 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoTheCountsScreen(
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToGroupScreen: () -> Unit,
-    mainScreenViewModel: GroupDetailsViewModel,
     idGroupName: String?,
 ) {
 
@@ -68,22 +65,7 @@ fun DoTheCountsScreen(
     }
 
     val paymentsList by doTheCountsScreenViewModel.paymentsState.collectAsState()
-   // val listOfPayments by mainScreenViewModel.paymentsToDoTheCounts.collectAsState()
     val context = LocalContext.current
-
-
-    LocalLifecycleOwner.current.lifecycle
-    /*val uiStateCosts by produceState<CostsScreenUiState>(
-        initialValue = CostsScreenUiState.Loading,
-        key1 = lifecycle,
-        key2 = mainScreenViewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            mainScreenViewModel.uiStateCosts.collect { value = it }
-        }
-    }*/
-
-
     val createPdfLauncher = rememberLauncherForActivityResult(
 
         contract = ActivityResultContracts.CreateDocument("application/pdf"),

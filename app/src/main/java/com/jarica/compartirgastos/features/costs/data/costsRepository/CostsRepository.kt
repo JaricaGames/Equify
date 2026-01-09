@@ -75,7 +75,7 @@ class CostsRepository @Inject constructor(
         )
     }
 
-    //Mapear de DistributionPaymentEntity a DistributionPaymentModel
+
     suspend fun insertDistributionPayment(distributionPaymentModel: DistributionPaymentModel) {
         distributionPaymentDao.insertDistributionPayment(
             DistributionPaymentEntity(

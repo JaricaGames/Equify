@@ -27,6 +27,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     placeholderText: String = "",
     suffixText: String? = null,
     textStyle: TextStyle,
@@ -49,6 +50,7 @@ fun CustomTextField(
         singleLine = singleLine,
         maxLines = maxLines,
         textStyle = textStyle,
+        enabled = enabled,
         keyboardOptions = keyboardOptions,
         modifier = modifier
             .fillMaxWidth()
@@ -58,7 +60,7 @@ fun CustomTextField(
             TextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = innerTextField,
-                enabled = true,
+                enabled = enabled,
                 singleLine = singleLine,
                 visualTransformation = VisualTransformation.None,
                 placeholder = {

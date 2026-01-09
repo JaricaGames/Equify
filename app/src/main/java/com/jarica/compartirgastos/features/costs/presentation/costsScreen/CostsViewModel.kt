@@ -24,9 +24,8 @@ class CostsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiStateCosts: StateFlow<CostsScreenUiState> = _groupId
-        .filterNotNull() // <--- IMPORTANTE: Si es null, se detiene aquí y no crashea
+        .filterNotNull()
         .flatMapLatest { id ->
-            // Ahora 'id' es seguro (no null), llamamos al caso de uso
             getCostsByIdGroupUseCase(id)
         }
         .map(CostsScreenUiState::Success)

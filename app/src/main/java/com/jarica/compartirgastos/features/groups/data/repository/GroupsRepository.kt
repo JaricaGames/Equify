@@ -14,7 +14,6 @@ class GroupsRepository @Inject constructor(
     val groupNameDao: GroupsDao
 ) {
 
-    //Mapear de GroupEntity a GroupNameModel
     val groupNamesModel: Flow<List<GroupModel>> = groupNameDao.getAllGroupName()
         .map { items -> items.map { GroupModel(it.idGroup, it.groupName) } }
 
@@ -28,7 +27,6 @@ class GroupsRepository @Inject constructor(
         return groupNameDao.getGroupsMembersById(id)
     }
 
-    //Metodo que actualiza algun valor del grupo (ej:nombre)
     suspend fun updateGroup(groupNameModel: GroupModel) {
         return groupNameDao.updateGroupName(
             GroupNameEntity(
@@ -39,8 +37,6 @@ class GroupsRepository @Inject constructor(
         )
     }
 
-
-    //Metodo que borra un grupo y lo que lleva ese grupo (costos, personas, etc...)
     suspend fun deleteGroup(groupNameModel: GroupModel, iDGroupName: String) {
 
         groupNameDao.deleteGroupName(
@@ -50,10 +46,5 @@ class GroupsRepository @Inject constructor(
 
             )
         )
-        /*
-        personNameDao.deletePersonNameByIdGroup(iDGroupName)
-        costsDao.deleteAllCostOfAGroup(iDGroupName)
-        // costsDao.deleteCostOfPersonOfAGroup(iDGroupName)
-        paymentsDao.deletePaymentsOfAGroup(iDGroupName)*/
     }
 }

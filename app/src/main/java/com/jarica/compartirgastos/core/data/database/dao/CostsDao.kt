@@ -41,10 +41,6 @@ interface CostsDao {
     @Update
     suspend fun updateCost(costEntity: CostEntity)
 
-    //Metodo que actualiza un gasto por persona
-    @Update
-    suspend fun updateCostOfPerson(costsOfPersonsEntity: DistributionCostEntity)
-
     //Metodo que devuelve la suma de todos los gastos de un grupo
     @Query("""SELECT COALESCE(SUM(amount), 0) FROM costsTable WHERE idGroup = :groupId""")
     fun getSumCostsByIdGroup(groupId: String): Flow<Float>

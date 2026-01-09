@@ -70,6 +70,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
+import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.presentation.ui.addCost
 import com.jarica.compartirgastos.core.presentation.ui.addPay
 import com.jarica.compartirgastos.core.presentation.ui.addPeople
@@ -110,7 +111,8 @@ fun MainScreen(
     navigateToDoTheCounts: () -> Unit,
     doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     onDoTheCountsClicked: () -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel
+    editCostScreenViewModel: EditCostScreenViewModel,
+    navigateToEditPayments: (PaymentsModel) -> Unit,
 ) {
 
     val nameOfGroup: String by mainScreenViewModel.nameOfGroup.collectAsState("")
@@ -181,7 +183,8 @@ fun MainScreen(
                         (sumCosts as TotalExpensesUiState.Success),
                         editCostScreenViewModel,
                         costsViewModel,
-                        paymentsViewModel
+                        paymentsViewModel,
+                        navigateToEditPayments
                     )
                     if (isFabExpanded) {
                         Scrim(onDismiss = { mainScreenViewModel.onFabClick() })
@@ -336,6 +339,7 @@ fun MainScreenWithPager(
     editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
     paymentsViewModel: PaymentsScreenViewModel,
+    navigateToEditPayments: (PaymentsModel) -> Unit,
 ) {
     LaunchedEffect(idGroup) {
         if (idGroup != null) {
@@ -386,7 +390,8 @@ fun MainScreenWithPager(
                 GroupDetailsViewModel.MainTab.PAYMENTS -> PaymentsFragment(
                     idGroup,
                     paymentsViewModel,
-                    Modifier.weight(1f)
+                    Modifier.weight(1f),
+                    navigateToEditPayments
                 )
             }
         }
@@ -476,6 +481,7 @@ fun MainView(
     editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
     paymentsViewModel: PaymentsScreenViewModel,
+    navigateToEditPayments: (PaymentsModel) -> Unit,
 ) {
 
     Column(
@@ -507,7 +513,8 @@ fun MainView(
             navigateToEditCost,
             editCostScreenViewModel,
             costsViewModel,
-            paymentsViewModel
+            paymentsViewModel,
+            navigateToEditPayments
         )
         Spacer(Modifier.weight(1f))
         // BannerAdViewMainScreen()

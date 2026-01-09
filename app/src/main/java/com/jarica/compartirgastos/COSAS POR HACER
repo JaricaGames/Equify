@@ -2,6 +2,75 @@
 ------------------------------
 POR HACER
 
+1. Mejoras de Funcionalidad (User Experience)
+•
+Ponderación en el reparto (Splitting options):
+◦
+Ahora: Parece que divides a partes iguales (Equitativo).
+◦
+Mejora: Permite repartir por:
+▪
+Porcentajes: (Ej. Uno paga el 60%, el otro el 40%).
+▪
+Partes (Shares): (Ej. Uno cuenta como 2 personas porque comió el doble).
+▪
+Importe exacto: (Ej. "Yo pagué 10€ y tú 5€").
+◦
+Cómo: Necesitarás modificar la UI de AddExpense para permitir editar los campos de amount individualmente antes de guardar.
+•
+Sugerencia de "Pagos Mínimos" (Algoritmo de simplificación de deudas):
+◦
+Ahora: Probablemente calculas "A le debe a B" y "B le debe a C".
+◦
+Mejora: Si A le debe 10 a B, y B le debe 10 a C... el algoritmo debería sugerir que A le pague 10 directamente a C, eliminando a B de la ecuación. Esto reduce el número de transferencias necesarias.
+•
+Moneda y Categorías:
+◦
+Añadir un campo category (Comida, Transporte, Alojamiento) a la entidad CostEntity.
+◦
+Mostrar gráficos circulares en la pantalla principal para ver en qué se gasta más.
+2. Mejoras Técnicas y de Arquitectura
+•
+Sincronización en la Nube (Offline-First):
+◦
+Veo que tienes dependencias de Firebase. Si aún no lo has hecho, implementar la sincronización de Room con Firestore es el paso más grande.
+◦
+Usa WorkManager para subir los cambios cuando recupere internet si el usuario está offline.
+•
+Validación de Datos en UI:
+◦
+Asegúrate de que el botón "Guardar" esté deshabilitado si:
+▪
+El importe es 0 o vacío.
+▪
+No hay descripción.
+▪
+No hay personas seleccionadas para el reparto.
+•
+Tests Unitarios:
+◦
+Es crítico testear la lógica de los balances (getBalancesByGroup). Crea tests unitarios para verificar que las sumas y restas de deudas complejas dan el resultado esperado. Es donde más bugs suelen aparecer en este tipo de apps.
+3. Mejoras Visuales (UI/UX)
+•
+Animaciones en Compose:
+◦
+Usa AnimatedVisibility al expandir los detalles de un gasto.
+◦
+Anima las barras de progreso o los textos de los balances cuando cambian los valores.
+•
+Modo Oscuro/Claro:
+◦
+Asegúrate de que tu Theme.kt maneja correctamente los colores para ambos modos.
+4. Una mejora específica para tu código actual
+En tu entidad DistributionCostEntity, estás usando Float para el dinero:
+Kotlin
+@ColumnInfo(name = "amount") val amount: Float,
+Problema: Los Float (y Double) tienen problemas de precisión con decimales (ej. 0.1 + 0.2 puede dar 0.300000004). En apps financieras esto puede hacer que falten o sobren céntimos al cuadrar cuentas.
+Mejora:
+•
+Opción A (Profesional): Guarda los valores como Long (enteros) multiplicando por 100 (guardar céntimos). Ej: 10.50€ -> Guardas 1050. Al mostrarlo divides por 100.
+•
+Opción B (Librería): Usar BigDecimal de Java, aunque Room necesita un TypeConverter para guardarlo como String o Double.
 
 
 ------------------------------
