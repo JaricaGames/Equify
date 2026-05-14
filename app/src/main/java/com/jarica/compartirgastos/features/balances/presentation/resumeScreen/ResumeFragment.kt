@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,12 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.core.domain.models.PersonBalance
-import com.jarica.compartirgastos.core.presentation.ui.theme.Black
-import com.jarica.compartirgastos.core.presentation.ui.theme.DarkGreen
-import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
-import com.jarica.compartirgastos.core.presentation.ui.theme.Red
+import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import kotlin.math.absoluteValue
+
+private val BalGreen  = Color(0xFF2E8B6F)
+private val BalRed    = Color(0xFFC0533D)
+private val BalMuted  = Color(0xFF6B7A86)
+private val Divider   = Color(0xFFE6E4DE)
+private val Ink       = Color(0xFF1F2A33)
 
 @Composable
 fun ResumeFragment(
@@ -35,116 +39,76 @@ fun ResumeFragment(
     modifier: Modifier,
     resumeViewModel: ResumeViewModel,
 ) {
-
     LaunchedEffect(idGroup) {
         resumeViewModel.setGroup(idGroup)
     }
 
-    val uiStateResumeFragment by resumeViewModel.uiStateResumeGroup.collectAsState()
+    val uiState by resumeViewModel.uiStateResumeGroup.collectAsState()
 
-    when (val state = uiStateResumeFragment) {
-
+    when (val state = uiState) {
         is ResumeUiState.Error -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Error: ${(uiStateResumeFragment as ResumeUiState.Error).message}", color = Color.Red)
+                Text("Error: ${state.message}", color = Color.Red)
             }
         }
         is ResumeUiState.Loading -> {
-
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         }
-
         is ResumeUiState.Success -> {
-          //  mainScreenViewModel.getGroupNameById(idGroup!!)
-            val personBalanceList = state.peopleList
-            PeopleList(personBalanceList)
-
+            PeopleList(state.peopleList)
         }
     }
 }
 
 @Composable
-fun PeopleList(
-    personBalanceList: List<PersonBalance>,
-) {
-
-    LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(
-            personBalanceList,
-            key = { it.idPerson }
-        ) { balancePerson ->
-                ItemPeopleName(balancePerson)
+fun PeopleList(personBalanceList: List<PersonBalance>) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        items(personBalanceList, key = { it.idPerson }) { person ->
+            MemberRow(person)
         }
     }
 }
 
 @Composable
-fun ItemPeopleName(person: PersonBalance) {
-
-
+fun MemberRow(person: PersonBalance) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 18.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        CustomIcon(name = person.name)
 
         Text(
             person.name,
-            fontSize = 15.sp,
-            color = Black,
+            fontSize = 14.sp,
             fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal
+            fontWeight = FontWeight.Medium,
+            color = Ink
         )
-        Spacer(modifier = Modifier.weight(1f))
-        if (person.balance > 0f) {
-            Row {
-                Text(
-                    "+" + "%.2f".format(person.balance) + " €",
-                    fontSize = 15.sp,
-                    color = DarkGreen,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-            }
 
-        }
-        if (person.balance < 0f) {
-            Row {
-                Text(
-                    "-" + "%.2f".format(person.balance.absoluteValue) + " €",
-                    fontSize = 15.sp,
-                    color = Red,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
+        Spacer(Modifier.weight(1f))
 
-            }
+        val (balanceText, balanceColor) = when {
+            person.balance > 0f -> "+ ${"%.2f".format(person.balance)} €" to BalGreen
+            person.balance < 0f -> "− ${"%.2f".format(person.balance.absoluteValue)} €" to BalRed
+            else                -> "${"%.2f".format(0f)} €" to BalMuted
         }
-        if (person.balance == 0f) {
-            Row {
 
-                Text(
-                    "%.2f".format(person.balance.absoluteValue),
-                    fontSize = 15.sp,
-                    color = Black,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-                Text(
-                    " €",
-                    fontSize = 15.sp,
-                    color = DarkOrange,
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-        }
+        Text(
+            balanceText,
+            fontSize = 15.sp,
+            fontFamily = parkinsans,
+            fontWeight = FontWeight.Bold,
+            color = balanceColor
+        )
     }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 18.dp),
+        color = Divider.copy(alpha = 0.5f),
+        thickness = 1.dp
+    )
 }

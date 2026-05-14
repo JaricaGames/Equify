@@ -38,7 +38,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
@@ -61,13 +60,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
@@ -752,6 +751,10 @@ fun Header(
     navigateToConfiguration: () -> Unit,
     success: TotalExpensesUiState.Success
 ) {
+    val total = success.totalCost
+    val intPart = total.toInt().toString()
+    val decPart = ",%02d".format(((total - total.toInt()) * 100).toInt())
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -762,9 +765,7 @@ fun Header(
                 val half = side / 2f
                 val cx = size.width - 40.dp.toPx()
                 val cy = size.height - 40.dp.toPx()
-                withTransform({
-                    rotate(degrees = 45f, pivot = Offset(cx, cy))
-                }) {
+                withTransform({ rotate(degrees = 45f, pivot = Offset(cx, cy)) }) {
                     drawRoundRect(
                         color = DarkOrange,
                         topLeft = Offset(cx - half, cy - half),
@@ -774,64 +775,113 @@ fun Header(
                     )
                 }
             }
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(WindowInsets.statusBars.asPaddingValues())
+            .padding(horizontal = 18.dp),
+        verticalArrangement = Arrangement.Top
     ) {
+        // Top row: back · "Grupo" label · settings
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WindowInsets.statusBars.asPaddingValues())
+                .padding(top = 14.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                onClick = {
-                    navigateToGroupsScreen()
-                }
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(White.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { navigateToGroupsScreen() },
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.arrow_back),
                     contentDescription = "",
-                    tint = White
+                    tint = White,
+                    modifier = Modifier.size(22.dp)
                 )
             }
-            Spacer(Modifier.weight(1f))
-            IconButton(
-                onClick = {
-                    navigateToConfiguration()
-                }) {
+            Text(
+                "Grupo",
+                fontSize = 13.sp,
+                color = White.copy(alpha = 0.7f),
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Medium
+            )
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(White.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { navigateToConfiguration() },
+                contentAlignment = Alignment.Center
+            ) {
                 Icon(
-                    modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ellipsis),
                     contentDescription = "",
-                    tint = White
+                    tint = White,
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }
+
+        // Group name — h1
         Text(
             nameOfGroup,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 32.dp, top = 8.dp),
-            textAlign = TextAlign.Start,
-            fontSize = 26.sp,
+                .padding(top = 14.dp),
+            fontSize = 32.sp,
             color = White,
             fontFamily = parkinsans,
-            fontWeight = FontWeight.W600
+            fontWeight = FontWeight.Bold,
+            letterSpacing = (-0.02).em
         )
-        Text(
-            totalCostText + ": " + success.totalCost.toString() + " €",
+
+        // Total hero: big number + € + label
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 32.dp, bottom = 8.dp),
-            textAlign = TextAlign.Start,
-            fontSize = 12.sp,
-            color = White,
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Light
-        )
+                .padding(top = 4.dp, bottom = 22.dp)
+        ) {
+            Text(
+                intPart,
+                modifier = Modifier.alignByBaseline(),
+                fontSize = 40.sp,
+                color = White,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.03).em
+            )
+            Text(
+                decPart,
+                modifier = Modifier.alignByBaseline(),
+                fontSize = 26.sp,
+                color = White,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.03).em
+            )
+            Text(
+                " €",
+                modifier = Modifier.alignByBaseline(),
+                fontSize = 18.sp,
+                color = White.copy(alpha = 0.8f),
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                totalCostText.uppercase(),
+                modifier = Modifier.alignByBaseline(),
+                fontSize = 11.sp,
+                color = White.copy(alpha = 0.7f),
+                fontFamily = parkinsans,
+                letterSpacing = 0.1.em
+            )
+        }
     }
-
 }
 
 @SuppressLint("MissingPermission")
