@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"E:\\\\CompartirGastos\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(cp \"C:\\\\Users\\\\Nono\\\\.claude\\\\projects\\\\E--CompartirGastos\\\\facc15a2-f391-4df1-9f05-270b6183cbcb\\\\tool-results\\\\webfetch-1778753994789-bfvpys.bin\" /tmp/splash.gz)",
+      "Bash(gunzip -c /tmp/splash.gz)",
+      "Read(//tmp/**)",
+      "Bash(tar -tzf splash.gz)",
+      "Bash(xargs grep -l \"splash\\\\|Splash\")",
+      "Bash(cp \"C:\\\\Users\\\\Nono\\\\.claude\\\\projects\\\\E--CompartirGastos\\\\facc15a2-f391-4df1-9f05-270b6183cbcb\\\\tool-results\\\\webfetch-1778756857027-qhxf0k.bin\" /tmp/app.gz)",
+      "Bash(tar -tzf /tmp/app.gz)",
+      "Bash(grep \"\\\\.kt$\")",
+      "Bash(python -c ' *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(git remote *)",
+      "Bash(git config *)"
+    ]
+  }
+}
