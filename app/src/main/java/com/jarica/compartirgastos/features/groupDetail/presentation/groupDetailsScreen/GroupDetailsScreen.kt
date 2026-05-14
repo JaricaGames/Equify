@@ -56,7 +56,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -750,8 +755,25 @@ fun Header(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
-            .background(color = DarkBlue)
+            .clip(RoundedCornerShape(bottomEnd = 22.dp, bottomStart = 22.dp))
+            .drawBehind {
+                drawRect(DarkBlue)
+                val side = 140.dp.toPx()
+                val half = side / 2f
+                val cx = size.width - 40.dp.toPx()
+                val cy = size.height - 40.dp.toPx()
+                withTransform({
+                    rotate(degrees = 45f, pivot = Offset(cx, cy))
+                }) {
+                    drawRoundRect(
+                        color = DarkOrange,
+                        topLeft = Offset(cx - half, cy - half),
+                        size = Size(side, side),
+                        cornerRadius = CornerRadius(6.dp.toPx()),
+                        alpha = 0.95f
+                    )
+                }
+            }
             .padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally

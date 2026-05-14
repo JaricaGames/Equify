@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="132dp"
+    android:height="132dp"
+    android:viewportWidth="400"
+    android:viewportHeight="400">
+
+    <!-- Cream background -->
+    <path
+        android:fillColor="#F6F1E8"
+        android:pathData="M0,0L400,0L400,400L0,400Z"/>
+
+    <!-- Orange circle: center(140,200) r=110 -->
+    <path
+        android:fillColor="#E45637"
+        android:pathData="M30,200 A110,110 0 0,1 250,200 A110,110 0 0,1 30,200Z"/>
+
+    <!-- Navy circle: center(260,200) r=110 -->
+    <path
+        android:fillColor="#35526A"
+        android:pathData="M150,200 A110,110 0 0,1 370,200 A110,110 0 0,1 150,200Z"/>
+
+    <!-- White lens: orange circle clipped to navy circle = intersection area in white -->
+    <group>
+        <clip-path android:pathData="M150,200 A110,110 0 0,1 370,200 A110,110 0 0,1 150,200Z"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M30,200 A110,110 0 0,1 250,200 A110,110 0 0,1 30,200Z"/>
+    </group>
+
+</vector>

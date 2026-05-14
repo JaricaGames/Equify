@@ -58,49 +58,45 @@ fun DoTheCountsScreen(
     navigateToGroupScreen: () -> Unit,
     idGroupName: String?,
 ) {
-
-    // DISPARADOR: Calcula al entrar
     LaunchedEffect(idGroupName) {
         doTheCountsScreenViewModel.calculatePayments(idGroupName)
     }
 
     val paymentsList by doTheCountsScreenViewModel.paymentsState.collectAsState()
+    val pdfReady by doTheCountsScreenViewModel.pdfReady.collectAsState()
+    val groupName by doTheCountsScreenViewModel.groupName.collectAsState()
     val context = LocalContext.current
-    val createPdfLauncher = rememberLauncherForActivityResult(
 
+    val createPdfLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/pdf"),
         onResult = { uri: Uri? ->
             uri?.let {
-
-                // Crear el PDF
-                /*doTheCountsScreenViewModel.createPdf(
-                    context.contentResolver,
-                    it,
-                    listOfPayments,
-                    //(uiStateCosts as CostsScreenUiState.Success).costsList
-                )*/
-
-                // Intent para abrirlo inmediatamente
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(it, "application/pdf")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-                try {
-                    context.startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(context, noAppToOpenPDF, Toast.LENGTH_SHORT).show()
-                }
+                doTheCountsScreenViewModel.createPdf(context.contentResolver, it)
             }
         }
     )
 
+    LaunchedEffect(pdfReady) {
+        pdfReady?.let { uri ->
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            try {
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, noAppToOpenPDF, Toast.LENGTH_SHORT).show()
+            }
+            doTheCountsScreenViewModel.onPdfOpened()
+        }
+    }
+
     MainViewDoTheCountsScreen(
         paymentsList,
         createPdfLauncher,
-        doTheCountsScreenViewModel,
-        navigateToGroupScreen
+        navigateToGroupScreen,
+        groupName
     )
-
 }
 
 
@@ -108,8 +104,8 @@ fun DoTheCountsScreen(
 fun MainViewDoTheCountsScreen(
     listOfPayments: List<PaymentsToDoCountsModel>,
     createPdfLauncher: ManagedActivityResultLauncher<String, Uri?>,
-    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
-    navigateToGroupScreen: () -> Unit
+    navigateToGroupScreen: () -> Unit,
+    groupName: String = ""
 ) {
 
     Column(
@@ -161,7 +157,7 @@ fun MainViewDoTheCountsScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    //groupNameCompanionObject?.let { createPdfLauncher.launch(it) }
+                    createPdfLauncher.launch("Equify_$groupName.pdf")
                 })
             {
                 Text(
@@ -214,8 +210,3 @@ fun PaymentsListDoTheCounts(paymentsList: List<PaymentsToDoCountsModel>) {
         }
     }
 }
-
-
-
-
-

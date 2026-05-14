@@ -132,14 +132,14 @@ fun ItemPeopleName(person: PersonBalance) {
 
                 Text(
                     "%.2f".format(person.balance.absoluteValue),
-                    fontSize = 12.sp,
+                    fontSize = 15.sp,
                     color = Black,
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.Normal
                 )
                 Text(
                     " €",
-                    fontSize = 12.sp,
+                    fontSize = 15.sp,
                     color = DarkOrange,
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.Normal

@@ -10,9 +10,3 @@ sealed interface AddCostsUiState {
     data class Success(val listOfPeople: List<PersonModel>): AddCostsUiState
 }
 
-sealed interface AddCostsPersonListUiState {
-
-    data object Loading: AddCostsPersonListUiState
-    data class Error(val throwable: Throwable): AddCostsPersonListUiState
-    data class Success(val listOfPeople: List<PersonModel>): AddCostsPersonListUiState
-}

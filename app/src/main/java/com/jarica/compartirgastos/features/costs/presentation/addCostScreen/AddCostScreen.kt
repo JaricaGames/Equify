@@ -21,9 +21,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,9 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
@@ -63,52 +59,34 @@ fun AddCostScreen(
     navigateToMainScreen: () -> Unit,
     idGroupName: String,
 ) {
-            addCostViewModel.cleanTexts()
-
     LaunchedEffect(idGroupName) {
         addCostViewModel.setGroup(idGroupName)
     }
 
-    val descriptionText: String by addCostViewModel.descriptionText.observeAsState("")
-    val amountText: String by addCostViewModel.amountText.observeAsState("")
-    val isFromSelected: Boolean by addCostViewModel.isFromSelected.observeAsState(false)
-    val fromTextAddCosts: String by addCostViewModel.fromTextAddCost.observeAsState("")
-    val personToAddCosts: PersonModel? by addCostViewModel.personToAddCost.observeAsState(null)
+    val descriptionText by addCostViewModel.descriptionText.collectAsState()
+    val amountText by addCostViewModel.amountText.collectAsState()
+    val isFromSelected by addCostViewModel.isFromSelected.collectAsState()
+    val fromTextAddCosts by addCostViewModel.fromTextAddCost.collectAsState()
+    val personToAddCosts by addCostViewModel.personToAddCost.collectAsState()
+    val uiAddCostState by addCostViewModel.uiAddCostsUiState.collectAsState()
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val uiAddCostState by produceState<AddCostsUiState>(
-        initialValue = AddCostsUiState.Loading,
-        key1 = lifecycle,
-        key2 = addCostViewModel,
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            addCostViewModel.uiAddCostsUiState.collect { value = it }
-        }
-    }
-
-    when (uiAddCostState) {
+    when (val state = uiAddCostState) {
         is AddCostsUiState.Error -> {}
         is AddCostsUiState.Loading -> {}
         is AddCostsUiState.Success -> {
-
-            val listOfPeople = (uiAddCostState as AddCostsUiState.Success).listOfPeople
-
             MainViewAddCostScreen(
                 addCostViewModel,
                 descriptionText,
                 amountText,
                 isFromSelected,
                 fromTextAddCosts,
-                listOfPeople,
+                state.listOfPeople,
                 navigateToMainScreen,
                 personToAddCosts,
                 idGroupName
             )
         }
-
-
     }
-
 }
 
 
@@ -124,8 +102,7 @@ fun MainViewAddCostScreen(
     navigateToMainScreen: () -> Unit,
     personToAddCosts: PersonModel?,
     idGroupName: String,
-
-    ) {
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -147,7 +124,6 @@ fun MainViewAddCostScreen(
         ) {
 
             Spacer(Modifier.height(20.dp))
-            //TEXTFIELD DESCRIPCION
             CustomTextField(
                 value = descriptionText,
                 onValueChange = { addCostViewModel.onDescriptionChange(it) },
@@ -165,7 +141,6 @@ fun MainViewAddCostScreen(
             )
             Spacer(Modifier.height(20.dp))
 
-            //TEXTFIELD CANTIDAD
             CustomTextField(
                 value = amountText,
                 onValueChange = { addCostViewModel.onAmountChange(it) },
@@ -189,14 +164,10 @@ fun MainViewAddCostScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .background(Grey)
-                    .clickable {
-                        addCostViewModel.onFromSelected(isFromSelected)
-                    },
-
+                    .clickable { addCostViewModel.onFromSelected(isFromSelected) },
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Top
             ) {
-
                 Text(
                     "$fromText:      $fromTextAddCosts",
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
@@ -212,31 +183,25 @@ fun MainViewAddCostScreen(
                 )
 
                 if (isFromSelected) {
-
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-
                     ) {
                         items(listOfPeople) { person ->
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        addCostViewModel.onPersonSelected(person)
-
-                                    }) {
-                                if (person.idGroupName == idGroupName) {
-                                    Text(
-                                        person.name,
-                                        fontFamily = parkinsans,
-                                        fontWeight = FontWeight.Normal,
-                                        textAlign = TextAlign.Start,
-                                        fontSize = 12.sp,
-                                    )
-                                    Spacer(modifier = Modifier.size(8.dp))
-                                }
+                                    .clickable { addCostViewModel.onPersonSelected(person) }
+                            ) {
+                                Text(
+                                    person.name,
+                                    fontFamily = parkinsans,
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = 12.sp,
+                                )
+                                Spacer(modifier = Modifier.size(8.dp))
                             }
                         }
                     }
@@ -245,7 +210,7 @@ fun MainViewAddCostScreen(
             Spacer(Modifier.size(20.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = descriptionText != "" && amountText != "" && fromTextAddCosts != "",
+                enabled = descriptionText.isNotEmpty() && amountText.isNotEmpty() && personToAddCosts != null,
                 colors = ButtonColors(
                     containerColor = DarkOrange,
                     contentColor = White,
@@ -253,10 +218,8 @@ fun MainViewAddCostScreen(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    val numberOfPeople = addCostViewModel.calculateNumberOfPeople(listOfPeople, idGroupName)
-                    val sharedId = UUID.randomUUID().toString()
                     val costModel = CostModel(
-                        idCost = sharedId,
+                        idCost = UUID.randomUUID().toString(),
                         amount = amountText.toFloat(),
                         description = descriptionText,
                         idGroup = idGroupName
@@ -265,7 +228,6 @@ fun MainViewAddCostScreen(
                         idGroupName,
                         costModel,
                         listOfPeople,
-                        numberOfPeople,
                         amountText.toFloat(),
                         personToAddCosts!!.idPerson,
                         personToAddCosts.name,
@@ -284,8 +246,3 @@ fun MainViewAddCostScreen(
         }
     }
 }
-
-
-
-
-

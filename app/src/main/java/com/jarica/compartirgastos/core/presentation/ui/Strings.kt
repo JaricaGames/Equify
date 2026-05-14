@@ -3,7 +3,9 @@ package com.jarica.compartirgastos.core.presentation.ui
 const val app_name = "Equify"
 
 //SplashScreen
+const val appName = "Equify"
 const val initalPhrase = "Divide gastos,\nmultiplica momentos"
+const val buttonPhrase = "v 1.0  ·  Equify.app"
 
 
 //InitialScreenObject Screen
@@ -102,8 +104,8 @@ const val noAppToOpenPDF = "No hay app para abrir PDF"
 
 //AboutScreen
 const val aboutScreenText = "Sobre Equify"
-const val aboutScreenLongText = "Hola, soy Juan Antonio desde Cáceres. Si Equify te está haciendo más fácil repartir gastos, ¡déjanos tu valoración en Google Play! Tu opinión nos ayuda a crecer. ⭐" +
-        "¡Gracias por formar parte de Equify! \uD83D\uDE4C"
+const val aboutScreenLongText = "Hola, soy Juan Antonio desde Cáceres. Si Equify te está haciendo más fácil repartir gastos, ¡déjanos tu valoración en Google Play! Tu opinión nos ayuda a crecer." +
+"\n¡Gracias por formar parte de Equify!"
 const val buttonAboutScreenText = "Valorar Equify"
 const val aboutScreenLongText2 = "¿Tienes alguna idea para mejorar Equify?\n" +
         "Envíanos tu feedback, ¡queremos escucharte y seguir mejorando!"
