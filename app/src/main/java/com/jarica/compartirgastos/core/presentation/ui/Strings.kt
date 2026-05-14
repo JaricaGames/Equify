@@ -102,6 +102,15 @@ const val titleText = "Título"
 const val toText = "Pagado por"
 const val noAppToOpenPDF = "No hay app para abrir PDF"
 
+//EmptyState
+const val addFirstCost = "Añadir primer gasto"
+const val emptyCostsTitle = "Sin gastos"
+const val emptyCostsSubtitle = "Añade el primer gasto del grupo"
+const val emptyPaymentsTitle = "Sin pagos"
+const val emptyPaymentsSubtitle = "Añade un pago para ajustar cuentas"
+const val emptyResumeTitle = "Sin movimientos"
+const val emptyResumeSubtitle = "Aún no hay gastos en este grupo"
+
 //AboutScreen
 const val aboutScreenText = "Sobre Equify"
 const val aboutScreenLongText = "Hola, soy Juan Antonio desde Cáceres. Si Equify te está haciendo más fácil repartir gastos, ¡déjanos tu valoración en Google Play! Tu opinión nos ayuda a crecer." +

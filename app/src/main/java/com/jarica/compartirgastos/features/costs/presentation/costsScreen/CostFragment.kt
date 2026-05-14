@@ -25,6 +25,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
+import com.jarica.compartirgastos.core.presentation.composables.EmptyState
+import com.jarica.compartirgastos.core.presentation.ui.emptyCostsSubtitle
+import com.jarica.compartirgastos.core.presentation.ui.emptyCostsTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
@@ -73,9 +76,16 @@ fun CostsList(
     navigateToEditCost: (CostModel) -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
 ) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(costList, key = { it.idCost }) { cost ->
-            ItemCost(cost, navigateToEditCost, editCostScreenViewModel)
+    if (costList.isEmpty()) {
+        EmptyState(
+            title = emptyCostsTitle,
+            subtitle = emptyCostsSubtitle
+        )
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(costList, key = { it.idCost }) { cost ->
+                ItemCost(cost, navigateToEditCost, editCostScreenViewModel)
+            }
         }
     }
 }

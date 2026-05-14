@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.core.domain.models.PersonBalance
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
+import com.jarica.compartirgastos.core.presentation.composables.EmptyState
+import com.jarica.compartirgastos.core.presentation.ui.emptyResumeSubtitle
+import com.jarica.compartirgastos.core.presentation.ui.emptyResumeTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import kotlin.math.absoluteValue
 
@@ -64,9 +67,16 @@ fun ResumeFragment(
 
 @Composable
 fun PeopleList(personBalanceList: List<PersonBalance>) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(personBalanceList, key = { it.idPerson }) { person ->
-            MemberRow(person)
+    if (personBalanceList.isEmpty() || personBalanceList.all { it.balance == 0f }) {
+        EmptyState(
+            title = emptyResumeTitle,
+            subtitle = emptyResumeSubtitle
+        )
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(personBalanceList, key = { it.idPerson }) { person ->
+                MemberRow(person)
+            }
         }
     }
 }

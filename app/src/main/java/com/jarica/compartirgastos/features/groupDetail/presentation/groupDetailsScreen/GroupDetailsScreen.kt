@@ -76,6 +76,7 @@ import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.presentation.ui.addCost
+import com.jarica.compartirgastos.core.presentation.ui.addFirstCost
 import com.jarica.compartirgastos.core.presentation.ui.addPay
 import com.jarica.compartirgastos.core.presentation.ui.addPeople
 import com.jarica.compartirgastos.core.presentation.ui.costs
@@ -134,7 +135,12 @@ fun MainScreen(
                 color = Color.White,
                 tonalElevation = 0.dp,
             ) {
-                ButtonDoTheCounts(mainScreenViewModel, navigateToDoTheCounts)
+                ButtonDoTheCounts(
+                    mainScreenViewModel = mainScreenViewModel,
+                    navigateToDoTheCounts = navigateToDoTheCounts,
+                    hasCosts = (sumCosts as? TotalExpensesUiState.Success)?.totalCost?.let { it > 0f } ?: true,
+                    navigateToAddCostScreen = navigateToAddCostScreen
+                )
 
             }
 
@@ -305,18 +311,18 @@ fun SmallFab(
 @Composable
 fun ButtonDoTheCounts(
     mainScreenViewModel: GroupDetailsViewModel,
-    navigateToDoTheCounts: () -> Unit
+    navigateToDoTheCounts: () -> Unit,
+    hasCosts: Boolean,
+    navigateToAddCostScreen: () -> Unit
 ) {
     Row {
-
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-                // mainScreenViewModel.onDoTheCountsClicked()
-                navigateToDoTheCounts()
+                if (hasCosts) navigateToDoTheCounts()
+                else navigateToAddCostScreen()
             },
-            modifier = Modifier
-                .padding(vertical = 32.dp),
+            modifier = Modifier.padding(vertical = 32.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = DarkOrange,
@@ -324,7 +330,7 @@ fun ButtonDoTheCounts(
             )
         ) {
             Text(
-                text = doTheCount,
+                text = if (hasCosts) doTheCount else addFirstCost,
                 modifier = Modifier.padding(horizontal = 32.dp),
                 style = MaterialTheme.typography.titleMedium
             )

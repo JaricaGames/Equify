@@ -29,6 +29,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
+import com.jarica.compartirgastos.core.presentation.composables.EmptyState
+import com.jarica.compartirgastos.core.presentation.ui.emptyPaymentsSubtitle
+import com.jarica.compartirgastos.core.presentation.ui.emptyPaymentsTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 
@@ -81,9 +84,16 @@ fun PaymentsList(
     paymentsViewModel: PaymentsScreenViewModel,
     navigateToEditPayments: (PaymentsModel) -> Unit
 ) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(paymentsList, key = { it.idPayment }) { payment ->
-            ItemPaymentName(payment, paymentsViewModel, navigateToEditPayments)
+    if (paymentsList.isEmpty()) {
+        EmptyState(
+            title = emptyPaymentsTitle,
+            subtitle = emptyPaymentsSubtitle
+        )
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(paymentsList, key = { it.idPayment }) { payment ->
+                ItemPaymentName(payment, paymentsViewModel, navigateToEditPayments)
+            }
         }
     }
 }
