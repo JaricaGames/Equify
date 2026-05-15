@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,15 +56,17 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.GroupModel
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
+import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsAvatarColors
+import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardBorder
+import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardInk
+import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardMuted
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
-private val CardBorder = Color(0xFFE6E4DE)
-private val Ink        = Color(0xFF1F2A33)
-private val Muted      = Color(0xFF6B7A86)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,37 +116,13 @@ fun GroupsScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
+                            .padding(bottom = paddingValues.calculateBottomPadding())
                     ) {
                         GroupsHeader(
                             groupCount = listOfGroups.size,
                             navigateToAboutScreen = navigateToAboutScreen
                         )
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 14.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                "ACTIVOS",
-                                fontSize = 11.sp,
-                                fontFamily = parkinsans,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Muted,
-                                letterSpacing = 0.08.em
-                            )
-                            Spacer(Modifier.weight(1f))
-                            Text(
-                                "${listOfGroups.size} grupos",
-                                fontSize = 12.sp,
-                                fontFamily = parkinsans,
-                                fontWeight = FontWeight.Normal,
-                                color = Muted
-                            )
-                        }
-
+                        Spacer(Modifier.height(12.dp))
                         GroupList(
                             listOfGroups,
                             groupViewModel,
@@ -290,8 +269,8 @@ fun GroupCard(
     groupsList: List<GroupModel>,
     mainScreenViewModel: GroupDetailsViewModel,
 ) {
-    val peopleCount by produceState(initialValue = 0, key1 = group.idGroupName) {
-        value = groupViewModel.getPeopleCount(group.idGroupName)
+    val people by produceState(initialValue = emptyList<PersonModel>(), key1 = group.idGroupName) {
+        value = groupViewModel.getPeople(group.idGroupName)
     }
     val totalCost by produceState(initialValue = 0f, key1 = group.idGroupName) {
         value = groupViewModel.getTotalCost(group.idGroupName)
@@ -301,7 +280,7 @@ fun GroupCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, CardBorder, RoundedCornerShape(16.dp))
+            .border(1.dp, GroupsCardBorder, RoundedCornerShape(16.dp))
             .clickable {
                 groupViewModel.onGroupSelected(group.idGroupName, group.groupName)
                 mainScreenViewModel.setGroupId(group.idGroupName)
@@ -311,22 +290,16 @@ fun GroupCard(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
                 group.groupName,
                 fontSize = 15.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.SemiBold,
-                color = Ink,
+                color = GroupsCardInk,
                 letterSpacing = (-0.01).em
             )
-            Text(
-                "$peopleCount personas",
-                fontSize = 12.sp,
-                fontFamily = parkinsans,
-                fontWeight = FontWeight.Normal,
-                color = Muted
-            )
+            ParticipantAvatars(people)
         }
 
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -335,14 +308,14 @@ fun GroupCard(
                 fontSize = 15.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Bold,
-                color = Ink
+                color = GroupsCardInk
             )
             Text(
                 "TOTAL",
                 fontSize = 10.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Normal,
-                color = Muted,
+                color = GroupsCardMuted,
                 letterSpacing = 0.1.em
             )
         }
@@ -350,7 +323,7 @@ fun GroupCard(
         Icon(
             painter = painterResource(R.drawable.delete_svgrepo),
             contentDescription = null,
-            tint = Muted.copy(alpha = 0.4f),
+            tint = GroupsCardMuted.copy(alpha = 0.4f),
             modifier = Modifier
                 .size(18.dp)
                 .clickable {
@@ -358,6 +331,57 @@ fun GroupCard(
                     if (groupsList.size <= 1) navigateToInitialScreen()
                 }
         )
+    }
+}
+
+
+@Composable
+fun ParticipantAvatars(people: List<PersonModel>) {
+    if (people.isEmpty()) return
+    val maxVisible = 3
+    val visible = people.take(maxVisible)
+    val overflow = people.size - maxVisible
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy((-6).dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        visible.forEachIndexed { index, person ->
+            Box(
+                modifier = Modifier
+                    .size(22.dp)
+                    .clip(CircleShape)
+                    .border(1.5.dp, Color.White, CircleShape)
+                    .background(GroupsAvatarColors[index % GroupsAvatarColors.size]),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    person.name.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
+                    fontSize = 9.sp,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
+        if (overflow > 0) {
+            Box(
+                modifier = Modifier
+                    .size(22.dp)
+                    .clip(CircleShape)
+                    .border(1.5.dp, Color.White, CircleShape)
+                    .background(GroupsCardMuted),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "+$overflow",
+                    fontSize = 8.sp,
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                )
+            }
+        }
     }
 }
 

@@ -37,7 +37,7 @@ const val doTheCount = "Echar cuentas"
 const val addPeople = "Añadir Persona"
 const val youOwe = "Debe: "
 const val theyOweyou = "Le deben: "
-const val totalCostText = "Total de Gasto: "
+const val totalCostText = "Total de Gasto "
 
 
 

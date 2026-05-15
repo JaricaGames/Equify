@@ -808,13 +808,13 @@ fun Header(
                     modifier = Modifier.size(22.dp)
                 )
             }
-            Text(
+            /*Text(
                 "Grupo",
                 fontSize = 13.sp,
                 color = White.copy(alpha = 0.7f),
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Medium
-            )
+            )*/
             Box(
                 modifier = Modifier
                     .size(36.dp)

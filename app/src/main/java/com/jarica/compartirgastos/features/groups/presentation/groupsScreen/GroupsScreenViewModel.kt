@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.GroupModel
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetSumCostByGroupUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.DeleteGroupByIdUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupNamesUseCase
@@ -38,8 +39,8 @@ class GroupsScreenViewModel @Inject constructor(
         }
     }
 
-    suspend fun getPeopleCount(idGroup: String): Int =
-        getPeopleByIdGroupUseCase(idGroup).first().size
+    suspend fun getPeople(idGroup: String): List<PersonModel> =
+        getPeopleByIdGroupUseCase(idGroup).first()
 
     suspend fun getTotalCost(idGroup: String): Float =
         getSumCostByGroupUseCase(idGroup).first()

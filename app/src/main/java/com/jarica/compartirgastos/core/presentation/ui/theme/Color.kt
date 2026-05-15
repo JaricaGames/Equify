@@ -33,6 +33,12 @@ val BackgroundColorGradient = arrayOf(
     1f to White,
 )
 
+// GroupsScreen
+val GroupsCardBorder = Color(0x4DE6E4DE)
+val GroupsCardInk    = Color(0xFF1F2A33)
+val GroupsCardMuted  = Color(0xFF6B7A86)
+val GroupsAvatarColors = listOf(DarkBlue, DarkOrange, ClearBlue, DarkGreen)
+
 val BackgroundSplashScreenColorGradient = arrayOf(
     0.6f to DarkBlue,
     1f to ClearBlue,
