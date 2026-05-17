@@ -20,7 +20,13 @@
       "Bash(git config *)",
       "Bash(python *)",
       "Read(//mnt/e/**)",
-      "Bash(./gradlew :app:compileDebugKotlin)"
+      "Bash(./gradlew :app:compileDebugKotlin)",
+      "Bash(tar -xzf \"C:\\\\Users\\\\Nono\\\\.claude\\\\projects\\\\E--CompartirGastos\\\\752e693a-ee6d-4587-b726-3ce1f6e46bf4\\\\tool-results\\\\webfetch-1778869160485-v5dfqj.bin\" -C \"C:\\\\Users\\\\Nono\\\\.claude\\\\projects\\\\E--CompartirGastos\\\\design_extracted2\")",
+      "Bash(mkdir -p \"C:/Users/Nono/.claude/projects/E--CompartirGastos/design_extracted2\")",
+      "Bash(tar -xzf \"C:/Users/Nono/.claude/projects/E--CompartirGastos/752e693a-ee6d-4587-b726-3ce1f6e46bf4/tool-results/webfetch-1778869160485-v5dfqj.bin\" -C \"C:/Users/Nono/.claude/projects/E--CompartirGastos/design_extracted2\")",
+      "Bash(findstr \"equify\")",
+      "Bash(Remove-Item *)",
+      "PowerShell(Remove-Item *)"
     ]
   }
 }

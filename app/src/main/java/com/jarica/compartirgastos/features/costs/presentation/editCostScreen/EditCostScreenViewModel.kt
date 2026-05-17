@@ -38,22 +38,8 @@ class EditCostScreenViewModel @Inject constructor(
     private val _descriptionCost = MutableLiveData<String>()
     val descriptionCost: LiveData<String> = _descriptionCost
 
-    private val _amountCost = MutableLiveData<Float>()
-    val amountCost: LiveData<Float> = _amountCost
-
-    private val _payFor = MutableLiveData<String>()
-    val payFor: LiveData<String> = _payFor
-
     fun onDescriptionTextFieldChange(description: String) {
         _descriptionCost.value = description
-    }
-
-    fun onPayForTextFieldChange(payFor: String) {
-        _payFor.value = payFor
-    }
-
-    fun onAmountTextFieldChange(amount: Float) {
-        _amountCost.value = amount
     }
 
     private val _costId = MutableStateFlow<String?>(null)
@@ -85,10 +71,10 @@ class EditCostScreenViewModel @Inject constructor(
     }
 
     fun updateCost(description: String, amount: Float, idCost: String) {
-
         viewModelScope.launch(Dispatchers.IO) {
             val cost = getCostByIdCost(idCost)
             cost.description = description
+            cost.amount      = amount
             updateCostUseCase(costModel = cost)
         }
     }

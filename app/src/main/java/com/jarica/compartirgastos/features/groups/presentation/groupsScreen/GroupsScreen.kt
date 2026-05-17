@@ -197,20 +197,6 @@ fun GroupsHeader(groupCount: Int, navigateToAboutScreen: () -> Unit) {
                     color = White,
                     letterSpacing = (-0.01).em
                 )
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(White.copy(alpha = 0.08f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ellipsis),
-                        contentDescription = null,
-                        tint = White,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
             }
             Spacer(Modifier.height(14.dp))
             Text(

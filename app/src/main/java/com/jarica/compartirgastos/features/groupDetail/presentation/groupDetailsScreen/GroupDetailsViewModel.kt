@@ -103,7 +103,7 @@ class GroupDetailsViewModel @Inject constructor(
 
         InterstitialAd.load(
             context,
-            "ca-app-pub-4979320410432560/2157781438", // <-- ID de prueba
+            "ca-app-pub-3940256099942544/1033173712",
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {

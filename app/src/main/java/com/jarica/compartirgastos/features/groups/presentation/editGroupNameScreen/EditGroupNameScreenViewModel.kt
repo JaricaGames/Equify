@@ -21,10 +21,22 @@ class EditGroupNameScreenViewModel @Inject constructor(
     private val _newGroupNameToGroup = MutableLiveData<String>()
     val newGroupNameToGroup: LiveData<String> = _newGroupNameToGroup
 
+    private val _currentGroupName = MutableLiveData<String>()
+    val currentGroupName: LiveData<String> = _currentGroupName
 
-    //Metodo del TextField
     fun onValueTextFieldChange(newGroupNameName: String) {
         _newGroupNameToGroup.value = newGroupNameName
+    }
+
+    fun clearNewName() {
+        _newGroupNameToGroup.value = ""
+    }
+
+    fun loadCurrentGroupName(idGroup: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val group = getGroupByIdUseCase(idGroup)
+            _currentGroupName.postValue(group.groupName)
+        }
     }
 
     fun onEditGroupNameById(idGroup: String, newName: String) {

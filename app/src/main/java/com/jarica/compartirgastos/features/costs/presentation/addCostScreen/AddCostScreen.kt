@@ -1,7 +1,6 @@
 package com.jarica.compartirgastos.features.costs.presentation.addCostScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,10 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,39 +29,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.presentation.composables.AmountField
+import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
+import com.jarica.compartirgastos.core.presentation.composables.FormSection
+import com.jarica.compartirgastos.core.presentation.composables.PersonChip
+import com.jarica.compartirgastos.core.presentation.composables.SplitChip
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import java.util.UUID
-
-private val AddCostInk   = Color(0xFF1F2A33)
-private val AddCostMuted = Color(0xFF6B7A86)
-private val AddCostBorder = Color(0xFFD0D5D9)
 
 @Composable
 fun AddCostScreen(
@@ -91,13 +82,13 @@ fun AddCostScreen(
         }
         is AddCostsUiState.Success -> {
             AddCostContent(
-                viewModel      = addCostViewModel,
+                viewModel       = addCostViewModel,
                 descriptionText = descriptionText,
-                amountText     = amountText,
-                selectedPerson = selectedPerson,
-                people         = state.listOfPeople,
-                navigateBack   = navigateToMainScreen,
-                idGroupName    = idGroupName,
+                amountText      = amountText,
+                selectedPerson  = selectedPerson,
+                people          = state.listOfPeople,
+                navigateBack    = navigateToMainScreen,
+                idGroupName     = idGroupName,
             )
         }
     }
@@ -163,9 +154,9 @@ private fun AddCostContent(
 
             FormSection(label = "Tipo de reparto") {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SplitChip(label = "Igual",       selected = true,  enabled = true,  onClick = {})
-                    SplitChip(label = "Por partes",  selected = false, enabled = false, onClick = {})
-                    SplitChip(label = "Porcentaje",  selected = false, enabled = false, onClick = {})
+                    SplitChip(label = "Igual",      selected = true,  enabled = true,  onClick = {})
+                    SplitChip(label = "Por partes", selected = false, enabled = false, onClick = {})
+                    SplitChip(label = "Porcentaje", selected = false, enabled = false, onClick = {})
                 }
             }
 
@@ -173,13 +164,13 @@ private fun AddCostContent(
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = canSave,
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
+                enabled  = canSave,
+                shape    = RoundedCornerShape(14.dp),
+                colors   = ButtonDefaults.buttonColors(
                     containerColor         = DarkOrange,
                     contentColor           = White,
                     disabledContainerColor = Grey,
-                    disabledContentColor   = AddCostMuted
+                    disabledContentColor   = Color(0xFF6B7A86)
                 ),
                 onClick = {
                     val amount = amountText.replace(",", ".").toFloatOrNull() ?: return@Button
@@ -202,10 +193,10 @@ private fun AddCostContent(
             ) {
                 Text(
                     "Guardar",
-                    fontFamily  = parkinsans,
-                    fontWeight  = FontWeight.SemiBold,
-                    fontSize    = 13.sp,
-                    modifier    = Modifier.padding(vertical = 4.dp)
+                    fontFamily = parkinsans,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize   = 13.sp,
+                    modifier   = Modifier.padding(vertical = 4.dp)
                 )
             }
         }
@@ -243,7 +234,7 @@ private fun AddCostHeader(navigateBack: () -> Unit) {
         ) {
             Spacer(Modifier.height(8.dp))
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier              = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
@@ -256,10 +247,10 @@ private fun AddCostHeader(navigateBack: () -> Unit) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter           = painterResource(R.drawable.arrow_back),
+                        painter            = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint              = White,
-                        modifier          = Modifier.size(22.dp)
+                        tint               = White,
+                        modifier           = Modifier.size(22.dp)
                     )
                 }
                 Text(
@@ -274,185 +265,5 @@ private fun AddCostHeader(navigateBack: () -> Unit) {
             }
             Spacer(Modifier.height(22.dp))
         }
-    }
-}
-
-@Composable
-private fun FormSection(label: String, content: @Composable () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            label.uppercase(),
-            fontSize      = 11.sp,
-            fontFamily    = parkinsans,
-            fontWeight    = FontWeight.SemiBold,
-            color         = AddCostMuted,
-            letterSpacing = 0.08.em
-        )
-        content()
-    }
-}
-
-@Composable
-private fun DescriptionField(value: String, onValueChange: (String) -> Unit) {
-    var isFocused by remember { mutableStateOf(false) }
-    BasicTextField(
-        value         = value,
-        onValueChange = onValueChange,
-        singleLine    = true,
-        textStyle     = TextStyle(
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Normal,
-            fontSize   = 12.sp,
-            color      = AddCostInk
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .onFocusChanged { isFocused = it.isFocused }
-            .clip(RoundedCornerShape(10.dp))
-            .border(
-                width = if (isFocused) 1.dp else 0.dp,
-                color = if (isFocused) DarkOrange else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(horizontal = 14.dp, vertical = 12.dp),
-        decorationBox = { innerTextField ->
-            Box {
-                if (value.isEmpty()) {
-                    Text(
-                        "Descripción del gasto",
-                        style = TextStyle(
-                            fontFamily = parkinsans,
-                            fontWeight = FontWeight.Normal,
-                            fontSize   = 12.sp,
-                            color      = AddCostMuted.copy(alpha = 0.5f)
-                        )
-                    )
-                }
-                innerTextField()
-            }
-        }
-    )
-}
-
-@Composable
-private fun AmountField(value: String, onValueChange: (String) -> Unit) {
-    var isFocused by remember { mutableStateOf(false) }
-    val hasCost = value.isNotEmpty()
-    BasicTextField(
-        value         = value,
-        onValueChange = onValueChange,
-        singleLine    = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        textStyle     = TextStyle(
-            fontFamily = parkinsans,
-            fontWeight = FontWeight.Bold,
-            fontSize   = 42.sp,
-            color      = AddCostInk
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .onFocusChanged { isFocused = it.isFocused }
-            .clip(RoundedCornerShape(10.dp))
-            .border(
-                width = if (isFocused) 1.dp else 0.dp,
-                color = if (isFocused) DarkOrange else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(horizontal = 14.dp, vertical = 8.dp),
-        decorationBox = { innerTextField ->
-            Row(verticalAlignment = Alignment.Bottom) {
-                Box(modifier = Modifier.weight(1f)) {
-                    if (!hasCost) {
-                        Text(
-                            "0,00",
-                            style = TextStyle(
-                                fontFamily = parkinsans,
-                                fontWeight = FontWeight.Bold,
-                                fontSize   = 42.sp,
-                                color      = AddCostMuted.copy(alpha = 0.25f)
-                            )
-                        )
-                    }
-                    innerTextField()
-                }
-                Text(
-                    "€",
-                    style = TextStyle(
-                        fontFamily = parkinsans,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize   = 22.sp,
-                        color      = if (hasCost) AddCostMuted else AddCostMuted.copy(alpha = 0.25f)
-                    ),
-                    modifier = Modifier.padding(bottom = 4.dp, start = 4.dp)
-                )
-            }
-        }
-    )
-}
-
-@Composable
-private fun PersonChip(name: String, selected: Boolean, onClick: () -> Unit) {
-    val bgColor     = if (selected) DarkBlue else Color.Transparent
-    val borderColor = if (selected) DarkBlue else AddCostBorder
-    val textColor   = if (selected) White else AddCostInk
-    val avatarColor = if (selected) DarkOrange else DarkBlue
-
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(bgColor)
-            .border(1.dp, borderColor, RoundedCornerShape(20.dp))
-            .clickable { onClick() }
-            .padding(start = 6.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(7.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(22.dp)
-                .clip(CircleShape)
-                .background(avatarColor),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                name.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
-                fontSize   = 9.sp,
-                fontFamily = parkinsans,
-                fontWeight = FontWeight.Bold,
-                color      = White
-            )
-        }
-        Text(
-            name,
-            fontSize   = 12.sp,
-            fontFamily = parkinsans,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-            color      = textColor
-        )
-    }
-}
-
-@Composable
-private fun SplitChip(label: String, selected: Boolean, enabled: Boolean, onClick: () -> Unit) {
-    val bgColor     = if (!enabled) Color(0xFFF4F4F4) else if (selected) DarkOrange else Color.Transparent
-    val textColor   = if (!enabled) Color(0xFFB0B8BF) else if (selected) White else AddCostInk
-    val borderColor = if (!enabled) Color(0xFFE0E4E7) else if (selected) DarkOrange else AddCostBorder
-
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(bgColor)
-            .border(1.dp, borderColor, RoundedCornerShape(20.dp))
-            .then(if (enabled) Modifier.clickable { onClick() } else Modifier)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            label,
-            fontSize   = 12.sp,
-            fontFamily = parkinsans,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-            color      = textColor
-        )
     }
 }

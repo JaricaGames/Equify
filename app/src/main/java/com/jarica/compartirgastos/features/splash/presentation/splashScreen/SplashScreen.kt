@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.presentation.ui.appName
-import com.jarica.compartirgastos.core.presentation.ui.buttonPhrase
 import com.jarica.compartirgastos.core.presentation.ui.initalPhrase
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.SPLASHSCREEN_DURATION
@@ -113,7 +113,7 @@ fun SplashScreen(navigateToGroupsScreen: () -> Unit) {
 
         // Footer
         Text(
-            text = buttonPhrase,
+            text = stringResource(R.string.app_version),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 38.dp),

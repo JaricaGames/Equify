@@ -72,6 +72,10 @@ class AddPeopleScreenViewModel @Inject constructor(
         }
     }
 
+    fun removePerson(name: String) {
+        _personList.remove(name)
+    }
+
     fun onBackPressed() {
         _addNameToGroup.value = ""
         _personList.clear()

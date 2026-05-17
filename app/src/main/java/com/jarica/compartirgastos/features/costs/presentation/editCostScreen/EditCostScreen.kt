@@ -1,57 +1,69 @@
 package com.jarica.compartirgastos.features.costs.presentation.editCostScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
-import com.jarica.compartirgastos.core.presentation.composables.CustomTextField
+import com.jarica.compartirgastos.core.presentation.composables.AmountField
+import com.jarica.compartirgastos.core.presentation.composables.CostFormHeader
+import com.jarica.compartirgastos.core.presentation.composables.CostMuted
+import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
+import com.jarica.compartirgastos.core.presentation.composables.FormSection
+import com.jarica.compartirgastos.core.presentation.composables.PersonChip
+import com.jarica.compartirgastos.core.presentation.composables.SplitChip
+import com.jarica.compartirgastos.core.presentation.ui.configDangerEyebrow
 import com.jarica.compartirgastos.core.presentation.ui.editCost
-import com.jarica.compartirgastos.core.presentation.ui.labelTextFieldAddPeopleScreen
-import com.jarica.compartirgastos.core.presentation.ui.theme.BackgroundColorGradient
-import com.jarica.compartirgastos.core.presentation.ui.theme.Black
-import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
+import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteLabel
+import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteSub
+import com.jarica.compartirgastos.core.presentation.ui.saveChangesText
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
-import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
-import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
 
-@OptIn(ExperimentalMaterial3Api::class)
+private val DangerRed    = Color(0xFFC0533D)
+private val DangerBg     = Color(0xFFFBE5E0)
+private val DangerBorder = Color(0xFFF5D6CE)
+
 @Composable
 fun EditCostScreen(
     idCost: String,
@@ -60,258 +72,241 @@ fun EditCostScreen(
     editCostScreenViewModel: EditCostScreenViewModel,
     navigateToMainScreen: () -> Unit
 ) {
-
-    val uiStateEditCost by editCostScreenViewModel.uiStateEditCost.collectAsState()
-    val descriptionCost: String by editCostScreenViewModel.descriptionCost.observeAsState(
-        description
-    )
-    val amountCost: Float by editCostScreenViewModel.amountCost.observeAsState(amount)
-
-
     LaunchedEffect(idCost) {
         editCostScreenViewModel.setIdCost(idCost)
     }
 
-    when (uiStateEditCost) {
-        is EditCostUiState.Loading -> {}
+    val uiState         by editCostScreenViewModel.uiStateEditCost.collectAsState()
+    val descriptionText by editCostScreenViewModel.descriptionCost.observeAsState(description)
+
+    when (val state = uiState) {
+        is EditCostUiState.Loading -> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = DarkOrange)
+            }
+        }
         is EditCostUiState.Error -> {}
         is EditCostUiState.Success -> {
-            // costPaymentsList = state.listOfCostPaymentsModel
-            MainViewEditCostScreen(
-                amountCost,
-                descriptionCost,
-                //payFor,
-                navigateToMainScreen,
-                editCostScreenViewModel,
-                idCost,
-                (uiStateEditCost as EditCostUiState.Success).listOfCostPaymentsModel
+            EditCostContent(
+                descriptionText  = descriptionText,
+                initialAmount    = amount,
+                costPaymentsList = state.listOfCostPaymentsModel,
+                idCost           = idCost,
+                viewModel        = editCostScreenViewModel,
+                navigateBack     = navigateToMainScreen,
+                onDescriptionChange = { editCostScreenViewModel.onDescriptionTextFieldChange(it) }
             )
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun MainViewEditCostScreen(
-    amount: Float,
-    description: String,
-    navigateToMainScreen: () -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
-    idCost: String,
+private fun EditCostContent(
+    descriptionText: String,
+    initialAmount: Float,
     costPaymentsList: List<CostPaymentsModel>,
+    idCost: String,
+    viewModel: EditCostScreenViewModel,
+    navigateBack: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+    var amountText by remember { mutableStateOf("%.2f".format(initialAmount)) }
 
-    Column(
+    val canSave  = descriptionText.isNotBlank() && amountText.replace(",", ".").toFloatOrNull() != null
+    val perPerson = amountText.replace(",", ".").toFloatOrNull()
+        ?.div(costPaymentsList.size.coerceAtLeast(1))
+
+    val subtitle = if (costPaymentsList.isNotEmpty())
+        "%.2f € · %d participante%s".format(
+            initialAmount,
+            costPaymentsList.size,
+            if (costPaymentsList.size != 1) "s" else ""
+        )
+    else ""
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Top
+            .background(White)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomEnd = 22.dp, bottomStart = 22.dp))
-                .drawBehind {
-                    drawRect(DarkBlue)
-                    val side = 140.dp.toPx()
-                    val half = side / 2f
-                    val cx = size.width - 40.dp.toPx()
-                    val cy = size.height - 40.dp.toPx()
-                    withTransform({ rotate(degrees = 45f, pivot = Offset(cx, cy)) }) {
-                        drawRoundRect(
-                            color = DarkOrange,
-                            topLeft = Offset(cx - half, cy - half),
-                            size = Size(side, side),
-                            cornerRadius = CornerRadius(6.dp.toPx()),
-                            alpha = 0.95f
-                        )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            CostFormHeader(
+                title    = editCost,
+                subtitle = subtitle,
+                onBack   = navigateBack
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 24.dp, bottom = 100.dp),
+                verticalArrangement = Arrangement.spacedBy(22.dp)
+            ) {
+                FormSection(label = "Descripción") {
+                    DescriptionField(
+                        value         = descriptionText,
+                        onValueChange = onDescriptionChange
+                    )
+                }
+
+                FormSection(label = "Cantidad") {
+                    AmountField(
+                        value         = amountText,
+                        onValueChange = { amountText = it }
+                    )
+                }
+
+                if (costPaymentsList.isNotEmpty()) {
+                    FormSection(label = "Pagado por") {
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement   = Arrangement.spacedBy(8.dp)
+                        ) {
+                            costPaymentsList.forEach { person ->
+                                PersonChip(
+                                    name     = person.name,
+                                    selected = false,
+                                    onClick  = {}
+                                )
+                            }
+                        }
                     }
                 }
-                .padding(bottom = 20.dp)
-                .weight(HEADER_WEIGHT),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            IconButton(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomStart)
-                    .padding(start = 16.dp)
-                    .size(24.dp)
-                    .offset(x = 2.dp),
-                onClick =
-                    { navigateToMainScreen() }
-            ) {
-                Icon(
 
-                    painter = painterResource(R.drawable.arrow_back),
-                    contentDescription = "",
-                    tint = White
-                )
-            }
-            Text(
-                editCost,
-                fontSize = 16.sp,
-                color = White,
-                fontFamily = parkinsans,
-                fontWeight = FontWeight.W600,
-                textAlign = TextAlign.Center
-            )
-            IconButton(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomEnd)
-                    .padding(end = 16.dp)
-                    .size(24.dp)
-                    .offset(x = 2.dp),
-                onClick =
-                    {
-                        editCostScreenViewModel.onDeletedSelected(idCost)
-                        navigateToMainScreen()
+                FormSection(label = "Repartir") {
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            SplitChip(label = "Por igual",  selected = true,  enabled = true,  onClick = {})
+                            SplitChip(label = "Partes",     selected = false, enabled = false, onClick = {})
+                            SplitChip(label = "Porcentaje", selected = false, enabled = false, onClick = {})
+                        }
+                        if (perPerson != null && costPaymentsList.isNotEmpty()) {
+                            Text(
+                                text          = "Cada uno paga %.2f €".format(perPerson),
+                                fontSize      = 11.sp,
+                                color         = CostMuted,
+                                fontFamily    = parkinsans,
+                                letterSpacing = 0.01.em
+                            )
+                        }
                     }
-            ) {
-                Icon(
+                }
 
-                    painter = painterResource(
-                        id = R.drawable.delete_svgrepo
-                    ),
-                    contentDescription = "",
-                    tint = White
+                // Zona de peligro
+                Text(
+                    text          = configDangerEyebrow.uppercase(),
+                    fontSize      = 11.sp,
+                    letterSpacing = 0.1.em,
+                    color         = DangerRed,
+                    fontWeight    = FontWeight.SemiBold,
+                    fontFamily    = parkinsans,
+                    modifier      = Modifier.padding(top = 4.dp)
                 )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(1.dp, DangerBorder, RoundedCornerShape(14.dp))
+                        .background(White)
+                        .clickable {
+                            viewModel.onDeletedSelected(idCost)
+                            navigateBack()
+                        }
+                        .padding(horizontal = 14.dp, vertical = 12.dp),
+                    verticalAlignment     = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(DangerBg),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter            = painterResource(R.drawable.delete_svgrepo),
+                            contentDescription = null,
+                            tint               = DangerRed,
+                            modifier           = Modifier.size(16.dp)
+                        )
+                    }
+                    Column(
+                        modifier            = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Text(
+                            text       = editCostDeleteLabel,
+                            fontSize   = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color      = DangerRed,
+                            fontFamily = parkinsans
+                        )
+                        Text(
+                            text       = editCostDeleteSub,
+                            fontSize   = 11.sp,
+                            color      = CostMuted,
+                            fontFamily = parkinsans
+                        )
+                    }
+                    Icon(
+                        painter            = painterResource(R.drawable.right_arrow),
+                        contentDescription = null,
+                        tint               = DangerRed,
+                        modifier           = Modifier.size(18.dp)
+                    )
+                }
             }
         }
 
-        Column(
+        // Bottom action bar
+        Box(
             modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .weight(1f - HEADER_WEIGHT)
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0f    to Color.Transparent,
+                            0.35f to White,
+                            1f    to White
+                        )
+                    )
+                )
+                .navigationBarsPadding()
+                .padding(horizontal = 18.dp)
+                .padding(top = 16.dp, bottom = 22.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.02f))
-            CustomTextField(
-                value = description,
-                onValueChange = { editCostScreenViewModel.onDescriptionTextFieldChange(it) },
-                placeholderText = labelTextFieldAddPeopleScreen,
-                textStyle = TextStyle(
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
-                )
-            )
-            Spacer(modifier = Modifier.weight(0.02f))
-            CustomTextField(
-                value = amount.toString(),
-                enabled = false,
-                onValueChange = { },
-                placeholderText = "",
-                textStyle = TextStyle(
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
-                ),
-                suffixText = "€"
-            )
-            Spacer(modifier = Modifier.weight(0.02f))
-            CustomTextField(
-                value = costPaymentsList.joinToString(
-                    separator = ", ",
-                    prefix = "[",
-                    postfix = "]"
-                ) { it.name },
-                onValueChange = { },
-                enabled = false,
-                placeholderText = "",
-                textStyle = TextStyle(
-                    fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
-                )
-            )
-            Spacer(modifier = Modifier.weight(0.02f))
             Button(
+                onClick  = {
+                    val newAmount = amountText.replace(",", ".").toFloatOrNull() ?: initialAmount
+                    viewModel.updateCost(descriptionText, newAmount, idCost)
+                    navigateBack()
+                },
+                enabled  = canSave,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonColors(
-                    containerColor = DarkOrange,
-                    contentColor = White,
-                    disabledContainerColor = Grey,
-                    disabledContentColor = Black
+                shape    = RoundedCornerShape(18.dp),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor         = DarkOrange,
+                    contentColor           = White,
+                    disabledContainerColor = Color(0xFFD0D5D9),
+                    disabledContentColor   = Color(0xFF6B7A86)
                 ),
-                onClick = {
-                    editCostScreenViewModel.updateCost(description, amount, idCost )
-                    navigateToMainScreen()
-                }) {
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
+            ) {
                 Text(
-                    editCost,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    text       = saveChangesText,
                     fontFamily = parkinsans,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Start,
-                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize   = 15.sp,
+                    modifier   = Modifier.padding(vertical = 4.dp)
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
-
-    /*
-    //TEXTFIELD CANTIDAD
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = amount.toString(),
-            readOnly = true,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            maxLines = 1,
-            suffix = { Text("€") },
-            textStyle = TextStyle(fontFamily = rubik),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = White,
-                unfocusedSuffixColor = Black,
-                focusedSuffixColor = Black
-            ),
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-    //TEXTFIELD person
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = "$PayFor      $personString",
-            readOnly = true,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            maxLines = 1,
-            textStyle = TextStyle(fontFamily = rubik),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = White,
-                unfocusedLabelColor = Black,
-                unfocusedTextColor = Black,
-                focusedContainerColor = White,
-                focusedTextColor = Black,
-                focusedLabelColor = Black,
-                unfocusedPlaceholderColor = Black,
-                focusedIndicatorColor = Transparent,
-                unfocusedIndicatorColor = Transparent,
-                cursorColor = Black
-
-            ),
-        )
-
-
-        Spacer(modifier = Modifier.weight(0.8f))*/
 }
-
-
-
-

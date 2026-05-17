@@ -8,6 +8,7 @@ import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
+import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupByIdUseCase
 import com.jarica.compartirgastos.features.payments.domain.paymentUseCases.InsertPaymentUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleByIdGroupUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonUseCase
@@ -28,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddPaymentScreenViewModel @Inject constructor(
     getPeopleByIdGroup: GetPeopleByIdGroupUseCase,
+    private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val updatePersonUseCase: UpdatePersonUseCase,
     private val insertPaymentUseCase: InsertPaymentUseCase,
     private val insertDistributionPaymentUseCase: InsertDistributionPaymentUseCase,
@@ -50,6 +52,16 @@ class AddPaymentScreenViewModel @Inject constructor(
         .catch { AddPaymentUiState.Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddPaymentUiState.Loading)
 
+
+    private val _groupName = MutableLiveData<String>()
+    val groupName: LiveData<String> = _groupName
+
+    fun loadGroupName(groupId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val group = getGroupByIdUseCase(groupId)
+            _groupName.postValue(group.groupName)
+        }
+    }
 
     //Variable texto Cantidad
     private val _amountText = MutableLiveData<String>()

@@ -1,16 +1,12 @@
 package com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import com.jarica.compartirgastos.core.presentation.composables.ExpandableFab
+import com.jarica.compartirgastos.core.presentation.composables.Scrim
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,22 +21,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -56,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -206,106 +196,6 @@ fun MainScreen(
     }
 }
 
-@Composable
-fun Scrim(onDismiss: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                onDismiss()
-            }
-    )
-}
-
-@Composable
-fun ExpandableFab(
-    expanded: Boolean,
-    onFabClick: () -> Unit,
-    onAddCost: () -> Unit,
-    onAddPayment: () -> Unit,
-    onAddPerson: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.End
-    ) {
-
-        AnimatedVisibility(
-            visible = expanded,
-            enter = fadeIn() + slideInVertically { it / 2 },
-            exit = fadeOut() + slideOutVertically { it / 2 }
-        ) {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SmallFab(addCost, R.drawable.moneycash, onAddCost)
-                SmallFab(addPay, R.drawable.addpay, onAddPayment)
-                SmallFab(addPeople, R.drawable.people_add, onAddPerson)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        FloatingActionButton(
-            containerColor = DarkOrange,
-            onClick = onFabClick
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
-                tint = White,
-                modifier = Modifier.rotate(
-                    animateFloatAsState(
-                        if (expanded) 45f else 0f,
-                    ).value
-                )
-            )
-        }
-    }
-}
-
-@Composable
-fun SmallFab(
-    text: String,
-    icon: Int,
-    onClick: () -> Unit
-) {
-    Row(
-
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Surface(
-            color = DarkOrange,
-            modifier = Modifier.clickable(onClick = onClick),
-            tonalElevation = 0.dp,
-            shadowElevation = 2.dp,
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = text,
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                style = MaterialTheme.typography.labelLarge,
-                color = White
-
-
-            )
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        SmallFloatingActionButton(onClick = onClick, containerColor = DarkOrange) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = "",
-                modifier = Modifier.size(24.dp),
-                tint = White
-            )
-        }
-    }
-}
 
 
 @Composable
