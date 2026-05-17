@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Política de Privacidad – Equify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --red:    #D94F35;
+      --blue:   #2E5470;
+      --cream:  #F0EDE6;
+      --cream2: #E8E4DC;
+      --white:  #FFFFFF;
+      --text:   #1C2B38;
+      --muted:  #6B7A87;
+      --border: #DDD9D0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--blue);
+      color: var(--white);
+      padding: 64px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      right: -80px; top: -80px;
+      width: 320px; height: 320px;
+      background: var(--red);
+      border-radius: 50%;
+      opacity: 0.18;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      left: -60px; bottom: -60px;
+      width: 240px; height: 240px;
+      background: var(--red);
+      border-radius: 50%;
+      opacity: 0.10;
+    }
+
+    /* Venn logo */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 64px;
+      height: 42px;
+      margin-bottom: 24px;
+    }
+
+    .logo-l, .logo-r {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      top: 2px;
+    }
+
+    .logo-l { left: 0;  background: var(--red); opacity: 0.9; }
+    .logo-r { right: 0; background: rgba(255,255,255,0.3); }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      position: relative;
+    }
+
+    header .subtitle {
+      margin-top: 8px;
+      opacity: 0.65;
+      font-weight: 300;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .pill {
+      display: inline-block;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 5px 18px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+
+    /* LAYOUT */
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 52px 24px 96px;
+    }
+
+    /* INTRO */
+    .intro-card {
+      background: var(--blue);
+      color: var(--white);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-card::after {
+      content: '';
+      position: absolute;
+      right: -30px; top: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0.2;
+    }
+
+    .intro-card p {
+      font-size: 1.02rem;
+      line-height: 1.78;
+      opacity: 0.9;
+      position: relative;
+    }
+
+    /* TOC */
+    .toc {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      background: var(--white);
+    }
+
+    .toc-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 20px;
+    }
+
+    @media (max-width: 520px) { .toc ol { grid-template-columns: 1fr; } }
+
+    .toc li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.88rem;
+    }
+
+    .toc-num {
+      background: var(--red);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+      min-width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toc a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .toc a:hover { color: var(--red); }
+
+    /* SECTIONS */
+    section {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 36px 40px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(46,84,112,0.05);
+      transition: box-shadow .3s;
+    }
+
+    section:hover { box-shadow: 0 4px 22px rgba(46,84,112,0.10); }
+
+    section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.42rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--blue);
+    }
+
+    .sec-num {
+      background: var(--red);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    section h3 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red);
+      margin: 22px 0 10px;
+    }
+
+    section p {
+      color: #3a4f60;
+      margin-bottom: 12px;
+      font-weight: 300;
+    }
+
+    section p:last-child { margin-bottom: 0; }
+
+    section ul {
+      list-style: none;
+      padding-left: 0;
+      color: #3a4f60;
+      margin-bottom: 12px;
+    }
+
+    section ul li {
+      padding: 4px 0 4px 22px;
+      position: relative;
+      font-weight: 300;
+    }
+
+    section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 13px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0.45;
+    }
+
+    .info-box {
+      background: var(--cream);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin-top: 18px;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .info-box strong { color: var(--blue); }
+
+    .contact-box {
+      background: linear-gradient(135deg, var(--blue) 0%, #1e3d54 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 22px 28px;
+      margin-top: 18px;
+      line-height: 2.1;
+    }
+
+    .contact-box strong { font-weight: 600; font-size: 1.05rem; }
+    .contact-box a { color: rgba(255,255,255,0.75); }
+
+    /* FOOTER DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 36px 0 0;
+      opacity: 0.35;
+    }
+
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .venn-mini {
+      position: relative;
+      width: 30px;
+      height: 20px;
+    }
+
+    .venn-mini span {
+      position: absolute;
+      width: 17px; height: 17px;
+      border-radius: 50%;
+      top: 1px;
+    }
+
+    .venn-mini span:first-child { left: 0;  background: var(--red);  opacity: 0.6; }
+    .venn-mini span:last-child  { left: 12px; background: var(--blue); opacity: 0.6; }
+
+    footer {
+      background: var(--blue);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 44px 24px;
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+
+    footer strong { color: white; font-weight: 500; }
+    a { color: var(--red); }
+
+    @media (max-width: 600px) {
+      section { padding: 24px 20px; }
+      .intro-card { padding: 24px 20px; }
+      .toc { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-l"></div>
+    <div class="logo-r"></div>
+  </div>
+  <h1>Equify</h1>
+  <p class="subtitle">Política de Privacidad</p>
+  <span class="pill">Última actualización: mayo 2025</span>
+</header>
+
+<div class="wrap">
+
+  <div class="intro-card">
+    <p>En <strong>Equify</strong> nos tomamos tu privacidad muy en serio. Esta política explica qué información recopilamos cuando usas nuestra aplicación para compartir gastos, cómo la usamos y qué derechos tienes sobre ella. Al usar Equify, aceptas las prácticas aquí descritas.</p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-label">Índice de contenidos</div>
+    <ol>
+      <li><span class="toc-num">1</span><a href="#s1">Información que recopilamos</a></li>
+      <li><span class="toc-num">2</span><a href="#s2">Cómo usamos tu información</a></li>
+      <li><span class="toc-num">3</span><a href="#s3">Compartición de datos</a></li>
+      <li><span class="toc-num">4</span><a href="#s4">Almacenamiento y seguridad</a></li>
+      <li><span class="toc-num">5</span><a href="#s5">Tus derechos (RGPD)</a></li>
+      <li><span class="toc-num">6</span><a href="#s6">Menores de edad</a></li>
+      <li><span class="toc-num">7</span><a href="#s7">Cambios en esta política</a></li>
+      <li><span class="toc-num">8</span><a href="#s8">Contacto</a></li>
+    </ol>
+  </div>
+
+  <section id="s1">
+    <h2><span class="sec-num">1</span> Información que recopilamos</h2>
+
+    <h3>Datos que tú nos proporcionas</h3>
+    <ul>
+      <li><strong>Datos de cuenta:</strong> nombre, dirección de correo electrónico y contraseña (almacenada de forma cifrada).</li>
+      <li><strong>Datos de gastos:</strong> descripción, importe, divisa, fecha y personas involucradas en cada gasto que registras.</li>
+      <li><strong>Información de grupos:</strong> nombre del grupo y miembros que tú mismo añades.</li>
+      <li><strong>Foto de perfil:</strong> si decides añadir una (completamente opcional).</li>
+    </ul>
+
+    <h3>Datos recopilados automáticamente</h3>
+    <ul>
+      <li><strong>Datos de uso:</strong> cómo interactúas con la app (pantallas visitadas, acciones realizadas) para mejorar la experiencia.</li>
+      <li><strong>Información del dispositivo:</strong> modelo, sistema operativo y versión de la app, únicamente para diagnóstico de errores.</li>
+      <li><strong>Registros de errores:</strong> fallos técnicos de la aplicación, sin datos personales identificables.</li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Importante:</strong> Equify no accede a tus contactos, ubicación, cámara ni ningún otro sensor del dispositivo sin tu consentimiento explícito.
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="sec-num">2</span> Cómo usamos tu información</h2>
+    <p>Usamos los datos recopilados exclusivamente para:</p>
+    <ul>
+      <li>Proporcionar y mantener el servicio de gestión y reparto de gastos.</li>
+      <li>Permitirte crear grupos, añadir gastos y ver balances con otras personas.</li>
+      <li>Enviarte notificaciones relacionadas con tu cuenta o gastos (solo si las activas).</li>
+      <li>Detectar y corregir errores técnicos en la aplicación.</li>
+      <li>Mejorar las funcionalidades de Equify en base a patrones de uso agregados y anónimos.</li>
+      <li>Cumplir con obligaciones legales aplicables.</li>
+    </ul>
+    <p>No utilizamos tus datos para publicidad ni los cedemos a terceros con fines comerciales.</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="sec-num">3</span> Compartición de datos</h2>
+    <p>Tus datos personales <strong>no se venden ni se comparten</strong> con terceros, salvo en los casos limitados siguientes:</p>
+
+    <h3>Otros usuarios de Equify</h3>
+    <p>Los miembros de un grupo que tú hayas creado o al que te hayas unido pueden ver tu nombre, foto de perfil y los gastos del grupo. Tú controlas con quién compartes cada grupo.</p>
+
+    <h3>Proveedores de servicios técnicos</h3>
+    <p>Podemos usar servicios de terceros de confianza que actúan como encargados del tratamiento bajo nuestras instrucciones y con garantías contractuales de confidencialidad. Actualmente utilizamos:</p>
+    <ul>
+      <li><strong>Firebase (Google)</strong> – autenticación y base de datos en tiempo real.</li>
+    </ul>
+
+    <h3>Obligaciones legales</h3>
+    <p>Podemos divulgar información si así lo exige la ley, una orden judicial, o para proteger los derechos e integridad de los usuarios.</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="sec-num">4</span> Almacenamiento y seguridad</h2>
+    <p>Tus datos se almacenan en servidores seguros con cifrado en tránsito (TLS) y en reposo. Las contraseñas nunca se almacenan en texto plano.</p>
+    <p>Conservamos tus datos mientras tu cuenta esté activa. Si eliminas tu cuenta, eliminamos tus datos personales en un plazo máximo de <strong>30 días</strong>, salvo que la ley exija conservarlos por más tiempo.</p>
+    <p>Aunque implementamos medidas de seguridad razonables, ningún sistema es 100 % infalible. Te recomendamos usar una contraseña robusta y no compartirla.</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="sec-num">5</span> Tus derechos (RGPD)</h2>
+    <p>De acuerdo con el Reglamento General de Protección de Datos y la normativa española aplicable, tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> solicitar una copia de los datos que tenemos sobre ti.</li>
+      <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+      <li><strong>Supresión:</strong> pedir que eliminemos tu cuenta y tus datos personales.</li>
+      <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado y legible por máquina.</li>
+      <li><strong>Oposición y limitación:</strong> oponerte a ciertos tratamientos o solicitar que los limitemos.</li>
+      <li><strong>Retirar el consentimiento</strong> en cualquier momento, sin que ello afecte a la licitud del tratamiento previo.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, escríbenos a la dirección indicada en la sección de Contacto. Responderemos en un plazo máximo de 30 días.</p>
+    <p>Si consideras que no hemos atendido correctamente tu solicitud, puedes reclamar ante la <a href="https://www.aepd.es" target="_blank">Agencia Española de Protección de Datos (AEPD)</a>.</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="sec-num">6</span> Menores de edad</h2>
+    <p>Equify no está dirigida a menores de <strong>16 años</strong>. No recopilamos conscientemente datos de menores. Si detectamos que un menor ha creado una cuenta, la eliminaremos de inmediato.</p>
+    <p>Si eres padre, madre o tutor y crees que tu hijo/a nos ha facilitado información personal, contáctanos para que podamos eliminarla.</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="sec-num">7</span> Cambios en esta política</h2>
+    <p>Podemos actualizar esta Política de Privacidad ocasionalmente. Cuando lo hagamos, actualizaremos la fecha en la parte superior y, si los cambios son significativos, te lo notificaremos mediante la aplicación o por correo electrónico.</p>
+    <p>Te recomendamos revisar esta política periódicamente.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="sec-num">8</span> Contacto</h2>
+    <p>Si tienes cualquier pregunta, solicitud o reclamación sobre esta Política de Privacidad, puedes contactarnos en:</p>
+    <div class="contact-box">
+      <strong>Equify</strong><br/>
+      📧 <a href="jarica.games@gmail.com">jarica.games@gmail.com</a>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="venn-mini"><span></span><span></span></div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Equify</strong> · Política de Privacidad<br/>
+  © 2025 Equify. Todos los derechos reservados.
+</footer>
+
+</body>
+</html>
