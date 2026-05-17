@@ -41,6 +41,7 @@ fun CostFragment(
     navigateToEditCost: (CostModel) -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(idGroup) {
         costsViewModel.setGroup(idGroup)
@@ -64,7 +65,8 @@ fun CostFragment(
             CostsList(
                 (uiStateCosts as CostsScreenUiState.Success).costsList,
                 navigateToEditCost,
-                editCostScreenViewModel
+                editCostScreenViewModel,
+                modifier
             )
         }
     }
@@ -75,6 +77,7 @@ fun CostsList(
     costList: List<CostModel>,
     navigateToEditCost: (CostModel) -> Unit,
     editCostScreenViewModel: EditCostScreenViewModel,
+    modifier: Modifier = Modifier,
 ) {
     if (costList.isEmpty()) {
         EmptyState(
@@ -82,7 +85,7 @@ fun CostsList(
             subtitle = emptyCostsSubtitle
         )
     } else {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = modifier.fillMaxWidth()) {
             items(costList, key = { it.idCost }) { cost ->
                 ItemCost(cost, navigateToEditCost, editCostScreenViewModel)
             }

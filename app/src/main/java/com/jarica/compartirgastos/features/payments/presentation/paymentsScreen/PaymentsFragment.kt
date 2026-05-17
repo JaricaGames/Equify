@@ -72,7 +72,8 @@ fun PaymentsFragment(
             PaymentsList(
                 (uiStatePaymentsFragment as PaymentsScreenUiState.Success).paymentsList,
                 paymentsViewModel,
-                navigateToEditPayments
+                navigateToEditPayments,
+                modifier
             )
         }
     }
@@ -82,7 +83,8 @@ fun PaymentsFragment(
 fun PaymentsList(
     paymentsList: List<PaymentsModel>,
     paymentsViewModel: PaymentsScreenViewModel,
-    navigateToEditPayments: (PaymentsModel) -> Unit
+    navigateToEditPayments: (PaymentsModel) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (paymentsList.isEmpty()) {
         EmptyState(
@@ -90,7 +92,7 @@ fun PaymentsList(
             subtitle = emptyPaymentsSubtitle
         )
     } else {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = modifier.fillMaxWidth()) {
             items(paymentsList, key = { it.idPayment }) { payment ->
                 ItemPaymentName(payment, paymentsViewModel, navigateToEditPayments)
             }

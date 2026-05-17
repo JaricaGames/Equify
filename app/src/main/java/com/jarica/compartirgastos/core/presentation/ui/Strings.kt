@@ -128,6 +128,7 @@ const val cancel = "Cancelar"
 
 //DoTheCountsScreen
 const val exportArrayListDoTheCountsText = "Exportar PDF"
+const val exportAdButtonText = "Ver anuncio y Exportar"
 const val doTheCountsSubtitleZero = "Sin deudas pendientes en el grupo"
 const val doTheCountsEmptyTitle = "¡Cuentas al día!"
 const val doTheCountsEmptySubtitle = "No hay deudas pendientes\nen este grupo"

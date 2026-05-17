@@ -60,20 +60,20 @@ fun ResumeFragment(
             }
         }
         is ResumeUiState.Success -> {
-            PeopleList(state.peopleList)
+            PeopleList(state.peopleList, modifier)
         }
     }
 }
 
 @Composable
-fun PeopleList(personBalanceList: List<PersonBalance>) {
+fun PeopleList(personBalanceList: List<PersonBalance>, modifier: Modifier = Modifier) {
     if (personBalanceList.isEmpty() || personBalanceList.all { it.balance == 0f }) {
         EmptyState(
             title = emptyResumeTitle,
             subtitle = emptyResumeSubtitle
         )
     } else {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = modifier.fillMaxWidth()) {
             items(personBalanceList, key = { it.idPerson }) { person ->
                 MemberRow(person)
             }

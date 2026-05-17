@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -54,6 +53,7 @@ import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
 import com.jarica.compartirgastos.core.presentation.ui.doTheCount
 import com.jarica.compartirgastos.core.presentation.ui.doTheCountsTransfersLabel
+import com.jarica.compartirgastos.core.presentation.ui.exportAdButtonText
 import com.jarica.compartirgastos.core.presentation.ui.exportArrayListDoTheCountsLargeText
 import com.jarica.compartirgastos.core.presentation.ui.exportArrayListDoTheCountsText
 import com.jarica.compartirgastos.core.presentation.ui.noAppToOpenPDF
@@ -78,6 +78,7 @@ fun DoTheCountsScreen(
 
     val paymentsList by doTheCountsScreenViewModel.paymentsState.collectAsState()
     val pdfReady by doTheCountsScreenViewModel.pdfReady.collectAsState()
+    val launchPicker by doTheCountsScreenViewModel.launchPicker.collectAsState()
     val groupName by doTheCountsScreenViewModel.groupName.collectAsState()
     val context = LocalContext.current
     val activity = context as Activity
@@ -89,9 +90,16 @@ fun DoTheCountsScreen(
     val createPdfLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/pdf"),
         onResult = { uri: Uri? ->
-            uri?.let { doTheCountsScreenViewModel.showAdThenCreatePdf(activity, context.contentResolver, it) }
+            uri?.let { doTheCountsScreenViewModel.createPdf(context.contentResolver, it) }
         }
     )
+
+    LaunchedEffect(launchPicker) {
+        if (launchPicker) {
+            createPdfLauncher.launch("Equify_$groupName.pdf")
+            doTheCountsScreenViewModel.onPickerLaunched()
+        }
+    }
 
     LaunchedEffect(pdfReady) {
         pdfReady?.let { uri ->
@@ -111,7 +119,7 @@ fun DoTheCountsScreen(
     DoTheCountsContent(
         paymentsList = paymentsList,
         groupName = groupName,
-        createPdfLauncher = createPdfLauncher,
+        onExportClick = { doTheCountsScreenViewModel.showAdThenLaunchPicker(activity) },
         navigateBack = navigateToGroupScreen
     )
 }
@@ -120,7 +128,7 @@ fun DoTheCountsScreen(
 private fun DoTheCountsContent(
     paymentsList: List<PaymentsToDoCountsModel>,
     groupName: String,
-    createPdfLauncher: ManagedActivityResultLauncher<String, Uri?>,
+    onExportClick: () -> Unit,
     navigateBack: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -247,7 +255,7 @@ private fun DoTheCountsContent(
                 .padding(top = 16.dp, bottom = 22.dp)
         ) {
             Button(
-                onClick = { createPdfLauncher.launch("Equify_$groupName.pdf") },
+                onClick = onExportClick,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -256,15 +264,8 @@ private fun DoTheCountsContent(
                 ),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.pdfsvg),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.size(8.dp))
                 Text(
-                    text = exportArrayListDoTheCountsText,
+                    text = exportAdButtonText,
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,

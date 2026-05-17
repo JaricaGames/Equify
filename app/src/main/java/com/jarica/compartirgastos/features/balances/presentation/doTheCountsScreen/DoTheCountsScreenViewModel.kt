@@ -5,14 +5,13 @@ import android.content.ContentResolver
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.jarica.compartirgastos.R
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -22,10 +21,11 @@ import com.itextpdf.text.PageSize
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.Phrase
 import com.itextpdf.text.pdf.BaseFont
-import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
+import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCase
@@ -66,6 +66,9 @@ class DoTheCountsScreenViewModel @Inject constructor(
     private val _pdfReady = MutableStateFlow<Uri?>(null)
     val pdfReady: StateFlow<Uri?> = _pdfReady
 
+    private val _launchPicker = MutableStateFlow(false)
+    val launchPicker: StateFlow<Boolean> = _launchPicker
+
     fun calculatePayments(groupId: String?) {
         viewModelScope.launch {
             try {
@@ -100,20 +103,24 @@ class DoTheCountsScreenViewModel @Inject constructor(
         )
     }
 
-    fun showAdThenCreatePdf(activity: Activity, contentResolver: ContentResolver, uri: Uri) {
+    fun showAdThenLaunchPicker(activity: Activity) {
         val ad = interstitialAd
         if (ad != null) {
             ad.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     interstitialAd = null
                     loadAd()
-                    createPdf(contentResolver, uri)
+                    _launchPicker.value = true
                 }
             }
             ad.show(activity)
         } else {
-            createPdf(contentResolver, uri)
+            _launchPicker.value = true
         }
+    }
+
+    fun onPickerLaunched() {
+        _launchPicker.value = false
     }
 
     fun createPdf(contentResolver: ContentResolver, uri: Uri) {
@@ -192,8 +199,8 @@ class DoTheCountsScreenViewModel @Inject constructor(
                             cb.beginText()
                             cb.setFontAndSize(bfNorm, 8f)
                             cb.setColorFill(muted)
-                            cb.showTextAligned(Element.ALIGN_LEFT,  "Pág ${writer.pageNumber}", document.leftMargin(),      footLineY - 12f, 0f)
-                            cb.showTextAligned(Element.ALIGN_RIGHT, "equify.app",               W - document.rightMargin(), footLineY - 12f, 0f)
+                            cb.showTextAligned(Element.ALIGN_LEFT,  "Pág ${writer.pageNumber}",          document.leftMargin(),      footLineY - 12f, 0f)
+                            cb.showTextAligned(Element.ALIGN_RIGHT, "Generado con Equify · equify.app", W - document.rightMargin(), footLineY - 12f, 0f)
                             cb.endText()
                             cb.restoreState()
                         }
@@ -235,7 +242,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                     if (costs.isEmpty()) {
                         costsTable.addCell(
                             PdfPCell(Phrase("Sin gastos registrados", Font(Font.FontFamily.HELVETICA, 10f, Font.NORMAL, muted))).apply {
-                                setColspan(2); border = PdfPCell.NO_BORDER; setPadding(10f)
+                                colspan = 2; border = PdfPCell.NO_BORDER; setPadding(10f)
                                 horizontalAlignment = Element.ALIGN_CENTER
                             }
                         )
@@ -272,7 +279,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                     if (payments.isEmpty()) {
                         paymentsTable.addCell(
                             PdfPCell(Phrase("Sin deudas pendientes", Font(Font.FontFamily.HELVETICA, 10f, Font.NORMAL, muted))).apply {
-                                setColspan(3); border = PdfPCell.NO_BORDER; setPadding(10f)
+                                colspan = 3; border = PdfPCell.NO_BORDER; setPadding(10f)
                                 horizontalAlignment = Element.ALIGN_CENTER
                             }
                         )

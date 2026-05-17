@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.presentation.composables.BannerAdView
 import com.jarica.compartirgastos.core.presentation.ui.appName
 import com.jarica.compartirgastos.core.presentation.ui.initalPhrase
 import com.jarica.compartirgastos.core.presentation.ui.mainText
@@ -123,15 +124,17 @@ fun InitialScreen(
             )
         }
 
-        // Bottom: CTA button
-        Box(
+        // Bottom: banner + CTA button
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .navigationBarsPadding()
                 .padding(horizontal = 22.dp)
-                .padding(bottom = 30.dp)
+                .padding(bottom = 30.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            BannerAdView()
             Button(
                 onClick = navigateToNewGroup,
                 modifier = Modifier.fillMaxWidth(),
@@ -153,3 +156,4 @@ fun InitialScreen(
         }
     }
 }
+

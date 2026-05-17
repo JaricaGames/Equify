@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import com.jarica.compartirgastos.core.presentation.composables.ExpandableFab
-import com.jarica.compartirgastos.core.presentation.composables.Scrim
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +38,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,10 +61,10 @@ import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
-import com.jarica.compartirgastos.core.presentation.ui.addCost
+import com.jarica.compartirgastos.core.presentation.composables.BannerAdView
+import com.jarica.compartirgastos.core.presentation.composables.ExpandableFab
+import com.jarica.compartirgastos.core.presentation.composables.Scrim
 import com.jarica.compartirgastos.core.presentation.ui.addFirstCost
-import com.jarica.compartirgastos.core.presentation.ui.addPay
-import com.jarica.compartirgastos.core.presentation.ui.addPeople
 import com.jarica.compartirgastos.core.presentation.ui.costs
 import com.jarica.compartirgastos.core.presentation.ui.doTheCount
 import com.jarica.compartirgastos.core.presentation.ui.payments
@@ -125,15 +121,16 @@ fun MainScreen(
                 color = Color.White,
                 tonalElevation = 0.dp,
             ) {
-                ButtonDoTheCounts(
-                    mainScreenViewModel = mainScreenViewModel,
-                    navigateToDoTheCounts = navigateToDoTheCounts,
-                    hasCosts = (sumCosts as? TotalExpensesUiState.Success)?.totalCost?.let { it > 0f } ?: true,
-                    navigateToAddCostScreen = navigateToAddCostScreen
-                )
-
+                Column {
+                    BannerAdView()
+                    ButtonDoTheCounts(
+                        mainScreenViewModel = mainScreenViewModel,
+                        navigateToDoTheCounts = navigateToDoTheCounts,
+                        hasCosts = (sumCosts as? TotalExpensesUiState.Success)?.totalCost?.let { it > 0f } ?: true,
+                        navigateToAddCostScreen = navigateToAddCostScreen
+                    )
+                }
             }
-
         },
         floatingActionButton = {
             ExpandableFab(
@@ -205,27 +202,25 @@ fun ButtonDoTheCounts(
     hasCosts: Boolean,
     navigateToAddCostScreen: () -> Unit
 ) {
-    Row {
-        Spacer(modifier = Modifier.weight(1f))
-        Button(
-            onClick = {
-                if (hasCosts) navigateToDoTheCounts()
-                else navigateToAddCostScreen()
-            },
-            modifier = Modifier.padding(vertical = 32.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DarkOrange,
-                contentColor = White
-            )
-        ) {
-            Text(
-                text = if (hasCosts) doTheCount else addFirstCost,
-                modifier = Modifier.padding(horizontal = 32.dp),
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
+    Button(
+        onClick = {
+            if (hasCosts) navigateToDoTheCounts()
+            else navigateToAddCostScreen()
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 32.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = DarkOrange,
+            contentColor = White
+        )
+    ) {
+        Text(
+            text = if (hasCosts) doTheCount else addFirstCost,
+            modifier = Modifier.padding(vertical = 4.dp),
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
@@ -240,6 +235,7 @@ fun MainScreenWithPager(
     costsViewModel: CostsViewModel,
     paymentsViewModel: PaymentsScreenViewModel,
     navigateToEditPayments: (PaymentsModel) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(idGroup) {
         if (idGroup != null) {
@@ -257,7 +253,7 @@ fun MainScreenWithPager(
         mainScreenViewModel.onTabSelected(GroupDetailsViewModel.MainTab.entries[pagerState.currentPage])
     }
 
-    Column {
+    Column(modifier = modifier.fillMaxSize()) {
         MainTabs(
             selectedTab = mainScreenViewModel.selectedTab,
             onTabSelected = {
@@ -271,27 +267,28 @@ fun MainScreenWithPager(
         HorizontalPager(
             state = pagerState,
             verticalAlignment = Alignment.Top,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.weight(1f)
         ) { page ->
             when (GroupDetailsViewModel.MainTab.entries[page]) {
                 GroupDetailsViewModel.MainTab.RESUME -> ResumeFragment(
                     idGroup = idGroup,
-                    Modifier.weight(1f),
-                    resumeViewModel
+                    modifier = Modifier.fillMaxSize(),
+                    resumeViewModel = resumeViewModel
                 )
 
                 GroupDetailsViewModel.MainTab.COSTS -> CostFragment(
-                    idGroup,
-                    navigateToEditCost,
-                    editCostScreenViewModel,
-                    costsViewModel
+                    idGroup = idGroup,
+                    navigateToEditCost = navigateToEditCost,
+                    editCostScreenViewModel = editCostScreenViewModel,
+                    costsViewModel = costsViewModel,
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 GroupDetailsViewModel.MainTab.PAYMENTS -> PaymentsFragment(
-                    idGroup,
-                    paymentsViewModel,
-                    Modifier.weight(1f),
-                    navigateToEditPayments
+                    idGroup = idGroup,
+                    paymentsViewModel = paymentsViewModel,
+                    modifier = Modifier.fillMaxSize(),
+                    navigateToEditPayments = navigateToEditPayments
                 )
             }
         }
@@ -387,25 +384,13 @@ fun MainView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            //.padding(innerPadding)
+            .padding(innerPadding)
             .background(Brush.verticalGradient(colorStops = BackgroundColorGradient)),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
-        //mainScreenViewModel.getGroupNameById(idGroup!!)
-        //HEADER
         Header(nameOfGroup, navigateToGroupsScreen, navigateToConfiguration, success)
         Spacer(Modifier.size(6.dp))
-        //BOXS DE SELECCIONAR ACCION
-        /* ActionsBoxes(
-             navigateToAddCostScreen,
-             doTheCountsScreenViewModel,
-             navigateToAddPeopleFromGroup,
-             navigateToAddPayScreen,
-             navigateToDoTheCounts,
-             uiStatePeopleGroupFragment,
-             onDoTheCountsClicked,
-         )*/
         MainScreenWithPager(
             mainScreenViewModel,
             idGroup,
@@ -414,10 +399,9 @@ fun MainView(
             editCostScreenViewModel,
             costsViewModel,
             paymentsViewModel,
-            navigateToEditPayments
+            navigateToEditPayments,
+            modifier = Modifier.weight(1f)
         )
-        Spacer(Modifier.weight(1f))
-        // BannerAdViewMainScreen()
     }
 }
 
