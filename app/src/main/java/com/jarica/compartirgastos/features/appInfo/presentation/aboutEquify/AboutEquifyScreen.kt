@@ -156,7 +156,7 @@ fun AboutEquifyScreen(
                         Icon(
                             imageVector        = Icons.Default.Star,
                             contentDescription = null,
-                            tint               = if (i < 4) StarFilled else StarEmpty,
+                            tint               = StarFilled,
                             modifier           = Modifier.size(16.dp)
                         )
                     }

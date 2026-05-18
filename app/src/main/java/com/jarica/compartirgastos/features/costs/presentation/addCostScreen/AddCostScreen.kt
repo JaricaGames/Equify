@@ -51,6 +51,15 @@ import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
 import com.jarica.compartirgastos.core.presentation.composables.FormSection
 import com.jarica.compartirgastos.core.presentation.composables.PersonChip
 import com.jarica.compartirgastos.core.presentation.composables.SplitChip
+import com.jarica.compartirgastos.core.presentation.ui.addCost
+import com.jarica.compartirgastos.core.presentation.ui.amountPlaceHolder
+import com.jarica.compartirgastos.core.presentation.ui.descriptionPlaceHolder
+import com.jarica.compartirgastos.core.presentation.ui.fromText
+import com.jarica.compartirgastos.core.presentation.ui.saveCost
+import com.jarica.compartirgastos.core.presentation.ui.splitEqual
+import com.jarica.compartirgastos.core.presentation.ui.splitParts
+import com.jarica.compartirgastos.core.presentation.ui.splitPercentage
+import com.jarica.compartirgastos.core.presentation.ui.splitTypeLabel
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
@@ -123,21 +132,21 @@ private fun AddCostContent(
                 .padding(horizontal = 20.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.spacedBy(22.dp)
         ) {
-            FormSection(label = "Descripción") {
+            FormSection(label = descriptionPlaceHolder) {
                 DescriptionField(
                     value         = descriptionText,
                     onValueChange = { viewModel.onDescriptionChange(it) }
                 )
             }
 
-            FormSection(label = "Cantidad") {
+            FormSection(label = amountPlaceHolder) {
                 AmountField(
                     value         = amountText,
                     onValueChange = { viewModel.onAmountChange(it) }
                 )
             }
 
-            FormSection(label = "Pagado por") {
+            FormSection(label = fromText) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement   = Arrangement.spacedBy(8.dp)
@@ -152,11 +161,11 @@ private fun AddCostContent(
                 }
             }
 
-            FormSection(label = "Tipo de reparto") {
+            FormSection(label = splitTypeLabel) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SplitChip(label = "Igual",      selected = true,  enabled = true,  onClick = {})
-                    SplitChip(label = "Por partes", selected = false, enabled = false, onClick = {})
-                    SplitChip(label = "Porcentaje", selected = false, enabled = false, onClick = {})
+                    SplitChip(label = splitEqual,      selected = true,  enabled = true,  onClick = {})
+                    SplitChip(label = splitParts,      selected = false, enabled = false, onClick = {})
+                    SplitChip(label = splitPercentage, selected = false, enabled = false, onClick = {})
                 }
             }
 
@@ -192,7 +201,7 @@ private fun AddCostContent(
                 }
             ) {
                 Text(
-                    "Guardar",
+                    saveCost,
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.SemiBold,
                     fontSize   = 13.sp,
@@ -254,7 +263,7 @@ private fun AddCostHeader(navigateBack: () -> Unit) {
                     )
                 }
                 Text(
-                    "Añadir Gasto",
+                    addCost,
                     fontSize      = 18.sp,
                     fontFamily    = parkinsans,
                     fontWeight    = FontWeight.SemiBold,

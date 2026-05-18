@@ -137,6 +137,7 @@ fun NavigationWrapper(
                 editCostScreenViewModel = editCostScreenViewModel,
                 navigateToGroupsScreen = {
                     navController.navigate(GroupsScreenObject) {
+                        popUpTo(GroupsScreenObject) { inclusive = true }
                         launchSingleTop = true
                     }
                 },
@@ -205,9 +206,7 @@ fun NavigationWrapper(
             AddPeopleScreen(
                 addPeopleViewModel = addPeopleViewModel,
                 navigateToNewGroupScreen = {
-                    navController.navigate(NewGroupScreenObject) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 },
 
                 navigateToMainScreen = {
@@ -230,9 +229,7 @@ fun NavigationWrapper(
                 addCostViewModel,
                 idGroupName = groupId,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(groupId)) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 }
             )
         }
@@ -246,9 +243,7 @@ fun NavigationWrapper(
                 groupId,
                 addPaymentScreenViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(groupId)) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 })
 
         }
@@ -263,9 +258,7 @@ fun NavigationWrapper(
                 iDGroupName,
                 addPeopleScreenFromMainViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 }
             )
         }
@@ -281,9 +274,7 @@ fun NavigationWrapper(
                 //personString = editCostScreen.personString,
                 editCostScreenViewModel = editCostScreenViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(MainScreenObject(editCostScreen.iDGroupName)) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 }
             )
         }
@@ -300,12 +291,8 @@ fun NavigationWrapper(
                         launchSingleTop = true
                     }
                 },
-                navigateToGroupScreen = {
-                    navController.navigate(
-                        MainScreenObject(
-                            iDGroupName = iDGroupName
-                        )
-                    ) { launchSingleTop = true }
+                navigateBack = {
+                    navController.popBackStack()
                 },
                 navigateToGroupsList = {
                     navController.navigate(GroupsScreenObject) {
@@ -336,9 +323,7 @@ fun NavigationWrapper(
                 idGroupName = iDGroupName,
                 customizeGroupScreenViewModel,
                 navigateToGroupsDetails = {
-                    navController.navigate(MainScreenObject(iDGroupName)) {
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 },
             )
 
@@ -351,9 +336,7 @@ fun NavigationWrapper(
             DoTheCountsScreen(
                 doTheCountsScreenViewModel,
                 navigateToGroupScreen = {
-                    navController.navigate(
-                        MainScreenObject(iDGroupName = currentGroupId)
-                    ) { launchSingleTop = true }
+                    navController.popBackStack()
                 },
                 idGroupName = currentGroupId
             )
@@ -384,7 +367,7 @@ fun NavigationWrapper(
         composable<EditPaymentScreenObject> { backStackEntry ->
 
             val editPaymentScreen: EditPaymentScreenObject = backStackEntry.toRoute()
-            val currentGroupId = editPaymentScreen.idGroup
+            editPaymentScreen.idGroup
 
             EditPaymentScreen(
                 idPayment = editPaymentScreen.idPayment,
@@ -393,9 +376,7 @@ fun NavigationWrapper(
                 personWhoReceive = editPaymentScreen.personWhoReceive,
                 editPaymentsViewModel = editPaymentsViewModel,
                 navigateToMainScreen = {
-                    navController.navigate(
-                        MainScreenObject(iDGroupName = currentGroupId)
-                    ) { launchSingleTop = true }
+                    navController.popBackStack()
                 }
             )
         }

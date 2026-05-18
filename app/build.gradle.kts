@@ -43,6 +43,22 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("free") {
+            dimension = "version"
+            buildConfigField("boolean", "SHOW_ADS", "true")
+        }
+        create("pro") {
+            dimension = "version"
+            applicationIdSuffix = ".pro"
+            versionNameSuffix = "-pro"
+            buildConfigField("boolean", "SHOW_ADS", "false")
+            resValue("string", "app_name", "Equify Pro")
+        }
     }
 
 }
@@ -97,6 +113,9 @@ dependencies {
 
     //AdMob
     implementation(libs.play.services.ads)
+
+    //In-App Review
+    implementation(libs.play.review)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

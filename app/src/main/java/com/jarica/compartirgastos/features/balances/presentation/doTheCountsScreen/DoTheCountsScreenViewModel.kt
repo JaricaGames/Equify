@@ -25,6 +25,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
+import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
@@ -88,6 +89,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
     private var interstitialAd: InterstitialAd? = null
 
     fun loadAd() {
+        if (!BuildConfig.SHOW_ADS) return
         InterstitialAd.load(
             context,
             "ca-app-pub-3940256099942544/1033173712",
@@ -104,6 +106,10 @@ class DoTheCountsScreenViewModel @Inject constructor(
     }
 
     fun showAdThenLaunchPicker(activity: Activity) {
+        if (!BuildConfig.SHOW_ADS) {
+            _launchPicker.value = true
+            return
+        }
         val ad = interstitialAd
         if (ad != null) {
             ad.fullScreenContentCallback = object : FullScreenContentCallback() {

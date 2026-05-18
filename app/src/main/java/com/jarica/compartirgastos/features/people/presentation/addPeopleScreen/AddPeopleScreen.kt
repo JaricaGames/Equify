@@ -44,12 +44,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -60,6 +58,7 @@ import com.jarica.compartirgastos.core.presentation.composables.EmptyState
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleEmptySubtitle
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleEmptyTitle
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleFieldLabel
+import com.jarica.compartirgastos.core.presentation.ui.addPeopleHint
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleMemberRole
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleMembersLabel
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleMinButton
@@ -68,6 +67,7 @@ import com.jarica.compartirgastos.core.presentation.ui.addPeoplePlaceholder
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleStepLabel
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleTitle
 import com.jarica.compartirgastos.core.presentation.ui.createText
+import com.jarica.compartirgastos.core.presentation.ui.deleteContentDescription
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
@@ -93,9 +93,9 @@ fun AddPeopleScreen(
     val scrollState   = rememberScrollState()
 
     val subtitle = if (hasMembers)
-        "${peopleList.size} personas en \"$groupName\""
+        stringResource(R.string.add_people_count_subtitle, peopleList.size, groupName)
     else
-        "¿Quién participa en \"$groupName\"?"
+        stringResource(R.string.add_people_who_subtitle, groupName)
 
     Box(
         modifier = Modifier
@@ -141,13 +141,7 @@ fun AddPeopleScreen(
                     )
                     if (!hasMembers) {
                         Text(
-                            text = buildAnnotatedString {
-                                append("Pulsa ")
-                                withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = InkColor)) {
-                                    append("+")
-                                }
-                                append(" para añadir cada persona.")
-                            },
+                            text = addPeopleHint,
                             fontSize = 11.sp,
                             color = MutedColor,
                             fontFamily = parkinsans,
@@ -489,7 +483,7 @@ private fun MemberRow(name: String, onDelete: () -> Unit) {
         ) {
             Icon(
                 painter            = painterResource(R.drawable.cancel_close),
-                contentDescription = "Eliminar",
+                contentDescription = deleteContentDescription,
                 tint               = MutedColor,
                 modifier           = Modifier.size(11.dp)
             )

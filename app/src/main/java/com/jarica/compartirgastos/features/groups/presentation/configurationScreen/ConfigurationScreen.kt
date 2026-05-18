@@ -49,7 +49,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.ui.aboutText
+import com.jarica.compartirgastos.core.presentation.ui.addLabel
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleConfigurationText
+import com.jarica.compartirgastos.core.presentation.ui.appVersionFooter
 import com.jarica.compartirgastos.core.presentation.ui.configAjustesTitle
 import com.jarica.compartirgastos.core.presentation.ui.configDangerEyebrow
 import com.jarica.compartirgastos.core.presentation.ui.configDeleteSubLabel
@@ -88,7 +90,7 @@ private val ActionRowBg  = Color(0xFFFFF5EF)
 fun ConfigurationScreen(
     configurationScreenViewModel: ConfigurationScreenViewModel,
     iDGroupName: String,
-    navigateToGroupScreen: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToAddPeopleScreen: () -> Unit,
     navigateToAboutScreen: () -> Unit,
     navigateToCustomizeGroup: (String) -> Unit,
@@ -144,7 +146,7 @@ fun ConfigurationScreen(
                 nameOfGroup = nameOfGroup,
                 peopleList = (uiConfigurationState as ConfigurationScreenUiState.Success).listOfPeople,
                 navigateToCustomizeGroup = { navigateToCustomizeGroup(iDGroupName) },
-                navigateToMainScreen = navigateToGroupScreen,
+                navigateToMainScreen = navigateBack,
                 navigateToAddPeopleScreen = navigateToAddPeopleScreen,
                 navigateToAboutScreen = navigateToAboutScreen,
                 navigateToGroupsList = navigateToGroupsList
@@ -221,7 +223,7 @@ private fun MainConfigurationScreen(
                         leadingIcon = R.drawable.people_add,
                         leadingBg = OrangeSoft,
                         leadingTint = OrangeDeep,
-                        label = "Añadir",
+                        label = addLabel,
                         value = addPeopleConfigurationText,
                         valueColor = OrangeDeep,
                         valueFontWeight = FontWeight.SemiBold,
@@ -273,7 +275,6 @@ private fun MainConfigurationScreen(
                     DangerRow(
                         onClick = {
                             configurationScreenViewModel.deleteGroup(iDGroupName) { navigateToGroupsList() }
-                            navigateToMainScreen()
                         }
                     )
                 }
@@ -282,7 +283,7 @@ private fun MainConfigurationScreen(
             // ── Footer ────────────────────────────────────────────────
             item {
                 Text(
-                    text = "Equify v1.0",
+                    text = appVersionFooter,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 22.dp),

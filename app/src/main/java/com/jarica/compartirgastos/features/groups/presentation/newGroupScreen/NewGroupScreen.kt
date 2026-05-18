@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.GroupModel
+import com.jarica.compartirgastos.core.presentation.ui.groupNameExample
 import com.jarica.compartirgastos.core.presentation.ui.labelTextFieldNewGroupScreen
 import com.jarica.compartirgastos.core.presentation.ui.newGroupNextButton
 import com.jarica.compartirgastos.core.presentation.ui.newGroupStepLabel
@@ -67,7 +68,7 @@ private const val MAX_GROUP_NAME_LENGTH = 40
 fun NewGroupScreen(
     newGroupViewModel: NewGroupViewModel,
     navigateToAddPeople: (String, String) -> Unit,
-    navigateBack: () -> Boolean
+    navigateBack: () -> Unit
 ) {
     val groupName by newGroupViewModel.groupName.observeAsState("")
 
@@ -277,7 +278,7 @@ private fun GroupNameInput(
                 Box(modifier = Modifier.weight(1f)) {
                     if (value.isEmpty()) {
                         Text(
-                            text = "Ej. Ribadeo 2026",
+                            text = groupNameExample,
                             fontSize = 15.sp,
                             color = MutedColor.copy(alpha = 0.5f),
                             fontFamily = parkinsans

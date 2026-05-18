@@ -7,6 +7,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.jarica.compartirgastos.BuildConfig
 
 // Test ID: ca-app-pub-3940256099942544/6300978111
 // Production IDs should replace this per placement
@@ -14,6 +15,7 @@ private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
 
 @Composable
 fun BannerAdView(modifier: Modifier = Modifier) {
+    if (!BuildConfig.SHOW_ADS) return
     AndroidView(
         modifier = modifier.fillMaxWidth(),
         factory = { context ->

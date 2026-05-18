@@ -1,10 +1,10 @@
 package com.jarica.compartirgastos.features.groups.presentation.groupsScreen
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -31,8 +32,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,7 +46,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -54,9 +60,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.presentation.ui.groupsTotalLabel
+import com.jarica.compartirgastos.core.presentation.ui.groupsYourGroups
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsAvatarColors
@@ -78,6 +88,27 @@ fun GroupsScreen(
     navigateToNewGroup: () -> Unit,
     navigateToAboutScreen: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val reviewManager = remember { ReviewManagerFactory.create(context) }
+    val triggerReview by groupViewModel.triggerReview.collectAsState()
+
+    LaunchedEffect(Unit) {
+        groupViewModel.checkAndRequestReview()
+    }
+
+    LaunchedEffect(triggerReview) {
+        if (triggerReview) {
+            reviewManager.requestReviewFlow().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    reviewManager.launchReviewFlow(context as Activity, task.result)
+                        .addOnCompleteListener { groupViewModel.onReviewFlowComplete() }
+                } else {
+                    groupViewModel.onReviewFlowComplete()
+                }
+            }
+        }
+    }
+
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiStateGroupScreen by produceState<GroupUiState>(
         initialValue = GroupUiState.Loading,
@@ -200,7 +231,7 @@ fun GroupsHeader(groupCount: Int, navigateToAboutScreen: () -> Unit) {
             }
             Spacer(Modifier.height(14.dp))
             Text(
-                "Tus grupos",
+                groupsYourGroups,
                 fontSize = 32.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Bold,
@@ -210,7 +241,7 @@ fun GroupsHeader(groupCount: Int, navigateToAboutScreen: () -> Unit) {
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "$groupCount activos",
+                stringResource(R.string.groups_active_count, groupCount),
                 fontSize = 13.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Normal,
@@ -297,7 +328,7 @@ fun GroupCard(
                 color = GroupsCardInk
             )
             Text(
-                "TOTAL",
+                groupsTotalLabel,
                 fontSize = 10.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Normal,
@@ -374,6 +405,7 @@ fun ParticipantAvatars(people: List<PersonModel>) {
 @SuppressLint("MissingPermission")
 @Composable
 fun BannerAdViewGroupScreen() {
+    if (!BuildConfig.SHOW_ADS) return
     Box(contentAlignment = Alignment.TopCenter) {
         AndroidView(
             modifier = Modifier.fillMaxWidth(),

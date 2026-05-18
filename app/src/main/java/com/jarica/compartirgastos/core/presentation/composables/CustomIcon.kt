@@ -31,7 +31,11 @@ fun CustomIcon(
 ) {
     val index = name.hashCode().and(Int.MAX_VALUE) % avatarPalette.size
     val (bg, textColor) = avatarPalette[index]
-    val initial = name.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+    val initials = when {
+        name.length >= 2 -> "${name[0].uppercaseChar()}${name[1].lowercaseChar()}"
+        name.length == 1 -> name[0].uppercaseChar().toString()
+        else -> "?"
+    }
 
     Box(
         modifier = Modifier
@@ -41,9 +45,9 @@ fun CustomIcon(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = initial,
+            text = initials,
             color = textColor,
-            fontSize = (size.value * 0.36f).sp,
+            fontSize = (size.value * 0.28f).sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = parkinsans
         )

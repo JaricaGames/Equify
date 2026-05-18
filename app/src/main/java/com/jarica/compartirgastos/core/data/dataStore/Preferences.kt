@@ -1,6 +1,7 @@
 package com.jarica.compartirgastos.core.data.dataStore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -34,6 +35,26 @@ class Preferences @Inject constructor(
             e.printStackTrace()
             null
         }
+    }
+
+    suspend fun incrementAndGetLaunchCount(): Int {
+        val key = intPreferencesKey("app_launch_count")
+        var count = 0
+        context.dataStore.edit { prefs ->
+            count = (prefs[key] ?: 0) + 1
+            prefs[key] = count
+        }
+        return count
+    }
+
+    suspend fun isReviewRequested(): Boolean {
+        val key = booleanPreferencesKey("review_requested")
+        return context.dataStore.data.first()[key] ?: false
+    }
+
+    suspend fun setReviewRequested() {
+        val key = booleanPreferencesKey("review_requested")
+        context.dataStore.edit { it[key] = true }
     }
 
 }

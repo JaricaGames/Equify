@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -52,6 +53,7 @@ import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
 import com.jarica.compartirgastos.core.presentation.ui.doTheCount
+import com.jarica.compartirgastos.core.presentation.ui.doTheCountsNoDebts
 import com.jarica.compartirgastos.core.presentation.ui.doTheCountsTransfersLabel
 import com.jarica.compartirgastos.core.presentation.ui.exportAdButtonText
 import com.jarica.compartirgastos.core.presentation.ui.exportArrayListDoTheCountsLargeText
@@ -101,6 +103,7 @@ fun DoTheCountsScreen(
         }
     }
 
+    val noAppToOpenPDFText = noAppToOpenPDF
     LaunchedEffect(pdfReady) {
         pdfReady?.let { uri ->
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -110,7 +113,7 @@ fun DoTheCountsScreen(
             try {
                 context.startActivity(intent)
             } catch (e: Exception) {
-                Toast.makeText(context, noAppToOpenPDF, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, noAppToOpenPDFText, Toast.LENGTH_SHORT).show()
             }
             doTheCountsScreenViewModel.onPdfOpened()
         }
@@ -134,9 +137,9 @@ private fun DoTheCountsContent(
     val scrollState = rememberScrollState()
 
     val subtitle = if (paymentsList.isEmpty())
-        "Sin deudas pendientes"
+        doTheCountsNoDebts
     else
-        "${paymentsList.size} transferencia${if (paymentsList.size != 1) "s" else ""} para saldar"
+        pluralStringResource(R.plurals.do_the_counts_transfers_subtitle, paymentsList.size, paymentsList.size)
 
     Box(
         modifier = Modifier

@@ -49,6 +49,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,6 +59,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
@@ -115,6 +117,7 @@ fun MainScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         bottomBar = {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -634,6 +637,7 @@ fun Header(
     val total = success.totalCost
     val intPart = total.toInt().toString()
     val decPart = ",%02d".format(((total - total.toInt()) * 100).toInt())
+    val scale = (LocalConfiguration.current.screenHeightDp / 800f).coerceIn(0.65f, 1.0f)
 
     Column(
         modifier = Modifier
@@ -641,7 +645,7 @@ fun Header(
             .clip(RoundedCornerShape(bottomEnd = 22.dp, bottomStart = 22.dp))
             .drawBehind {
                 drawRect(DarkBlue)
-                val side = 140.dp.toPx()
+                val side = (140 * scale).dp.toPx()
                 val half = side / 2f
                 val cx = size.width - 40.dp.toPx()
                 val cy = size.height - 40.dp.toPx()
@@ -659,11 +663,11 @@ fun Header(
             .padding(horizontal = 18.dp),
         verticalArrangement = Arrangement.Top
     ) {
-        // Top row: back · "Grupo" label · settings
+        // Top row: back · settings
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 14.dp),
+                .padding(top = (14 * scale).dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -711,8 +715,8 @@ fun Header(
             nameOfGroup,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 14.dp),
-            fontSize = 32.sp,
+                .padding(top = (14 * scale).dp),
+            fontSize = (32 * scale).sp,
             color = White,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Bold,
@@ -723,12 +727,12 @@ fun Header(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp, bottom = 22.dp)
+                .padding(top = (4 * scale).dp, bottom = (22 * scale).dp)
         ) {
             Text(
                 intPart,
                 modifier = Modifier.alignByBaseline(),
-                fontSize = 40.sp,
+                fontSize = (40 * scale).sp,
                 color = White,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Bold,
@@ -737,7 +741,7 @@ fun Header(
             Text(
                 decPart,
                 modifier = Modifier.alignByBaseline(),
-                fontSize = 26.sp,
+                fontSize = (26 * scale).sp,
                 color = White,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Bold,
@@ -746,7 +750,7 @@ fun Header(
             Text(
                 " €",
                 modifier = Modifier.alignByBaseline(),
-                fontSize = 18.sp,
+                fontSize = (18 * scale).sp,
                 color = White.copy(alpha = 0.8f),
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.SemiBold
@@ -767,6 +771,7 @@ fun Header(
 @SuppressLint("MissingPermission")
 @Composable
 fun BannerAdViewMainScreen() {
+    if (!BuildConfig.SHOW_ADS) return
     AndroidView(
         modifier = Modifier
             .fillMaxWidth(),

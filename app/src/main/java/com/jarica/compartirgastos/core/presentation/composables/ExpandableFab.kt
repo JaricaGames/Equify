@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.presentation.ui.addCost
 import com.jarica.compartirgastos.core.presentation.ui.addPay
+import com.jarica.compartirgastos.core.presentation.ui.addPersonText
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
@@ -51,14 +52,14 @@ fun Scrim(onDismiss: () -> Unit) {
             .background(
                 Brush.verticalGradient(
                     colorStops = arrayOf(
-                        0f   to Color(0x33141C24),
+                        0f to Color(0x33141C24),
                         0.4f to Color(0xAA141C24),
-                        1f   to Color(0xE0141C24)
+                        1f to Color(0xE0141C24)
                     )
                 )
             )
             .clickable(
-                indication        = null,
+                indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) { onDismiss() }
     )
@@ -78,26 +79,26 @@ fun ExpandableFab(
     ) {
         AnimatedVisibility(
             visible = expanded,
-            enter   = fadeIn() + slideInVertically { it / 2 },
-            exit    = fadeOut() + slideOutVertically { it / 2 }
+            enter = fadeIn() + slideInVertically { it / 2 },
+            exit = fadeOut() + slideOutVertically { it / 2 }
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 FabActionRow(
-                    label   = addCost,
-                    icon    = R.drawable.moneycash,
+                    label = addCost,
+                    icon = R.drawable.moneycash,
                     onClick = onAddCost
                 )
                 FabActionRow(
-                    label   = addPay,
-                    icon    = R.drawable.addpay,
+                    label = addPay,
+                    icon = R.drawable.addpay,
                     onClick = onAddPayment
                 )
                 FabActionRow(
-                    label   = "Invitar persona",
-                    icon    = R.drawable.people_add,
+                    label = addPersonText,
+                    icon = R.drawable.people_add,
                     onClick = onAddPerson
                 )
                 Spacer(Modifier.height(4.dp))
@@ -106,7 +107,7 @@ fun ExpandableFab(
 
         // Primary FAB — orange when closed, navy when open
         Box(
-            modifier         = Modifier
+            modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(if (expanded) DarkBlue else DarkOrange)
@@ -115,17 +116,17 @@ fun ExpandableFab(
         ) {
             if (expanded) {
                 Icon(
-                    painter            = painterResource(R.drawable.cancel_close),
+                    painter = painterResource(R.drawable.cancel_close),
                     contentDescription = null,
-                    tint               = White,
-                    modifier           = Modifier.size(22.dp)
+                    tint = White,
+                    modifier = Modifier.size(22.dp)
                 )
             } else {
                 Icon(
-                    imageVector        = Icons.Default.Add,
+                    imageVector = Icons.Default.Add,
                     contentDescription = null,
-                    tint               = White,
-                    modifier           = Modifier.size(24.dp)
+                    tint = White,
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
@@ -139,7 +140,7 @@ private fun FabActionRow(
     onClick: () -> Unit
 ) {
     Row(
-        verticalAlignment     = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Glass label pill
@@ -152,18 +153,18 @@ private fun FabActionRow(
                 .padding(horizontal = 14.dp, vertical = 8.dp)
         ) {
             Text(
-                text          = label,
-                fontSize      = 14.sp,
-                fontWeight    = FontWeight.SemiBold,
-                color         = White,
-                fontFamily    = parkinsans,
+                text = label,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = White,
+                fontFamily = parkinsans,
                 letterSpacing = (-0.01).em
             )
         }
 
         // Mini FAB
         Box(
-            modifier         = Modifier
+            modifier = Modifier
                 .size(48.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(DarkOrange)
@@ -171,10 +172,10 @@ private fun FabActionRow(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter            = painterResource(icon),
+                painter = painterResource(icon),
                 contentDescription = label,
-                tint               = White,
-                modifier           = Modifier.size(22.dp)
+                tint = White,
+                modifier = Modifier.size(22.dp)
             )
         }
     }

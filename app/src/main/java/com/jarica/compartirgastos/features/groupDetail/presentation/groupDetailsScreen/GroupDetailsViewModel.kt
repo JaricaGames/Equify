@@ -12,6 +12,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetSumCostByGroupUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -99,6 +100,7 @@ class GroupDetailsViewModel @Inject constructor(
 
 
     fun loadAd() {
+        if (!BuildConfig.SHOW_ADS) return
         val adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(
@@ -121,6 +123,10 @@ class GroupDetailsViewModel @Inject constructor(
 
 
     fun showAdThenNavigate(activity: Activity, onNavigate: () -> Unit) {
+        if (!BuildConfig.SHOW_ADS) {
+            onNavigate()
+            return
+        }
         interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 interstitialAd = null

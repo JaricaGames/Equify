@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -51,11 +50,18 @@ import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
 import com.jarica.compartirgastos.core.presentation.composables.FormSection
 import com.jarica.compartirgastos.core.presentation.composables.PersonChip
 import com.jarica.compartirgastos.core.presentation.composables.SplitChip
+import com.jarica.compartirgastos.core.presentation.ui.amountPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.configDangerEyebrow
+import com.jarica.compartirgastos.core.presentation.ui.descriptionPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.editCost
 import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteLabel
 import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteSub
+import com.jarica.compartirgastos.core.presentation.ui.fromText
 import com.jarica.compartirgastos.core.presentation.ui.saveChangesText
+import com.jarica.compartirgastos.core.presentation.ui.splitEqualAlt
+import com.jarica.compartirgastos.core.presentation.ui.splitLabel
+import com.jarica.compartirgastos.core.presentation.ui.splitPartsShort
+import com.jarica.compartirgastos.core.presentation.ui.splitPercentage
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
@@ -147,14 +153,14 @@ private fun EditCostContent(
                     .padding(top = 24.dp, bottom = 100.dp),
                 verticalArrangement = Arrangement.spacedBy(22.dp)
             ) {
-                FormSection(label = "Descripción") {
+                FormSection(label = descriptionPlaceHolder) {
                     DescriptionField(
                         value         = descriptionText,
                         onValueChange = onDescriptionChange
                     )
                 }
 
-                FormSection(label = "Cantidad") {
+                FormSection(label = amountPlaceHolder) {
                     AmountField(
                         value         = amountText,
                         onValueChange = { amountText = it }
@@ -162,7 +168,7 @@ private fun EditCostContent(
                 }
 
                 if (costPaymentsList.isNotEmpty()) {
-                    FormSection(label = "Pagado por") {
+                    FormSection(label = fromText) {
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement   = Arrangement.spacedBy(8.dp)
@@ -178,16 +184,16 @@ private fun EditCostContent(
                     }
                 }
 
-                FormSection(label = "Repartir") {
+                FormSection(label = splitLabel) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            SplitChip(label = "Por igual",  selected = true,  enabled = true,  onClick = {})
-                            SplitChip(label = "Partes",     selected = false, enabled = false, onClick = {})
-                            SplitChip(label = "Porcentaje", selected = false, enabled = false, onClick = {})
+                            SplitChip(label = splitEqualAlt,   selected = true,  enabled = true,  onClick = {})
+                            SplitChip(label = splitPartsShort, selected = false, enabled = false, onClick = {})
+                            SplitChip(label = splitPercentage, selected = false, enabled = false, onClick = {})
                         }
                         if (perPerson != null && costPaymentsList.isNotEmpty()) {
                             Text(
-                                text          = "Cada uno paga %.2f €".format(perPerson),
+                                text          = stringResource(R.string.split_each_pays, perPerson),
                                 fontSize      = 11.sp,
                                 color         = CostMuted,
                                 fontFamily    = parkinsans,

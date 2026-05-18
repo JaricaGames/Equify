@@ -35,6 +35,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -184,7 +185,7 @@ fun DescriptionField(value: String, onValueChange: (String) -> Unit) {
             Box {
                 if (value.isEmpty()) {
                     Text(
-                        "Descripción del gasto",
+                        stringResource(R.string.description_placeholder),
                         style = TextStyle(
                             fontFamily = parkinsans,
                             fontWeight = FontWeight.Normal,
