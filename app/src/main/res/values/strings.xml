@@ -68,6 +68,9 @@
     <string name="split_parts_short">Partes</string>
     <string name="split_percentage">Porcentaje</string>
     <string name="split_each_pays">Cada uno paga %1$.2f €</string>
+    <string name="participants_label">Participan</string>
+    <string name="participants_all">Todos</string>
+    <string name="participants_count">%1$d de %2$d</string>
 
     <!-- GroupsScreen -->
     <string name="groups_text">Grupos</string>

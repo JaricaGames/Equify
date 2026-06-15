@@ -62,6 +62,16 @@ class AddCostScreenViewModel @Inject constructor(
     private val _personToAddCost = MutableStateFlow<PersonModel?>(null)
     val personToAddCost: StateFlow<PersonModel?> = _personToAddCost
 
+    // Ids de los miembros que participan en el gasto. null = todos los del grupo.
+    private val _selectedParticipantIds = MutableStateFlow<Set<String>?>(null)
+    val selectedParticipantIds: StateFlow<Set<String>?> = _selectedParticipantIds
+
+    fun onParticipantToggled(person: PersonModel, allPeople: List<PersonModel>) {
+        val current = _selectedParticipantIds.value ?: allPeople.map { it.idPerson }.toSet()
+        val updated = if (person.idPerson in current) current - person.idPerson else current + person.idPerson
+        _selectedParticipantIds.value = updated
+    }
+
     fun onDescriptionChange(descriptionText: String) {
         _descriptionText.value = descriptionText
     }
@@ -123,5 +133,6 @@ class AddCostScreenViewModel @Inject constructor(
         _amountText.value = ""
         _personToAddCost.value = null
         _fromTextAddCost.value = ""
+        _selectedParticipantIds.value = null
     }
 }

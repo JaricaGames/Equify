@@ -39,6 +39,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -49,12 +50,15 @@ import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.composables.AmountField
 import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
 import com.jarica.compartirgastos.core.presentation.composables.FormSection
+import com.jarica.compartirgastos.core.presentation.composables.ParticipantsDropdown
 import com.jarica.compartirgastos.core.presentation.composables.PersonChip
 import com.jarica.compartirgastos.core.presentation.composables.SplitChip
 import com.jarica.compartirgastos.core.presentation.ui.addCost
 import com.jarica.compartirgastos.core.presentation.ui.amountPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.descriptionPlaceHolder
 import com.jarica.compartirgastos.core.presentation.ui.fromText
+import com.jarica.compartirgastos.core.presentation.ui.participantsAll
+import com.jarica.compartirgastos.core.presentation.ui.participantsLabel
 import com.jarica.compartirgastos.core.presentation.ui.saveCost
 import com.jarica.compartirgastos.core.presentation.ui.splitEqual
 import com.jarica.compartirgastos.core.presentation.ui.splitParts
@@ -77,10 +81,11 @@ fun AddCostScreen(
         addCostViewModel.setGroup(idGroupName)
     }
 
-    val descriptionText by addCostViewModel.descriptionText.collectAsState()
-    val amountText      by addCostViewModel.amountText.collectAsState()
-    val selectedPerson  by addCostViewModel.personToAddCost.collectAsState()
-    val uiAddCostState  by addCostViewModel.uiAddCostsUiState.collectAsState()
+    val descriptionText       by addCostViewModel.descriptionText.collectAsState()
+    val amountText            by addCostViewModel.amountText.collectAsState()
+    val selectedPerson        by addCostViewModel.personToAddCost.collectAsState()
+    val selectedParticipantIds by addCostViewModel.selectedParticipantIds.collectAsState()
+    val uiAddCostState        by addCostViewModel.uiAddCostsUiState.collectAsState()
 
     when (val state = uiAddCostState) {
         is AddCostsUiState.Error   -> {}
@@ -91,13 +96,14 @@ fun AddCostScreen(
         }
         is AddCostsUiState.Success -> {
             AddCostContent(
-                viewModel       = addCostViewModel,
-                descriptionText = descriptionText,
-                amountText      = amountText,
-                selectedPerson  = selectedPerson,
-                people          = state.listOfPeople,
-                navigateBack    = navigateToMainScreen,
-                idGroupName     = idGroupName,
+                viewModel              = addCostViewModel,
+                descriptionText        = descriptionText,
+                amountText             = amountText,
+                selectedPerson         = selectedPerson,
+                selectedParticipantIds = selectedParticipantIds,
+                people                 = state.listOfPeople,
+                navigateBack           = navigateToMainScreen,
+                idGroupName            = idGroupName,
             )
         }
     }
@@ -110,12 +116,27 @@ private fun AddCostContent(
     descriptionText: String,
     amountText: String,
     selectedPerson: PersonModel?,
+    selectedParticipantIds: Set<String>?,
     people: List<PersonModel>,
     navigateBack: () -> Unit,
     idGroupName: String,
 ) {
     val scrollState = rememberScrollState()
-    val canSave = descriptionText.isNotEmpty() && amountText.isNotEmpty() && selectedPerson != null
+
+    // null = participan todos los miembros del grupo (comportamiento por defecto).
+    val participantIds = selectedParticipantIds ?: people.map { it.idPerson }.toSet()
+    val participants   = people.filter { it.idPerson in participantIds }
+
+    val canSave = descriptionText.isNotEmpty() &&
+            amountText.isNotEmpty() &&
+            selectedPerson != null &&
+            participants.isNotEmpty()
+
+    val participantsAnchor = if (participants.size == people.size) {
+        participantsAll
+    } else {
+        stringResource(R.string.participants_count, participants.size, people.size)
+    }
 
     Column(
         modifier = Modifier
@@ -161,6 +182,15 @@ private fun AddCostContent(
                 }
             }
 
+            FormSection(label = participantsLabel) {
+                ParticipantsDropdown(
+                    anchorText  = participantsAnchor,
+                    people      = people,
+                    selectedIds = participantIds,
+                    onToggle    = { viewModel.onParticipantToggled(it, people) }
+                )
+            }
+
             FormSection(label = splitTypeLabel) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SplitChip(label = splitEqual,      selected = true,  enabled = true,  onClick = {})
@@ -192,7 +222,7 @@ private fun AddCostContent(
                     viewModel.addCost(
                         idGroupName,
                         cost,
-                        people,
+                        participants,
                         amount,
                         selectedPerson!!.idPerson,
                         selectedPerson.name,

@@ -29,7 +29,9 @@
       "PowerShell(Remove-Item *)",
       "Bash(Get-ChildItem -Path \"E:\\\\CompartirGastos\\\\app\\\\src\\\\main\\\\java\" -Recurse -Filter \"*.kt\")",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(xargs grep -l \"^fun.*Composable\\\\|@Composable\")"
+      "Bash(xargs grep -l \"^fun.*Composable\\\\|@Composable\")",
+      "PowerShell(.\\\\gradlew.bat compileDebugKotlin -q)",
+      "PowerShell(.\\\\gradlew.bat compileFreeDebugKotlin -q)"
     ]
   }
 }

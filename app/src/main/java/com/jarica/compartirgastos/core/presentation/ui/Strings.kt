@@ -115,6 +115,10 @@ val splitPartsShort: String
     @Composable get() = stringResource(R.string.split_parts_short)
 val splitPercentage: String
     @Composable get() = stringResource(R.string.split_percentage)
+val participantsLabel: String
+    @Composable get() = stringResource(R.string.participants_label)
+val participantsAll: String
+    @Composable get() = stringResource(R.string.participants_all)
 
 // NewGroupScreen / EditGroupNameScreen
 val groupNameExample: String

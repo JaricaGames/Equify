@@ -17,6 +17,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -43,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
@@ -295,6 +301,82 @@ fun PersonChip(name: String, selected: Boolean, onClick: () -> Unit) {
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
             color      = textColor
         )
+    }
+}
+
+@Composable
+fun ParticipantsDropdown(
+    anchorText: String,
+    people: List<PersonModel>,
+    selectedIds: Set<String>,
+    onToggle: (PersonModel) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .border(
+                    width = 1.dp,
+                    color = if (expanded) DarkOrange else CostBorder,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clickable { expanded = true }
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment     = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text       = anchorText,
+                fontSize   = 12.sp,
+                fontFamily = parkinsans,
+                fontWeight = FontWeight.Medium,
+                color      = CostInk
+            )
+            Icon(
+                painter            = painterResource(R.drawable.right_arrow),
+                contentDescription = null,
+                tint               = CostMuted,
+                modifier           = Modifier
+                    .size(16.dp)
+                    .rotate(if (expanded) -90f else 90f)
+            )
+        }
+
+        DropdownMenu(
+            expanded         = expanded,
+            onDismissRequest = { expanded = false },
+            modifier         = Modifier.background(White)
+        ) {
+            people.forEach { person ->
+                val checked = person.idPerson in selectedIds
+                DropdownMenuItem(
+                    onClick = { onToggle(person) },
+                    text = {
+                        Text(
+                            text       = person.name,
+                            fontSize   = 13.sp,
+                            fontFamily = parkinsans,
+                            fontWeight = if (checked) FontWeight.SemiBold else FontWeight.Normal,
+                            color      = CostInk
+                        )
+                    },
+                    leadingIcon = {
+                        Checkbox(
+                            checked         = checked,
+                            onCheckedChange = { onToggle(person) },
+                            colors          = CheckboxDefaults.colors(
+                                checkedColor   = DarkOrange,
+                                uncheckedColor = CostBorder,
+                                checkmarkColor = White
+                            )
+                        )
+                    }
+                )
+            }
+        }
     }
 }
 

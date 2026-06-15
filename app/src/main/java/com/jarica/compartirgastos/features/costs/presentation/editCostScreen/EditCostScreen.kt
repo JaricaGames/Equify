@@ -43,11 +43,13 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostPaymentsModel
+import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.composables.AmountField
 import com.jarica.compartirgastos.core.presentation.composables.CostFormHeader
 import com.jarica.compartirgastos.core.presentation.composables.CostMuted
 import com.jarica.compartirgastos.core.presentation.composables.DescriptionField
 import com.jarica.compartirgastos.core.presentation.composables.FormSection
+import com.jarica.compartirgastos.core.presentation.composables.ParticipantsDropdown
 import com.jarica.compartirgastos.core.presentation.composables.PersonChip
 import com.jarica.compartirgastos.core.presentation.composables.SplitChip
 import com.jarica.compartirgastos.core.presentation.ui.amountPlaceHolder
@@ -57,6 +59,8 @@ import com.jarica.compartirgastos.core.presentation.ui.editCost
 import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteLabel
 import com.jarica.compartirgastos.core.presentation.ui.editCostDeleteSub
 import com.jarica.compartirgastos.core.presentation.ui.fromText
+import com.jarica.compartirgastos.core.presentation.ui.participantsAll
+import com.jarica.compartirgastos.core.presentation.ui.participantsLabel
 import com.jarica.compartirgastos.core.presentation.ui.saveChangesText
 import com.jarica.compartirgastos.core.presentation.ui.splitEqualAlt
 import com.jarica.compartirgastos.core.presentation.ui.splitLabel
@@ -82,8 +86,9 @@ fun EditCostScreen(
         editCostScreenViewModel.setIdCost(idCost)
     }
 
-    val uiState         by editCostScreenViewModel.uiStateEditCost.collectAsState()
-    val descriptionText by editCostScreenViewModel.descriptionCost.observeAsState(description)
+    val uiState                by editCostScreenViewModel.uiStateEditCost.collectAsState()
+    val descriptionText        by editCostScreenViewModel.descriptionCost.observeAsState(description)
+    val selectedParticipantIds by editCostScreenViewModel.selectedParticipantIds.collectAsState()
 
     when (val state = uiState) {
         is EditCostUiState.Loading -> {
@@ -94,13 +99,16 @@ fun EditCostScreen(
         is EditCostUiState.Error -> {}
         is EditCostUiState.Success -> {
             EditCostContent(
-                descriptionText  = descriptionText,
-                initialAmount    = amount,
-                costPaymentsList = state.listOfCostPaymentsModel,
-                idCost           = idCost,
-                viewModel        = editCostScreenViewModel,
-                navigateBack     = navigateToMainScreen,
-                onDescriptionChange = { editCostScreenViewModel.onDescriptionTextFieldChange(it) }
+                descriptionText        = descriptionText,
+                initialAmount          = amount,
+                costPaymentsList       = state.listOfCostPaymentsModel,
+                groupPeople            = state.groupPeople,
+                currentParticipantIds  = state.currentParticipantIds,
+                selectedParticipantIds = selectedParticipantIds,
+                idCost                 = idCost,
+                viewModel              = editCostScreenViewModel,
+                navigateBack           = navigateToMainScreen,
+                onDescriptionChange    = { editCostScreenViewModel.onDescriptionTextFieldChange(it) }
             )
         }
     }
@@ -112,6 +120,9 @@ private fun EditCostContent(
     descriptionText: String,
     initialAmount: Float,
     costPaymentsList: List<CostPaymentsModel>,
+    groupPeople: List<PersonModel>,
+    currentParticipantIds: Set<String>,
+    selectedParticipantIds: Set<String>?,
     idCost: String,
     viewModel: EditCostScreenViewModel,
     navigateBack: () -> Unit,
@@ -120,15 +131,28 @@ private fun EditCostContent(
     val scrollState = rememberScrollState()
     var amountText by remember { mutableStateOf("%.2f".format(initialAmount)) }
 
-    val canSave  = descriptionText.isNotBlank() && amountText.replace(",", ".").toFloatOrNull() != null
-    val perPerson = amountText.replace(",", ".").toFloatOrNull()
-        ?.div(costPaymentsList.size.coerceAtLeast(1))
+    // Participantes del reparto: por defecto los actuales del gasto (o todos si no hubiera).
+    val baseIds        = currentParticipantIds.ifEmpty { groupPeople.map { it.idPerson }.toSet() }
+    val participantIds = selectedParticipantIds ?: baseIds
+    val participants   = groupPeople.filter { it.idPerson in participantIds }
 
-    val subtitle = if (costPaymentsList.isNotEmpty())
+    val canSave  = descriptionText.isNotBlank() &&
+            amountText.replace(",", ".").toFloatOrNull() != null &&
+            participants.isNotEmpty()
+    val perPerson = amountText.replace(",", ".").toFloatOrNull()
+        ?.div(participants.size.coerceAtLeast(1))
+
+    val participantsAnchor = if (groupPeople.isNotEmpty() && participants.size == groupPeople.size) {
+        participantsAll
+    } else {
+        stringResource(R.string.participants_count, participants.size, groupPeople.size)
+    }
+
+    val subtitle = if (participants.isNotEmpty())
         "%.2f € · %d participante%s".format(
             initialAmount,
-            costPaymentsList.size,
-            if (costPaymentsList.size != 1) "s" else ""
+            participants.size,
+            if (participants.size != 1) "s" else ""
         )
     else ""
 
@@ -184,6 +208,17 @@ private fun EditCostContent(
                     }
                 }
 
+                if (groupPeople.isNotEmpty()) {
+                    FormSection(label = participantsLabel) {
+                        ParticipantsDropdown(
+                            anchorText  = participantsAnchor,
+                            people      = groupPeople,
+                            selectedIds = participantIds,
+                            onToggle    = { viewModel.onParticipantToggled(it, baseIds) }
+                        )
+                    }
+                }
+
                 FormSection(label = splitLabel) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -191,7 +226,7 @@ private fun EditCostContent(
                             SplitChip(label = splitPartsShort, selected = false, enabled = false, onClick = {})
                             SplitChip(label = splitPercentage, selected = false, enabled = false, onClick = {})
                         }
-                        if (perPerson != null && costPaymentsList.isNotEmpty()) {
+                        if (perPerson != null && participants.isNotEmpty()) {
                             Text(
                                 text          = stringResource(R.string.split_each_pays, perPerson),
                                 fontSize      = 11.sp,
@@ -291,7 +326,7 @@ private fun EditCostContent(
             Button(
                 onClick  = {
                     val newAmount = amountText.replace(",", ".").toFloatOrNull() ?: initialAmount
-                    viewModel.updateCost(descriptionText, newAmount, idCost)
+                    viewModel.updateCost(descriptionText, newAmount, idCost, participants)
                     navigateBack()
                 },
                 enabled  = canSave,

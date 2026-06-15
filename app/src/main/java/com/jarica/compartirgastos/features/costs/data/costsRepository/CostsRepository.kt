@@ -91,4 +91,13 @@ class CostsRepository @Inject constructor(
         return distributionPaymentDao.getDistributionPaymentsByIdCost(idCost)
             .map { it.map { dto -> dto.toDomain() } }
     }
+
+    fun getDistributionCostByIdCost(idCost: String): Flow<List<CostPaymentsModel>> {
+        return distributionCostDao.getDistributionCostByIdCost(idCost)
+            .map { it.map { dto -> dto.toDomain() } }
+    }
+
+    suspend fun deleteDistributionCostByIdCost(idCost: String) {
+        distributionCostDao.deleteDistributionCostByIdCost(idCost)
+    }
 }
