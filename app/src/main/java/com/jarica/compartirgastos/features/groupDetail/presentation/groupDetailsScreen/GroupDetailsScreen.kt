@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -124,7 +125,7 @@ fun MainScreen(
                 color = Color.White,
                 tonalElevation = 0.dp,
             ) {
-                Column {
+                Column(modifier = Modifier.navigationBarsPadding()) {
                     BannerAdView()
                     ButtonDoTheCounts(
                         mainScreenViewModel = mainScreenViewModel,
@@ -639,7 +640,7 @@ fun Header(
     val decPart = ",%02d".format(((total - total.toInt()) * 100).toInt())
     val scale = (LocalConfiguration.current.screenHeightDp / 800f).coerceIn(0.65f, 1.0f)
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomEnd = 22.dp, bottomStart = 22.dp))
@@ -659,6 +660,10 @@ fun Header(
                     )
                 }
             }
+    ) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(WindowInsets.statusBars.asPaddingValues())
             .padding(horizontal = 18.dp),
         verticalArrangement = Arrangement.Top
@@ -765,7 +770,8 @@ fun Header(
                 letterSpacing = 0.1.em
             )
         }
-    }
+    } // Column
+    } // Box
 }
 
 @SuppressLint("MissingPermission")

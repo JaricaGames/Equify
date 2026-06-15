@@ -69,6 +69,8 @@ val addPeopleMemberRole: String
     @Composable get() = stringResource(R.string.add_people_member_role)
 val deleteContentDescription: String
     @Composable get() = stringResource(R.string.delete_content_description)
+val addFromMainHint: String
+    @Composable get() = stringResource(R.string.add_from_main_hint)
 
 // GroupDetailsScreen (MainScreen)
 val addCost: String

@@ -42,17 +42,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.presentation.ui.addFromMainHint
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleFieldLabel
 import com.jarica.compartirgastos.core.presentation.ui.addPeopleFromMainSubtitle
 import com.jarica.compartirgastos.core.presentation.ui.addPeoplePlaceholder
@@ -118,13 +116,7 @@ fun AddPeopleScreenFromMain(
                     onAdd         = { addAndGoBack() }
                 )
                 Text(
-                    text = buildAnnotatedString {
-                        append("Pulsa ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = InkColor)) {
-                            append("+")
-                        }
-                        append(" para añadir al grupo.")
-                    },
+                    text       = addFromMainHint,
                     fontSize   = 11.sp,
                     color      = MutedColor,
                     fontFamily = parkinsans,

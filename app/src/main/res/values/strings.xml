@@ -41,6 +41,7 @@
     <string name="add_people_member_role">Miembro</string>
     <string name="add_people_count_subtitle">%1$d personas en &quot;%2$s&quot;</string>
     <string name="add_people_who_subtitle">¿Quién participa en &quot;%s&quot;?</string>
+    <string name="add_from_main_hint">Pulsa + para añadir al grupo.</string>
     <string name="delete_content_description">Eliminar</string>
 
     <!-- GroupDetailsScreen (MainScreen) -->

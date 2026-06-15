@@ -57,7 +57,7 @@ android {
             applicationIdSuffix = ".pro"
             versionNameSuffix = "-pro"
             buildConfigField("boolean", "SHOW_ADS", "false")
-            resValue("string", "app_name", "Equify Pro")
+            resValue("string", "app_name", "Equify - Pro")
         }
     }
 
