@@ -30,6 +30,7 @@ import com.jarica.compartirgastos.core.presentation.ui.emptyCostsSubtitle
 import com.jarica.compartirgastos.core.presentation.ui.emptyCostsTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
 
 private val CostDivider = Color(0xFFE6E4DE)
@@ -123,7 +124,7 @@ fun ItemCost(
         Spacer(Modifier.weight(1f))
 
         Text(
-            "${"%.2f".format(item.amount)} €",
+            item.amount.toMoneyDisplay(),
             fontSize = 15.sp,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Bold,

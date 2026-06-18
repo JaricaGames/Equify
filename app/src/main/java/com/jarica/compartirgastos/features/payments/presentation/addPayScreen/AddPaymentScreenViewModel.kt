@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.utils.toCentsOrNull
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupByIdUseCase
@@ -125,11 +126,12 @@ class AddPaymentScreenViewModel @Inject constructor(
     }
 
     fun addPayment(personWhoPay: PersonModel, personWhoReceive: PersonModel, amountText: String) {
+        val amount = amountText.toCentsOrNull() ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
             insertPaymentUseCase(
                 paymentsModel = PaymentsModel(
-                    amount = amountText.toFloat(),
+                    amount = amount,
                     idPersonWhoPay = personWhoPay.idPerson,
                     idPersonWhoReceive = personWhoReceive.idPerson,
                     idGroup = personWhoPay.idGroupName

@@ -28,6 +28,7 @@ import com.jarica.compartirgastos.core.presentation.composables.EmptyState
 import com.jarica.compartirgastos.core.presentation.ui.emptyResumeSubtitle
 import com.jarica.compartirgastos.core.presentation.ui.emptyResumeTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 import kotlin.math.absoluteValue
 
 private val BalGreen  = Color(0xFF2E8B6F)
@@ -67,7 +68,7 @@ fun ResumeFragment(
 
 @Composable
 fun PeopleList(personBalanceList: List<PersonBalance>, modifier: Modifier = Modifier) {
-    if (personBalanceList.isEmpty() || personBalanceList.all { it.balance == 0f }) {
+    if (personBalanceList.isEmpty() || personBalanceList.all { it.balance == 0L }) {
         EmptyState(
             title = emptyResumeTitle,
             subtitle = emptyResumeSubtitle
@@ -103,9 +104,9 @@ fun MemberRow(person: PersonBalance) {
         Spacer(Modifier.weight(1f))
 
         val (balanceText, balanceColor) = when {
-            person.balance > 0f -> "+ ${"%.2f".format(person.balance)} €" to BalGreen
-            person.balance < 0f -> "− ${"%.2f".format(person.balance.absoluteValue)} €" to BalRed
-            else                -> "${"%.2f".format(0f)} €" to BalMuted
+            person.balance > 0 -> "+ ${person.balance.toMoneyDisplay()}" to BalGreen
+            person.balance < 0 -> "− ${person.balance.absoluteValue.toMoneyDisplay()}" to BalRed
+            else               -> 0L.toMoneyDisplay() to BalMuted
         }
 
         Text(

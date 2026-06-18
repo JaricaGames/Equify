@@ -43,7 +43,7 @@ interface CostsDao {
 
     //Metodo que devuelve la suma de todos los gastos de un grupo
     @Query("""SELECT COALESCE(SUM(amount), 0) FROM costsTable WHERE idGroup = :groupId""")
-    fun getSumCostsByIdGroup(groupId: String): Flow<Float>
+    fun getSumCostsByIdGroup(groupId: String): Flow<Long>
 
 
 }

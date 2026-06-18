@@ -39,7 +39,7 @@ data class AddPeopleScreenFromMainObject(
 @Serializable
 data class EditCostScreenObject(
     val idCost: String,
-    val amount: Float,
+    val amount: Long,
     val description: String,
     val iDGroupName: String
 )
@@ -70,7 +70,7 @@ data object AboutEquifyScreenObject
 data class EditPaymentScreenObject(
     val idGroup: String,
     val idPayment: String,
-    val amount: Float,
+    val amount: Long,
     val personWhoPay: String,
     val personWhoReceive: String
 )

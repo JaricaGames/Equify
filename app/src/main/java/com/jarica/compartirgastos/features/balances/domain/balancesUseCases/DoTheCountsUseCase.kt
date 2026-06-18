@@ -49,8 +49,8 @@ class DoTheCountsUseCase @Inject constructor(
             debtors[i] = debtor.copy(balance = debtor.balance - amount)
             creditors[j] = creditor.copy(balance = creditor.balance - amount)
 
-            if (debtors[i].balance < 0.01f) i++
-            if (creditors[j].balance < 0.01f) j++
+            if (debtors[i].balance <= 0L) i++
+            if (creditors[j].balance <= 0L) j++
         }
 
         return payments

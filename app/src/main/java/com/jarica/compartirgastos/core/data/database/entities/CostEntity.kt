@@ -22,7 +22,10 @@ import com.jarica.compartirgastos.core.utils.COSTS_TABLE
 data class CostEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "idCost") val idCost: String,
-    @ColumnInfo(name = "amount") val amount: Float,
+    @ColumnInfo(name = "amount") val amount: Long,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "idGroup") val idGroup: String?,
+    // Preparación para la sincronización remota (resolución de conflictos last-write-wins).
+    @ColumnInfo(name = "createdAt", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updatedAt", defaultValue = "0") val updatedAt: Long = System.currentTimeMillis(),
 )

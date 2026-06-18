@@ -636,8 +636,8 @@ fun Header(
     success: TotalExpensesUiState.Success
 ) {
     val total = success.totalCost
-    val intPart = total.toInt().toString()
-    val decPart = ",%02d".format(((total - total.toInt()) * 100).toInt())
+    val intPart = (total / 100).toString()
+    val decPart = ",%02d".format(total % 100)
     val scale = (LocalConfiguration.current.screenHeightDp / 800f).coerceIn(0.65f, 1.0f)
 
     Box(

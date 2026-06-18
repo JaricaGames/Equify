@@ -4,7 +4,7 @@ import java.util.UUID
 
 data class PaymentsModel(
     val idPayment:String = UUID.randomUUID().toString(),
-    var amount: Float,
+    var amount: Long,
     val idPersonWhoPay: String,
     val idPersonWhoReceive: String,
     val idGroup: String

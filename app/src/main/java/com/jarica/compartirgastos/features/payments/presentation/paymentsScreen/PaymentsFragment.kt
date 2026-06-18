@@ -34,6 +34,7 @@ import com.jarica.compartirgastos.core.presentation.ui.emptyPaymentsSubtitle
 import com.jarica.compartirgastos.core.presentation.ui.emptyPaymentsTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 
 private val PayDivider = Color(0xFFE6E4DE)
 private val PayInk     = Color(0xFF1F2A33)
@@ -144,7 +145,7 @@ fun ItemPaymentName(
         Spacer(Modifier.weight(1f))
 
         Text(
-            "${"%.2f".format(item.amount)} €",
+            item.amount.toMoneyDisplay(),
             fontSize = 15.sp,
             fontFamily = parkinsans,
             fontWeight = FontWeight.Bold,

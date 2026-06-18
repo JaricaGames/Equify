@@ -29,6 +29,7 @@ import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCase
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.GetBalancesByGroupUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostsByIdGroupUseCase
@@ -145,8 +146,8 @@ class DoTheCountsScreenViewModel @Inject constructor(
                 val rowAlt = BaseColor(248, 250, 251)
 
                 val dateStr     = SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(Date())
-                val totalSpent  = costs.sumOf { it.amount.toDouble() }.toFloat()
-                val totalSettle = payments.sumOf { it.amount.toDouble() }.toFloat()
+                val totalSpent  = costs.sumOf { it.amount }
+                val totalSettle = payments.sumOf { it.amount }
 
                 // Load ic_launcher as the header logo (already has its own cream background)
                 val launcherBmp = BitmapFactory.decodeResource(
@@ -229,9 +230,9 @@ class DoTheCountsScreenViewModel @Inject constructor(
                     statsTable.widthPercentage = 100f
                     statsTable.setWidths(floatArrayOf(1f, 0.02f, 1f))
                     statsTable.spacingAfter = 22f
-                    statsTable.addCell(buildStatCell("Total gastado", "%.2f €".format(totalSpent),  ink,    muted, cream))
+                    statsTable.addCell(buildStatCell("Total gastado", totalSpent.toMoneyDisplay(),  ink,    muted, cream))
                     statsTable.addCell(PdfPCell().apply { backgroundColor = line; border = PdfPCell.NO_BORDER })
-                    statsTable.addCell(buildStatCell("A liquidar",    "%.2f €".format(totalSettle), orange, muted, cream))
+                    statsTable.addCell(buildStatCell("A liquidar",    totalSettle.toMoneyDisplay(), orange, muted, cream))
                     document.add(statsTable)
 
                     // Lista de gastos
@@ -261,7 +262,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                                 }
                             )
                             costsTable.addCell(
-                                PdfPCell(Phrase("%.2f €".format(cost.amount), Font(Font.FontFamily.HELVETICA, 10f, Font.BOLD, ink))).apply {
+                                PdfPCell(Phrase(cost.amount.toMoneyDisplay(), Font(Font.FontFamily.HELVETICA, 10f, Font.BOLD, ink))).apply {
                                     border = PdfPCell.NO_BORDER; backgroundColor = bg; setPadding(8f)
                                     horizontalAlignment = Element.ALIGN_RIGHT
                                 }
@@ -303,7 +304,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
                                 }
                             )
                             paymentsTable.addCell(
-                                PdfPCell(Phrase("%.2f €".format(p.amount), Font(Font.FontFamily.HELVETICA, 11f, Font.BOLD, orange))).apply {
+                                PdfPCell(Phrase(p.amount.toMoneyDisplay(), Font(Font.FontFamily.HELVETICA, 11f, Font.BOLD, orange))).apply {
                                     border = PdfPCell.NO_BORDER; backgroundColor = bg; setPadding(8f)
                                     horizontalAlignment = Element.ALIGN_RIGHT
                                 }

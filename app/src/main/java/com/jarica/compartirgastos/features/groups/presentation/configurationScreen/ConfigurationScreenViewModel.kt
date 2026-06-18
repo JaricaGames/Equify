@@ -119,7 +119,7 @@ class ConfigurationScreenViewModel @Inject constructor(
             val listOfDistributionPayments = getSumDistributionPaymentByIdPersonUseCase(person.idPerson).first()
 
             // Ahora estamos en Main Thread
-            if (listOfDistributionCosts != 0f || listOfDistributionPayments != 0f ) {
+            if (listOfDistributionCosts != 0L || listOfDistributionPayments != 0L ) {
                 _showDialogError.value = true
             } else {
                 _showDialogConfirm.value = true

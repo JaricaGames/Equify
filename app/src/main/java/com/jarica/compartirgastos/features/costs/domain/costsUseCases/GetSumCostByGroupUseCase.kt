@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetSumCostByGroupUseCase @Inject constructor(
     private val costsRepository: CostsRepository
 ) {
-    operator fun invoke(groupId: String): Flow<Float> {
+    operator fun invoke(groupId: String): Flow<Long> {
         return costsRepository.getSumCostsByIdGroup(groupId)
     }
 }

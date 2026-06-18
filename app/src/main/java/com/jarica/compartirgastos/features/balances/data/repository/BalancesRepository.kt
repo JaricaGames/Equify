@@ -19,11 +19,11 @@ class BalancesRepository @Inject constructor(
         return personBalanceDao.getBalancesByGroup(groupId)
     }
 
-    fun getSumDistributionPaymentByIdPerson(idPerson: String): Flow<Float> {
+    fun getSumDistributionPaymentByIdPerson(idPerson: String): Flow<Long> {
         return distributionPaymentDao.getSumDistributionPaymentByIdPerson(idPerson)
     }
 
-    fun getSumDistributionCostByIdPerson(idPerson: String): Flow<Float> {
+    fun getSumDistributionCostByIdPerson(idPerson: String): Flow<Long> {
         return distributionCostDao.getSumDistributionCostByIdPerson(idPerson)
     }
 

@@ -6,6 +6,7 @@ import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
 import com.jarica.compartirgastos.core.domain.models.DistributionPaymentModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.utils.splitEvenly
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionPaymentUseCase
@@ -94,19 +95,20 @@ class AddCostScreenViewModel @Inject constructor(
         idGroupName: String,
         costModel: CostModel,
         listOfPeople: List<PersonModel>,
-        amount: Float,
+        amount: Long,
         personToAddCosts: String,
         name: String,
         navigateToMainScreen: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             insertCostUseCase(costModel)
-            listOfPeople.forEach { person ->
+            val shares = splitEvenly(amount, listOfPeople.size)
+            listOfPeople.forEachIndexed { index, person ->
                 insertDistributionCostUseCase(
                     DistributionCostModel(
                         iDCost = costModel.idCost,
                         iDPerson = person.idPerson,
-                        amount = amount / listOfPeople.size,
+                        amount = shares[index],
                         idGroup = idGroupName,
                         name = person.name
                     )

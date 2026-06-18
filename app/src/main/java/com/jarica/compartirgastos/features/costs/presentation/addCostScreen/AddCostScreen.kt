@@ -69,6 +69,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toCentsOrNull
 import java.util.UUID
 
 @Composable
@@ -212,7 +213,7 @@ private fun AddCostContent(
                     disabledContentColor   = Color(0xFF6B7A86)
                 ),
                 onClick = {
-                    val amount = amountText.replace(",", ".").toFloatOrNull() ?: return@Button
+                    val amount = amountText.toCentsOrNull() ?: return@Button
                     val cost = CostModel(
                         idCost      = UUID.randomUUID().toString(),
                         amount      = amount,

@@ -69,6 +69,9 @@ import com.jarica.compartirgastos.core.presentation.ui.splitPercentage
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toCentsOrNull
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
+import com.jarica.compartirgastos.core.utils.toMoneyString
 
 private val DangerRed    = Color(0xFFC0533D)
 private val DangerBg     = Color(0xFFFBE5E0)
@@ -77,7 +80,7 @@ private val DangerBorder = Color(0xFFF5D6CE)
 @Composable
 fun EditCostScreen(
     idCost: String,
-    amount: Float,
+    amount: Long,
     description: String,
     editCostScreenViewModel: EditCostScreenViewModel,
     navigateToMainScreen: () -> Unit
@@ -118,7 +121,7 @@ fun EditCostScreen(
 @Composable
 private fun EditCostContent(
     descriptionText: String,
-    initialAmount: Float,
+    initialAmount: Long,
     costPaymentsList: List<CostPaymentsModel>,
     groupPeople: List<PersonModel>,
     currentParticipantIds: Set<String>,
@@ -129,7 +132,7 @@ private fun EditCostContent(
     onDescriptionChange: (String) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    var amountText by remember { mutableStateOf("%.2f".format(initialAmount)) }
+    var amountText by remember { mutableStateOf(initialAmount.toMoneyString()) }
 
     // Participantes del reparto: por defecto los actuales del gasto (o todos si no hubiera).
     val baseIds        = currentParticipantIds.ifEmpty { groupPeople.map { it.idPerson }.toSet() }
@@ -137,9 +140,9 @@ private fun EditCostContent(
     val participants   = groupPeople.filter { it.idPerson in participantIds }
 
     val canSave  = descriptionText.isNotBlank() &&
-            amountText.replace(",", ".").toFloatOrNull() != null &&
+            amountText.toCentsOrNull() != null &&
             participants.isNotEmpty()
-    val perPerson = amountText.replace(",", ".").toFloatOrNull()
+    val perPerson = amountText.toCentsOrNull()
         ?.div(participants.size.coerceAtLeast(1))
 
     val participantsAnchor = if (groupPeople.isNotEmpty() && participants.size == groupPeople.size) {
@@ -149,8 +152,7 @@ private fun EditCostContent(
     }
 
     val subtitle = if (participants.isNotEmpty())
-        "%.2f € · %d participante%s".format(
-            initialAmount,
+        "${initialAmount.toMoneyDisplay()} · %d participante%s".format(
             participants.size,
             if (participants.size != 1) "s" else ""
         )
@@ -228,7 +230,7 @@ private fun EditCostContent(
                         }
                         if (perPerson != null && participants.isNotEmpty()) {
                             Text(
-                                text          = stringResource(R.string.split_each_pays, perPerson),
+                                text          = stringResource(R.string.split_each_pays, perPerson.toMoneyString()),
                                 fontSize      = 11.sp,
                                 color         = CostMuted,
                                 fontFamily    = parkinsans,
@@ -325,7 +327,7 @@ private fun EditCostContent(
         ) {
             Button(
                 onClick  = {
-                    val newAmount = amountText.replace(",", ".").toFloatOrNull() ?: initialAmount
+                    val newAmount = amountText.toCentsOrNull() ?: initialAmount
                     viewModel.updateCost(descriptionText, newAmount, idCost, participants)
                     navigateBack()
                 },

@@ -29,7 +29,7 @@ class CostsRepository @Inject constructor(
             .map { it.map { dto -> dto.toDomain() } }
     }
 
-    fun getSumCostsByIdGroup(groupId: String): Flow<Float> {
+    fun getSumCostsByIdGroup(groupId: String): Flow<Long> {
         return costsDao.getSumCostsByIdGroup(groupId)
     }
 

@@ -25,7 +25,7 @@ import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
         PaymentEntity::class,
         DistributionCostEntity::class,
         DistributionPaymentEntity::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 

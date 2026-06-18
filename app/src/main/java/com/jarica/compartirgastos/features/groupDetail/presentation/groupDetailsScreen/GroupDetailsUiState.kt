@@ -13,7 +13,7 @@ sealed interface GroupDetailsUiState {
 
 sealed class TotalExpensesUiState {
     object Loading : TotalExpensesUiState()
-    data class Success(val totalCost: Float) : TotalExpensesUiState()
+    data class Success(val totalCost: Long) : TotalExpensesUiState()
     data class Error(val throwable: Throwable) : TotalExpensesUiState()
 }
 

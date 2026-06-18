@@ -63,6 +63,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 
 private val LineColor = Color(0xFFE6E4DE)
 private val MutedColor = Color(0xFF6B7A86)
@@ -387,7 +388,7 @@ private fun CompactTransferRow(payment: PaymentsToDoCountsModel) {
             overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
         )
         Text(
-            text = "%.2f €".format(payment.amount),
+            text = payment.amount.toMoneyDisplay(),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = DarkOrange,

@@ -21,8 +21,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,18 +55,18 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.Grey
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.HEADER_WEIGHT
+import com.jarica.compartirgastos.core.utils.toCentsOrNull
+import com.jarica.compartirgastos.core.utils.toMoneyString
 
 @Composable
 fun EditPaymentScreen(
     idPayment: String,
-    amount: Float,
+    amount: Long,
     personWhoPay: String,
     personWhoReceive: String,
     editPaymentsViewModel: EditPaymentViewModel,
     navigateToMainScreen: () -> Unit
 ) {
-
-    val amountPayment: Float by editPaymentsViewModel.amountPayment.observeAsState(amount)
 
     val namePersonWhoPay by produceState(initialValue = "", key1 = personWhoPay) {
         val name = editPaymentsViewModel.getPersonName(personWhoPay)
@@ -83,8 +85,7 @@ fun EditPaymentScreen(
         navigateToMainScreen,
         idPayment,
         namePersonWhoPay,
-        namePersonWhoReceive,
-        amountPayment
+        namePersonWhoReceive
     )
 }
 
@@ -92,13 +93,14 @@ fun EditPaymentScreen(
 @Composable
 fun MainScreenAddPayment(
     editPaymentScreenViewModel: EditPaymentViewModel,
-    amount: Float,
+    amount: Long,
     navigateToMainScreen: () -> Unit,
     idPayment: String,
     namePersonWhoPay: String,
     namePersonWhoReceive: String,
-    amountPayment: Float
 ) {
+
+    var amountText by remember { mutableStateOf(amount.toMoneyString()) }
 
     Column(
         modifier = Modifier
@@ -237,9 +239,9 @@ fun MainScreenAddPayment(
             Spacer(modifier = Modifier.size(20.dp))
             //TEXTFIELD CANTIDAD
             CustomTextField(
-                value = amountPayment.toString(),
+                value = amountText,
                 enabled = true,
-                onValueChange = { editPaymentScreenViewModel.onAmountTextFieldChange(it)},
+                onValueChange = { amountText = it },
                 placeholderText = amountPlaceHolder,
                 textStyle = TextStyle(
                     fontFamily = parkinsans,
@@ -263,7 +265,10 @@ fun MainScreenAddPayment(
                     disabledContentColor = Black
                 ),
                 onClick = {
-                    editPaymentScreenViewModel.updatePaymentSelected(idPayment, amountPayment)
+                    editPaymentScreenViewModel.updatePaymentSelected(
+                        idPayment,
+                        amountText.toCentsOrNull() ?: amount
+                    )
                     navigateToMainScreen()
                 }) {
                 Text(

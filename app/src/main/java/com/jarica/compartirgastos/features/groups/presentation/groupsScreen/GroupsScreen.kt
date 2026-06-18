@@ -75,6 +75,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardInk
 import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardMuted
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 
@@ -289,7 +290,7 @@ fun GroupCard(
     val people by produceState(initialValue = emptyList<PersonModel>(), key1 = group.idGroupName) {
         value = groupViewModel.getPeople(group.idGroupName)
     }
-    val totalCost by produceState(initialValue = 0f, key1 = group.idGroupName) {
+    val totalCost by produceState(initialValue = 0L, key1 = group.idGroupName) {
         value = groupViewModel.getTotalCost(group.idGroupName)
     }
 
@@ -321,7 +322,7 @@ fun GroupCard(
 
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
-                "${"%.2f".format(totalCost)} €",
+                totalCost.toMoneyDisplay(),
                 fontSize = 15.sp,
                 fontFamily = parkinsans,
                 fontWeight = FontWeight.Bold,

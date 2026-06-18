@@ -25,6 +25,8 @@ data class PersonEntity(
     @ColumnInfo(name = "idPerson") val idPerson: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "idGroup") val idGroup: String,
-
+    // Preparación para la sincronización remota (resolución de conflictos last-write-wins).
+    @ColumnInfo(name = "createdAt", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updatedAt", defaultValue = "0") val updatedAt: Long = System.currentTimeMillis(),
     )
 

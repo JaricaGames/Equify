@@ -8,7 +8,7 @@ class GetSumDistributionPaymentByIdPersonUseCase @Inject constructor(
     private val balancesRepository: BalancesRepository
 
 ) {
-    operator fun invoke(idPerson: String): Flow<Float> {
+    operator fun invoke(idPerson: String): Flow<Long> {
         return balancesRepository.getSumDistributionPaymentByIdPerson(idPerson)
     }
 }

@@ -35,5 +35,5 @@ data class DistributionCostEntity(
     @ColumnInfo(name = "idCost") val idCost: String,
     @ColumnInfo(name = "idGroup") val idGroup: String,
     @ColumnInfo(name = "idPerson") val idPerson: String,
-    @ColumnInfo(name = "amount") val amount: Float,
+    @ColumnInfo(name = "amount") val amount: Long,
 )

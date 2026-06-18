@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.utils.splitEvenly
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteDistributionCostByIdCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostByIdCost
@@ -100,7 +101,7 @@ class EditCostScreenViewModel @Inject constructor(
 
     fun updateCost(
         description: String,
-        amount: Float,
+        amount: Long,
         idCost: String,
         participants: List<PersonModel>,
     ) {
@@ -114,13 +115,13 @@ class EditCostScreenViewModel @Inject constructor(
             val idGroup = cost.idGroup.orEmpty()
             deleteDistributionCostByIdCostUseCase(idCost)
             if (participants.isNotEmpty()) {
-                val share = amount / participants.size
-                participants.forEach { person ->
+                val shares = splitEvenly(amount, participants.size)
+                participants.forEachIndexed { index, person ->
                     insertDistributionCostUseCase(
                         DistributionCostModel(
                             iDCost   = idCost,
                             iDPerson = person.idPerson,
-                            amount   = share,
+                            amount   = shares[index],
                             idGroup  = idGroup,
                             name     = person.name
                         )

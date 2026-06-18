@@ -68,7 +68,7 @@ class GroupsScreenViewModel @Inject constructor(
     suspend fun getPeople(idGroup: String): List<PersonModel> =
         getPeopleByIdGroupUseCase(idGroup).first()
 
-    suspend fun getTotalCost(idGroup: String): Float =
+    suspend fun getTotalCost(idGroup: String): Long =
         getSumCostByGroupUseCase(idGroup).first()
 
     val uiStateGroupName: StateFlow<GroupUiState> = getGroupNamesUseCase().map(GroupUiState::Success)

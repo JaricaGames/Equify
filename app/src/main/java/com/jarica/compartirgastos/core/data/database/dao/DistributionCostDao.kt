@@ -17,7 +17,7 @@ interface DistributionCostDao {
 
     // Metodo que devuelve la suma de la distribucion de gasto por persona
     @Query("SELECT COALESCE(SUM(amount),0) FROM distributionCostTable WHERE iDPerson = :iDPerson")
-    fun getSumDistributionCostByIdPerson(iDPerson: String): Flow<Float>
+    fun getSumDistributionCostByIdPerson(iDPerson: String): Flow<Long>
 
     // Metodo que devuelve quienes participan en un gasto (su reparto) por Id
     @Query("""

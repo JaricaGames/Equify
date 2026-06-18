@@ -28,8 +28,11 @@ import java.util.UUID
 data class PaymentEntity(
     @PrimaryKey
     @ColumnInfo(name = "idPayment") val idPayment: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "amount") val amount: Float,
+    @ColumnInfo(name = "amount") val amount: Long,
     @ColumnInfo(name = "idPersonWhoPay") val idPersonWhoPay: String,
     @ColumnInfo(name = "idPersonWhoReceive") val idPersonWhoReceive: String,
     @ColumnInfo(name = "idGroup") val idGroup: String,
+    // Preparación para la sincronización remota (resolución de conflictos last-write-wins).
+    @ColumnInfo(name = "createdAt", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updatedAt", defaultValue = "0") val updatedAt: Long = System.currentTimeMillis(),
 )
