@@ -1,7 +1,6 @@
 package com.jarica.compartirgastos.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.itextpdf.text.BaseColor
 
 
 val PurpleGrey80 = Color(0xFFCCC2DC)
@@ -21,8 +20,6 @@ val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
 val DarkYellow2 = Color(0xFFfeb127)
 val WhiteYellow2 = Color(0xFFFDE3B3)
-val DarkYellowRGB = BaseColor(254, 177, 39,100)
-val DarkYellow2RGB = BaseColor(254, 177, 39,30)
 val Green = Color(0xFF069C0C)
 val DarkGreen = Color(0xFF1A6A4F)
 val Red = Color(0xFFF44336)

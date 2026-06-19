@@ -186,6 +186,8 @@
     <string name="about_feedback_sub">¿Una idea, un bug? Te escuchamos.</string>
     <string name="about_share_label">Compartir Equify</string>
     <string name="about_share_sub">Invita a un amigo a usarla.</string>
+    <string name="about_share_message">Estoy usando Equify para repartir gastos con amigos. ¡Pruébala! %1$s</string>
+    <string name="about_share_chooser">Compartir Equify</string>
     <string name="about_legal_eyebrow">Información legal</string>
     <string name="about_privacy_label">Política de privacidad</string>
     <string name="about_terms_label">Términos de uso</string>

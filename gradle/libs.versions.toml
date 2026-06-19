@@ -22,7 +22,6 @@ room = "2.7.2"
 dataStorePreference = "1.1.7"
 corrutinas = "1.8.1"
 kotlinParcelize = "1.8.10"
-itextg = "5.5.10"
 playServicesAds = "24.5.0"
 playReview = "2.0.2"
 appcompat = "1.6.1"
@@ -67,8 +66,6 @@ kotlin-serialization-json = {module = "org.jetbrains.kotlinx:kotlinx-serializati
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 dataStorePreference = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStorePreference"}
-
-itextg = { module = "com.itextpdf:itextg", version.ref = "itextg" }
 
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-review = { module = "com.google.android.play:review-ktx", version.ref = "playReview" }

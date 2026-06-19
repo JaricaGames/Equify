@@ -8,10 +8,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.jarica.compartirgastos.BuildConfig
-
-// Test ID: ca-app-pub-3940256099942544/6300978111
-// Production IDs should replace this per placement
-private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
+import com.jarica.compartirgastos.core.utils.AdIds
 
 @Composable
 fun BannerAdView(modifier: Modifier = Modifier) {
@@ -21,7 +18,7 @@ fun BannerAdView(modifier: Modifier = Modifier) {
         factory = { context ->
             AdView(context).apply {
                 setAdSize(AdSize.BANNER)
-                adUnitId = BANNER_AD_UNIT_ID
+                adUnitId = AdIds.banner
                 loadAd(AdRequest.Builder().build())
             }
         }

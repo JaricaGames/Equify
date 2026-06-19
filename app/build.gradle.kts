@@ -27,7 +27,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -107,9 +108,6 @@ dependencies {
 
     //corrutinas
     implementation(libs.corrutinas)
-
-    //Itext
-    implementation(libs.itextg)
 
     //AdMob
     implementation(libs.play.services.ads)

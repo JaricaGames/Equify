@@ -67,6 +67,12 @@ data object SplashScreenObject
 data object AboutEquifyScreenObject
 
 @Serializable
+data object PrivacyPolicyScreenObject
+
+@Serializable
+data object TermsScreenObject
+
+@Serializable
 data class EditPaymentScreenObject(
     val idGroup: String,
     val idPayment: String,

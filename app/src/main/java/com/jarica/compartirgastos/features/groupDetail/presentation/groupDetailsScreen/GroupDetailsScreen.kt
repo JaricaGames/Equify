@@ -78,6 +78,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.presentation.ui.totalCostText
+import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeFragment
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
@@ -784,7 +785,7 @@ fun BannerAdViewMainScreen() {
         factory = { context ->
             AdView(context).apply {
                 setAdSize(AdSize.FULL_BANNER)
-                adUnitId = "ca-app-pub-4979320410432560/4688560090"
+                adUnitId = AdIds.bannerMainScreen
                 loadAd(AdRequest.Builder().build())
             }
         }

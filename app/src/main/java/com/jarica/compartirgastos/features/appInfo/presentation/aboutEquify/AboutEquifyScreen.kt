@@ -1,5 +1,7 @@
 package com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.DrawableRes
@@ -86,6 +88,8 @@ private val StarEmpty   = Color(0xFFD5D2CB)
 @Composable
 fun AboutEquifyScreen(
     navigateBack: () -> Unit,
+    navigateToPrivacy: () -> Unit,
+    navigateToTerms: () -> Unit,
     aboutScreenViewModel: AboutEquifyScreenViewModel
 ) {
     val context = LocalContext.current
@@ -228,7 +232,7 @@ fun AboutEquifyScreen(
                 .padding(top = 8.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(DarkOrange)
-                .clickable { /* TODO: Play Store link */ }
+                .clickable { openPlayStore(context) }
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -270,7 +274,7 @@ fun AboutEquifyScreen(
                 iconTint = DarkBlue,
                 title    = aboutShareLabel,
                 subtitle = aboutShareSub,
-                onClick  = { /* TODO: share intent */ }
+                onClick  = { shareApp(context) }
             )
         }
 
@@ -281,7 +285,7 @@ fun AboutEquifyScreen(
                 iconBg   = NavySoft,
                 iconTint = DarkBlue,
                 title    = aboutPrivacyLabel,
-                onClick  = { /* TODO */ }
+                onClick  = { navigateToPrivacy() }
             )
             Box(Modifier.fillMaxWidth().height(1.dp).background(LineColor))
             AboutRow(
@@ -289,7 +293,7 @@ fun AboutEquifyScreen(
                 iconBg   = NavySoft,
                 iconTint = DarkBlue,
                 title    = aboutTermsLabel,
-                onClick  = { /* TODO */ }
+                onClick  = { navigateToTerms() }
             )
         }
 
@@ -307,6 +311,45 @@ fun AboutEquifyScreen(
 
         Spacer(Modifier.navigationBarsPadding())
     }
+}
+
+/**
+ * Abre la ficha de la app en Google Play. Usa el packageName en tiempo de
+ * ejecución para que funcione en ambos flavors (free y pro, con sufijo ".pro").
+ * Intenta primero la app de Play Store (market://) y cae al navegador si no está.
+ */
+private fun openPlayStore(context: Context) {
+    val packageName = context.packageName
+    val marketIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("market://details?id=$packageName")
+    )
+    try {
+        context.startActivity(marketIntent)
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+            )
+        )
+    }
+}
+
+/**
+ * Comparte la app vía el selector del sistema (ACTION_SEND). El enlace se
+ * construye con el packageName en tiempo de ejecución, por lo que funciona en
+ * ambos flavors (free y pro).
+ */
+private fun shareApp(context: Context) {
+    val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, context.getString(R.string.about_share_message, url))
+    }
+    context.startActivity(
+        Intent.createChooser(sendIntent, context.getString(R.string.about_share_chooser))
+    )
 }
 
 @Composable

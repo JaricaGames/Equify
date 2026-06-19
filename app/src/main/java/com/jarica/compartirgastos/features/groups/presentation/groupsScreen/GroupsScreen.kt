@@ -75,6 +75,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardInk
 import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardMuted
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
@@ -413,7 +414,7 @@ fun BannerAdViewGroupScreen() {
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.MEDIUM_RECTANGLE)
-                    adUnitId = "ca-app-pub-4979320410432560/4688560090"
+                    adUnitId = AdIds.bannerGroupsScreen
                     loadAd(AdRequest.Builder().build())
                 }
             }

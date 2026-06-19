@@ -32,7 +32,10 @@
       "Bash(xargs grep -l \"^fun.*Composable\\\\|@Composable\")",
       "PowerShell(.\\\\gradlew.bat compileDebugKotlin -q)",
       "PowerShell(.\\\\gradlew.bat compileFreeDebugKotlin -q)",
-      "PowerShell(.\\\\gradlew.bat assembleFreeDebug -q)"
+      "PowerShell(.\\\\gradlew.bat assembleFreeDebug -q)",
+      "PowerShell(.\\\\gradlew :app:assembleFreeRelease -x lint --console=plain)",
+      "mcp__ide__getDiagnostics",
+      "Bash(git add *)"
     ]
   }
 }

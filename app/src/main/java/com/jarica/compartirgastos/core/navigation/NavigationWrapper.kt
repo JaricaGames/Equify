@@ -5,12 +5,16 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreen
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
+import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalContent
+import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalScreen
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreen
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
@@ -360,7 +364,35 @@ fun NavigationWrapper(
                 navigateBack = {
                     navController.popBackStack()
                 },
+                navigateToPrivacy = {
+                    navController.navigate(PrivacyPolicyScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToTerms = {
+                    navController.navigate(TermsScreenObject) {
+                        launchSingleTop = true
+                    }
+                },
                 aboutScreenViewModel = aboutScreenViewModel
+            )
+        }
+
+        composable<PrivacyPolicyScreenObject> {
+            LegalScreen(
+                title       = stringResource(R.string.about_privacy_label),
+                lastUpdated = LegalContent.LAST_UPDATED,
+                sections    = LegalContent.privacyPolicy,
+                onBack      = { navController.popBackStack() }
+            )
+        }
+
+        composable<TermsScreenObject> {
+            LegalScreen(
+                title       = stringResource(R.string.about_terms_label),
+                lastUpdated = LegalContent.LAST_UPDATED,
+                sections    = LegalContent.terms,
+                onBack      = { navController.popBackStack() }
             )
         }
 

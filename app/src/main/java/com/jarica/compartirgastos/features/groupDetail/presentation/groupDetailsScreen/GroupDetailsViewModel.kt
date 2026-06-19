@@ -13,6 +13,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.jarica.compartirgastos.BuildConfig
+import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetSumCostByGroupUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -105,7 +106,7 @@ class GroupDetailsViewModel @Inject constructor(
 
         InterstitialAd.load(
             context,
-            "ca-app-pub-3940256099942544/1033173712",
+            AdIds.interstitial,
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {

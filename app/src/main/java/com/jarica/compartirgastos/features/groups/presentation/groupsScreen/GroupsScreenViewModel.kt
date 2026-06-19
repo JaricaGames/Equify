@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val REVIEW_LAUNCH_THRESHOLD = 3
+private const val REVIEW_LAUNCH_THRESHOLD = 5
 
 @HiltViewModel
 class GroupsScreenViewModel @Inject constructor(
