@@ -35,7 +35,10 @@
       "PowerShell(.\\\\gradlew.bat assembleFreeDebug -q)",
       "PowerShell(.\\\\gradlew :app:assembleFreeRelease -x lint --console=plain)",
       "mcp__ide__getDiagnostics",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git ls-remote *)",
+      "Bash(git ls-tree *)",
+      "WebFetch(domain:jaricagames.github.io)"
     ]
   }
 }

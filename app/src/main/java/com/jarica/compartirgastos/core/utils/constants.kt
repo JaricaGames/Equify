@@ -2,9 +2,7 @@ package com.jarica.compartirgastos.core.utils
 
 import com.jarica.compartirgastos.BuildConfig
 
-const val ID_GROUP_SAVED = "idGroupSaved"
 const val PREFERENCES_NAME = "preferences_name"
-const val TAG = "PdfCreator"
 
 //email
 const val EMAIL_DIRECTION = "jarica.games@gmail.com"
@@ -17,10 +15,6 @@ const val COSTS_TABLE = "costsTable"
 const val PAYMENTS_TABLE = "paymentsTable"
 const val DISTRIBUTION_COST_TABLE = "distributionCostTable"
 const val DISTRIBUTION_PAYMENT_TABLE = "distributionPaymentCostTable"
-const val PAYMENTS_BETWEEN_PERSONS_TABLE = "PaymentsBetweenPersonsTable"
-
-//Admob
-const val TAG_ADMOB = "AdViewModel"
 
 /**
  * IDs de unidades de anuncio de AdMob.

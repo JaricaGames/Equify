@@ -6,16 +6,10 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
-import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.core.utils.CountsPdfGenerator
+import com.jarica.compartirgastos.core.utils.InterstitialAdController
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCase
 import com.jarica.compartirgastos.features.balances.domain.balancesUseCases.GetBalancesByGroupUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostsByIdGroupUseCase
@@ -70,43 +64,12 @@ class DoTheCountsScreenViewModel @Inject constructor(
         }
     }
 
-    private var interstitialAd: InterstitialAd? = null
+    private val interstitial = InterstitialAdController(context)
 
-    fun loadAd() {
-        if (!BuildConfig.SHOW_ADS) return
-        InterstitialAd.load(
-            context,
-            AdIds.interstitial,
-            AdRequest.Builder().build(),
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    interstitialAd = ad
-                }
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    interstitialAd = null
-                }
-            }
-        )
-    }
+    fun loadAd() = interstitial.load()
 
     fun showAdThenLaunchPicker(activity: Activity) {
-        if (!BuildConfig.SHOW_ADS) {
-            _launchPicker.value = true
-            return
-        }
-        val ad = interstitialAd
-        if (ad != null) {
-            ad.fullScreenContentCallback = object : FullScreenContentCallback() {
-                override fun onAdDismissedFullScreenContent() {
-                    interstitialAd = null
-                    loadAd()
-                    _launchPicker.value = true
-                }
-            }
-            ad.show(activity)
-        } else {
-            _launchPicker.value = true
-        }
+        interstitial.showThen(activity) { _launchPicker.value = true }
     }
 
     fun onPickerLaunched() {

@@ -74,12 +74,6 @@ class ConfigurationScreenViewModel @Inject constructor(
 
     private var personSelectedModel: PersonModel? = null
 
-    /*val uiStateConfigurationScreen: StateFlow<MainUiState> =
-        getPeopleNamesUseCase().map(MainUiState::Success)
-            .catch { MainUiState.Error(it) }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)*/
-
-
     private val _event = MutableSharedFlow<UiEvent>()
     val event = _event.asSharedFlow()
 

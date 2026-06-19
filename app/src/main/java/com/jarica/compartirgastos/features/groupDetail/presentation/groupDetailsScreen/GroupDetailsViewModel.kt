@@ -1,23 +1,13 @@
 package com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen
 
-import android.app.Activity
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.jarica.compartirgastos.BuildConfig
-import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetSumCostByGroupUseCase
 import com.jarica.compartirgastos.features.groups.domain.useCases.GetGroupByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,8 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupDetailsViewModel @Inject constructor(
     getSumCostByGroupUseCase: GetSumCostByGroupUseCase,
-    private val getGroupByIdUseCase: GetGroupByIdUseCase,
-    @param:ApplicationContext private val context: Context
+    private val getGroupByIdUseCase: GetGroupByIdUseCase
 ) : ViewModel() {
 
 
@@ -70,15 +59,6 @@ class GroupDetailsViewModel @Inject constructor(
     val isFabExpanded: StateFlow<Boolean> = _isFabExpanded.asStateFlow()
 
 
-    // ------------------- ADMOB -------------------------
-
-    //lateinit var person: String
-    private var interstitialAd: InterstitialAd? = null
-    private val _isAdLoaded = MutableStateFlow(false)
-    val isAdLoaded: StateFlow<Boolean> = _isAdLoaded
-
-
-
     fun setGroupId(id: String) {
         _groupIdFlow.value = id
     }
@@ -91,59 +71,11 @@ class GroupDetailsViewModel @Inject constructor(
             } catch (e: Exception) {
                 _nameOfGroup.value = "Nuevo grupo"
             }
-            _nameOfGroup.value = getGroupByIdUseCase(idGroup!!).groupName
         }
     }
 
     fun onFabClick() {
         _isFabExpanded.value = !_isFabExpanded.value
     }
-
-
-    fun loadAd() {
-        if (!BuildConfig.SHOW_ADS) return
-        val adRequest = AdRequest.Builder().build()
-
-        InterstitialAd.load(
-            context,
-            AdIds.interstitial,
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    interstitialAd = ad
-                    _isAdLoaded.value = true
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    interstitialAd = null
-                    _isAdLoaded.value = false
-                }
-            }
-        )
-    }
-
-
-    fun showAdThenNavigate(activity: Activity, onNavigate: () -> Unit) {
-        if (!BuildConfig.SHOW_ADS) {
-            onNavigate()
-            return
-        }
-        interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                interstitialAd = null
-                _isAdLoaded.value = false
-                loadAd() // recargar para el próximo
-                onNavigate()
-            }
-        }
-        if (interstitialAd != null) {
-            interstitialAd?.show(activity)
-        } else {
-            onNavigate()
-        }
-    }
-
-    // ------------------- ADMOB -------------------------
-
 
 }

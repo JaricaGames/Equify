@@ -30,10 +30,4 @@ interface PaymentsDao {
     @Update
     suspend fun updatePaymentById(payment: PaymentEntity)
 
-    //Metodo que borra los pagos de un grupo
-    @Query("DELETE FROM paymentsTable WHERE idGroup LIKE :idGroup ")
-    suspend fun deletePaymentsOfAGroup(idGroup: String)
-
-
-
 }

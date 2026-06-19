@@ -1,10 +1,8 @@
 package com.jarica.compartirgastos.core.navigation
 
-import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -67,7 +65,6 @@ fun NavigationWrapper(
     editPaymentsViewModel: EditPaymentViewModel
 ) {
 
-    val activity = LocalContext.current as? Activity
     val navController = rememberNavController()
 
     NavHost(
@@ -183,10 +180,8 @@ fun NavigationWrapper(
                 },
                 doTheCountsScreenViewModel = doTheCountsScreenViewModel,
                 onDoTheCountsClicked = {
-                    activity?.let {
-                        mainScreenViewModel.showAdThenNavigate(it) {
-                            navController.navigate("detail")
-                        }
+                    navController.navigate(DoTheCountsScreenObject(iDGroupName = currentId)) {
+                        launchSingleTop = true
                     }
                 },
                 navigateToEditPayments = { paymentToEdit ->

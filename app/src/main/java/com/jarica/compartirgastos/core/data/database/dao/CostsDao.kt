@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.jarica.compartirgastos.core.data.database.entities.CostEntity
-import com.jarica.compartirgastos.core.data.database.entities.DistributionCostEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,17 +24,9 @@ interface CostsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCost(cost: CostEntity)
 
-    //Metodo que inserta un nuevo gasto por persona
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCostOfPerson(cost: DistributionCostEntity)
-
     //Metodo que borra un gasto por Id
     @Query("DELETE FROM costsTable WHERE idCost LIKE :idCost ")
     suspend fun deleteCost(idCost: String)
-
-    //Metodo que borra los gastos de un grupo
-    @Query("DELETE FROM costsTable WHERE idGroup LIKE :idGroup ")
-    suspend fun deleteAllCostOfAGroup(idGroup: String)
 
     //Metodo que actualiza un gasto
     @Update

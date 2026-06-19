@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.LaunchedEffect
 import androidx.core.view.WindowCompat
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.core.presentation.ui.theme.CompartirGastosTheme
@@ -61,10 +60,6 @@ class MainActivity : ComponentActivity() {
         windowInsetsController.isAppearanceLightNavigationBars =
             true
         setContent {
-            LaunchedEffect(Unit) {
-                groupViewModel.loadAd()
-            }
-
             CompartirGastosTheme {
                 NavigationWrapper(
                     newGroupViewModel,

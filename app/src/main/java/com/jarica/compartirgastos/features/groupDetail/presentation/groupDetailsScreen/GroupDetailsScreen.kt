@@ -578,16 +578,9 @@ fun ActionsBoxes(
             modifier = Modifier
                 .weight(1f)
                 .clickable {
+                    // Muestra el intersticial (si procede) y navega a la pantalla
+                    // de cuentas, que carga sus propios datos al entrar.
                     onDoTheCountsClicked()
-                    when (peopleList) {
-
-                        is MainUiState.Error -> {}
-                        is MainUiState.Loading -> {}
-                        is MainUiState.Success -> {
-                            doTheCountsScreenViewModel.doTheCounts((peopleList).peopleList)
-                            navigateToDoTheCounts()
-                        }
-                    }
                 }
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(DarkOrange),
