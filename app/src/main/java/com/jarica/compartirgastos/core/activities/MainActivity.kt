@@ -7,7 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
+import com.jarica.compartirgastos.core.forceUpdate.presentation.ForceUpdateDialog
+import com.jarica.compartirgastos.core.forceUpdate.presentation.ForceUpdateViewModel
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.core.presentation.ui.theme.CompartirGastosTheme
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
@@ -47,6 +51,7 @@ class MainActivity : ComponentActivity() {
     private val costsViewModel: CostsViewModel by viewModels()
     private val paymentsViewModel: PaymentsScreenViewModel by viewModels()
     private val editPaymentsViewModel: EditPaymentViewModel by viewModels()
+    private val forceUpdateViewModel: ForceUpdateViewModel by viewModels()
 
 
 
@@ -79,6 +84,11 @@ class MainActivity : ComponentActivity() {
                     paymentsViewModel,
                     editPaymentsViewModel
                 )
+
+                val forceUpdate by forceUpdateViewModel.forceUpdate.collectAsState()
+                if (forceUpdate) {
+                    ForceUpdateDialog()
+                }
             }
         }
     }

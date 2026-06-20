@@ -193,4 +193,9 @@
     <string name="about_terms_label">Términos de uso</string>
     <string name="about_footer_text">Hecho con cariño desde Cáceres</string>
 
+
+    <!-- ForceUpdate -->
+    <string name="force_update_title">Actualización necesaria</string>
+    <string name="force_update_body">Hemos lanzado una nueva versión de Equify con mejoras importantes. Para seguir usando la app, actualiza a la última versión.</string>
+    <string name="force_update_button">Actualizar</string>
 </resources>

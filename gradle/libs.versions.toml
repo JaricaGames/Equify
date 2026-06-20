@@ -51,6 +51,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 firebase = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
 crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
+firebase-config = {module = "com.google.firebase:firebase-config-ktx"}
+coroutines-play-services = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "corrutinas"}
 
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

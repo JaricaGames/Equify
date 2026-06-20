@@ -93,6 +93,8 @@ dependencies {
     //FIREBASE
     implementation(platform(libs.firebase))
     implementation(libs.crashlytics)
+    implementation(libs.firebase.config)
+    implementation(libs.coroutines.play.services)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
