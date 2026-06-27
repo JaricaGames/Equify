@@ -39,7 +39,10 @@
       "Bash(git ls-remote *)",
       "Bash(git ls-tree *)",
       "WebFetch(domain:jaricagames.github.io)",
-      "Bash(./gradlew :app:compileFreeDebugKotlin -q)"
+      "Bash(./gradlew :app:compileFreeDebugKotlin -q)",
+      "Bash(./gradlew.bat help *)",
+      "WebSearch",
+      "PowerShell(.\\\\gradlew.bat :app:testFreeDebugUnitTest --tests \"com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCaseTest\" --console=plain)"
     ]
   }
 }
