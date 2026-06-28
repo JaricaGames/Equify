@@ -2,7 +2,7 @@ package com.jarica.compartirgastos.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.jarica.compartirgastos.data.database.AppDataBase
+import com.jarica.compartirgastos.core.data.database.AppDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,11 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, AppDataBase::class.java, QUOTE_DATABASE_NAME).build()
+        Room.databaseBuilder(context, AppDataBase::class.java, QUOTE_DATABASE_NAME)
+            // v3 cambia los importes de REAL (Float) a INTEGER (céntimos). Mientras la app
+            // no está publicada, recreamos la BD local en vez de migrar los datos antiguos.
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
 
 
     @Provides
@@ -27,6 +31,21 @@ object RoomModule {
 
     @Provides
     fun providePersonNameDao(db:AppDataBase) = db.personNameDao()
+
+    @Provides
+    fun provideCostsDao(db:AppDataBase) = db.costsDao()
+
+    @Provides
+    fun providePaymentsDao(db:AppDataBase) = db.paymentsDao()
+
+    @Provides
+    fun provideDistributionPaymentsDao(db:AppDataBase) = db.distributionPaymentDao()
+
+    @Provides
+    fun provideDistributionCostDao(db:AppDataBase) = db.distributionCostDao()
+
+    @Provides
+    fun personBalanceDao(db:AppDataBase) = db.balanceDao()
 
 
 }

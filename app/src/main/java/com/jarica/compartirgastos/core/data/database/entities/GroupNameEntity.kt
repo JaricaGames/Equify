@@ -1,0 +1,21 @@
+package com.jarica.compartirgastos.core.data.database.entities
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.jarica.compartirgastos.core.utils.GROUPS_NAME_TABLE
+
+@Entity(tableName = GROUPS_NAME_TABLE)
+data class GroupNameEntity(
+    @PrimaryKey (autoGenerate = false)
+    @ColumnInfo(name = "idGroup") val idGroup: String,
+    @ColumnInfo(name = "groupName") val groupName: String,
+    // Preparación para la sincronización remota (resolución de conflictos last-write-wins).
+    @ColumnInfo(name = "createdAt", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updatedAt", defaultValue = "0") val updatedAt: Long = System.currentTimeMillis(),
+)
+
+/*fun GroupNameModel.toDatabase() = GroupNameEntity(
+    idGroupName = idGroupName,
+    peopleList = peopleList
+)*/

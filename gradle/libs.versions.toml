@@ -1,27 +1,41 @@
 [versions]
-agp = "8.7.3"
-kotlin = "2.1.0"
+accompanistSystemuicontroller = "0.36.0"
+agp = "9.2.1"
+kotlin = "2.2.10"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.12.01"
+composeBom = "2025.06.01"
 firebase-bom = "33.7.0"
 services-google = "4.4.2"
 crashlytics = "3.0.2"
-navigationCompose = "2.8.5"
+navigationCompose = "2.9.3"
 kotlinSerialization = "1.7.3"
-runtimeLivedata = "1.7.6"
-ksp = "2.1.0-1.0.29"
-hilt = "2.53"
+runtimeLivedata = "1.9.0"
+ksp = "2.2.10-2.0.2"
+hilt = "2.60"
 hilt-compiler = "1.2.0"
-room = "2.6.1"
-dataStorePreference = "1.1.1"
-corrutinas = "1.7.3"
+hiltNavigationCompose = "1.2.0"
+room = "2.7.2"
+dataStorePreference = "1.1.7"
+corrutinas = "1.8.1"
+kotlinParcelize = "1.8.10"
+playServicesAds = "24.5.0"
+playReview = "2.0.2"
+billing = "7.1.1"
+appcompat = "1.6.1"
+material = "1.10.0"
+activity = "1.8.0"
+uiGraphics = "1.9.2"
+runtime = "1.9.4"
+foundationLayout = "1.9.4"
+uiGraphicsVersion = "1.9.4"
 
 [libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -39,10 +53,13 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 firebase = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
 crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
+firebase-config = {module = "com.google.firebase:firebase-config-ktx"}
+coroutines-play-services = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "corrutinas"}
 
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-compiler" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -55,6 +72,17 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 
 dataStorePreference = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStorePreference"}
 
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+play-review = { module = "com.google.android.play:review-ktx", version.ref = "playReview" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphicsVersion" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -64,4 +92,5 @@ crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "crashlytic
 jetbrainsKotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-parcelize = {id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize"}
 

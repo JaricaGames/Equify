@@ -1,7 +1,7 @@
 package com.jarica.compartirgastos.core.di
 
 import android.content.Context
-import com.jarica.compartirgastos.data.dataStore.Preferences
+import com.jarica.compartirgastos.core.data.dataStore.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,5 +16,5 @@ object DataStoreModule {
 
     @Singleton
     @Provides
-    fun provideDataStore(@ApplicationContext context: Context):Preferences = Preferences(context)
+    fun provideDataStore(@ApplicationContext context: Context): Preferences = Preferences(context)
 }

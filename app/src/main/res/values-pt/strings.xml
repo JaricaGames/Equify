@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App -->
+    <string name="app_name">Equify</string>
+    <string name="app_version">v 1.0  ·  Equify.app</string>
+
+    <!-- SplashScreen -->
+    <string name="initial_phrase">Divida despesas,\nmultiplique momentos</string>
+
+    <!-- InitialScreen -->
+    <string name="main_text">Vamos começar</string>
+    <string name="secondary_text">Criar um novo grupo</string>
+    <string name="new_group_text">Novo grupo</string>
+    <string name="join_group_text">Entrar num grupo</string>
+
+    <!-- NewGroupScreen -->
+    <string name="next">Seguinte</string>
+    <string name="label_group_name_field">Nome do grupo</string>
+    <string name="new_group_step_label">Passo 1 de 2</string>
+    <string name="new_group_subtitle">Dê um nome a este grupo de despesas</string>
+    <string name="new_group_next_button">Seguinte: adicionar pessoas</string>
+    <string name="group_name_example">Ex. Ribadeo 2026</string>
+
+    <!-- AddPeopleScreen -->
+    <string name="label_add_people_field">Nova pessoa</string>
+    <string name="add_people_from_main_subtitle">Adicione alguém novo ao grupo</string>
+    <string name="create_group_text">Criar Grupo</string>
+    <string name="add_people_text">Adicionar pessoa</string>
+    <string name="add_everybody_text">Adicionar todos os participantes</string>
+    <string name="add_people_step_label">Passo 2 de 2</string>
+    <string name="add_people_title">Adicionar pessoas</string>
+    <string name="add_people_field_label">Nome</string>
+    <string name="add_people_other_field_label">Adicionar outra pessoa</string>
+    <string name="add_people_hint">Toque em + para adicionar cada pessoa.</string>
+    <string name="add_people_empty_title">Ainda não há ninguém</string>
+    <string name="add_people_empty_subtitle">Precisa de pelo menos 2 pessoas\npara começar a dividir despesas.</string>
+    <string name="add_people_min_button">Adicione pelo menos 1 pessoa</string>
+    <string name="add_people_members_label">Membros</string>
+    <string name="add_people_placeholder">Ex. João</string>
+    <string name="add_people_member_role">Membro</string>
+    <string name="add_people_count_subtitle">%1$d pessoas em &quot;%2$s&quot;</string>
+    <string name="add_people_who_subtitle">Quem participa em &quot;%s&quot;?</string>
+    <string name="add_from_main_hint">Toque em + para adicionar ao grupo.</string>
+    <string name="delete_content_description">Eliminar</string>
+
+    <!-- GroupDetailsScreen (MainScreen) -->
+    <string name="add_cost">Adicionar Despesa</string>
+    <string name="add_person">Adicionar Pessoa</string>
+    <string name="add_pay">Adicionar Pagamento</string>
+    <string name="costs">Despesas</string>
+    <string name="payments">Pagamentos</string>
+    <string name="resume">Resumo</string>
+    <string name="do_the_count">Acertar contas</string>
+    <string name="add_people">Adicionar Pessoa</string>
+    <string name="total_cost_text">Total de Despesas </string>
+
+    <!-- AddCostScreen -->
+    <string name="description_placeholder">Descrição</string>
+    <string name="amount_placeholder">Valor</string>
+    <string name="from_text">Pago por</string>
+    <string name="save_cost">Guardar</string>
+    <string name="split_type_label">Tipo de divisão</string>
+    <string name="split_label">Dividir</string>
+    <string name="split_equal">Igual</string>
+    <string name="split_equal_alt">Igual</string>
+    <string name="split_parts">Por partes</string>
+    <string name="split_parts_short">Partes</string>
+    <string name="split_percentage">Percentagem</string>
+    <string name="participants_label">Participantes</string>
+    <string name="participants_all">Todos</string>
+    <string name="split_each_pays">Cada um paga %1$s €</string>
+    <string name="participants_count">%1$d de %2$d</string>
+
+    <!-- GroupsScreen -->
+    <string name="groups_text">Grupos</string>
+    <string name="add_new_group_text">Criar novo grupo</string>
+    <string name="groups_your_groups">Os seus grupos</string>
+    <string name="groups_active_count">%d ativos</string>
+    <string name="groups_total_label">TOTAL</string>
+
+    <!-- AddPaymentScreen -->
+    <string name="add_payment">Adicionar Pagamento</string>
+    <string name="add_payment_title">Novo pagamento</string>
+    <string name="add_payment_subtitle">Liquidar uma dívida entre dois membros</string>
+    <string name="add_payment_amount_label">Valor</string>
+    <string name="add_payment_change_people_label">Alterar pessoas</string>
+    <string name="add_payment_from_tag">Paga</string>
+    <string name="add_payment_to_tag">Recebe</string>
+    <string name="add_payment_from_label">De</string>
+    <string name="add_payment_to_label">Para</string>
+    <string name="register_payment_text">Registar pagamento</string>
+    <string name="add_payment_select_person">Selecionar</string>
+    <string name="pay_for_placeholder">Pago por</string>
+    <string name="pay_to_placeholder">Pago a</string>
+    <string name="pay_for_text">De: </string>
+    <string name="pay_to_text">Para: </string>
+    <string name="amount_text">Valor: </string>
+
+    <!-- EditCostScreen -->
+    <string name="edit_cost">Editar Despesa</string>
+    <string name="edit_cost_delete_label">Eliminar esta despesa</string>
+    <string name="edit_cost_delete_sub">Os saldos do grupo serão recalculados.</string>
+
+    <!-- ConfigurationScreen -->
+    <string name="configuration_text_screen">Configurações do grupo</string>
+    <string name="personalization_group_text">Editar nome do grupo</string>
+    <string name="add_people_configuration_text">Adicionar pessoas ao grupo</string>
+    <string name="administrate_people_configuration_text">Gerir membros</string>
+    <string name="group_members_text">Membros do grupo</string>
+    <string name="other_text">Outro</string>
+    <string name="delete_group_text">Eliminar Grupo</string>
+    <string name="information_text">Informação</string>
+    <string name="about_text">Sobre o Equify</string>
+    <string name="feedback_text">Envie o seu Feedback</string>
+    <string name="config_ajustes_title">Definições</string>
+    <string name="config_grupo_label">Grupo</string>
+    <string name="config_miembros_label">membros</string>
+    <string name="config_info_group_eyebrow">Informação do grupo</string>
+    <string name="config_nombre_grupo_label">Nome do grupo</string>
+    <string name="config_miembros_eyebrow">Membros</string>
+    <string name="config_danger_eyebrow">Zona de perigo</string>
+    <string name="config_delete_sub_label">Esta ação não pode ser desfeita</string>
+    <string name="config_miembro_role">Membro</string>
+    <string name="add_label">Adicionar</string>
+    <string name="app_version_footer">Equify v1.0</string>
+
+    <!-- CustomizeGroupScreen -->
+    <string name="customize_group_screen_text">Editar Grupo</string>
+    <string name="label_customize_group_screen_text">Novo nome</string>
+    <string name="change_group_name">Alterar nome</string>
+    <string name="edit_group_title">Editar grupo</string>
+    <string name="edit_group_subtitle">Altere o nome do grupo</string>
+    <string name="edit_group_current_name_label">Nome atual</string>
+    <string name="edit_group_hint_text">Os membros verão a alteração de imediato.</string>
+    <string name="save_changes_text">Guardar alterações</string>
+
+    <!-- AlertDialogs (ConfigurationScreen) -->
+    <string name="main_alert_dialog_text">Ups</string>
+    <string name="alert_dialog_text">não pode ser removido do grupo porque participou numa das despesas.</string>
+    <string name="confirm_alert_dialog_text1">Tem a certeza de que pretende remover</string>
+    <string name="confirm_alert_dialog_text2">\? Esta alteração será permanente e não poderá ser desfeita.</string>
+    <string name="title_confirm_alert_dialog_text">Tem a certeza?</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- DoTheCountsScreen -->
+    <string name="export_pdf_text">Exportar PDF</string>
+    <string name="export_ad_button_text">Ver anúncio e Exportar</string>
+    <string name="do_the_counts_subtitle_zero">Sem dívidas pendentes no grupo</string>
+    <string name="do_the_counts_empty_title">Contas em dia!</string>
+    <string name="do_the_counts_empty_subtitle">Sem dívidas pendentes\nneste grupo</string>
+    <string name="do_the_counts_transfers_label">Transferências a realizar</string>
+    <string name="do_the_counts_pay_tag">Paga</string>
+    <string name="do_the_counts_receive_tag">Recebe</string>
+    <string name="export_pdf_large_text">Exporte o resumo em PDF, indicando claramente quanto deve cada membro e a quem tem de pagar</string>
+    <string name="no_app_to_open_pdf">Nenhuma app para abrir PDF</string>
+    <string name="do_the_counts_no_debts">Sem dívidas pendentes</string>
+    <plurals name="do_the_counts_transfers_subtitle">
+        <item quantity="one">%d transferência a liquidar</item>
+        <item quantity="other">%d transferências a liquidar</item>
+    </plurals>
+
+    <!-- EmptyState -->
+    <string name="add_first_cost">Adicionar primeira despesa</string>
+    <string name="empty_costs_title">Sem despesas</string>
+    <string name="empty_costs_subtitle">Adicione a primeira despesa do grupo</string>
+    <string name="empty_payments_title">Sem pagamentos</string>
+    <string name="empty_payments_subtitle">Adicione um pagamento para acertar contas</string>
+    <string name="empty_resume_title">Sem movimentos</string>
+    <string name="empty_resume_subtitle">Ainda não há despesas neste grupo</string>
+
+    <!-- AboutEquifyScreen -->
+    <string name="about_screen_text">Sobre o Equify</string>
+    <string name="about_screen_long_text">Olá, sou o Juan Antonio de Cáceres. Se o Equify está a facilitar a divisão de despesas, deixe a sua avaliação no Google Play! A sua opinião ajuda-nos a crescer.\nObrigado por fazer parte do Equify!</string>
+    <string name="button_about_screen_text">Avaliar Equify</string>
+    <string name="about_screen_long_text2">Tem alguma ideia para melhorar o Equify?\nEnvie o seu feedback — queremos ouvi-lo e continuar a melhorar!</string>
+    <string name="about_subtitle">A app para dividir despesas sem drama</string>
+    <string name="about_version_label">Versão 1.0.0</string>
+    <string name="about_author_name">Juan Antonio</string>
+    <string name="about_author_role">Cáceres · Criador do Equify</string>
+    <string name="about_author_message">Olá 👋 Se o Equify está a facilitar a divisão de despesas, uma avaliação no Google Play ajuda-me muito a continuar a melhorá-lo. Obrigado por fazer parte!</string>
+    <string name="about_rate_google_play_text">Avaliar Equify no Google Play</string>
+    <string name="about_improve_eyebrow">Melhore a app</string>
+    <string name="about_feedback_label">Envie-nos feedback</string>
+    <string name="about_feedback_sub">Uma ideia, um bug? Estamos a ouvir.</string>
+    <string name="about_share_label">Partilhar Equify</string>
+    <string name="about_share_sub">Convide um amigo a usar.</string>
+    <string name="about_share_message">Estou a usar o Equify para dividir despesas com amigos. Experimenta! %1$s</string>
+    <string name="about_share_chooser">Partilhar Equify</string>
+    <string name="about_legal_eyebrow">Informação legal</string>
+    <string name="about_privacy_label">Política de privacidade</string>
+    <string name="about_terms_label">Termos de utilização</string>
+    <string name="about_footer_text">Feito com carinho de Cáceres</string>
+
+
+    <!-- ForceUpdate -->
+    <string name="force_update_title">Atualização necessária</string>
+    <string name="force_update_body">Lançámos uma nova versão do Equify com melhorias importantes. Para continuar a usar a aplicação, atualize para a versão mais recente.</string>
+    <string name="force_update_button">Atualizar</string>
+
+    <!-- PDF export -->
+    <string name="pdf_tagline">Divide despesas, multiplica momentos</string>
+    <string name="pdf_page">Pág %1$d</string>
+    <string name="pdf_footer_generated">Gerado com Equify · equify.app</string>
+    <string name="pdf_generated_on">Gerado a %1$s</string>
+    <string name="pdf_total_spent">Total gasto</string>
+    <string name="pdf_to_settle">A liquidar</string>
+    <string name="pdf_costs_title">LISTA DE DESPESAS</string>
+    <string name="pdf_col_description">Descrição</string>
+    <string name="pdf_col_amount">Montante</string>
+    <string name="pdf_no_costs">Sem despesas registadas</string>
+    <string name="pdf_payments_title">PAGAMENTOS A LIQUIDAR</string>
+    <string name="pdf_col_pays">Paga</string>
+    <string name="pdf_col_receives">Recebe</string>
+    <string name="pdf_col_quantity">Quantia</string>
+    <string name="pdf_no_debts">Sem dívidas pendentes</string>
+    <plurals name="pdf_costs_count">
+        <item quantity="one">%d despesa</item>
+        <item quantity="other">%d despesas</item>
+    </plurals>
+    <string name="about_pro_eyebrow">Sem anúncios</string>
+    <string name="about_remove_ads_label">Remover anúncios</string>
+    <string name="about_remove_ads_sub">Apoie a app e remova a publicidade para sempre.</string>
+    <string name="about_restore_purchase_label">Restaurar compra</string>
+    <string name="about_restore_purchase_sub">Já comprou? Recupere-a aqui.</string>
+    <string name="about_pro_active_label">Sem anúncios ativado</string>
+    <string name="about_pro_active_sub">Obrigado pelo seu apoio!</string>
+</resources>

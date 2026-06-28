@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Conserva nº de línea en los stack traces de Crashlytics (desofuscar con mapping.txt).
+-keepattributes SourceFile,LineNumberTable

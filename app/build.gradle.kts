@@ -1,3 +1,11 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) FileInputStream(f).use { load(it) }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -23,13 +31,27 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = localProps.getProperty("RELEASE_STORE_FILE")
+            if (storeFilePath != null) {
+                storeFile = rootProject.file(storeFilePath)
+                storePassword = localProps.getProperty("RELEASE_STORE_PASSWORD")
+                keyAlias = localProps.getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = localProps.getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -41,6 +63,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
 }
@@ -49,8 +72,16 @@ dependencies {
 
     // Hilt
     implementation(libs.dagger.hilt)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.ui.graphics)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.ui.graphics)
     ksp(libs.dagger.hilt.android.compiler)
     ksp(libs.dagger.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
     // Room
     implementation(libs.room.runtime)
@@ -67,6 +98,8 @@ dependencies {
     //FIREBASE
     implementation(platform(libs.firebase))
     implementation(libs.crashlytics)
+    implementation(libs.firebase.config)
+    implementation(libs.coroutines.play.services)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -83,6 +116,15 @@ dependencies {
     //corrutinas
     implementation(libs.corrutinas)
 
+    //AdMob
+    implementation(libs.play.services.ads)
+
+    //In-App Review
+    implementation(libs.play.review)
+
+    //Play Billing (compra para quitar anuncios)
+    implementation(libs.billing.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -90,4 +132,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.accompanist.systemuicontroller)
+
 }

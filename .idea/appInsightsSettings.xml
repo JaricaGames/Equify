@@ -7,14 +7,6 @@
         <entry key="Firebase Crashlytics">
           <value>
             <InsightsFilterSettings>
-              <option name="connection">
-                <ConnectionSetting>
-                  <option name="appId" value="com.jarica.compartirgastos" />
-                  <option name="mobileSdkAppId" value="1:153356059898:android:d6c1ff0cb42bc739483543" />
-                  <option name="projectId" value="compartirgastos-dd611" />
-                  <option name="projectNumber" value="153356059898" />
-                </ConnectionSetting>
-              </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="THIRTY_DAYS" />
               <option name="visibilityType" value="ALL" />
