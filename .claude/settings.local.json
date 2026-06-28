@@ -42,7 +42,9 @@
       "Bash(./gradlew :app:compileFreeDebugKotlin -q)",
       "Bash(./gradlew.bat help *)",
       "WebSearch",
-      "PowerShell(.\\\\gradlew.bat :app:testFreeDebugUnitTest --tests \"com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCaseTest\" --console=plain)"
+      "PowerShell(.\\\\gradlew.bat :app:testFreeDebugUnitTest --tests \"com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCaseTest\" --console=plain)",
+      "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain 2>&1 | Select-Object -Last 60)",
+      "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain 2>&1 | Select-Object -Last 25)"
     ]
   }
 }

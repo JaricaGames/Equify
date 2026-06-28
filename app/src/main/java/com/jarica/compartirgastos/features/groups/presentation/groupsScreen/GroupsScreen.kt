@@ -77,14 +77,12 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.core.utils.toMoneyDisplay
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupsScreen(
     groupViewModel: GroupsScreenViewModel,
-    mainScreenViewModel: GroupDetailsViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     navigateToNewGroup: () -> Unit,
@@ -160,8 +158,7 @@ fun GroupsScreen(
                             listOfGroups,
                             groupViewModel,
                             navigateToMainScreen,
-                            navigateToInitialScreen,
-                            mainScreenViewModel
+                            navigateToInitialScreen
                         )
                         Spacer(Modifier.height(16.dp))
                         BannerAdViewGroupScreen()
@@ -260,7 +257,6 @@ fun GroupList(
     groupViewModel: GroupsScreenViewModel,
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
-    mainScreenViewModel: GroupDetailsViewModel,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -272,8 +268,7 @@ fun GroupList(
                 groupViewModel = groupViewModel,
                 navigateToMainScreen = navigateToMainScreen,
                 navigateToInitialScreen = navigateToInitialScreen,
-                groupsList = groupsList,
-                mainScreenViewModel = mainScreenViewModel
+                groupsList = groupsList
             )
         }
     }
@@ -286,7 +281,6 @@ fun GroupCard(
     navigateToMainScreen: (String) -> Unit,
     navigateToInitialScreen: () -> Unit,
     groupsList: List<GroupModel>,
-    mainScreenViewModel: GroupDetailsViewModel,
 ) {
     val people by produceState(initialValue = emptyList<PersonModel>(), key1 = group.idGroupName) {
         value = groupViewModel.getPeople(group.idGroupName)
@@ -302,7 +296,6 @@ fun GroupCard(
             .border(1.dp, GroupsCardBorder, RoundedCornerShape(16.dp))
             .clickable {
                 groupViewModel.onGroupSelected(group.idGroupName, group.groupName)
-                mainScreenViewModel.setGroupId(group.idGroupName)
                 navigateToMainScreen(group.idGroupName)
             }
             .padding(horizontal = 16.dp, vertical = 14.dp),

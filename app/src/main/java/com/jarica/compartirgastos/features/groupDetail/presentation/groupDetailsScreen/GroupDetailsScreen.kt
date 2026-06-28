@@ -79,12 +79,10 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.presentation.ui.totalCostText
 import com.jarica.compartirgastos.core.utils.AdIds
-import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeFragment
 import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostFragment
 import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
-import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsFragment
 import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import kotlinx.coroutines.launch
@@ -104,9 +102,7 @@ fun MainScreen(
     navigateToEditCost: (CostModel) -> Unit,
     navigateToConfiguration: () -> Unit,
     navigateToDoTheCounts: () -> Unit,
-    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     onDoTheCountsClicked: () -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
     navigateToEditPayments: (PaymentsModel) -> Unit,
 ) {
 
@@ -115,6 +111,9 @@ fun MainScreen(
     val sumCosts by mainScreenViewModel.sumCostByGroup.collectAsState()
 
     LaunchedEffect(idGroup) {
+        // Sembramos el groupId aquí (no dentro de la rama Success) para que el VM,
+        // ahora con ciclo de vida propio del destino, arranque el flujo de gastos.
+        idGroup?.let { mainScreenViewModel.setGroupId(it) }
         mainScreenViewModel.getGroupNameById(idGroup)
     }
 
@@ -172,7 +171,6 @@ fun MainScreen(
                         idGroup,
                         mainScreenViewModel,
                         nameOfGroup,
-                        doTheCountsScreenViewModel,
                         navigateToAddPayScreen,
                         navigateToEditCost,
                         navigateToDoTheCounts,
@@ -183,7 +181,6 @@ fun MainScreen(
                         resumeViewModel,
                         innerPadding,
                         (sumCosts as TotalExpensesUiState.Success),
-                        editCostScreenViewModel,
                         costsViewModel,
                         paymentsViewModel,
                         navigateToEditPayments
@@ -236,7 +233,6 @@ fun MainScreenWithPager(
     idGroup: String?,
     resumeViewModel: ResumeViewModel,
     navigateToEditCost: (CostModel) -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
     paymentsViewModel: PaymentsScreenViewModel,
     navigateToEditPayments: (PaymentsModel) -> Unit,
@@ -284,7 +280,6 @@ fun MainScreenWithPager(
                 GroupDetailsViewModel.MainTab.COSTS -> CostFragment(
                     idGroup = idGroup,
                     navigateToEditCost = navigateToEditCost,
-                    editCostScreenViewModel = editCostScreenViewModel,
                     costsViewModel = costsViewModel,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -369,7 +364,6 @@ fun MainView(
     idGroup: String?,
     mainScreenViewModel: GroupDetailsViewModel,
     nameOfGroup: String,
-    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
     navigateToAddPayScreen: () -> Unit,
     navigateToEditCost: (CostModel) -> Unit,
     navigateToDoTheCounts: () -> Unit,
@@ -380,7 +374,6 @@ fun MainView(
     resumeViewModel: ResumeViewModel,
     innerPadding: PaddingValues,
     success: TotalExpensesUiState.Success,
-    editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
     paymentsViewModel: PaymentsScreenViewModel,
     navigateToEditPayments: (PaymentsModel) -> Unit,
@@ -401,7 +394,6 @@ fun MainView(
             idGroup,
             resumeViewModel,
             navigateToEditCost,
-            editCostScreenViewModel,
             costsViewModel,
             paymentsViewModel,
             navigateToEditPayments,

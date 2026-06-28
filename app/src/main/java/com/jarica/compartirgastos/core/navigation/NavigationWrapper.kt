@@ -4,66 +4,34 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreen
-import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
 import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalContent
 import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalScreen
 import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreen
-import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
-import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
 import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreen
-import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreenViewModel
-import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
 import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreen
-import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.MainScreen
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreen
-import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.CustomizeGroupScreen
-import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.EditGroupNameScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreen
-import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
 import com.jarica.compartirgastos.features.groups.presentation.initialScreen.InitialScreen
 import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupScreen
-import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
 import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreen
-import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
 import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentScreen
-import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentViewModel
-import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreen
-import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
 import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMain
-import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import com.jarica.compartirgastos.features.splash.presentation.splashScreen.SplashScreen
 
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun NavigationWrapper(
-    newGroupViewModel: NewGroupViewModel,
-    mainScreenViewModel: GroupDetailsViewModel,
-    addPeopleViewModel: AddPeopleScreenViewModel,
-    addCostViewModel: AddCostScreenViewModel,
-    groupScreenViewModel: GroupsScreenViewModel,
-    addPeopleScreenFromMainViewModel: AddPeopleScreenFromMainViewModel,
-    addPaymentScreenViewModel: AddPaymentScreenViewModel,
-    editCostScreenViewModel: EditCostScreenViewModel,
-    configurationScreenViewModel: ConfigurationScreenViewModel,
-    customizeGroupScreenViewModel: EditGroupNameScreenViewModel,
-    doTheCountsScreenViewModel: DoTheCountsScreenViewModel,
-    aboutScreenViewModel: AboutEquifyScreenViewModel,
-    resumeViewModel: ResumeViewModel,
-    costsViewModel: CostsViewModel,
-    paymentsViewModel: PaymentsScreenViewModel,
-    editPaymentsViewModel: EditPaymentViewModel
-) {
+fun NavigationWrapper() {
 
     val navController = rememberNavController()
 
@@ -75,8 +43,7 @@ fun NavigationWrapper(
         composable<GroupsScreenObject> {
 
             GroupsScreen(
-                groupScreenViewModel,
-                mainScreenViewModel,
+                hiltViewModel(),
                 navigateToMainScreen = { selectedId ->
                     navController.navigate(MainScreenObject(selectedId)) {
                         launchSingleTop = true
@@ -112,7 +79,7 @@ fun NavigationWrapper(
         composable<NewGroupScreenObject> {
 
             NewGroupScreen(
-                newGroupViewModel,
+                hiltViewModel(),
                 navigateToAddPeople = { idGroupName, groupName ->
                     navController.navigate(
                         AddPeopleScreenObject(idGroupName, groupName)
@@ -131,11 +98,10 @@ fun NavigationWrapper(
 
             MainScreen(
                 currentId,
-                mainScreenViewModel,
-                resumeViewModel,
-                costsViewModel,
-                paymentsViewModel,
-                editCostScreenViewModel = editCostScreenViewModel,
+                hiltViewModel(),
+                hiltViewModel(),
+                hiltViewModel(),
+                hiltViewModel(),
                 navigateToGroupsScreen = {
                     navController.navigate(GroupsScreenObject) {
                         popUpTo(GroupsScreenObject) { inclusive = true }
@@ -178,7 +144,6 @@ fun NavigationWrapper(
                         launchSingleTop = true
                     }
                 },
-                doTheCountsScreenViewModel = doTheCountsScreenViewModel,
                 onDoTheCountsClicked = {
                     navController.navigate(DoTheCountsScreenObject(iDGroupName = currentId)) {
                         launchSingleTop = true
@@ -203,7 +168,7 @@ fun NavigationWrapper(
             val addPeopleScreen: AddPeopleScreenObject = backStackEntry.toRoute()
 
             AddPeopleScreen(
-                addPeopleViewModel = addPeopleViewModel,
+                addPeopleViewModel = hiltViewModel(),
                 navigateToNewGroupScreen = {
                     navController.popBackStack()
                 },
@@ -214,8 +179,7 @@ fun NavigationWrapper(
                     }
                 },
                 idGroupName = addPeopleScreen.iDGroupName,
-                groupName = addPeopleScreen.groupName!!,
-                mainScreenViewModel = mainScreenViewModel
+                groupName = addPeopleScreen.groupName!!
             )
         }
 
@@ -225,7 +189,7 @@ fun NavigationWrapper(
             val groupId = args.iDGroupName
 
             AddCostScreen(
-                addCostViewModel,
+                hiltViewModel(),
                 idGroupName = groupId,
                 navigateToMainScreen = {
                     navController.popBackStack()
@@ -240,7 +204,7 @@ fun NavigationWrapper(
 
             AddPaymentScreen(
                 groupId,
-                addPaymentScreenViewModel,
+                hiltViewModel(),
                 navigateToMainScreen = {
                     navController.popBackStack()
                 })
@@ -255,7 +219,7 @@ fun NavigationWrapper(
 
             AddPeopleScreenFromMain(
                 iDGroupName,
-                addPeopleScreenFromMainViewModel,
+                hiltViewModel(),
                 navigateToMainScreen = {
                     navController.popBackStack()
                 }
@@ -271,7 +235,7 @@ fun NavigationWrapper(
                 amount = editCostScreen.amount,
                 description = editCostScreen.description,
                 //personString = editCostScreen.personString,
-                editCostScreenViewModel = editCostScreenViewModel,
+                editCostScreenViewModel = hiltViewModel(),
                 navigateToMainScreen = {
                     navController.popBackStack()
                 }
@@ -283,7 +247,7 @@ fun NavigationWrapper(
             val iDGroupName = args.iDGroupName
 
             ConfigurationScreen(
-                configurationScreenViewModel,
+                hiltViewModel(),
                 iDGroupName,
                 navigateToCustomizeGroup = {
                     navController.navigate(CustomizeGroupScreenObject(iDGroupName)) {
@@ -320,7 +284,7 @@ fun NavigationWrapper(
 
             CustomizeGroupScreen(
                 idGroupName = iDGroupName,
-                customizeGroupScreenViewModel,
+                hiltViewModel(),
                 navigateToGroupsDetails = {
                     navController.popBackStack()
                 },
@@ -333,7 +297,7 @@ fun NavigationWrapper(
             val currentGroupId = args.iDGroupName
 
             DoTheCountsScreen(
-                doTheCountsScreenViewModel,
+                hiltViewModel(),
                 navigateToGroupScreen = {
                     navController.popBackStack()
                 },
@@ -369,25 +333,25 @@ fun NavigationWrapper(
                         launchSingleTop = true
                     }
                 },
-                aboutScreenViewModel = aboutScreenViewModel
+                aboutScreenViewModel = hiltViewModel()
             )
         }
 
         composable<PrivacyPolicyScreenObject> {
             LegalScreen(
-                title       = stringResource(R.string.about_privacy_label),
+                title = stringResource(R.string.about_privacy_label),
                 lastUpdated = LegalContent.LAST_UPDATED,
-                sections    = LegalContent.privacyPolicy,
-                onBack      = { navController.popBackStack() }
+                sections = LegalContent.privacyPolicy,
+                onBack = { navController.popBackStack() }
             )
         }
 
         composable<TermsScreenObject> {
             LegalScreen(
-                title       = stringResource(R.string.about_terms_label),
+                title = stringResource(R.string.about_terms_label),
                 lastUpdated = LegalContent.LAST_UPDATED,
-                sections    = LegalContent.terms,
-                onBack      = { navController.popBackStack() }
+                sections = LegalContent.terms,
+                onBack = { navController.popBackStack() }
             )
         }
 
@@ -401,7 +365,7 @@ fun NavigationWrapper(
                 amount = editPaymentScreen.amount,
                 personWhoPay = editPaymentScreen.personWhoPay,
                 personWhoReceive = editPaymentScreen.personWhoReceive,
-                editPaymentsViewModel = editPaymentsViewModel,
+                editPaymentsViewModel = hiltViewModel(),
                 navigateToMainScreen = {
                     navController.popBackStack()
                 }
@@ -409,6 +373,3 @@ fun NavigationWrapper(
         }
     }
 }
-
-
-

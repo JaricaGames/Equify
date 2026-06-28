@@ -31,7 +31,6 @@ import com.jarica.compartirgastos.core.presentation.ui.emptyCostsTitle
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 import com.jarica.compartirgastos.core.utils.toMoneyDisplay
-import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
 
 private val CostDivider = Color(0xFFE6E4DE)
 private val CostInk     = Color(0xFF1F2A33)
@@ -40,7 +39,6 @@ private val CostInk     = Color(0xFF1F2A33)
 fun CostFragment(
     idGroup: String?,
     navigateToEditCost: (CostModel) -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
     costsViewModel: CostsViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -66,7 +64,6 @@ fun CostFragment(
             CostsList(
                 (uiStateCosts as CostsScreenUiState.Success).costsList,
                 navigateToEditCost,
-                editCostScreenViewModel,
                 modifier
             )
         }
@@ -77,7 +74,6 @@ fun CostFragment(
 fun CostsList(
     costList: List<CostModel>,
     navigateToEditCost: (CostModel) -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel,
     modifier: Modifier = Modifier,
 ) {
     if (costList.isEmpty()) {
@@ -88,7 +84,7 @@ fun CostsList(
     } else {
         LazyColumn(modifier = modifier.fillMaxWidth()) {
             items(costList, key = { it.idCost }) { cost ->
-                ItemCost(cost, navigateToEditCost, editCostScreenViewModel)
+                ItemCost(cost, navigateToEditCost)
             }
         }
     }
@@ -97,14 +93,12 @@ fun CostsList(
 @Composable
 fun ItemCost(
     item: CostModel,
-    navigateToEditCost: (CostModel) -> Unit,
-    editCostScreenViewModel: EditCostScreenViewModel
+    navigateToEditCost: (CostModel) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                editCostScreenViewModel.setIdCost(item.idCost)
                 navigateToEditCost(item)
             }
             .padding(horizontal = 18.dp, vertical = 14.dp),

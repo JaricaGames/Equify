@@ -14,45 +14,14 @@ import com.jarica.compartirgastos.core.forceUpdate.presentation.ForceUpdateDialo
 import com.jarica.compartirgastos.core.forceUpdate.presentation.ForceUpdateViewModel
 import com.jarica.compartirgastos.core.navigation.NavigationWrapper
 import com.jarica.compartirgastos.core.presentation.ui.theme.CompartirGastosTheme
-import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreenViewModel
-import com.jarica.compartirgastos.features.balances.presentation.doTheCountsScreen.DoTheCountsScreenViewModel
-import com.jarica.compartirgastos.features.balances.presentation.resumeScreen.ResumeViewModel
-import com.jarica.compartirgastos.features.costs.presentation.addCostScreen.AddCostScreenViewModel
-import com.jarica.compartirgastos.features.costs.presentation.costsScreen.CostsViewModel
-import com.jarica.compartirgastos.features.costs.presentation.editCostScreen.EditCostScreenViewModel
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
-import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.ConfigurationScreenViewModel
-import com.jarica.compartirgastos.features.groups.presentation.editGroupNameScreen.EditGroupNameScreenViewModel
-import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.GroupsScreenViewModel
-import com.jarica.compartirgastos.features.groups.presentation.newGroupScreen.NewGroupViewModel
-import com.jarica.compartirgastos.features.payments.presentation.addPayScreen.AddPaymentScreenViewModel
-import com.jarica.compartirgastos.features.payments.presentation.editPaymentScreen.EditPaymentViewModel
-import com.jarica.compartirgastos.features.payments.presentation.paymentsScreen.PaymentsScreenViewModel
-import com.jarica.compartirgastos.features.people.presentation.addPeopleScreen.AddPeopleScreenViewModel
-import com.jarica.compartirgastos.features.people.presentation.addPeopleScreenFromMain.AddPeopleScreenFromMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val newGroupViewModel: NewGroupViewModel by viewModels()
-    private val groupViewModel: GroupDetailsViewModel by viewModels()
-    private val addPeopleViewModel: AddPeopleScreenViewModel by viewModels()
-    private val addPeopleScreenFromMainViewModel: AddPeopleScreenFromMainViewModel by viewModels()
-    private val addCostViewModel: AddCostScreenViewModel by viewModels()
-    private val groupScreenViewModel: GroupsScreenViewModel by viewModels()
-    private val addPaymentScreenViewModel: AddPaymentScreenViewModel by viewModels()
-    private val editCostScreenViewModel: EditCostScreenViewModel by viewModels()
-    private val configurationScreenViewModel: ConfigurationScreenViewModel by viewModels()
-    private val customizeGroupScreenViewModel: EditGroupNameScreenViewModel by viewModels()
-    private val doTheCountsScreenViewModel: DoTheCountsScreenViewModel by viewModels()
-    private val aboutScreenViewModel: AboutEquifyScreenViewModel by viewModels()
-    private val resumeScreenViewModel: ResumeViewModel by viewModels()
-    private val costsViewModel: CostsViewModel by viewModels()
-    private val paymentsViewModel: PaymentsScreenViewModel by viewModels()
-    private val editPaymentsViewModel: EditPaymentViewModel by viewModels()
+    // Los ViewModels de cada pantalla se obtienen con hiltViewModel() en NavigationWrapper,
+    // con el ciclo de vida del destino. Aquí solo vive el VM de ámbito de la Activity.
     private val forceUpdateViewModel: ForceUpdateViewModel by viewModels()
-
 
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -66,24 +35,7 @@ class MainActivity : ComponentActivity() {
             true
         setContent {
             CompartirGastosTheme {
-                NavigationWrapper(
-                    newGroupViewModel,
-                    groupViewModel,
-                    addPeopleViewModel,
-                    addCostViewModel,
-                    groupScreenViewModel,
-                    addPeopleScreenFromMainViewModel,
-                    addPaymentScreenViewModel,
-                    editCostScreenViewModel,
-                    configurationScreenViewModel,
-                    customizeGroupScreenViewModel,
-                    doTheCountsScreenViewModel,
-                    aboutScreenViewModel,
-                    resumeScreenViewModel,
-                    costsViewModel,
-                    paymentsViewModel,
-                    editPaymentsViewModel
-                )
+                NavigationWrapper()
 
                 val forceUpdate by forceUpdateViewModel.forceUpdate.collectAsState()
                 if (forceUpdate) {

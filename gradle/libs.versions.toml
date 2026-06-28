@@ -18,6 +18,7 @@ runtimeLivedata = "1.9.0"
 ksp = "2.2.10-2.0.2"
 hilt = "2.60"
 hilt-compiler = "1.2.0"
+hiltNavigationCompose = "1.2.0"
 room = "2.7.2"
 dataStorePreference = "1.1.7"
 corrutinas = "1.8.1"
@@ -57,6 +58,7 @@ coroutines-play-services = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-p
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-compiler" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }

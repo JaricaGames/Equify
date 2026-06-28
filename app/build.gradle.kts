@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     ksp(libs.dagger.hilt.android.compiler)
     ksp(libs.dagger.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
     // Room
     implementation(libs.room.runtime)

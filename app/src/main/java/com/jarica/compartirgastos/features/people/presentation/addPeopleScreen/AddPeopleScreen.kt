@@ -72,7 +72,6 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkOrange
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
-import com.jarica.compartirgastos.features.groupDetail.presentation.groupDetailsScreen.GroupDetailsViewModel
 
 private val LineColor  = Color(0xFFE6E4DE)
 private val MutedColor = Color(0xFF6B7A86)
@@ -85,7 +84,6 @@ fun AddPeopleScreen(
     addPeopleViewModel: AddPeopleScreenViewModel,
     navigateToNewGroupScreen: () -> Unit,
     navigateToMainScreen: (String) -> Unit,
-    mainScreenViewModel: GroupDetailsViewModel,
 ) {
     val peopleList    = addPeopleViewModel.personList
     val inputText: String by addPeopleViewModel.addNameToGroup.observeAsState("")
@@ -187,7 +185,6 @@ fun AddPeopleScreen(
                 Button(
                     onClick = {
                         val group = GroupModel(idGroupName = idGroupName, groupName = groupName)
-                        mainScreenViewModel.setGroupId(group.idGroupName)
                         addPeopleViewModel.saveGroupData(group, peopleList) {
                             navigateToMainScreen(group.idGroupName)
                         }

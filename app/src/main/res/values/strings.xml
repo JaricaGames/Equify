@@ -198,4 +198,25 @@
     <string name="force_update_title">Actualización necesaria</string>
     <string name="force_update_body">Hemos lanzado una nueva versión de Equify con mejoras importantes. Para seguir usando la app, actualiza a la última versión.</string>
     <string name="force_update_button">Actualizar</string>
+
+    <!-- PDF export -->
+    <string name="pdf_tagline">Divide gastos, multiplica momentos</string>
+    <string name="pdf_page">Pág %1$d</string>
+    <string name="pdf_footer_generated">Generado con Equify · equify.app</string>
+    <string name="pdf_generated_on">Generado el %1$s</string>
+    <string name="pdf_total_spent">Total gastado</string>
+    <string name="pdf_to_settle">A liquidar</string>
+    <string name="pdf_costs_title">LISTA DE GASTOS</string>
+    <string name="pdf_col_description">Descripción</string>
+    <string name="pdf_col_amount">Importe</string>
+    <string name="pdf_no_costs">Sin gastos registrados</string>
+    <string name="pdf_payments_title">PAGOS PARA LIQUIDAR</string>
+    <string name="pdf_col_pays">Paga</string>
+    <string name="pdf_col_receives">Recibe</string>
+    <string name="pdf_col_quantity">Cantidad</string>
+    <string name="pdf_no_debts">Sin deudas pendientes</string>
+    <plurals name="pdf_costs_count">
+        <item quantity="one">%d gasto</item>
+        <item quantity="other">%d gastos</item>
+    </plurals>
 </resources>
