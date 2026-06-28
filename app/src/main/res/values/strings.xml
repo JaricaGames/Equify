@@ -219,4 +219,11 @@
         <item quantity="one">%d gasto</item>
         <item quantity="other">%d gastos</item>
     </plurals>
+    <string name="about_pro_eyebrow">Sin anuncios</string>
+    <string name="about_remove_ads_label">Quitar anuncios</string>
+    <string name="about_remove_ads_sub">Apoya la app y elimina la publicidad para siempre.</string>
+    <string name="about_restore_purchase_label">Restaurar compra</string>
+    <string name="about_restore_purchase_sub">¿Ya la compraste? Recupérala aquí.</string>
+    <string name="about_pro_active_label">Sin anuncios activado</string>
+    <string name="about_pro_active_sub">¡Gracias por tu apoyo!</string>
 </resources>

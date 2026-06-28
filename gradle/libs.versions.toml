@@ -25,6 +25,7 @@ corrutinas = "1.8.1"
 kotlinParcelize = "1.8.10"
 playServicesAds = "24.5.0"
 playReview = "2.0.2"
+billing = "7.1.1"
 appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.8.0"
@@ -73,6 +74,7 @@ dataStorePreference = {module = "androidx.datastore:datastore-preferences", vers
 
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-review = { module = "com.google.android.play:review-ktx", version.ref = "playReview" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }

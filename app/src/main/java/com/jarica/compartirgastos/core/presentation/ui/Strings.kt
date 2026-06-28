@@ -333,3 +333,17 @@ val aboutTermsLabel: String
     @Composable get() = stringResource(R.string.about_terms_label)
 val aboutFooterText: String
     @Composable get() = stringResource(R.string.about_footer_text)
+val aboutProEyebrow: String
+    @Composable get() = stringResource(R.string.about_pro_eyebrow)
+val aboutRemoveAdsLabel: String
+    @Composable get() = stringResource(R.string.about_remove_ads_label)
+val aboutRemoveAdsSub: String
+    @Composable get() = stringResource(R.string.about_remove_ads_sub)
+val aboutRestorePurchaseLabel: String
+    @Composable get() = stringResource(R.string.about_restore_purchase_label)
+val aboutRestorePurchaseSub: String
+    @Composable get() = stringResource(R.string.about_restore_purchase_sub)
+val aboutProActiveLabel: String
+    @Composable get() = stringResource(R.string.about_pro_active_label)
+val aboutProActiveSub: String
+    @Composable get() = stringResource(R.string.about_pro_active_sub)

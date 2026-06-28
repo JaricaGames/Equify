@@ -7,12 +7,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.jarica.compartirgastos.BuildConfig
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
 import com.jarica.compartirgastos.core.utils.AdIds
 
 @Composable
 fun BannerAdView(modifier: Modifier = Modifier) {
-    if (!BuildConfig.SHOW_ADS) return
+    if (LocalAdsRemoved.current) return
     AndroidView(
         modifier = modifier.fillMaxWidth(),
         factory = { context ->

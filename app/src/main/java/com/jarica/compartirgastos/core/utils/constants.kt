@@ -4,6 +4,10 @@ import com.jarica.compartirgastos.BuildConfig
 
 const val PREFERENCES_NAME = "preferences_name"
 
+// Play Billing: ID del producto de pago único para quitar anuncios.
+// Debe coincidir EXACTAMENTE con el ID creado en Play Console (Monetización → Productos).
+const val REMOVE_ADS_PRODUCT_ID = "remove_ads"
+
 //email
 const val EMAIL_DIRECTION = "jarica.games@gmail.com"
 const val EMAIL_SUBJECT = "FeedBack"

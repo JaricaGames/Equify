@@ -44,7 +44,15 @@
       "WebSearch",
       "PowerShell(.\\\\gradlew.bat :app:testFreeDebugUnitTest --tests \"com.jarica.compartirgastos.features.balances.domain.balancesUseCases.DoTheCountsUseCaseTest\" --console=plain)",
       "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain 2>&1 | Select-Object -Last 60)",
-      "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain 2>&1 | Select-Object -Last 25)"
+      "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain 2>&1 | Select-Object -Last 25)",
+      "Bash(keytool)",
+      "Bash(java -version)",
+      "Bash(./gradlew bundleFreeRelease bundleProRelease)",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} -> %{redirect_url}\\\\n\" \"https://github.com/JaricaGames/CompartirGastos\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/JaricaGames/Equify/New/equify-privacidad.html\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | content-type: %{content_type}\\\\n\" \"https://jaricagames.github.io/Equify/equify-privacidad.html\")",
+      "Bash(curl -s \"https://jaricagames.github.io/Equify/equify-privacidad.html\")"
     ]
   }
 }

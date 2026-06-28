@@ -1,4 +1,10 @@
+import java.io.FileInputStream
+import java.util.Properties
 
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) FileInputStream(f).use { load(it) }
+}
 
 plugins {
     alias(libs.plugins.android.application)
@@ -25,6 +31,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = localProps.getProperty("RELEASE_STORE_FILE")
+            if (storeFilePath != null) {
+                storeFile = rootProject.file(storeFilePath)
+                storePassword = localProps.getProperty("RELEASE_STORE_PASSWORD")
+                keyAlias = localProps.getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = localProps.getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -33,7 +51,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -46,21 +64,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    flavorDimensions += "version"
-    productFlavors {
-        create("free") {
-            dimension = "version"
-            buildConfigField("boolean", "SHOW_ADS", "true")
-        }
-        create("pro") {
-            dimension = "version"
-            applicationIdSuffix = ".pro"
-            versionNameSuffix = "-pro"
-            buildConfigField("boolean", "SHOW_ADS", "false")
-            resValue("string", "app_name", "Equify - Pro")
-        }
     }
 
 }
@@ -118,6 +121,9 @@ dependencies {
 
     //In-App Review
     implementation(libs.play.review)
+
+    //Play Billing (compra para quitar anuncios)
+    implementation(libs.billing.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

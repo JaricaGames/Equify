@@ -57,4 +57,19 @@ class Preferences @Inject constructor(
         context.dataStore.edit { it[key] = true }
     }
 
+    /**
+     * Cache local del estado de la compra "quitar anuncios". Es solo una caché para
+     * que la UI no parpadee al arrancar: la fuente de verdad es Google Play
+     * (BillingManager refresca este valor al conectarse).
+     */
+    suspend fun isAdsRemoved(): Boolean {
+        val key = booleanPreferencesKey("ads_removed")
+        return context.dataStore.data.first()[key] ?: false
+    }
+
+    suspend fun setAdsRemoved(value: Boolean) {
+        val key = booleanPreferencesKey("ads_removed")
+        context.dataStore.edit { it[key] = value }
+    }
+
 }

@@ -61,10 +61,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
 import com.jarica.compartirgastos.core.presentation.ui.groupsTotalLabel
 import com.jarica.compartirgastos.core.presentation.ui.groupsYourGroups
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
@@ -400,7 +400,7 @@ fun ParticipantAvatars(people: List<PersonModel>) {
 @SuppressLint("MissingPermission")
 @Composable
 fun BannerAdViewGroupScreen() {
-    if (!BuildConfig.SHOW_ADS) return
+    if (LocalAdsRemoved.current) return
     Box(contentAlignment = Alignment.TopCenter) {
         AndroidView(
             modifier = Modifier.fillMaxWidth(),

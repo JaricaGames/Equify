@@ -3,6 +3,9 @@ package com.jarica.compartirgastos.core.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -10,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
+import com.jarica.compartirgastos.core.presentation.MainViewModel
 import com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify.AboutEquifyScreen
 import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalContent
 import com.jarica.compartirgastos.features.appInfo.presentation.legal.LegalScreen
@@ -35,6 +40,10 @@ fun NavigationWrapper() {
 
     val navController = rememberNavController()
 
+    val mainViewModel: MainViewModel = hiltViewModel()
+    val adsRemoved by mainViewModel.adsRemoved.collectAsState()
+
+    CompositionLocalProvider(LocalAdsRemoved provides adsRemoved) {
     NavHost(
         navController = navController, startDestination = SplashScreenObject
 
@@ -371,5 +380,6 @@ fun NavigationWrapper() {
                 }
             )
         }
+    }
     }
 }

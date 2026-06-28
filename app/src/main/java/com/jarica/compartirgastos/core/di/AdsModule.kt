@@ -2,7 +2,6 @@ package com.jarica.compartirgastos.core.di
 
 import android.content.Context
 import com.google.android.gms.ads.MobileAds
-import com.jarica.compartirgastos.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +18,7 @@ object AdsModule {
     fun provideMobileAdsInitializer(
         @ApplicationContext context: Context
     ): MobileAdsInitializer {
-        if (BuildConfig.SHOW_ADS) {
-            MobileAds.initialize(context)
-        }
+        MobileAds.initialize(context)
         return MobileAdsInitializer()
     }
 }

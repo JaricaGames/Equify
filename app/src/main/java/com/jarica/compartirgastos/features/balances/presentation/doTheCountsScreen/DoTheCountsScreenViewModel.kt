@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jarica.compartirgastos.core.billing.BillingManager
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
 import com.jarica.compartirgastos.core.utils.CountsPdfGenerator
@@ -31,6 +32,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
     private val doTheCountsUseCase: DoTheCountsUseCase,
     private val getCostsByIdGroupUseCase: GetCostsByIdGroupUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
+    private val billingManager: BillingManager,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -64,7 +66,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
         }
     }
 
-    private val interstitial = InterstitialAdController(context)
+    private val interstitial = InterstitialAdController(context) { billingManager.adsRemoved.value }
 
     fun loadAd() = interstitial.load()
 

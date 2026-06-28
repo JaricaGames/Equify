@@ -60,10 +60,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.jarica.compartirgastos.BuildConfig
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.CostModel
 import com.jarica.compartirgastos.core.domain.models.PaymentsModel
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
 import com.jarica.compartirgastos.core.presentation.composables.BannerAdView
 import com.jarica.compartirgastos.core.presentation.composables.ExpandableFab
 import com.jarica.compartirgastos.core.presentation.composables.Scrim
@@ -763,7 +763,7 @@ fun Header(
 @SuppressLint("MissingPermission")
 @Composable
 fun BannerAdViewMainScreen() {
-    if (!BuildConfig.SHOW_ADS) return
+    if (LocalAdsRemoved.current) return
     AndroidView(
         modifier = Modifier
             .fillMaxWidth(),

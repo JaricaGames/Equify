@@ -1,7 +1,9 @@
 package com.jarica.compartirgastos.features.appInfo.presentation.aboutEquify
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.DrawableRes
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
 import com.jarica.compartirgastos.core.presentation.ui.aboutAuthorMessage
 import com.jarica.compartirgastos.core.presentation.ui.aboutAuthorName
 import com.jarica.compartirgastos.core.presentation.ui.aboutAuthorRole
@@ -59,7 +62,13 @@ import com.jarica.compartirgastos.core.presentation.ui.aboutFooterText
 import com.jarica.compartirgastos.core.presentation.ui.aboutImproveEyebrow
 import com.jarica.compartirgastos.core.presentation.ui.aboutLegalEyebrow
 import com.jarica.compartirgastos.core.presentation.ui.aboutPrivacyLabel
+import com.jarica.compartirgastos.core.presentation.ui.aboutProActiveLabel
+import com.jarica.compartirgastos.core.presentation.ui.aboutProActiveSub
+import com.jarica.compartirgastos.core.presentation.ui.aboutProEyebrow
 import com.jarica.compartirgastos.core.presentation.ui.aboutRateGooglePlayText
+import com.jarica.compartirgastos.core.presentation.ui.aboutRemoveAdsLabel
+import com.jarica.compartirgastos.core.presentation.ui.aboutRemoveAdsSub
+import com.jarica.compartirgastos.core.presentation.ui.aboutRestorePurchaseLabel
 import com.jarica.compartirgastos.core.presentation.ui.aboutScreenText
 import com.jarica.compartirgastos.core.presentation.ui.aboutShareLabel
 import com.jarica.compartirgastos.core.presentation.ui.aboutShareSub
@@ -257,6 +266,14 @@ fun AboutEquifyScreen(
             }
         }
 
+        ProSection(
+            adsRemoved = LocalAdsRemoved.current,
+            onRemoveAds = {
+                context.findActivity()?.let { aboutScreenViewModel.onRemoveAdsClicked(it) }
+            },
+            onRestore = { aboutScreenViewModel.onRestorePurchasesClicked() }
+        )
+
         AboutEyebrow(text = aboutImproveEyebrow)
         AboutGroupList {
             AboutRow(
@@ -315,8 +332,8 @@ fun AboutEquifyScreen(
 
 /**
  * Abre la ficha de la app en Google Play. Usa el packageName en tiempo de
- * ejecución para que funcione en ambos flavors (free y pro, con sufijo ".pro").
- * Intenta primero la app de Play Store (market://) y cae al navegador si no está.
+ * ejecución. Intenta primero la app de Play Store (market://) y cae al navegador
+ * si no está.
  */
 private fun openPlayStore(context: Context) {
     val packageName = context.packageName
@@ -338,8 +355,7 @@ private fun openPlayStore(context: Context) {
 
 /**
  * Comparte la app vía el selector del sistema (ACTION_SEND). El enlace se
- * construye con el packageName en tiempo de ejecución, por lo que funciona en
- * ambos flavors (free y pro).
+ * construye con el packageName en tiempo de ejecución.
  */
 private fun shareApp(context: Context) {
     val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
@@ -350,6 +366,138 @@ private fun shareApp(context: Context) {
     context.startActivity(
         Intent.createChooser(sendIntent, context.getString(R.string.about_share_chooser))
     )
+}
+
+/**
+ * Sección de compra "quitar anuncios". Si el usuario ya la compró, muestra un
+ * estado de agradecimiento; si no, muestra el CTA de compra y un enlace para
+ * restaurar la compra (tras reinstalar o cambiar de dispositivo).
+ */
+@Composable
+private fun ProSection(
+    adsRemoved: Boolean,
+    onRemoveAds: () -> Unit,
+    onRestore: () -> Unit
+) {
+    AboutEyebrow(text = aboutProEyebrow)
+
+    if (adsRemoved) {
+        AboutGroupList {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 13.dp),
+                verticalAlignment     = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color(0xFFFFF3D6)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector        = Icons.Default.Star,
+                        contentDescription = null,
+                        tint               = StarFilled,
+                        modifier           = Modifier.size(18.dp)
+                    )
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        text       = aboutProActiveLabel,
+                        fontSize   = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color      = InkColor,
+                        fontFamily = parkinsans
+                    )
+                    Text(
+                        text       = aboutProActiveSub,
+                        fontSize   = 12.sp,
+                        color      = MutedColor,
+                        fontFamily = parkinsans
+                    )
+                }
+            }
+        }
+        return
+    }
+
+    // CTA de compra
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(DarkBlue)
+            .clickable { onRemoveAds() }
+            .padding(16.dp)
+    ) {
+        Row(
+            verticalAlignment     = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(White.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector        = Icons.Default.Star,
+                    contentDescription = null,
+                    tint               = StarFilled,
+                    modifier           = Modifier.size(20.dp)
+                )
+            }
+            Column(
+                modifier            = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(3.dp)
+            ) {
+                Text(
+                    text       = aboutRemoveAdsLabel,
+                    fontSize   = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color      = White,
+                    fontFamily = parkinsans
+                )
+                Text(
+                    text       = aboutRemoveAdsSub,
+                    fontSize   = 12.sp,
+                    lineHeight = 16.sp,
+                    color      = White.copy(alpha = 0.75f),
+                    fontFamily = parkinsans
+                )
+            }
+        }
+    }
+
+    // Restaurar compra
+    Text(
+        text          = aboutRestorePurchaseLabel,
+        fontSize      = 12.sp,
+        fontWeight    = FontWeight.SemiBold,
+        color         = DarkBlue,
+        fontFamily    = parkinsans,
+        textAlign     = TextAlign.Center,
+        modifier      = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp)
+            .clickable { onRestore() }
+            .padding(vertical = 6.dp)
+    )
+}
+
+/** Encuentra la Activity a partir del Context envuelto por Compose. */
+private fun Context.findActivity(): Activity? {
+    var ctx: Context = this
+    while (ctx is ContextWrapper) {
+        if (ctx is Activity) return ctx
+        ctx = ctx.baseContext
+    }
+    return null
 }
 
 @Composable
