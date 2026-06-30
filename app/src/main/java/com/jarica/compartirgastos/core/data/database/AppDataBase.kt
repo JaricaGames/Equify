@@ -26,7 +26,9 @@ import com.jarica.compartirgastos.features.groups.data.dao.GroupsDao
         DistributionCostEntity::class,
         DistributionPaymentEntity::class],
     version = 3,
-    exportSchema = false
+    // exportSchema = true vuelca el esquema a /app/schemas para poder escribir y testear
+    // migraciones reales. Al subir la versión, recuerda registrar su Migration en RoomModule.
+    exportSchema = true
 )
 
 abstract class AppDataBase : RoomDatabase() {

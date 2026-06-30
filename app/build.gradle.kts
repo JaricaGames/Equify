@@ -68,6 +68,12 @@ android {
 
 }
 
+// Room exporta el esquema de cada versión a /app/schemas (uno por versión).
+// Sirve para (1) versionar el esquema en git y (2) escribir y testear migraciones reales.
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
 
     // Hilt
