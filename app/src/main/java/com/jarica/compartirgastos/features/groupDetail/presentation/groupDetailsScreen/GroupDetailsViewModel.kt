@@ -65,12 +65,12 @@ class GroupDetailsViewModel @Inject constructor(
 
     fun getGroupNameById(idGroup: String?) {
         viewModelScope.launch {
-            try {
-                val group = getGroupByIdUseCase(idGroup!!)
-                _nameOfGroup.value = group.groupName
-            } catch (e: Exception) {
+            if (idGroup == null) {
                 _nameOfGroup.value = "Nuevo grupo"
+                return@launch
             }
+            val group = getGroupByIdUseCase(idGroup)
+            _nameOfGroup.value = group?.groupName ?: "Nuevo grupo"
         }
     }
 

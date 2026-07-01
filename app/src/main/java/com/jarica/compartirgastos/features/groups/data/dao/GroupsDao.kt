@@ -29,10 +29,10 @@ interface GroupsDao {
     suspend fun updateGroupName(groupName: GroupNameEntity)
 
     //Metodo que devuelve un grupo por su ID
-    @Query("SELECT * FROM groupNameTable WHERE idGroup LIKE :idGroup ")
-    suspend fun getGroupNameById(idGroup: String): GroupNameEntity
+    @Query("SELECT * FROM groupNameTable WHERE idGroup = :idGroup")
+    suspend fun getGroupNameById(idGroup: String): GroupNameEntity?
 
-    //Metodo que devuelve los miembros de de un grupo
-    @Query("SELECT name FROM peopleTable WHERE idGroup LIKE :idGroup ")
-    suspend fun getGroupsMembersById(idGroup: Int):List<String>
+    //Metodo que devuelve los miembros de un grupo
+    @Query("SELECT name FROM peopleTable WHERE idGroup = :idGroup")
+    suspend fun getGroupsMembersById(idGroup: String): List<String>
 }

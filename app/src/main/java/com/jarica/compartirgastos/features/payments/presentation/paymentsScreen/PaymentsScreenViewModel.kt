@@ -42,8 +42,8 @@ class PaymentsScreenViewModel @Inject constructor(
             PaymentsScreenUiState.Loading
         )
 
-    suspend fun getPersonName(personId: String): String {
-        return getPersonByIdUseCase(personId).name
+    suspend fun getPersonName(personId: String): String? {
+        return getPersonByIdUseCase(personId)?.name
     }
 
 }

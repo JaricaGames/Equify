@@ -77,13 +77,12 @@ class ConfigurationScreenViewModel @Inject constructor(
     private val _event = MutableSharedFlow<UiEvent>()
     val event = _event.asSharedFlow()
 
-
     // ----------------------------------------
     // Obtener nombre del grupo
     fun getGroupNameById(idGroup: String) {
         viewModelScope.launch {
             val groupName = withContext(Dispatchers.IO) {
-                getGroupByIdUseCase(idGroup).groupName
+                getGroupByIdUseCase(idGroup)?.groupName ?: return@withContext
             }
             _nameOfGroup.value = groupName
         }
@@ -93,7 +92,7 @@ class ConfigurationScreenViewModel @Inject constructor(
     // Borrar grupo
     fun deleteGroup(iDGroupName: String, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val groupToDelete = getGroupByIdUseCase(iDGroupName)
+            val groupToDelete = getGroupByIdUseCase(iDGroupName) ?: return@launch
             deleteGroupByIdUseCase(groupToDelete, iDGroupName)
 
             withContext(Dispatchers.Main) {
