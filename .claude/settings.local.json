@@ -53,10 +53,7 @@
       "Bash(curl -s \"https://raw.githubusercontent.com/JaricaGames/Equify/New/equify-privacidad.html\")",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | content-type: %{content_type}\\\\n\" \"https://jaricagames.github.io/Equify/equify-privacidad.html\")",
       "Bash(curl -s \"https://jaricagames.github.io/Equify/equify-privacidad.html\")",
-      "PowerShell(.\\\\gradlew :app:assembleDebug -q 2>&1 | Select-Object -Last 40)",
-      "Bash(xargs ls -1)",
-      "Bash(sed 's/\\)//')",
-      "Bash(grep -v \"^[[:space:]]*$\")"
+      "PowerShell(.\\\\gradlew :app:assembleDebug -q 2>&1 | Select-Object -Last 40)"
     ]
   }
 }
