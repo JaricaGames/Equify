@@ -1,6 +1,6 @@
 package com.jarica.compartirgastos.features.costs.data.costsRepository
 
-import androidx.room.Transaction
+import com.jarica.compartirgastos.core.data.database.AppDataBase
 import com.jarica.compartirgastos.core.data.database.dao.CostsDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionCostDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionPaymentDao
@@ -20,6 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CostsRepository @Inject constructor(
+    private val db: AppDataBase,
     private val costsDao: CostsDao,
     private val distributionCostDao: DistributionCostDao,
     private val distributionPaymentDao: DistributionPaymentDao
