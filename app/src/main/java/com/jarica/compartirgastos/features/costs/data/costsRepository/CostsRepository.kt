@@ -1,5 +1,6 @@
 package com.jarica.compartirgastos.features.costs.data.costsRepository
 
+import androidx.room.withTransaction
 import com.jarica.compartirgastos.core.data.database.AppDataBase
 import com.jarica.compartirgastos.core.data.database.dao.CostsDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionCostDao
@@ -46,11 +47,34 @@ class CostsRepository @Inject constructor(
         )
     }
 
-    @Transaction
     suspend fun deleteCost(idCost: String) {
-        // Cascada FK elimina distributionCostTable y distributionPaymentCostTable automáticamente.
-        // Transacción asegura atomicidad: todo-o-nada.
+        // Una sola sentencia DELETE: la cascada FK elimina sus distribuciones atómicamente.
         costsDao.deleteCost(idCost = idCost)
+    }
+
+    // Inserta el gasto y todas sus distribuciones en una transacción: todo-o-nada.
+    suspend fun insertCostWithDistributions(
+        costModel: CostModel,
+        distributionCosts: List<DistributionCostModel>,
+        distributionPayment: DistributionPaymentModel,
+    ) {
+        db.withTransaction {
+            insertCost(costModel)
+            distributionCosts.forEach { insertDistributionCost(it) }
+            insertDistributionPayment(distributionPayment)
+        }
+    }
+
+    // Actualiza el gasto y reemplaza su reparto en una transacción: todo-o-nada.
+    suspend fun updateCostWithDistributions(
+        costModel: CostModel,
+        distributionCosts: List<DistributionCostModel>,
+    ) {
+        db.withTransaction {
+            updateCost(costModel)
+            deleteDistributionCostByIdCost(costModel.idCost)
+            distributionCosts.forEach { insertDistributionCost(it) }
+        }
     }
 
 
