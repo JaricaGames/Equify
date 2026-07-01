@@ -22,14 +22,9 @@ object RoomModule {
     fun provideRoom(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, AppDataBase::class.java, QUOTE_DATABASE_NAME)
             // Migraciones reales que conservan los datos del usuario (ver Migrations.kt).
-            // Ahora la lista está vacía: la versión 3 es la línea base previa a publicar.
+            // Registra todas las migraciones necesarias. Desde la v1 publicada,
+            // fallbackToDestructiveMigration está DESHABILITADO para proteger datos de usuarios.
             .addMigrations(*ALL_MIGRATIONS)
-            // ⚠️ PRE-PUBLICACIÓN: recreamos la BD local cuando cambia el esquema (no hay
-            // usuarios con datos todavía). En cuanto publiques la v1, ELIMINA esta línea
-            // —o cámbiala por fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)—
-            // y a partir de ahí cada cambio de esquema debe tener su Migration en ALL_MIGRATIONS.
-            // Si la dejas, los usuarios PERDERÍAN sus datos al actualizar.
-            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
 
 

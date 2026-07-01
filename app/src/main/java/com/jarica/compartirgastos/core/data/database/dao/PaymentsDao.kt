@@ -15,15 +15,15 @@ interface PaymentsDao {
     @Query(value = "SELECT * FROM paymentsTable WHERE idGroup = :idGroup")
     fun getPaymentsByIdGroup(idGroup: String): Flow<List<PaymentEntity>>
 
-    // Metodo que devuelve un gasto por ID
-    @Query("SELECT * FROM paymentsTable WHERE idPayment LIKE :idPayment ")
-    suspend fun getPaymentByIdPayment(idPayment: String): PaymentEntity
+    // Metodo que devuelve un pago por ID
+    @Query("SELECT * FROM paymentsTable WHERE idPayment = :idPayment")
+    suspend fun getPaymentByIdPayment(idPayment: String): PaymentEntity?
 
     //Metodo que inserta una nuevo pago
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPayment(payment: PaymentEntity)
 
-    @Query("DELETE FROM paymentsTable WHERE idPayment LIKE :idPayment ")
+    @Query("DELETE FROM paymentsTable WHERE idPayment = :idPayment")
     suspend fun deletePaymentById(idPayment: String)
 
     //Metodo que actualiza un pago

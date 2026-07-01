@@ -1,5 +1,6 @@
 package com.jarica.compartirgastos.features.costs.data.costsRepository
 
+import androidx.room.Transaction
 import com.jarica.compartirgastos.core.data.database.dao.CostsDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionCostDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionPaymentDao
@@ -44,13 +45,16 @@ class CostsRepository @Inject constructor(
         )
     }
 
+    @Transaction
     suspend fun deleteCost(idCost: String) {
+        // Cascada FK elimina distributionCostTable y distributionPaymentCostTable automáticamente.
+        // Transacción asegura atomicidad: todo-o-nada.
         costsDao.deleteCost(idCost = idCost)
     }
 
 
-    suspend fun getCostByIdCost(id: String): CostModel {
-        return costsDao.getCostsByIdCost(id).toDomain()
+    suspend fun getCostByIdCost(id: String): CostModel? {
+        return costsDao.getCostsByIdCost(id)?.toDomain()
     }
 
     suspend fun updateCost(costModel: CostModel) {
@@ -97,6 +101,7 @@ class CostsRepository @Inject constructor(
             .map { it.map { dto -> dto.toDomain() } }
     }
 
+    @Transaction
     suspend fun deleteDistributionCostByIdCost(idCost: String) {
         distributionCostDao.deleteDistributionCostByIdCost(idCost)
     }

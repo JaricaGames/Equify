@@ -15,12 +15,12 @@ interface PersonNameDao {
     @Query(value = "SELECT * FROM peopleTable WHERE idGroup = :idGroup ORDER BY idPerson ASC")
     fun getPeopleByIdGroup(idGroup: String): Flow<List<PersonEntity>>
 
-    //Metodo que inserta una nueva persoina
+    //Metodo que inserta una nueva persona
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPersonName(personName: PersonEntity)
 
     //Metodo que borra una persona por id
-    @Query(value = "DELETE FROM peopleTable WHERE idPerson like :idPerson ")
+    @Query(value = "DELETE FROM peopleTable WHERE idPerson = :idPerson")
     suspend fun deletePersonNameByIdPerson(idPerson: String)
 
     //Metodo que actualiza un usuario
@@ -28,6 +28,10 @@ interface PersonNameDao {
     suspend fun updatePerson(personEntity: PersonEntity)
 
     //Metodo que devuelve un usuario por id
-    @Query("SELECT * FROM peopleTable WHERE  idPerson LIKE :idPerson")
-    suspend fun getPersonById(idPerson: String):PersonEntity
+    @Query("SELECT * FROM peopleTable WHERE idPerson = :idPerson")
+    suspend fun getPersonById(idPerson: String): PersonEntity?
+
+    //Metodo que devuelve los miembros de un grupo por su ID (String, no Int)
+    @Query("SELECT name FROM peopleTable WHERE idGroup = :idGroup")
+    suspend fun getGroupsMembersById(idGroup: String): List<String>
 }

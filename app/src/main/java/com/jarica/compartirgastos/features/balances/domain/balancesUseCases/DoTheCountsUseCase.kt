@@ -13,7 +13,6 @@ class DoTheCountsUseCase @Inject constructor(
 
         val debtors = balances
             .filter { it.balance > 0 }
-            .map { it.copy(balance = it.balance) }
             .toMutableList()
 
         val creditors = balances
