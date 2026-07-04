@@ -21,6 +21,7 @@ plugins {
 android {
     namespace = "com.jarica.compartirgastos"
     compileSdk = 35
+    ndkVersion = "27.2.12479018"
 
     defaultConfig {
         applicationId = "com.jarica.compartirgastos"
@@ -52,6 +53,9 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
     compileOptions {
