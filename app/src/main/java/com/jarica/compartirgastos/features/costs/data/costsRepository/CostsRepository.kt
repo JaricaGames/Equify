@@ -1,5 +1,7 @@
 package com.jarica.compartirgastos.features.costs.data.costsRepository
 
+import androidx.room.withTransaction
+import com.jarica.compartirgastos.core.data.database.AppDataBase
 import com.jarica.compartirgastos.core.data.database.dao.CostsDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionCostDao
 import com.jarica.compartirgastos.core.data.database.dao.DistributionPaymentDao
@@ -19,6 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CostsRepository @Inject constructor(
+    private val db: AppDataBase,
     private val costsDao: CostsDao,
     private val distributionCostDao: DistributionCostDao,
     private val distributionPaymentDao: DistributionPaymentDao
@@ -45,12 +48,38 @@ class CostsRepository @Inject constructor(
     }
 
     suspend fun deleteCost(idCost: String) {
+        // Una sola sentencia DELETE: la cascada FK elimina sus distribuciones atómicamente.
         costsDao.deleteCost(idCost = idCost)
     }
 
+    // Inserta el gasto y todas sus distribuciones en una transacción: todo-o-nada.
+    suspend fun insertCostWithDistributions(
+        costModel: CostModel,
+        distributionCosts: List<DistributionCostModel>,
+        distributionPayment: DistributionPaymentModel,
+    ) {
+        db.withTransaction {
+            insertCost(costModel)
+            distributionCosts.forEach { insertDistributionCost(it) }
+            insertDistributionPayment(distributionPayment)
+        }
+    }
 
-    suspend fun getCostByIdCost(id: String): CostModel {
-        return costsDao.getCostsByIdCost(id).toDomain()
+    // Actualiza el gasto y reemplaza su reparto en una transacción: todo-o-nada.
+    suspend fun updateCostWithDistributions(
+        costModel: CostModel,
+        distributionCosts: List<DistributionCostModel>,
+    ) {
+        db.withTransaction {
+            updateCost(costModel)
+            deleteDistributionCostByIdCost(costModel.idCost)
+            distributionCosts.forEach { insertDistributionCost(it) }
+        }
+    }
+
+
+    suspend fun getCostByIdCost(id: String): CostModel? {
+        return costsDao.getCostsByIdCost(id)?.toDomain()
     }
 
     suspend fun updateCost(costModel: CostModel) {

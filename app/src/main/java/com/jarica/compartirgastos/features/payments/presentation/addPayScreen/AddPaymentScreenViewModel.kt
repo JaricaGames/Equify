@@ -59,7 +59,7 @@ class AddPaymentScreenViewModel @Inject constructor(
 
     fun loadGroupName(groupId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val group = getGroupByIdUseCase(groupId)
+            val group = getGroupByIdUseCase(groupId) ?: return@launch
             _groupName.postValue(group.groupName)
         }
     }

@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.jarica.compartirgastos.core.data.database.ALL_MIGRATIONS
 import com.jarica.compartirgastos.core.data.database.AppDataBase
 import dagger.Module
 import dagger.Provides
@@ -20,9 +21,10 @@ object RoomModule {
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, AppDataBase::class.java, QUOTE_DATABASE_NAME)
-            // v3 cambia los importes de REAL (Float) a INTEGER (céntimos). Mientras la app
-            // no está publicada, recreamos la BD local en vez de migrar los datos antiguos.
-            .fallbackToDestructiveMigration(dropAllTables = true)
+            // Migraciones reales que conservan los datos del usuario (ver Migrations.kt).
+            // Registra todas las migraciones necesarias. Desde la v1 publicada,
+            // fallbackToDestructiveMigration está DESHABILITADO para proteger datos de usuarios.
+            .addMigrations(*ALL_MIGRATIONS)
             .build()
 
 

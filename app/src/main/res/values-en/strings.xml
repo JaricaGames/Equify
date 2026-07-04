@@ -146,7 +146,7 @@
 
     <!-- DoTheCountsScreen -->
     <string name="export_pdf_text">Export PDF</string>
-    <string name="export_ad_button_text">Watch ad and Export</string>
+    <string name="export_ad_button_text">Watch ad and Export PDF</string>
     <string name="do_the_counts_subtitle_zero">No pending debts in the group</string>
     <string name="do_the_counts_empty_title">All settled up!</string>
     <string name="do_the_counts_empty_subtitle">No pending debts\nin this group</string>

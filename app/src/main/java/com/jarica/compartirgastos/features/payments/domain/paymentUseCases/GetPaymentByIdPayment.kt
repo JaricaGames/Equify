@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetPaymentByIdPayment @Inject constructor(
     private val paymentsRepository: PaymentsRepository
 ) {
-    suspend operator fun invoke(idPayment: String): PaymentsModel {
+    suspend operator fun invoke(idPayment: String): PaymentsModel? {
         return paymentsRepository.getPaymentByIdPayment(idPayment)
     }
 }

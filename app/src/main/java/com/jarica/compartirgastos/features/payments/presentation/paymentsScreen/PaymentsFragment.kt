@@ -108,11 +108,11 @@ fun ItemPaymentName(
     navigateToEditPayments: (PaymentsModel) -> Unit
 ) {
     val namePersonWhoPay by produceState(initialValue = "", key1 = item.idPersonWhoPay) {
-        value = paymentsViewModel.getPersonName(item.idPersonWhoPay)
+        value = paymentsViewModel.getPersonName(item.idPersonWhoPay).orEmpty()
     }
 
     val namePersonWhoReceive by produceState(initialValue = "", key1 = item.idPersonWhoReceive) {
-        value = paymentsViewModel.getPersonName(item.idPersonWhoReceive)
+        value = paymentsViewModel.getPersonName(item.idPersonWhoReceive).orEmpty()
     }
 
     Row(

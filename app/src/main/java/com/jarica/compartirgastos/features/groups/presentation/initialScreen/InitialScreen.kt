@@ -2,6 +2,7 @@ package com.jarica.compartirgastos.features.groups.presentation.initialScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +44,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
 @Composable
 fun InitialScreen(
     navigateToNewGroup: () -> Unit,
+    navigateToAboutScreen: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -65,6 +68,26 @@ fun InitialScreen(
                     )
                 )
         )
+
+        // Top-right: about button
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .statusBarsPadding()
+                .padding(top = 12.dp, end = 18.dp)
+                .size(36.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(White.copy(alpha = 0.08f))
+                .clickable { navigateToAboutScreen() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.information),
+                contentDescription = null,
+                tint = White,
+                modifier = Modifier.size(22.dp)
+            )
+        }
 
         // Top: icon + wordmark
         Column(

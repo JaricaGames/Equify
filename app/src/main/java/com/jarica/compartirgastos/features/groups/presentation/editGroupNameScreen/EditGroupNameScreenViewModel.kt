@@ -34,14 +34,14 @@ class EditGroupNameScreenViewModel @Inject constructor(
 
     fun loadCurrentGroupName(idGroup: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val group = getGroupByIdUseCase(idGroup)
+            val group = getGroupByIdUseCase(idGroup) ?: return@launch
             _currentGroupName.postValue(group.groupName)
         }
     }
 
     fun onEditGroupNameById(idGroup: String, newName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val group = getGroupByIdUseCase(idGroup)
+            val group = getGroupByIdUseCase(idGroup) ?: return@launch
             group.groupName = newName
             editGroupNameToGroupUseCase(group)
         }

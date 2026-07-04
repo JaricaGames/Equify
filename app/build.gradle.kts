@@ -21,13 +21,14 @@ plugins {
 android {
     namespace = "com.jarica.compartirgastos"
     compileSdk = 35
+    ndkVersion = "27.2.12479018"
 
     defaultConfig {
         applicationId = "com.jarica.compartirgastos"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,6 +53,9 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
     compileOptions {
@@ -66,6 +70,12 @@ android {
         buildConfig = true
     }
 
+}
+
+// Room exporta el esquema de cada versión a /app/schemas (uno por versión).
+// Sirve para (1) versionar el esquema en git y (2) escribir y testear migraciones reales.
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {

@@ -52,7 +52,14 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code} -> %{redirect_url}\\\\n\" \"https://github.com/JaricaGames/CompartirGastos\")",
       "Bash(curl -s \"https://raw.githubusercontent.com/JaricaGames/Equify/New/equify-privacidad.html\")",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | content-type: %{content_type}\\\\n\" \"https://jaricagames.github.io/Equify/equify-privacidad.html\")",
-      "Bash(curl -s \"https://jaricagames.github.io/Equify/equify-privacidad.html\")"
+      "Bash(curl -s \"https://jaricagames.github.io/Equify/equify-privacidad.html\")",
+      "PowerShell(.\\\\gradlew :app:assembleDebug -q 2>&1 | Select-Object -Last 40)",
+      "PowerShell(.\\\\gradlew.bat :app:bundleRelease)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(& \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\\\\cmdline-tools\\\\latest\\\\bin\\\\sdkmanager.bat\" --install \"ndk;27.2.12479018\")",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip=[System.IO.Compression.ZipFile]::OpenRead\\(\"E:\\\\CompartirGastos\\\\app\\\\build\\\\outputs\\\\bundle\\\\release\\\\app-release.aab\"\\); $zip.Entries | Where-Object FullName -match 'BUNDLE-METADATA|debugsymbols|\\\\.sym|\\\\.so\\\\.dbg' | Select-Object FullName, Length; $zip.Dispose\\(\\))",
+      "PowerShell(.\\\\gradlew compileDebugKotlin --console=plain -q)"
     ]
   }
 }

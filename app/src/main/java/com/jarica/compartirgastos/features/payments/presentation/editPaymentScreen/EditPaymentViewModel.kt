@@ -27,16 +27,15 @@ class EditPaymentViewModel @Inject constructor(
 
     fun updatePaymentSelected(idPayment: String, amount: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val payment= getPaymentByIdPayment(idPayment)
+            val payment = getPaymentByIdPayment(idPayment) ?: return@launch
             payment.amount = amount
             updatePaymentUseCase(payment)
         }
     }
 
-    suspend fun getPersonName(personId: String): String {
-        return getPersonByIdUseCase(personId).name
+    suspend fun getPersonName(personId: String): String? {
+        return getPersonByIdUseCase(personId)?.name
     }
 
 }
-
 

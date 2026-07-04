@@ -1,0 +1,470 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "77bc4d569da7bff1720e443e0cd2a462",
+    "entities": [
+      {
+        "tableName": "groupNameTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idGroup` TEXT NOT NULL, `groupName` TEXT NOT NULL, `createdAt` INTEGER NOT NULL DEFAULT 0, `updatedAt` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`idGroup`))",
+        "fields": [
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupName",
+            "columnName": "groupName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idGroup"
+          ]
+        }
+      },
+      {
+        "tableName": "peopleTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPerson` TEXT NOT NULL, `name` TEXT NOT NULL, `idGroup` TEXT NOT NULL, `createdAt` INTEGER NOT NULL DEFAULT 0, `updatedAt` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`idPerson`), FOREIGN KEY(`idGroup`) REFERENCES `groupNameTable`(`idGroup`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idPerson",
+            "columnName": "idPerson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idPerson"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_peopleTable_idGroup",
+            "unique": false,
+            "columnNames": [
+              "idGroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_peopleTable_idGroup` ON `${TABLE_NAME}` (`idGroup`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "groupNameTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idGroup"
+            ],
+            "referencedColumns": [
+              "idGroup"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "costsTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCost` TEXT NOT NULL, `amount` INTEGER NOT NULL, `description` TEXT NOT NULL, `idGroup` TEXT, `createdAt` INTEGER NOT NULL DEFAULT 0, `updatedAt` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`idCost`), FOREIGN KEY(`idGroup`) REFERENCES `groupNameTable`(`idGroup`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idCost",
+            "columnName": "idCost",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idCost"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_costsTable_idGroup",
+            "unique": false,
+            "columnNames": [
+              "idGroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_costsTable_idGroup` ON `${TABLE_NAME}` (`idGroup`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "groupNameTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idGroup"
+            ],
+            "referencedColumns": [
+              "idGroup"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "paymentsTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPayment` TEXT NOT NULL, `amount` INTEGER NOT NULL, `idPersonWhoPay` TEXT NOT NULL, `idPersonWhoReceive` TEXT NOT NULL, `idGroup` TEXT NOT NULL, `createdAt` INTEGER NOT NULL DEFAULT 0, `updatedAt` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`idPayment`), FOREIGN KEY(`idGroup`) REFERENCES `groupNameTable`(`idGroup`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idPayment",
+            "columnName": "idPayment",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPersonWhoPay",
+            "columnName": "idPersonWhoPay",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPersonWhoReceive",
+            "columnName": "idPersonWhoReceive",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idPayment"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_paymentsTable_idGroup",
+            "unique": false,
+            "columnNames": [
+              "idGroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_paymentsTable_idGroup` ON `${TABLE_NAME}` (`idGroup`)"
+          },
+          {
+            "name": "index_paymentsTable_idPersonWhoPay",
+            "unique": false,
+            "columnNames": [
+              "idPersonWhoPay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_paymentsTable_idPersonWhoPay` ON `${TABLE_NAME}` (`idPersonWhoPay`)"
+          },
+          {
+            "name": "index_paymentsTable_idPersonWhoReceive",
+            "unique": false,
+            "columnNames": [
+              "idPersonWhoReceive"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_paymentsTable_idPersonWhoReceive` ON `${TABLE_NAME}` (`idPersonWhoReceive`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "groupNameTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idGroup"
+            ],
+            "referencedColumns": [
+              "idGroup"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "distributionCostTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCost` TEXT NOT NULL, `idGroup` TEXT NOT NULL, `idPerson` TEXT NOT NULL, `amount` INTEGER NOT NULL, PRIMARY KEY(`idCost`, `idPerson`), FOREIGN KEY(`idCost`) REFERENCES `costsTable`(`idCost`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`idPerson`) REFERENCES `peopleTable`(`idPerson`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idCost",
+            "columnName": "idCost",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPerson",
+            "columnName": "idPerson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idCost",
+            "idPerson"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_distributionCostTable_idPerson",
+            "unique": false,
+            "columnNames": [
+              "idPerson"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionCostTable_idPerson` ON `${TABLE_NAME}` (`idPerson`)"
+          },
+          {
+            "name": "index_distributionCostTable_idGroup",
+            "unique": false,
+            "columnNames": [
+              "idGroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionCostTable_idGroup` ON `${TABLE_NAME}` (`idGroup`)"
+          },
+          {
+            "name": "index_distributionCostTable_idCost",
+            "unique": false,
+            "columnNames": [
+              "idCost"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionCostTable_idCost` ON `${TABLE_NAME}` (`idCost`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "costsTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idCost"
+            ],
+            "referencedColumns": [
+              "idCost"
+            ]
+          },
+          {
+            "table": "peopleTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idPerson"
+            ],
+            "referencedColumns": [
+              "idPerson"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "distributionPaymentCostTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCost` TEXT NOT NULL, `idGroup` TEXT NOT NULL, `idPerson` TEXT NOT NULL, `amount` INTEGER NOT NULL, PRIMARY KEY(`idCost`, `idPerson`), FOREIGN KEY(`idCost`) REFERENCES `costsTable`(`idCost`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`idPerson`) REFERENCES `peopleTable`(`idPerson`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idCost",
+            "columnName": "idCost",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idGroup",
+            "columnName": "idGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPerson",
+            "columnName": "idPerson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idCost",
+            "idPerson"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_distributionPaymentCostTable_idPerson",
+            "unique": false,
+            "columnNames": [
+              "idPerson"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionPaymentCostTable_idPerson` ON `${TABLE_NAME}` (`idPerson`)"
+          },
+          {
+            "name": "index_distributionPaymentCostTable_idCost",
+            "unique": false,
+            "columnNames": [
+              "idCost"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionPaymentCostTable_idCost` ON `${TABLE_NAME}` (`idCost`)"
+          },
+          {
+            "name": "index_distributionPaymentCostTable_idGroup",
+            "unique": false,
+            "columnNames": [
+              "idGroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distributionPaymentCostTable_idGroup` ON `${TABLE_NAME}` (`idGroup`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "costsTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idCost"
+            ],
+            "referencedColumns": [
+              "idCost"
+            ]
+          },
+          {
+            "table": "peopleTable",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idPerson"
+            ],
+            "referencedColumns": [
+              "idPerson"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77bc4d569da7bff1720e443e0cd2a462')"
+    ]
+  }
+}

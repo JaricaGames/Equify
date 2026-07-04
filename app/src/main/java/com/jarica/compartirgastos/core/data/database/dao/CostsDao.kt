@@ -13,19 +13,19 @@ interface CostsDao {
 
 
     //Metodo que lista los gastos
-    @Query("SELECT * FROM costsTable WHERE idGroup = :idGroup ORDER BY iDCost ASC")
+    @Query("SELECT * FROM costsTable WHERE idGroup = :idGroup ORDER BY idCost ASC")
     fun getAllCostsByIdGroup(idGroup: String): Flow<List<CostEntity>>
 
    // Metodo que devuelve un gasto por ID
-    @Query("SELECT * FROM costsTable WHERE iDCost LIKE :idCost ")
-    suspend fun getCostsByIdCost(idCost: String): CostEntity
+    @Query("SELECT * FROM costsTable WHERE idCost = :idCost")
+    suspend fun getCostsByIdCost(idCost: String): CostEntity?
 
     //Metodo que inserta un nuevo gasto
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCost(cost: CostEntity)
 
     //Metodo que borra un gasto por Id
-    @Query("DELETE FROM costsTable WHERE idCost LIKE :idCost ")
+    @Query("DELETE FROM costsTable WHERE idCost = :idCost")
     suspend fun deleteCost(idCost: String)
 
     //Metodo que actualiza un gasto

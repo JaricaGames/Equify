@@ -64,17 +64,22 @@ class EditCostScreenViewModel @Inject constructor(
         _costId
             .filterNotNull()
             .flatMapLatest { costId ->
-                val idGroup = getCostByIdCost(costId).idGroup.orEmpty()
-                combine(
-                    getPaymentsByIdCost(costId),
-                    getDistributionCostByIdCost(costId),
-                    getPeopleByIdGroupUseCase(idGroup)
-                ) { payers, participants, groupPeople ->
-                    EditCostUiState.Success(
-                        listOfCostPaymentsModel = payers,
-                        groupPeople             = groupPeople,
-                        currentParticipantIds   = participants.map { it.idPerson }.toSet()
-                    )
+                val costOrNull = getCostByIdCost(costId)
+                if (costOrNull == null) {
+                    kotlinx.coroutines.flow.flowOf(EditCostUiState.Loading)
+                } else {
+                    val idGroup = costOrNull.idGroup.orEmpty()
+                    combine(
+                        getPaymentsByIdCost(costId),
+                        getDistributionCostByIdCost(costId),
+                        getPeopleByIdGroupUseCase(idGroup)
+                    ) { payers, participants, groupPeople ->
+                        EditCostUiState.Success(
+                            listOfCostPaymentsModel = payers,
+                            groupPeople             = groupPeople,
+                            currentParticipantIds   = participants.map { it.idPerson }.toSet()
+                        )
+                    }
                 }
             }
             .stateIn(
@@ -106,7 +111,7 @@ class EditCostScreenViewModel @Inject constructor(
         participants: List<PersonModel>,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val cost = getCostByIdCost(idCost)
+            val cost = getCostByIdCost(idCost) ?: return@launch
             cost.description = description
             cost.amount      = amount
             updateCostUseCase(costModel = cost)

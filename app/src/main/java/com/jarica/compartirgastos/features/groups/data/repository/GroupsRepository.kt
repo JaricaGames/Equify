@@ -18,12 +18,12 @@ class GroupsRepository @Inject constructor(
         .map { items -> items.map { GroupModel(it.idGroup, it.groupName) } }
 
 
-    suspend fun getGroupNameById(id: String): GroupModel {
-        return groupNameDao.getGroupNameById(idGroup = id).toDomain()
+    suspend fun getGroupNameById(id: String): GroupModel? {
+        return groupNameDao.getGroupNameById(idGroup = id)?.toDomain()
     }
 
 
-    suspend fun getGroupMembersById(id: Int): List<String> {
+    suspend fun getGroupMembersById(id: String): List<String> {
         return groupNameDao.getGroupsMembersById(id)
     }
 

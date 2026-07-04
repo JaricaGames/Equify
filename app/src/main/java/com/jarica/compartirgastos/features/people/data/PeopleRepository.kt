@@ -19,8 +19,8 @@ class PeopleRepository @Inject constructor(
             .map { it.map { dto -> dto.toDomain() } }
     }
 
-    suspend fun getPersonById(idPerson: String): PersonModel {
-        return personNameDao.getPersonById(idPerson).toDomain()
+    suspend fun getPersonById(idPerson: String): PersonModel? {
+        return personNameDao.getPersonById(idPerson)?.toDomain()
     }
 
     suspend fun insertPersonName(personModel: PersonModel) {
@@ -28,7 +28,6 @@ class PeopleRepository @Inject constructor(
             PersonEntity(
                 idPerson = personModel.idPerson,
                 name = personModel.name,
-                //      equity = personModel.equity,
                 idGroup = personModel.idGroupName
             )
         )

@@ -20,8 +20,8 @@ class PaymentsRepository @Inject constructor(
             .map { it.map { dto -> dto.toDomain() } }
     }
 
-    suspend fun getPaymentByIdPayment(idPayment: String): PaymentsModel {
-        return paymentsDao.getPaymentByIdPayment(idPayment).toDomain()
+    suspend fun getPaymentByIdPayment(idPayment: String): PaymentsModel? {
+        return paymentsDao.getPaymentByIdPayment(idPayment)?.toDomain()
     }
 
 
@@ -44,11 +44,11 @@ class PaymentsRepository @Inject constructor(
     suspend fun updatePaymentById(paymentModel: PaymentsModel){
         paymentsDao.updatePaymentById(
             PaymentEntity(
-                paymentModel.idPayment,
-                paymentModel.amount,
-                paymentModel.idPersonWhoPay,
-                paymentModel.idPersonWhoReceive,
-                paymentModel.idGroup
+                idPayment = paymentModel.idPayment,
+                amount = paymentModel.amount,
+                idPersonWhoPay = paymentModel.idPersonWhoPay,
+                idPersonWhoReceive = paymentModel.idPersonWhoReceive,
+                idGroup = paymentModel.idGroup
             )
         )
     }
