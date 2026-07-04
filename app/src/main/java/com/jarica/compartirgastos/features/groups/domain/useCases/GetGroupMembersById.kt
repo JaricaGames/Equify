@@ -7,7 +7,7 @@ class GetGroupMembersById @Inject constructor(
     private val repository: GroupsRepository
 ) {
 
-    suspend operator fun invoke(idGroup: Int): List<String> {
+    suspend operator fun invoke(idGroup: String): List<String> {
         return repository.getGroupMembersById(idGroup)
     }
 }

@@ -82,8 +82,8 @@ class ConfigurationScreenViewModel @Inject constructor(
     fun getGroupNameById(idGroup: String) {
         viewModelScope.launch {
             val groupName = withContext(Dispatchers.IO) {
-                getGroupByIdUseCase(idGroup)?.groupName ?: return@withContext
-            }
+                getGroupByIdUseCase(idGroup)?.groupName
+            } ?: return@launch
             _nameOfGroup.value = groupName
         }
     }

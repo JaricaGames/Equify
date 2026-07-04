@@ -70,12 +70,12 @@ fun EditPaymentScreen(
 
     val namePersonWhoPay by produceState(initialValue = "", key1 = personWhoPay) {
         val name = editPaymentsViewModel.getPersonName(personWhoPay)
-        value = name
+        value = name.orEmpty()
     }
 
     val namePersonWhoReceive by produceState(initialValue = "", key1 = personWhoReceive) {
         val name = editPaymentsViewModel.getPersonName(personWhoReceive)
-        value = name
+        value = name.orEmpty()
     }
 
 

@@ -58,7 +58,7 @@ class DoTheCountsScreenViewModel @Inject constructor(
 
                 if (groupId != null) {
                     _costsState.value = getCostsByIdGroupUseCase(groupId).first()
-                    _groupName.value = getGroupByIdUseCase(groupId).groupName
+                    _groupName.value = getGroupByIdUseCase(groupId)?.groupName.orEmpty()
                 }
             } catch (e: Exception) {
                 _paymentsState.value = emptyList()

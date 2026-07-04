@@ -126,7 +126,6 @@ class CostsRepository @Inject constructor(
             .map { it.map { dto -> dto.toDomain() } }
     }
 
-    @Transaction
     suspend fun deleteDistributionCostByIdCost(idCost: String) {
         distributionCostDao.deleteDistributionCostByIdCost(idCost)
     }
