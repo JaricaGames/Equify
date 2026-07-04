@@ -12,6 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+.kotlin/
 # Keystore de firma (NUNCA subir al repositorio)
 *.jks
 *.keystore

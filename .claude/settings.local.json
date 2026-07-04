@@ -64,7 +64,10 @@
       "PowerShell(git remote *)",
       "PowerShell(.\\\\gradlew bundleRelease --console=plain)",
       "PowerShell(.\\\\gradlew.bat :app:compileFreeDebugKotlin --console=plain -q)",
-      "PowerShell(.\\\\gradlew.bat :app:compileDebugKotlin --console=plain -q)"
+      "PowerShell(.\\\\gradlew.bat :app:compileDebugKotlin --console=plain -q)",
+      "PowerShell(.\\\\gradlew.bat :app:bundleRelease --console=plain)",
+      "PowerShell(git check-ignore *)",
+      "PowerShell(git add *)"
     ]
   }
 }
