@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.PaymentsToDoCountsModel
+import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
 import com.jarica.compartirgastos.core.presentation.composables.CustomIcon
 import com.jarica.compartirgastos.core.presentation.ui.doTheCount
 import com.jarica.compartirgastos.core.presentation.ui.doTheCountsNoDebts
@@ -269,7 +270,7 @@ private fun DoTheCountsContent(
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
             ) {
                 Text(
-                    text = exportAdButtonText,
+                    text = if (LocalAdsRemoved.current) exportArrayListDoTheCountsText else exportAdButtonText,
                     fontFamily = parkinsans,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,

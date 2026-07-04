@@ -146,7 +146,7 @@
 
     <!-- DoTheCountsScreen -->
     <string name="export_pdf_text">Exportar PDF</string>
-    <string name="export_ad_button_text">Ver anuncio y Exportar</string>
+    <string name="export_ad_button_text">Ver anuncio y Exportar PDF</string>
     <string name="do_the_counts_subtitle_zero">Sin deudas pendientes en el grupo</string>
     <string name="do_the_counts_empty_title">¡Cuentas al día!</string>
     <string name="do_the_counts_empty_subtitle">No hay deudas pendientes\nen este grupo</string>

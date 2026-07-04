@@ -146,7 +146,7 @@
 
     <!-- DoTheCountsScreen -->
     <string name="export_pdf_text">Esporta PDF</string>
-    <string name="export_ad_button_text">Guarda l\'annuncio ed esporta</string>
+    <string name="export_ad_button_text">Guarda l\'annuncio ed esporta PDF</string>
     <string name="do_the_counts_subtitle_zero">Nessun debito in sospeso nel gruppo</string>
     <string name="do_the_counts_empty_title">Conti in pari!</string>
     <string name="do_the_counts_empty_subtitle">Nessun debito in sospeso\nin questo gruppo</string>

@@ -58,7 +58,8 @@
       "PowerShell(Get-ChildItem *)",
       "PowerShell(Test-Path *)",
       "PowerShell(& \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\\\\cmdline-tools\\\\latest\\\\bin\\\\sdkmanager.bat\" --install \"ndk;27.2.12479018\")",
-      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip=[System.IO.Compression.ZipFile]::OpenRead\\(\"E:\\\\CompartirGastos\\\\app\\\\build\\\\outputs\\\\bundle\\\\release\\\\app-release.aab\"\\); $zip.Entries | Where-Object FullName -match 'BUNDLE-METADATA|debugsymbols|\\\\.sym|\\\\.so\\\\.dbg' | Select-Object FullName, Length; $zip.Dispose\\(\\))"
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip=[System.IO.Compression.ZipFile]::OpenRead\\(\"E:\\\\CompartirGastos\\\\app\\\\build\\\\outputs\\\\bundle\\\\release\\\\app-release.aab\"\\); $zip.Entries | Where-Object FullName -match 'BUNDLE-METADATA|debugsymbols|\\\\.sym|\\\\.so\\\\.dbg' | Select-Object FullName, Length; $zip.Dispose\\(\\))",
+      "PowerShell(.\\\\gradlew compileDebugKotlin --console=plain -q)"
     ]
   }
 }

@@ -82,6 +82,11 @@ fun NavigationWrapper() {
                     navController.navigate(NewGroupScreenObject) {
                         launchSingleTop = true
                     }
+                },
+                navigateToAboutScreen = {
+                    navController.navigate(AboutEquifyScreenObject) {
+                        launchSingleTop = true
+                    }
                 })
         }
 

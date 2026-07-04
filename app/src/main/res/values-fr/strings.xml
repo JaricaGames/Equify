@@ -146,7 +146,7 @@
 
     <!-- DoTheCountsScreen -->
     <string name="export_pdf_text">Exporter en PDF</string>
-    <string name="export_ad_button_text">Voir la pub et exporter</string>
+    <string name="export_ad_button_text">Voir la pub et exporter en PDF</string>
     <string name="do_the_counts_subtitle_zero">Aucune dette en attente dans le groupe</string>
     <string name="do_the_counts_empty_title">Comptes soldés !</string>
     <string name="do_the_counts_empty_subtitle">Aucune dette en attente\ndans ce groupe</string>
