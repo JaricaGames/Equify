@@ -25,18 +25,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -65,6 +72,8 @@ import com.jarica.compartirgastos.R
 import com.jarica.compartirgastos.core.domain.models.GroupModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.presentation.LocalAdsRemoved
+import com.jarica.compartirgastos.core.presentation.ui.cancel
+import com.jarica.compartirgastos.core.presentation.ui.deleteGroupText
 import com.jarica.compartirgastos.core.presentation.ui.groupsTotalLabel
 import com.jarica.compartirgastos.core.presentation.ui.groupsYourGroups
 import com.jarica.compartirgastos.core.presentation.ui.theme.DarkBlue
@@ -75,6 +84,7 @@ import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardInk
 import com.jarica.compartirgastos.core.presentation.ui.theme.GroupsCardMuted
 import com.jarica.compartirgastos.core.presentation.ui.theme.White
 import com.jarica.compartirgastos.core.presentation.ui.theme.parkinsans
+import com.jarica.compartirgastos.core.presentation.ui.titleConfirmAlertDialogText
 import com.jarica.compartirgastos.core.utils.AdIds
 import com.jarica.compartirgastos.core.utils.toMoneyDisplay
 
@@ -288,6 +298,19 @@ fun GroupCard(
     val totalCost by produceState(initialValue = 0L, key1 = group.idGroupName) {
         value = groupViewModel.getTotalCost(group.idGroupName)
     }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteDialog) {
+        DeleteGroupConfirmDialog(
+            groupName = group.groupName,
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                showDeleteDialog = false
+                groupViewModel.onDeletedSelected(group, group.idGroupName)
+                if (groupsList.size <= 1) navigateToInitialScreen()
+            }
+        )
+    }
 
     Row(
         modifier = Modifier
@@ -338,12 +361,68 @@ fun GroupCard(
             tint = GroupsCardMuted.copy(alpha = 0.4f),
             modifier = Modifier
                 .size(18.dp)
-                .clickable {
-                    groupViewModel.onDeletedSelected(group, group.idGroupName)
-                    if (groupsList.size <= 1) navigateToInitialScreen()
-                }
+                .clickable { showDeleteDialog = true }
         )
     }
+}
+
+@Composable
+fun DeleteGroupConfirmDialog(
+    groupName: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DarkOrange,
+                    contentColor = White
+                )
+            ) {
+                Text(
+                    deleteGroupText,
+                    fontFamily = parkinsans,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    cancel,
+                    fontFamily = parkinsans,
+                    color = GroupsCardMuted,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W300
+                )
+            }
+        },
+        title = {
+            Text(
+                titleConfirmAlertDialogText,
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = parkinsans,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                stringResource(R.string.delete_group_confirm_text, groupName),
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = parkinsans,
+                textAlign = TextAlign.Center,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300
+            )
+        }
+    )
 }
 
 

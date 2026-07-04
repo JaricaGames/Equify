@@ -92,6 +92,7 @@ fun EditCostScreen(
     val uiState                by editCostScreenViewModel.uiStateEditCost.collectAsState()
     val descriptionText        by editCostScreenViewModel.descriptionCost.observeAsState(description)
     val selectedParticipantIds by editCostScreenViewModel.selectedParticipantIds.collectAsState()
+    val selectedPayerId        by editCostScreenViewModel.selectedPayerId.collectAsState()
 
     when (val state = uiState) {
         is EditCostUiState.Loading -> {
@@ -108,6 +109,7 @@ fun EditCostScreen(
                 groupPeople            = state.groupPeople,
                 currentParticipantIds  = state.currentParticipantIds,
                 selectedParticipantIds = selectedParticipantIds,
+                selectedPayerId        = selectedPayerId,
                 idCost                 = idCost,
                 viewModel              = editCostScreenViewModel,
                 navigateBack           = navigateToMainScreen,
@@ -126,6 +128,7 @@ private fun EditCostContent(
     groupPeople: List<PersonModel>,
     currentParticipantIds: Set<String>,
     selectedParticipantIds: Set<String>?,
+    selectedPayerId: String?,
     idCost: String,
     viewModel: EditCostScreenViewModel,
     navigateBack: () -> Unit,
@@ -138,6 +141,10 @@ private fun EditCostContent(
     val baseIds        = currentParticipantIds.ifEmpty { groupPeople.map { it.idPerson }.toSet() }
     val participantIds = selectedParticipantIds ?: baseIds
     val participants   = groupPeople.filter { it.idPerson in participantIds }
+
+    // Pagador: por defecto el actual del gasto; se puede cambiar tocando otro chip.
+    val payerId = selectedPayerId ?: costPaymentsList.firstOrNull()?.idPerson
+    val payer   = groupPeople.firstOrNull { it.idPerson == payerId }
 
     val canSave  = descriptionText.isNotBlank() &&
             amountText.toCentsOrNull() != null &&
@@ -193,17 +200,17 @@ private fun EditCostContent(
                     )
                 }
 
-                if (costPaymentsList.isNotEmpty()) {
+                if (groupPeople.isNotEmpty()) {
                     FormSection(label = fromText) {
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement   = Arrangement.spacedBy(8.dp)
                         ) {
-                            costPaymentsList.forEach { person ->
+                            groupPeople.forEach { person ->
                                 PersonChip(
                                     name     = person.name,
-                                    selected = false,
-                                    onClick  = {}
+                                    selected = person.idPerson == payerId,
+                                    onClick  = { viewModel.onPayerSelected(person) }
                                 )
                             }
                         }
@@ -328,7 +335,7 @@ private fun EditCostContent(
             Button(
                 onClick  = {
                     val newAmount = amountText.toCentsOrNull() ?: initialAmount
-                    viewModel.updateCost(descriptionText, newAmount, idCost, participants)
+                    viewModel.updateCost(descriptionText, newAmount, idCost, participants, payer)
                     navigateBack()
                 },
                 enabled  = canSave,

@@ -65,15 +65,20 @@ class CostsRepository @Inject constructor(
         }
     }
 
-    // Actualiza el gasto y reemplaza su reparto en una transacción: todo-o-nada.
+    // Actualiza el gasto y reemplaza su reparto y su pago en una transacción: todo-o-nada.
     suspend fun updateCostWithDistributions(
         costModel: CostModel,
         distributionCosts: List<DistributionCostModel>,
+        distributionPayment: DistributionPaymentModel?,
     ) {
         db.withTransaction {
             updateCost(costModel)
             deleteDistributionCostByIdCost(costModel.idCost)
             distributionCosts.forEach { insertDistributionCost(it) }
+            if (distributionPayment != null) {
+                distributionPaymentDao.deleteDistributionPaymentsByIdCost(costModel.idCost)
+                insertDistributionPayment(distributionPayment)
+            }
         }
     }
 

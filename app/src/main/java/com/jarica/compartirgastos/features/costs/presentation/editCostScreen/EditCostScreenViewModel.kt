@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jarica.compartirgastos.core.domain.models.DistributionCostModel
+import com.jarica.compartirgastos.core.domain.models.DistributionPaymentModel
 import com.jarica.compartirgastos.core.domain.models.PersonModel
 import com.jarica.compartirgastos.core.utils.splitEvenly
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteCostUseCase
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.DeleteDistributionCostByIdCostUseCase
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetCostByIdCost
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetDistributionCostByIdCost
 import com.jarica.compartirgastos.features.costs.domain.costsUseCases.GetDistributionPaymentsByIdCost
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.InsertDistributionCostUseCase
-import com.jarica.compartirgastos.features.costs.domain.costsUseCases.UpdateCostUseCase
+import com.jarica.compartirgastos.features.costs.domain.costsUseCases.UpdateCostWithDistributionsUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPeopleByIdGroupUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.GetPersonByIdUseCase
 import com.jarica.compartirgastos.features.people.domain.peopleUseCases.UpdatePersonByIdUseCase
@@ -37,12 +36,10 @@ class EditCostScreenViewModel @Inject constructor(
     private val updatePersonByIdUseCase: UpdatePersonByIdUseCase,
     private val getPersonByIdUseCase: GetPersonByIdUseCase,
     private val getCostByIdCost: GetCostByIdCost,
-    private val updateCostUseCase: UpdateCostUseCase,
+    private val updateCostWithDistributionsUseCase: UpdateCostWithDistributionsUseCase,
     private val getPaymentsByIdCost: GetDistributionPaymentsByIdCost,
     private val getPeopleByIdGroupUseCase: GetPeopleByIdGroupUseCase,
     private val getDistributionCostByIdCost: GetDistributionCostByIdCost,
-    private val deleteDistributionCostByIdCostUseCase: DeleteDistributionCostByIdCostUseCase,
-    private val insertDistributionCostUseCase: InsertDistributionCostUseCase,
 ) : ViewModel() {
 
 
@@ -58,6 +55,14 @@ class EditCostScreenViewModel @Inject constructor(
     // Ids de los miembros que participan en el gasto. null = se usan los participantes actuales.
     private val _selectedParticipantIds = MutableStateFlow<Set<String>?>(null)
     val selectedParticipantIds: StateFlow<Set<String>?> = _selectedParticipantIds
+
+    // Id del miembro que pagó el gasto. null = se mantiene el pagador actual.
+    private val _selectedPayerId = MutableStateFlow<String?>(null)
+    val selectedPayerId: StateFlow<String?> = _selectedPayerId
+
+    fun onPayerSelected(person: PersonModel) {
+        _selectedPayerId.value = person.idPerson
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiStateEditCost: StateFlow<EditCostUiState> =
@@ -109,30 +114,44 @@ class EditCostScreenViewModel @Inject constructor(
         amount: Long,
         idCost: String,
         participants: List<PersonModel>,
+        payer: PersonModel?,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val cost = getCostByIdCost(idCost) ?: return@launch
             cost.description = description
             cost.amount      = amount
-            updateCostUseCase(costModel = cost)
+            val idGroup = cost.idGroup.orEmpty()
 
             // Recalcula el reparto entre los participantes seleccionados.
-            val idGroup = cost.idGroup.orEmpty()
-            deleteDistributionCostByIdCostUseCase(idCost)
-            if (participants.isNotEmpty()) {
+            val distributionCosts = if (participants.isEmpty()) emptyList() else {
                 val shares = splitEvenly(amount, participants.size)
-                participants.forEachIndexed { index, person ->
-                    insertDistributionCostUseCase(
-                        DistributionCostModel(
-                            iDCost   = idCost,
-                            iDPerson = person.idPerson,
-                            amount   = shares[index],
-                            idGroup  = idGroup,
-                            name     = person.name
-                        )
+                participants.mapIndexed { index, person ->
+                    DistributionCostModel(
+                        iDCost   = idCost,
+                        iDPerson = person.idPerson,
+                        amount   = shares[index],
+                        idGroup  = idGroup,
+                        name     = person.name
                     )
                 }
             }
+
+            // Reemplaza el pago con el nuevo importe y pagador. null = deja el pago como está.
+            val payment = payer?.let {
+                DistributionPaymentModel(
+                    iDCost   = idCost,
+                    iDPerson = it.idPerson,
+                    amount   = amount,
+                    idGroup  = idGroup,
+                    name     = it.name
+                )
+            }
+
+            updateCostWithDistributionsUseCase(
+                costModel           = cost,
+                distributionCosts   = distributionCosts,
+                distributionPayment = payment
+            )
         }
     }
 

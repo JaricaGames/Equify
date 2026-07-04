@@ -26,7 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -73,6 +76,7 @@ import com.jarica.compartirgastos.core.utils.EMAIL_DIRECTION
 import com.jarica.compartirgastos.core.utils.EMAIL_SUBJECT
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogConfirm
 import com.jarica.compartirgastos.features.groups.presentation.configurationScreen.AlertDialogs.AlertDialogErrorClear
+import com.jarica.compartirgastos.features.groups.presentation.groupsScreen.DeleteGroupConfirmDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -184,6 +188,19 @@ private fun MainConfigurationScreen(
 ) {
     configurationScreenViewModel.getGroupNameById(iDGroupName)
 
+    var showDeleteGroupDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteGroupDialog) {
+        DeleteGroupConfirmDialog(
+            groupName = nameOfGroup,
+            onDismiss = { showDeleteGroupDialog = false },
+            onConfirm = {
+                showDeleteGroupDialog = false
+                configurationScreenViewModel.deleteGroup(iDGroupName) { navigateToGroupsList() }
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -273,9 +290,7 @@ private fun MainConfigurationScreen(
                 SectionEyebrow(configDangerEyebrow, isDanger = true)
                 SettingsCard {
                     DangerRow(
-                        onClick = {
-                            configurationScreenViewModel.deleteGroup(iDGroupName) { navigateToGroupsList() }
-                        }
+                        onClick = { showDeleteGroupDialog = true }
                     )
                 }
             }

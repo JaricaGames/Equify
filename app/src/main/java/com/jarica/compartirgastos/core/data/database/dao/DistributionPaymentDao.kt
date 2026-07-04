@@ -19,6 +19,10 @@ interface DistributionPaymentDao {
     @Query("SELECT COALESCE(SUM(amount),0) FROM distributionPaymentCostTable WHERE iDPerson = :iDPerson ")
     fun getSumDistributionPaymentByIdPerson(iDPerson: String): Flow<Long>
 
+    //Metodo que borra los pagos asociados a un gasto
+    @Query("DELETE FROM distributionPaymentCostTable WHERE idCost = :idCost")
+    suspend fun deleteDistributionPaymentsByIdCost(idCost: String)
+
     //  Metodo que devuelve quienes han pagado un gasto por Id
 
     @Query("""

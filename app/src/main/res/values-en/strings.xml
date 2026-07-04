@@ -110,6 +110,7 @@
     <string name="group_members_text">Group members</string>
     <string name="other_text">Other</string>
     <string name="delete_group_text">Delete Group</string>
+    <string name="delete_group_confirm_text">Are you sure you want to delete the group %1$s? All its expenses will be deleted and this cannot be undone.</string>
     <string name="information_text">Information</string>
     <string name="about_text">About Equify</string>
     <string name="feedback_text">Send us your Feedback</string>

@@ -110,6 +110,7 @@
     <string name="group_members_text">Miembros del grupo</string>
     <string name="other_text">Otro</string>
     <string name="delete_group_text">Borrar Grupo</string>
+    <string name="delete_group_confirm_text">¿Seguro que quieres borrar el grupo %1$s? Se eliminarán todos sus gastos y no podrá deshacerse.</string>
     <string name="information_text">Información</string>
     <string name="about_text">Sobre Equify</string>
     <string name="feedback_text">Envianos tu Feedback</string>
