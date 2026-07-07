@@ -67,7 +67,27 @@
       "PowerShell(.\\\\gradlew.bat :app:compileDebugKotlin --console=plain -q)",
       "PowerShell(.\\\\gradlew.bat :app:bundleRelease --console=plain)",
       "PowerShell(git check-ignore *)",
-      "PowerShell(git add *)"
+      "PowerShell(git add *)",
+      "Skill(artifact-design)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Select-String *)",
+      "Artifact",
+      "PowerShell($paths = @\\(\"$env:ProgramFiles\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\", \"${env:ProgramFiles\\(x86\\)}\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\", \"$env:ProgramFiles\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\", \"${env:ProgramFiles\\(x86\\)}\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"\\); foreach \\($p in $paths\\) { if \\(Test-Path $p\\) { Write-Output \"ENCONTRADO: $p\" } })",
+      "PowerShell(gh *)",
+      "Bash(git credential *)",
+      "Bash(curl -s -o /dev/null -w \"url-check: %{http_code}\\\\n\" https://jaricagames.github.io/app-ads.txt)",
+      "Bash(curl -sI https://jaricagames.github.io/app-ads.txt)",
+      "Bash(curl -sI https://www.jaricagames.github.io/app-ads.txt)",
+      "WebFetch(domain:support.google.com)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "PowerShell(gh auth *)",
+      "PowerShell(git *)",
+      "WebFetch(domain:support.anthropic.com)",
+      "WebFetch(domain:support.claude.com)",
+      "WebFetch(domain:www.guideflow.com)",
+      "WebFetch(domain:github.com)",
+      "PowerShell(Rename-Item *)"
     ]
   }
 }

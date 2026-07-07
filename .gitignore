@@ -17,3 +17,5 @@
 *.jks
 *.keystore
 local.properties
+# Material de marketing (no forma parte del código)
+/marketing/
