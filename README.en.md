@@ -12,11 +12,9 @@
 
 📲 **[Get it on Google Play](https://play.google.com/store/apps/details?id=com.jarica.compartirgastos)**
 
-<!-- TODO: add screenshots to docs/screenshots/ and uncomment
-| Groups | Expenses | Settle up |
+| Group summary | Settle up | About Equify |
 |:---:|:---:|:---:|
-| ![Groups](docs/screenshots/groups.png) | ![Expenses](docs/screenshots/costs.png) | ![Settle up](docs/screenshots/balances.png) |
--->
+| ![Group summary](docs/screenshots/group-summary.webp) | ![Settle up](docs/screenshots/settle-up.webp) | ![About Equify](docs/screenshots/app-info.webp) |
 
 ---
 

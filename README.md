@@ -12,11 +12,9 @@
 
 📲 **[Descárgala en Google Play](https://play.google.com/store/apps/details?id=com.jarica.compartirgastos)**
 
-<!-- TODO: añadir capturas en docs/screenshots/ y descomentar
-| Grupos | Gastos | Echar cuentas |
+| Resumen del grupo | Echar cuentas | Sobre Equify |
 |:---:|:---:|:---:|
-| ![Grupos](docs/screenshots/groups.png) | ![Gastos](docs/screenshots/costs.png) | ![Echar cuentas](docs/screenshots/balances.png) |
--->
+| ![Resumen del grupo](docs/screenshots/group-summary.webp) | ![Echar cuentas](docs/screenshots/settle-up.webp) | ![Sobre Equify](docs/screenshots/app-info.webp) |
 
 ---
 
