@@ -14,7 +14,7 @@
 
 | Resumen del grupo | Echar cuentas | Sobre Equify |
 |:---:|:---:|:---:|
-| ![Resumen del grupo](docs/screenshots/group-summary.webp) | ![Echar cuentas](docs/screenshots/settle-up.webp) | ![Sobre Equify](docs/screenshots/app-info.webp) |
+| <img src="docs/screenshots/group-summary.webp" width="230" alt="Resumen del grupo"> | <img src="docs/screenshots/settle-up.webp" width="230" alt="Echar cuentas"> | <img src="docs/screenshots/app-info.webp" width="230" alt="Sobre Equify"> |
 
 ---
 

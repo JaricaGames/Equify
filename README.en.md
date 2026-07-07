@@ -14,7 +14,7 @@
 
 | Group summary | Settle up | About Equify |
 |:---:|:---:|:---:|
-| ![Group summary](docs/screenshots/group-summary.webp) | ![Settle up](docs/screenshots/settle-up.webp) | ![About Equify](docs/screenshots/app-info.webp) |
+| <img src="docs/screenshots/group-summary.webp" width="230" alt="Group summary"> | <img src="docs/screenshots/settle-up.webp" width="230" alt="Settle up"> | <img src="docs/screenshots/app-info.webp" width="230" alt="About Equify"> |
 
 ---
 
